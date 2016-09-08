@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinqToGraphQL.UnitTests.Models
 {
@@ -13,9 +10,20 @@ namespace LinqToGraphQL.UnitTests.Models
         {
         }
 
-        public IQueryable<SimpleQuery> Simple(string arg1, int? arg2 = null)
+        public IQueryable<NestedData> Data
         {
-            return MethodCall<SimpleQuery>(nameof(Simple), Arg(arg1), Arg(arg2));
+            get { return Property<NestedData>(nameof(Data)); }
+        }
+
+        public IQueryable<Simple> Simple(string arg1, int? arg2 = null)
+        {
+            return MethodCall<Simple>(nameof(Simple), Arg(arg1), Arg(arg2));
+        }
+
+        public NestedQuery Nested(string arg1, int? arg2 = null)
+        {
+            var expression = MethodCallExpression(nameof(Nested), Arg(arg1), Arg(arg2));
+            return new NestedQuery(Provider, expression);
         }
     }
 }

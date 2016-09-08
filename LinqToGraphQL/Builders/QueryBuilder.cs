@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using GraphQLParser.AST;
 
 namespace LinqToGraphQL.Builders
@@ -17,6 +18,23 @@ namespace LinqToGraphQL.Builders
             return root;
         }
 
+        protected override Expression VisitConstant(ConstantExpression node)
+        {
+            var root = node.Value as IRootQuery;
+            var queryEntity = node.Value as QueryEntity;
+
+            if (root != null)
+            {
+                PushRoot(node.Value.GetType());
+            }
+            else if (queryEntity != null)
+            {
+                Visit(queryEntity.Expression);
+            }
+
+            return node;
+        }
+
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
             Visit(node.Body);
@@ -25,6 +43,7 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitMember(MemberExpression node)
         {
+            Visit(node.Expression);
             var field = new GraphQLFieldSelection(node.Member.Name.ToCamelCase());
             PushField(field);
             return node;
@@ -46,25 +65,7 @@ namespace LinqToGraphQL.Builders
             {
                 if (current == null)
                 {
-                    if (typeof(IRootQuery).IsAssignableFrom(node.Method.DeclaringType))
-                    {
-                        var operationDefinition = new GraphQLOperationDefinition
-                        {
-                            Name = new GraphQLName(node.Method.DeclaringType.Name),
-                            SelectionSet = new GraphQLSelectionSet
-                            {
-                                Selections = new List<ASTNode>(),
-                            },
-                            Operation = OperationType.Query,
-                        };
-
-                        root = operationDefinition;
-                        current = operationDefinition.SelectionSet;
-                    }
-                    else
-                    {
-                        throw new Exception("Could not find root query.");
-                    }
+                    PushRoot(node.Method.DeclaringType);
                 }
 
                 var field = new GraphQLFieldSelection(node.Method.Name.ToCamelCase());
@@ -103,6 +104,34 @@ namespace LinqToGraphQL.Builders
         {
             Visit(node.Operand);
             return node;
+        }
+
+        private void PushRoot(Type type)
+        {
+            if (current != null)
+            {
+                throw new Exception("Expression contains multiple roots.");
+            }
+
+            if (typeof(IRootQuery).IsAssignableFrom(type))
+            {
+                var operationDefinition = new GraphQLOperationDefinition
+                {
+                    Name = new GraphQLName(type.Name),
+                    SelectionSet = new GraphQLSelectionSet
+                    {
+                        Selections = new List<ASTNode>(),
+                    },
+                    Operation = OperationType.Query,
+                };
+
+                root = operationDefinition;
+                current = operationDefinition.SelectionSet;
+            }
+            else
+            {
+                throw new Exception("Could not find root query.");
+            }
         }
 
         private void PushField(GraphQLFieldSelection field)

@@ -7,37 +7,56 @@ namespace LinqToGraphQL
 {
     public class QueryEntity
     {
-        IQueryProvider _provider;
-
         protected QueryEntity(IQueryProvider provider)
         {
-            _provider = provider;
+            Provider = provider;
+            Expression = Expression.Constant(this);
         }
 
-        protected Argument<T> Arg<T>(T value)
+        protected QueryEntity(IQueryProvider provider, Expression expression)
         {
-            return new Argument<T>(value);
+            Provider = provider;
+            Expression = expression;
         }
 
-        protected IQueryable<T> MethodCall<T>(string method, params Argument[] args)
+        public Expression Expression { get; }
+        public IQueryProvider Provider { get; }
+
+        protected MethodArg<T> Arg<T>(T value)
+        {
+            return new MethodArg<T>(value);
+        }
+
+        protected IQueryable<T> MethodCall<T>(string method, params MethodArg[] args)
+        {
+            var expression = MethodCallExpression(method, args);
+            return new FieldQuery<T>(Provider, expression);
+        }
+
+        protected Expression MethodCallExpression(string method, params MethodArg[] args)
         {
             var argTypes = args.Select(x => x.Type).ToArray();
             var argExpressions = args.Select(x => Expression.Constant(x.Value, x.Type));
             var methodInfo = GetType().GetRuntimeMethod(method, argTypes);
-            var expression = Expression.Call(Expression.Constant(this), methodInfo, argExpressions);
-
-            return new FieldQuery<T>(_provider, expression);
+            return Expression.Call(Expression.Constant(this), methodInfo, argExpressions);
         }
 
-        protected abstract class Argument
+        protected IQueryable<T> Property<T>(string name)
+        {
+            var property = GetType().GetProperty(name);
+            var expression = Expression.Property(Expression.Constant(this), property);
+            return new FieldQuery<T>(Provider, expression);
+        }
+
+        protected abstract class MethodArg
         {
             public Type Type { get; protected set; }
             public object Value { get; protected set; }
         }
 
-        protected class Argument<T> : Argument
+        protected class MethodArg<T> : MethodArg
         {
-            public Argument(T value)
+            public MethodArg(T value)
             {
                 Type = typeof(T);
                 Value = value;
