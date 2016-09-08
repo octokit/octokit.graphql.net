@@ -1,0 +1,3 @@
+[submodule "submodules/parser"]
+	path = submodules/parser
+	url = https://github.com/graphql-dotnet/parser.git
