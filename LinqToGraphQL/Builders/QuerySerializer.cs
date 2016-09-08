@@ -23,9 +23,12 @@ namespace LinqToGraphQL.Builders
             {
                 builder.Append('(');
 
+                var first = true;
                 foreach (var arg in field.Arguments)
                 {
+                    if (!first) builder.Append(',');
                     builder.Append(arg.Name.Value).Append(':').Append(arg.Value);
+                    first = false;
                 }
 
                 builder.Append(')');
@@ -43,10 +46,24 @@ namespace LinqToGraphQL.Builders
 
             foreach (var field in selectionSet.Selections.OfType<GraphQLFieldSelection>())
             {
+                AppendSeparator(builder);
                 Serialize(field, builder);
             }
 
             builder.Append('}');
+        }
+
+        private void AppendSeparator(StringBuilder builder)
+        {
+            if (builder.Length > 0)
+            {
+                var last = builder.ToString().Last();
+
+                if (last != ' ' && last != '{' && last != '}')
+                {
+                    builder.Append(' ');
+                }
+            }
         }
     }
 }

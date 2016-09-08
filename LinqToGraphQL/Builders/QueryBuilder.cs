@@ -11,9 +11,9 @@ namespace LinqToGraphQL.Builders
         GraphQLOperationDefinition root;
         ASTNode current;
 
-        public GraphQLOperationDefinition Build(IQueryable<string> query)
+        public GraphQLOperationDefinition Build(Expression expression)
         {
-            Visit(query.Expression);
+            Visit(expression);
             return root;
         }
 
@@ -79,7 +79,7 @@ namespace LinqToGraphQL.Builders
                         GraphQLArgument arg = null;
                         var constant = node.Arguments[i] as ConstantExpression;
 
-                        if (constant != null)
+                        if (constant != null && constant.Value != null)
                         {
                             arg = new GraphQLArgument(parameters[i].Name, constant.Value);
                         }

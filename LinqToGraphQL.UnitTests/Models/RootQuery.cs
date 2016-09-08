@@ -13,9 +13,9 @@ namespace LinqToGraphQL.UnitTests.Models
         {
         }
 
-        public IQueryable<SimpleQuery> Simple(string arg)
+        public IQueryable<SimpleQuery> Simple(string arg1, int? arg2 = null)
         {
-            return MethodCall<SimpleQuery>(nameof(Simple), arg);
+            return MethodCall<SimpleQuery>(nameof(Simple), Arg(arg1), Arg(arg2));
         }
     }
 }
