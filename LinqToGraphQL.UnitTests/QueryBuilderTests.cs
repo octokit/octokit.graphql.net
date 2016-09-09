@@ -54,7 +54,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void Nested_Data()
         {
-            var expected = "query RootQuery{data{id item{name}}";
+            var expected = "query RootQuery{data{id items{name}}}";
 
             var query = new RootQuery()
                 .Data

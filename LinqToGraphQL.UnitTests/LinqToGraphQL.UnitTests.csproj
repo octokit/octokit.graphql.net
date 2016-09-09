@@ -56,8 +56,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\NestedData.cs" />
     <Compile Include="Models\RootQuery.cs" />
-    <Compile Include="Models\SimpleQuery.cs" />
+    <Compile Include="Models\NestedQuery.cs" />
+    <Compile Include="Models\Simple.cs" />
     <Compile Include="QueryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

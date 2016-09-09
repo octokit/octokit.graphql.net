@@ -9,6 +9,6 @@ namespace LinqToGraphQL.UnitTests.Models
     class NestedData
     {
         public string Id { get; set; }
-        public IEnumerable<Simple> Items { get; set; }
+        public IQueryable<Simple> Items { get; set; }
     }
 }

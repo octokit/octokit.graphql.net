@@ -45,27 +45,35 @@ namespace LinqToGraphQL.Builders
         {
             Visit(node.Expression);
             var field = new GraphQLFieldSelection(node.Member.Name.ToCamelCase());
-            PushField(field);
+            PushField(field, true);
             return node;
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            base.VisitMethodCall(node);
-
             if (node.Method.DeclaringType == typeof(Queryable))
             {
                 if (node.Method.Name == nameof(Queryable.Select))
                 {
+                    Visit(node.Arguments[0]);
                     PushSelectionSet();
                     Visit(node.Arguments[1]);
                 }
             }
             else
             {
+                base.VisitMethodCall(node);
+
                 if (current == null)
                 {
                     PushRoot(node.Method.DeclaringType);
+                }
+                else
+                {
+                    if (!typeof(QueryEntity).IsAssignableFrom(node.Method.DeclaringType))
+                    {
+                        throw new Exception("Invalid method " + node.Method);
+                    }
                 }
 
                 var field = new GraphQLFieldSelection(node.Method.Name.ToCamelCase());
@@ -94,7 +102,29 @@ namespace LinqToGraphQL.Builders
                     field.Arguments = args;
                 }
 
-                PushField(field);
+                PushField(field, true);
+            }
+
+            return node;
+        }
+
+        protected override Expression VisitNew(NewExpression node)
+        {
+            for (var i = 0; i < node.Members.Count; ++i)
+            {
+                var member = node.Members[i];
+                var value = node.Arguments[i];
+                var memberValue = value as MemberExpression;
+
+                if (memberValue != null && memberValue.Member is PropertyInfo)
+                {
+                    var field = new GraphQLFieldSelection(member.Name.ToCamelCase());
+                    PushField(field, false);
+                }
+                else
+                {
+                    Visit(value);
+                }
             }
 
             return node;
@@ -134,7 +164,7 @@ namespace LinqToGraphQL.Builders
             }
         }
 
-        private void PushField(GraphQLFieldSelection field)
+        private void PushField(GraphQLFieldSelection field, bool updateCurrent)
         {
             var selection = current as GraphQLSelectionSet;
 
@@ -146,7 +176,7 @@ namespace LinqToGraphQL.Builders
 
             ((IList<ASTNode>)selection.Selections).Add(field);
 
-            if (field.Arguments != null)
+            if (updateCurrent)
             {
                 current = field;
             }
