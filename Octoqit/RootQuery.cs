@@ -4,11 +4,16 @@ using LinqToGraphQL;
 
 namespace Octoqit
 {
-    public class RootQuery : IRootQuery
+    public class RootQuery : QueryEntity, IRootQuery
     {
-        public IQueryable<RepositoryOwner> RepositoryOwner(string login)
+        public RootQuery()
+            : base(new QueryProvider())
         {
-            throw new NotImplementedException();
+        }
+
+        public RepositoryOwner RepositoryOwner(string login)
+        {
+            return new RepositoryOwner(Provider, MethodCallExpression(nameof(RepositoryOwner), Arg(login)));
         }
 
         public SearchResultItemConnection Search(

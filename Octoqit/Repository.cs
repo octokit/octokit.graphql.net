@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using LinqToGraphQL;
 
 namespace Octoqit
 {
-    public class Repository : ISearchResultItem
+    public class Repository :  ISearchResultItem
     {
         public string Id { get; }
         public string Name { get; }

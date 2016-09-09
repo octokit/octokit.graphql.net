@@ -7,11 +7,33 @@ namespace LinqToGraphQL.Builders
 {
     public class QuerySerializer
     {
+        private int indentation;
+        private int currentIndent;
+
+        public QuerySerializer(int indentation = 0)
+        {
+            this.indentation = indentation;
+        }
+
+        public string Serialize(GraphQLFieldSelection field)
+        {
+            StringBuilder builder = new StringBuilder();
+            Serialize(field, builder);
+            return builder.ToString();
+        }
+
         public string Serialize(GraphQLOperationDefinition operation)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("query ").Append(operation.Name.Value);
             Serialize(operation.SelectionSet, builder);
+            return builder.ToString();
+        }
+
+        public string Serialize(GraphQLSelectionSet selectionSet)
+        {
+            StringBuilder builder = new StringBuilder();
+            Serialize(selectionSet, builder);
             return builder.ToString();
         }
 
@@ -42,27 +64,66 @@ namespace LinqToGraphQL.Builders
 
         private void Serialize(GraphQLSelectionSet selectionSet, StringBuilder builder)
         {
-            builder.Append('{');
+            OpenBrace(builder);
 
+            bool first = true;
             foreach (var field in selectionSet.Selections.OfType<GraphQLFieldSelection>())
             {
-                AppendSeparator(builder);
+                if (!first) Separator(builder);
                 Serialize(field, builder);
+                first = false;
             }
 
-            builder.Append('}');
+            CloseBrace(builder);
         }
 
-        private void AppendSeparator(StringBuilder builder)
+        private void OpenBrace(StringBuilder builder)
         {
-            if (builder.Length > 0)
+            if (indentation == 0)
             {
-                var last = builder.ToString().Last();
+                builder.Append('{');
+            }
+            else
+            {
+                builder.Append(" {\r\n");
+                currentIndent += indentation;
+                Indent(builder);
+            }
+        }
 
-                if (last != ' ' && last != '{' && last != '}')
-                {
-                    builder.Append(' ');
-                }
+        private void CloseBrace(StringBuilder builder)
+        {
+            if (indentation == 0)
+            {
+                builder.Append('}');
+            }
+            else
+            {
+                currentIndent -= indentation;
+                builder.Append("\r\n");
+                Indent(builder);
+                builder.Append('}');
+            }
+        }
+
+        private void Separator(StringBuilder builder)
+        {
+            if (indentation == 0)
+            {
+                builder.Append(' ');
+            }
+            else
+            {
+                builder.Append("\r\n");
+                Indent(builder);
+            }
+        }
+
+        private void Indent(StringBuilder builder)
+        {
+            for (var i = 0; i < currentIndent; ++i)
+            {
+                builder.Append(' ');
             }
         }
     }
