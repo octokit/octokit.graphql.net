@@ -49,46 +49,42 @@ namespace Octoqit.UnitTests
         {
             var expected = @"query RootQuery {
   repositoryOwner(login: ""foo"") {
-    reposities(first: 30) {
-        edges {
+    repositories(first: 30) {
+      edges {
         node {
           id
-            name
-            owner {
+          name
+          owner {
             login
           }
           isFork
           isPrivate
-          stars(first: 1) {
-            totalCount
-          }
         }
       }
     }
   }
 }";
 
-            //var query = new RootQuery()
-            //    .RepositoryOwner(login: "foo")
-            //    .Repositories(first: 30).Edges
-            //    .Select(x => x.Node)
-            //    .Select(x => new
-            //    {
-            //        x.Id,
-            //        x.Name,
-            //        Owner = x.Owner.Select(o => new
-            //        {
-            //            o.Login
-            //        }),
-            //        x.IsFork,
-            //        x.IsPrivate,
-            //        StarCount = x.Stars.Count(),
-            //    });
+            var query = new RootQuery()
+                .RepositoryOwner(login: "foo")
+                .Repositories(first: 30).Edges
+                .Select(x => x.Node)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    Owner = x.Owner.Select(o => new
+                    {
+                        o.Login
+                    }),
+                    x.IsFork,
+                    x.IsPrivate,
+                });
 
-            //var serializer = new QuerySerializer(2);
-            //var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
 
-            //Assert.Equal(expected, result);
+            Assert.Equal(expected, result);
         }
 
         [Fact]

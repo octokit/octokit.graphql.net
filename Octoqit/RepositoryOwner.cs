@@ -22,7 +22,9 @@ namespace Octoqit
             int? last = null,
             string before = null)
         {
-            throw new NotImplementedException();
+            return new RepositoryConnection(
+                Provider,
+                MethodCallExpression(nameof(Repositories), Arg(first), Arg(after), Arg(last), Arg(before)));
         }
 
         public IQueryable<Repository> Repository(string name)
