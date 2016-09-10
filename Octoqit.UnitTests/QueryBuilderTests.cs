@@ -67,7 +67,8 @@ namespace Octoqit.UnitTests
 
             var query = new RootQuery()
                 .RepositoryOwner(login: "foo")
-                .Repositories(first: 30).Edges
+                .Repositories(first: 30)
+                .Edges
                 .Select(x => x.Node)
                 .Select(x => new
                 {
