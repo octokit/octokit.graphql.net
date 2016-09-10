@@ -44,7 +44,7 @@ namespace LinqToGraphQL.Builders
         protected override Expression VisitMember(MemberExpression node)
         {
             Visit(node.Expression);
-            var field = new GraphQLFieldSelection(node.Member.Name.ToCamelCase());
+            var field = new GraphQLFieldSelection(GetIdentifier(node.Member));
             Push(field);
             return node;
         }
@@ -100,7 +100,7 @@ namespace LinqToGraphQL.Builders
                     }
                 }
 
-                var field = new GraphQLFieldSelection(node.Method.Name.ToCamelCase());
+                var field = new GraphQLFieldSelection(GetIdentifier(node.Method));
                 var parameters = node.Method.GetParameters();
 
                 if (node.Arguments.Count > 0)
@@ -142,7 +142,7 @@ namespace LinqToGraphQL.Builders
 
                 if (memberValue != null && memberValue.Member is PropertyInfo)
                 {
-                    var field = new GraphQLFieldSelection(member.Name.ToCamelCase());
+                    var field = new GraphQLFieldSelection(GetIdentifier(memberValue.Member));
                     Add(field);
                 }
                 else
@@ -160,6 +160,12 @@ namespace LinqToGraphQL.Builders
         {
             Visit(node.Operand);
             return node;
+        }
+
+        private static string GetIdentifier(MemberInfo member)
+        {
+            var attr = member.GetCustomAttribute<GraphQLIdentifierAttribute>();
+            return attr != null ? attr.Identifier : member.Name.ToCamelCase();
         }
 
         private void Add(GraphQLFieldSelection field)

@@ -44,9 +44,11 @@
     <Compile Include="Builders\QuerySerializer.cs" />
     <Compile Include="Builders\StringExtensions.cs" />
     <Compile Include="FieldQuery.cs" />
+    <Compile Include="GraphQLIdentifierAttribute.cs" />
     <Compile Include="IRootQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryEntity.cs" />
+    <Compile Include="QueryEntityExtensions.cs" />
     <Compile Include="QueryProvider.cs" />
   </ItemGroup>
   <ItemGroup>

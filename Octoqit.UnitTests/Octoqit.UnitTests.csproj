@@ -62,6 +62,20 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LinqToGraphQL\LinqToGraphQL.csproj">
+      <Project>{42469d40-7485-4697-839e-493d89529ec6}</Project>
+      <Name>LinqToGraphQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Octoqit\Octoqit.csproj">
+      <Project>{2fcbdd5e-c3ab-418d-8538-5eb79740d508}</Project>
+      <Name>Octoqit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\submodules\parser\src\GraphQLParser\GraphQLParser.Net452.csproj">
+      <Project>{ef6bb3fa-763e-45f0-b5d9-3cea0b46f33b}</Project>
+      <Name>GraphQLParser.Net452</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
