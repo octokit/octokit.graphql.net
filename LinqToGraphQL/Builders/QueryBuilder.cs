@@ -57,10 +57,27 @@ namespace LinqToGraphQL.Builders
                 {
                     base.VisitMethodCall(node);
                 }
+                else if (node.Method.Name == nameof(Queryable.OfType))
+                {
+                    Push(new GraphQLInlineFragment(node.Method.GetGenericArguments()[0]));                    
+                }
                 else
                 {
                     throw new NotSupportedException(
                         $"The method '{node.Method.DeclaringType.Name}.{node.Method.Name}' " + 
+                        "is not currently supported in GraphQL queries.");
+                }
+            }
+            else if (node.Method.DeclaringType == typeof(QueryEntityExtensions))
+            {
+                if (node.Method.Name == nameof(QueryEntityExtensions.Select))
+                {
+                    base.VisitMethodCall(node);
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                        $"The method '{node.Method.DeclaringType.Name}.{node.Method.Name}' " +
                         "is not currently supported in GraphQL queries.");
                 }
             }
@@ -160,6 +177,19 @@ namespace LinqToGraphQL.Builders
             };
 
             stack.Push(field.SelectionSet);
+        }
+
+        private void Push(GraphQLInlineFragment fragment)
+        {
+            var current = stack.Peek();
+            ((IList<ASTNode>)current.Selections).Add(fragment);
+
+            fragment.SelectionSet = new GraphQLSelectionSet
+            {
+                Selections = new List<ASTNode>(),
+            };
+
+            stack.Push(fragment.SelectionSet);
         }
 
         private void PushRoot(Type type)

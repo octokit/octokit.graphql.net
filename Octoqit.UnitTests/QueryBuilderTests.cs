@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using LinqToGraphQL;
 using LinqToGraphQL.Builders;
 using Xunit;
 
@@ -108,25 +109,25 @@ namespace Octoqit.UnitTests
   }
 }";
 
-            //var query = new RootQuery()
-            //    .Search(first: 1, type: SearchType.User, query: "foo")
-            //    .Select(x => new
-            //    {
-            //        x.UserCount,
-            //        User = x.Edges.Select(e => e.Node).OfType<User>().Select(u => new
-            //        {
-            //            u.Id,
-            //            u.Login,
-            //            u.AvatarUrl,
-            //            u.WebsiteUrl,
-            //            u.Name,
-            //        })
-            //    });
+            var query = new RootQuery()
+                .Search(first: 1, type: SearchType.User, query: "foo")
+                .Select(x => new
+                {
+                    x.UserCount,
+                    User = x.Edges.Select(e => e.Node).OfType<User>().Select(u => new
+                    {
+                        u.Id,
+                        u.Login,
+                        u.AvatarUrl,
+                        u.WebsiteUrl,
+                        u.Name,
+                    })
+                });
 
-            //var serializer = new QuerySerializer(2);
-            //var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
 
-            //Assert.Equal(expected, result);
+            Assert.Equal(expected, result);
         }
     }
 }

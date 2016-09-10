@@ -7,12 +7,21 @@ namespace LinqToGraphQL.Builders
 {
     public class QuerySerializer
     {
-        private int indentation;
+        private readonly int indentation;
+        private readonly string comma = ",";
+        private readonly string colon = ":";
+
         private int currentIndent;
 
         public QuerySerializer(int indentation = 0)
         {
             this.indentation = indentation;
+
+            if (indentation > 0)
+            {
+                comma = ", ";
+                colon = ": ";
+            }
         }
 
         public string Serialize(GraphQLFieldSelection field)
@@ -43,13 +52,12 @@ namespace LinqToGraphQL.Builders
 
             if (field.Arguments?.Any() == true)
             {
-                var colon = indentation == 0 ? ":" : ": ";
                 builder.Append('(');
 
                 var first = true;
                 foreach (var arg in field.Arguments)
                 {
-                    if (!first) builder.Append(',');
+                    if (!first) builder.Append(comma);
                     builder.Append(arg.Name.Value).Append(colon).Append(arg.Value);
                     first = false;
                 }

@@ -24,7 +24,7 @@ namespace Octoqit
             int? last = null,
             string before = null)
         {
-            throw new NotImplementedException();
+            return new SearchResultItemConnection(Provider, MethodCallExpression(nameof(Search), Arg(type), Arg(query), Arg(first), Arg(after), Arg(last), Arg(before)));
         }
     }
 }
