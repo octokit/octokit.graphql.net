@@ -19,9 +19,6 @@ namespace Octoqit.UnitTests
       }
       isFork
       isPrivate
-      stars(first: 1) {
-        totalCount
-      }
     }
   }
 }";
@@ -39,7 +36,6 @@ namespace Octoqit.UnitTests
                     }),
                     x.IsFork,
                     x.IsPrivate,
-                    StarCount = x.Stars.Count(),
                 });
 
             var serializer = new QuerySerializer(2);
