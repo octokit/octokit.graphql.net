@@ -57,6 +57,12 @@ namespace LinqToGraphQL.Builders
                 {
                     base.VisitMethodCall(node);
                 }
+                else
+                {
+                    throw new NotSupportedException(
+                        $"The method '{node.Method.DeclaringType.Name}.{node.Method.Name}' " + 
+                        "is not currently supported in GraphQL queries.");
+                }
             }
             else
             {
@@ -70,7 +76,9 @@ namespace LinqToGraphQL.Builders
                 {
                     if (!typeof(QueryEntity).IsAssignableFrom(node.Method.DeclaringType))
                     {
-                        throw new Exception("Invalid method " + node.Method);
+                        throw new NotSupportedException(
+                            $"The method '{node.Method.DeclaringType.Name}.{node.Method.Name}' " +
+                            "cannot be compiled to GraphQL.");
                     }
                 }
 
@@ -158,7 +166,7 @@ namespace LinqToGraphQL.Builders
         {
             if (root != null)
             {
-                throw new Exception("Expression contains multiple roots.");
+                throw new InvalidOperationException("Expression contains multiple roots.");
             }
 
             if (typeof(IRootQuery).IsAssignableFrom(type))
@@ -178,7 +186,7 @@ namespace LinqToGraphQL.Builders
             }
             else
             {
-                throw new Exception("Could not find root query.");
+                throw new InvalidOperationException("Could not find root query.");
             }
         }
 
