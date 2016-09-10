@@ -59,6 +59,7 @@ namespace LinqToGraphQL.Builders
                 }
                 else if (node.Method.Name == nameof(Queryable.OfType))
                 {
+                    base.VisitMethodCall(node);
                     Push(new GraphQLInlineFragment(node.Method.GetGenericArguments()[0]));                    
                 }
                 else

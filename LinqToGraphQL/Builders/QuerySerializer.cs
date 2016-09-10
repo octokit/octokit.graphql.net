@@ -71,15 +71,38 @@ namespace LinqToGraphQL.Builders
             }
         }
 
+        private void Serialize(GraphQLInlineFragment fragment, StringBuilder builder)
+        {
+            builder.Append("... on ");
+            builder.Append(fragment.TypeCondition.Name.Value);
+
+            if (fragment.SelectionSet?.Selections?.Any() == true)
+            {
+                Serialize(fragment.SelectionSet, builder);
+            }
+        }
+
         private void Serialize(GraphQLSelectionSet selectionSet, StringBuilder builder)
         {
             OpenBrace(builder);
 
             bool first = true;
-            foreach (var field in selectionSet.Selections.OfType<GraphQLFieldSelection>())
+            foreach (var s in selectionSet.Selections)
             {
                 if (!first) Separator(builder);
-                Serialize(field, builder);
+
+                var field = s as GraphQLFieldSelection;
+                var fragment = s as GraphQLInlineFragment;
+
+                if (field != null)
+                {
+                    Serialize(field, builder);
+                }
+                else if (fragment != null)
+                {
+                    Serialize(fragment, builder);
+                }
+
                 first = false;
             }
 

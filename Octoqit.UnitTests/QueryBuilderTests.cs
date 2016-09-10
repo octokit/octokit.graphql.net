@@ -93,7 +93,7 @@ namespace Octoqit.UnitTests
         public void User_Email_Query()
         {
             var expected = @"query RootQuery {
-  search(first: 1, type: USER, query: ""foo"") {
+  search(type: USER, query: ""foo"", first: 1) {
     userCount
     edges {
       node {
