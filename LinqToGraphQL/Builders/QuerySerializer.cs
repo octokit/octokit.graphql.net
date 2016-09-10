@@ -43,13 +43,14 @@ namespace LinqToGraphQL.Builders
 
             if (field.Arguments?.Any() == true)
             {
+                var colon = indentation == 0 ? ":" : ": ";
                 builder.Append('(');
 
                 var first = true;
                 foreach (var arg in field.Arguments)
                 {
                     if (!first) builder.Append(',');
-                    builder.Append(arg.Name.Value).Append(':').Append(arg.Value);
+                    builder.Append(arg.Name.Value).Append(colon).Append(arg.Value);
                     first = false;
                 }
 
