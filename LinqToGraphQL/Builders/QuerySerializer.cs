@@ -41,7 +41,7 @@ namespace LinqToGraphQL.Builders
         {
             builder.Append(field.Name.Value);
 
-            if (field.Arguments?.Count() > 0)
+            if (field.Arguments?.Any() == true)
             {
                 builder.Append('(');
 
@@ -56,7 +56,7 @@ namespace LinqToGraphQL.Builders
                 builder.Append(')');
             }
 
-            if (field.SelectionSet != null)
+            if (field.SelectionSet?.Selections?.Any() == true)
             {
                 Serialize(field.SelectionSet, builder);
             }

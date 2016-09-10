@@ -10,7 +10,7 @@ namespace LinqToGraphQL.Builders
     public class QueryBuilder : ExpressionVisitor
     {
         GraphQLOperationDefinition root;
-        ASTNode current;
+        Stack<GraphQLSelectionSet> stack = new Stack<GraphQLSelectionSet>();
 
         public GraphQLOperationDefinition Build(Expression expression)
         {
@@ -45,7 +45,7 @@ namespace LinqToGraphQL.Builders
         {
             Visit(node.Expression);
             var field = new GraphQLFieldSelection(node.Member.Name.ToCamelCase());
-            PushField(field, true);
+            Push(field);
             return node;
         }
 
@@ -55,16 +55,14 @@ namespace LinqToGraphQL.Builders
             {
                 if (node.Method.Name == nameof(Queryable.Select))
                 {
-                    Visit(node.Arguments[0]);
-                    PushSelectionSet();
-                    Visit(node.Arguments[1]);
+                    base.VisitMethodCall(node);
                 }
             }
             else
             {
                 base.VisitMethodCall(node);
 
-                if (current == null)
+                if (root == null)
                 {
                     PushRoot(node.Method.DeclaringType);
                 }
@@ -102,7 +100,7 @@ namespace LinqToGraphQL.Builders
                     field.Arguments = args;
                 }
 
-                PushField(field, true);
+                Push(field);
             }
 
             return node;
@@ -119,13 +117,15 @@ namespace LinqToGraphQL.Builders
                 if (memberValue != null && memberValue.Member is PropertyInfo)
                 {
                     var field = new GraphQLFieldSelection(member.Name.ToCamelCase());
-                    PushField(field, false);
+                    Add(field);
                 }
                 else
                 {
                     Visit(value);
                 }
             }
+
+            Pop();
 
             return node;
         }
@@ -136,9 +136,27 @@ namespace LinqToGraphQL.Builders
             return node;
         }
 
+        private void Add(GraphQLFieldSelection field)
+        {
+            var current = stack.Peek();
+            ((IList<ASTNode>)current.Selections).Add(field);
+        }
+
+        private void Push(GraphQLFieldSelection field)
+        {
+            Add(field);
+
+            field.SelectionSet = new GraphQLSelectionSet
+            {
+                Selections = new List<ASTNode>(),
+            };
+
+            stack.Push(field.SelectionSet);
+        }
+
         private void PushRoot(Type type)
         {
-            if (current != null)
+            if (root != null)
             {
                 throw new Exception("Expression contains multiple roots.");
             }
@@ -156,7 +174,7 @@ namespace LinqToGraphQL.Builders
                 };
 
                 root = operationDefinition;
-                current = operationDefinition.SelectionSet;
+                stack.Push(operationDefinition.SelectionSet);
             }
             else
             {
@@ -164,60 +182,9 @@ namespace LinqToGraphQL.Builders
             }
         }
 
-        private void PushField(GraphQLFieldSelection field, bool updateCurrent)
+        private void Pop()
         {
-            var selection = current as GraphQLSelectionSet;
-
-            if (selection == null)
-            {
-                PushSelectionSet();
-                selection = current as GraphQLSelectionSet;
-            }
-
-            ((IList<ASTNode>)selection.Selections).Add(field);
-
-            if (updateCurrent)
-            {
-                current = field;
-            }
-        }
-
-        private void PushSelectionSet()
-        {
-            var selectionSet = current as GraphQLSelectionSet;
-
-            if (selectionSet == null)
-            {
-                var operationDefinition = current as GraphQLOperationDefinition;
-                var field = current as GraphQLFieldSelection;
-
-                if (operationDefinition != null)
-                {
-                    operationDefinition.SelectionSet = new GraphQLSelectionSet
-                    {
-                        Selections = new List<ASTNode>(),
-                    };
-
-                    current = operationDefinition.SelectionSet;
-                }
-                else if (field != null)
-                {
-                    field.SelectionSet = new GraphQLSelectionSet
-                    {
-                        Selections = new List<ASTNode>(),
-                    };
-
-                    current = field.SelectionSet;
-                }
-                else
-                {
-                    throw new Exception("Cannot push a selection set at this point.");
-                }
-            }
-            else
-            {
-                selectionSet.Selections = new List<ASTNode>();
-            }
+            stack.Pop();
         }
     }
 }
