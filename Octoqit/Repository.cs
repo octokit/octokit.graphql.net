@@ -11,6 +11,5 @@ namespace Octoqit
         public IQueryable<Owner> Owner { get; }
         public bool IsFork { get; }
         public bool IsPrivate { get; }
-        public IQueryable<Star> Stars { get; }
     }
 }
