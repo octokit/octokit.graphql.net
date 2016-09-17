@@ -87,5 +87,30 @@ namespace LinqToGraphQL.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Field_Aliases()
+        {
+            var expected = @"query RootQuery {
+  foo = simple(arg1: ""foo"", arg2: 1) {
+    name
+  }
+  bar = simple(arg1: ""bar"", arg2: 1) {
+    name
+  }
+}";
+
+            var query = new RootQuery()
+                .Select(x => new
+                {
+                    Foo = x.Simple("foo", 1).Select(i => i.Name),
+                    Bar = x.Simple("bar", 2).Select(i => i.Name),
+                });
+
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
+
+            Assert.Equal(expected, result);
+        }
     }
 }
