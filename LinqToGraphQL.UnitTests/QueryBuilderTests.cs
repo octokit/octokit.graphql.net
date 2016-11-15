@@ -3,6 +3,7 @@ using System.Linq;
 using LinqToGraphQL.Builders;
 using LinqToGraphQL.UnitTests.Models;
 using Xunit;
+using LinqToGraphQL.Utilities;
 
 namespace LinqToGraphQL.UnitTests
 {
@@ -16,6 +17,8 @@ namespace LinqToGraphQL.UnitTests
             var query = new RootQuery()
                 .Simple("foo")
                 .Select(x => x.Name);
+
+            var debug = ExpressionTreeDebug.Debug(query.Expression);
 
             var result = new QuerySerializer().Serialize(new QueryBuilder().Build(query.Expression));
 
@@ -85,6 +88,8 @@ namespace LinqToGraphQL.UnitTests
 
             var result = new QuerySerializer().Serialize(new QueryBuilder().Build(query.Expression));
 
+            var debug = ExpressionTreeDebug.Debug(query.Expression);
+
             Assert.Equal(expected, result);
         }
 
@@ -109,6 +114,8 @@ namespace LinqToGraphQL.UnitTests
 
             var serializer = new QuerySerializer(2);
             var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
+
+            var debug = ExpressionTreeDebug.Debug(query.Expression);
 
             Assert.Equal(expected, result);
         }

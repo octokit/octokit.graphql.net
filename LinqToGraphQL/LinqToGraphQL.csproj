@@ -40,9 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ArgumentFrame.cs" />
+    <Compile Include="Builders\InlineFragmentFrame.cs" />
+    <Compile Include="Builders\FieldFrame.cs" />
+    <Compile Include="Builders\Frame.cs" />
+    <Compile Include="Builders\IFieldFrame.cs" />
     <Compile Include="Builders\QueryBuilder.cs" />
     <Compile Include="Builders\QuerySerializer.cs" />
+    <Compile Include="Builders\RootFrame.cs" />
     <Compile Include="Builders\StringExtensions.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="FieldQuery.cs" />
     <Compile Include="GraphQLIdentifierAttribute.cs" />
     <Compile Include="IRootQuery.cs" />
@@ -50,6 +57,7 @@
     <Compile Include="QueryEntity.cs" />
     <Compile Include="QueryEntityExtensions.cs" />
     <Compile Include="QueryProvider.cs" />
+    <Compile Include="Utilities\ExpressionTreeDebug.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\submodules\parser\src\GraphQLParser\GraphQLParser.Net452.csproj">

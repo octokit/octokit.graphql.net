@@ -9,27 +9,44 @@ namespace LinqToGraphQL.Builders
 {
     public class QueryBuilder : ExpressionVisitor
     {
-        GraphQLOperationDefinition root;
-        Stack<GraphQLSelectionSet> stack = new Stack<GraphQLSelectionSet>();
+        RootFrame root;
+        Stack<Frame> stack = new Stack<Frame>();
 
         public GraphQLOperationDefinition Build(Expression expression)
         {
             Visit(expression);
-            return root;
+            return (GraphQLOperationDefinition)root.Node;
         }
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            var root = node.Value as IRootQuery;
-            var queryEntity = node.Value as QueryEntity;
+            if (stack.Count == 0)
+            {
+                var root = node.Value as IRootQuery;
+                var queryEntity = node.Value as QueryEntity;
 
-            if (root != null)
-            {
-                PushRoot(node.Value.GetType());
+                if (root != null)
+                {
+                    this.root = new RootFrame(node.Type);
+                    stack.Push(this.root);
+                }
+                else if (queryEntity != null)
+                {
+                    Visit(queryEntity.Expression);
+                }
             }
-            else if (queryEntity != null)
+            else
             {
-                Visit(queryEntity.Expression);
+                var argument = stack.Peek() as ArgumentFrame;
+
+                if (argument != null)
+                {
+                    argument.SetValue(node.Value);
+                }
+                else
+                {
+                    throw new Exception("Unexpected constant.");
+                }
             }
 
             return node;
@@ -37,199 +54,126 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
-            Visit(node.Body);
+            var memberExpression = node.Body as MemberExpression;
+            var newExpression = node.Body as NewExpression;
+
+            if (memberExpression != null)
+            {
+                stack.Push(new FieldFrame(stack.Peek(), memberExpression.Member));
+            }
+            else if (newExpression != null)
+            {
+                foreach (var arg in newExpression.Arguments)
+                {
+                    using (Checkpoint())
+                    {
+                        Visit(arg);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Unexpected lambda.");
+            }
+
             return node;
         }
 
         protected override Expression VisitMember(MemberExpression node)
         {
             Visit(node.Expression);
-            var field = new GraphQLFieldSelection(GetIdentifier(node.Member));
-            Push(field);
+            stack.Push(new FieldFrame(stack.Peek(), node.Member));
             return node;
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node.Method.DeclaringType == typeof(Queryable))
+            if (IsSelect(node.Method))
             {
-                if (node.Method.Name == nameof(Queryable.Select))
-                {
-                    base.VisitMethodCall(node);
-                }
-                else if (node.Method.Name == nameof(Queryable.OfType))
-                {
-                    base.VisitMethodCall(node);
-                    Push(new GraphQLInlineFragment(node.Method.GetGenericArguments()[0]));                    
-                }
-                else
-                {
-                    throw new NotSupportedException(
-                        $"The method '{node.Method.DeclaringType.Name}.{node.Method.Name}' " + 
-                        "is not currently supported in GraphQL queries.");
-                }
+                Visit(node.Arguments[0]);
+                Visit(node.Arguments[1]);
             }
-            else if (node.Method.DeclaringType == typeof(QueryEntityExtensions))
+            else if (IsOfType(node.Method))
             {
-                if (node.Method.Name == nameof(QueryEntityExtensions.Select))
-                {
-                    base.VisitMethodCall(node);
-                }
-                else
-                {
-                    throw new NotSupportedException(
-                        $"The method '{node.Method.DeclaringType.Name}.{node.Method.Name}' " +
-                        "is not currently supported in GraphQL queries.");
-                }
+                Visit(node.Arguments[0]);
+                stack.Push(new InlineFragmentFrame(stack.Peek(), node.Method.GetGenericArguments()[0]));
             }
-            else
+            else if (IsQueryEntity(node.Method))
             {
-                base.VisitMethodCall(node);
+                Visit(node.Object);
 
-                if (root == null)
-                {
-                    PushRoot(node.Method.DeclaringType);
-                }
-                else
-                {
-                    if (!typeof(QueryEntity).IsAssignableFrom(node.Method.DeclaringType))
-                    {
-                        throw new NotSupportedException(
-                            $"The method '{node.Method.DeclaringType.Name}.{node.Method.Name}' " +
-                            "cannot be compiled to GraphQL.");
-                    }
-                }
+                stack.Push(new FieldFrame(stack.Peek(), node.Method));
 
-                var field = new GraphQLFieldSelection(GetIdentifier(node.Method));
                 var parameters = node.Method.GetParameters();
 
-                if (node.Arguments.Count > 0)
+                for (var i = 0; i < node.Arguments.Count; ++i)
                 {
-                    var args = new List<GraphQLArgument>();
+                    var arg = node.Arguments[i];
 
-                    for (var i = 0; i < node.Arguments.Count; ++i)
+                    if (!IsNullConstant(arg))
                     {
-                        GraphQLArgument arg = null;
-                        var constant = node.Arguments[i] as ConstantExpression;
-
-                        if (constant != null && constant.Value != null)
+                        using (Push(new ArgumentFrame(stack.Peek().Node, parameters[i].Name)))
                         {
-                            arg = new GraphQLArgument(parameters[i].Name, constant.Value);
-                        }
-
-                        if (arg != null)
-                        {
-                            args.Add(arg);
+                            Visit(arg);
                         }
                     }
-
-                    field.Arguments = args;
                 }
-
-                Push(field);
-            }
-
-            return node;
-        }
-
-        protected override Expression VisitNew(NewExpression node)
-        {
-            for (var i = 0; i < node.Members.Count; ++i)
-            {
-                var member = node.Members[i];
-                var value = node.Arguments[i];
-                var memberValue = value as MemberExpression;
-
-                if (memberValue != null && memberValue.Member is PropertyInfo)
-                {
-                    var field = new GraphQLFieldSelection(GetIdentifier(memberValue.Member));
-                    Add(field);
-                }
-                else
-                {
-                    Visit(value);
-                }
-            }
-
-            Pop();
-
-            return node;
-        }
-
-        protected override Expression VisitUnary(UnaryExpression node)
-        {
-            Visit(node.Operand);
-            return node;
-        }
-
-        private static string GetIdentifier(MemberInfo member)
-        {
-            var attr = member.GetCustomAttribute<GraphQLIdentifierAttribute>();
-            return attr != null ? attr.Identifier : member.Name.ToCamelCase();
-        }
-
-        private void Add(GraphQLFieldSelection field)
-        {
-            var current = stack.Peek();
-            ((IList<ASTNode>)current.Selections).Add(field);
-        }
-
-        private void Push(GraphQLFieldSelection field)
-        {
-            Add(field);
-
-            field.SelectionSet = new GraphQLSelectionSet
-            {
-                Selections = new List<ASTNode>(),
-            };
-
-            stack.Push(field.SelectionSet);
-        }
-
-        private void Push(GraphQLInlineFragment fragment)
-        {
-            var current = stack.Peek();
-            ((IList<ASTNode>)current.Selections).Add(fragment);
-
-            fragment.SelectionSet = new GraphQLSelectionSet
-            {
-                Selections = new List<ASTNode>(),
-            };
-
-            stack.Push(fragment.SelectionSet);
-        }
-
-        private void PushRoot(Type type)
-        {
-            if (root != null)
-            {
-                throw new InvalidOperationException("Expression contains multiple roots.");
-            }
-
-            if (typeof(IRootQuery).IsAssignableFrom(type))
-            {
-                var operationDefinition = new GraphQLOperationDefinition
-                {
-                    Name = new GraphQLName(type.Name),
-                    SelectionSet = new GraphQLSelectionSet
-                    {
-                        Selections = new List<ASTNode>(),
-                    },
-                    Operation = OperationType.Query,
-                };
-
-                root = operationDefinition;
-                stack.Push(operationDefinition.SelectionSet);
             }
             else
             {
-                throw new InvalidOperationException("Could not find root query.");
+                throw new Exception("Unrecognised method.");
             }
+
+            return node;
         }
 
-        private void Pop()
+        private IDisposable Checkpoint()
         {
-            stack.Pop();
+            var count = stack.Count;
+            return Disposable.Create(() =>
+            {
+                while (stack.Count > count)
+                {
+                    stack.Pop();
+                }
+
+                if (stack.Count == 0) { }
+            });
+        }
+
+        private bool IsNullConstant(Expression arg)
+        {
+            var constant = arg as ConstantExpression;
+            return constant != null && constant.Value == null;
+        }
+
+        private bool IsOfType(MethodInfo method)
+        {
+            return method.DeclaringType == typeof(Queryable) &&
+                method.Name == nameof(Queryable.OfType) &&
+                method.GetParameters().Length == 1 &&
+                method.GetGenericArguments().Length == 1;
+        }
+
+        private bool IsSelect(MethodInfo method)
+        {
+            return (method.DeclaringType == typeof(Queryable) &&
+                method.Name == nameof(Queryable.Select) &&
+                method.GetParameters().Length == 2) ||
+                (method.DeclaringType == typeof(QueryEntityExtensions) &&
+                method.Name == nameof(QueryEntityExtensions.Select) &&
+                method.GetParameters().Length == 2);
+        }
+
+        private bool IsQueryEntity(MethodInfo method)
+        {
+            return typeof(QueryEntity).IsAssignableFrom(method.DeclaringType);
+        }
+
+        private IDisposable Push(Frame frame)
+        {
+            stack.Push(frame);
+            return Disposable.Create(() => stack.Pop());
         }
     }
 }

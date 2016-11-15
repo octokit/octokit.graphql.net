@@ -23,9 +23,4 @@
   <UseCPUArchitecture>AutoDetect</UseCPUArchitecture>
   <MSTestThreadApartmentState>STA</MSTestThreadApartmentState>
   <BuildProcessArchitecture>x86</BuildProcessArchitecture>
-  <IgnoredTests>
-    <NamedTestSelector>
-      <TestName>LinqToGraphQL.UnitTests.QueryBuilderTests.Field_Aliases</TestName>
-    </NamedTestSelector>
-  </IgnoredTests>
 </ProjectConfiguration>

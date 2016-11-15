@@ -87,23 +87,27 @@ namespace LinqToGraphQL.Builders
             OpenBrace(builder);
 
             bool first = true;
-            foreach (var s in selectionSet.Selections)
+
+            if (selectionSet.Selections != null)
             {
-                if (!first) Separator(builder);
-
-                var field = s as GraphQLFieldSelection;
-                var fragment = s as GraphQLInlineFragment;
-
-                if (field != null)
+                foreach (var s in selectionSet.Selections)
                 {
-                    Serialize(field, builder);
-                }
-                else if (fragment != null)
-                {
-                    Serialize(fragment, builder);
-                }
+                    if (!first) Separator(builder);
 
-                first = false;
+                    var field = s as GraphQLFieldSelection;
+                    var fragment = s as GraphQLInlineFragment;
+
+                    if (field != null)
+                    {
+                        Serialize(field, builder);
+                    }
+                    else if (fragment != null)
+                    {
+                        Serialize(fragment, builder);
+                    }
+
+                    first = false;
+                }
             }
 
             CloseBrace(builder);
