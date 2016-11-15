@@ -93,14 +93,14 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(expected, result);
         }
 
-        [Fact]
+        [Fact(Skip = "Not yet implemented")]
         public void Field_Aliases()
         {
             var expected = @"query RootQuery {
-  foo = simple(arg1: ""foo"", arg2: 1) {
+  foo: simple(arg1: ""foo"", arg2: 1) {
     name
   }
-  bar = simple(arg1: ""bar"", arg2: 1) {
+  bar: simple(arg1: ""bar"", arg2: 1) {
     name
   }
 }";
