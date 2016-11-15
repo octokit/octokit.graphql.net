@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using GraphQLParser.AST;
+using LinqToGraphQL.Syntax;
 
 namespace LinqToGraphQL.Builders
 {
@@ -24,31 +24,31 @@ namespace LinqToGraphQL.Builders
             }
         }
 
-        public string Serialize(GraphQLFieldSelection field)
+        public string Serialize(FieldSelection field)
         {
             StringBuilder builder = new StringBuilder();
             Serialize(field, builder);
             return builder.ToString();
         }
 
-        public string Serialize(GraphQLOperationDefinition operation)
+        public string Serialize(OperationDefinition operation)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append("query ").Append(operation.Name.Value);
-            Serialize(operation.SelectionSet, builder);
+            builder.Append("query ").Append(operation.Name);
+            SerializeSelections(operation, builder);
             return builder.ToString();
         }
 
-        public string Serialize(GraphQLSelectionSet selectionSet)
+        public string SerializeSelections(ISelectionSet selectionSet)
         {
             StringBuilder builder = new StringBuilder();
-            Serialize(selectionSet, builder);
+            SerializeSelections(selectionSet, builder);
             return builder.ToString();
         }
 
-        private void Serialize(GraphQLFieldSelection field, StringBuilder builder)
+        private void Serialize(FieldSelection field, StringBuilder builder)
         {
-            builder.Append(field.Name.Value);
+            builder.Append(field.Name);
 
             if (field.Arguments?.Any() == true)
             {
@@ -58,31 +58,31 @@ namespace LinqToGraphQL.Builders
                 foreach (var arg in field.Arguments)
                 {
                     if (!first) builder.Append(comma);
-                    builder.Append(arg.Name.Value).Append(colon).Append(arg.Value);
+                    builder.Append(arg.Name).Append(colon).Append(SerializeValue(arg.Value));
                     first = false;
                 }
 
                 builder.Append(')');
             }
 
-            if (field.SelectionSet?.Selections?.Any() == true)
+            if (field.Selections.Any() == true)
             {
-                Serialize(field.SelectionSet, builder);
+                SerializeSelections(field, builder);
             }
         }
 
-        private void Serialize(GraphQLInlineFragment fragment, StringBuilder builder)
+        private void Serialize(InlineFragment fragment, StringBuilder builder)
         {
             builder.Append("... on ");
-            builder.Append(fragment.TypeCondition.Name.Value);
+            builder.Append(fragment.TypeCondition.Name);
 
-            if (fragment.SelectionSet?.Selections?.Any() == true)
+            if (fragment.Selections.Any() == true)
             {
-                Serialize(fragment.SelectionSet, builder);
+                SerializeSelections(fragment, builder);
             }
         }
 
-        private void Serialize(GraphQLSelectionSet selectionSet, StringBuilder builder)
+        private void SerializeSelections(ISelectionSet selectionSet, StringBuilder builder)
         {
             OpenBrace(builder);
 
@@ -94,8 +94,8 @@ namespace LinqToGraphQL.Builders
                 {
                     if (!first) Separator(builder);
 
-                    var field = s as GraphQLFieldSelection;
-                    var fragment = s as GraphQLInlineFragment;
+                    var field = s as FieldSelection;
+                    var fragment = s as InlineFragment;
 
                     if (field != null)
                     {
@@ -111,6 +111,22 @@ namespace LinqToGraphQL.Builders
             }
 
             CloseBrace(builder);
+        }
+
+        private string SerializeValue(object value)
+        {
+            if (value is string)
+            {
+                return '"' + ((string)value) + '"';
+            }
+            else if (value is Enum)
+            {
+                return value.ToString().ToUpperInvariant();
+            }
+            else
+            {
+                return value.ToString();
+            }
         }
 
         private void OpenBrace(StringBuilder builder)

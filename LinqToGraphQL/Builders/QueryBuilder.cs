@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using GraphQLParser.AST;
+using LinqToGraphQL.Syntax;
 
 namespace LinqToGraphQL.Builders
 {
     public class QueryBuilder : ExpressionVisitor
     {
-        RootFrame root;
-        Stack<Frame> stack = new Stack<Frame>();
+        OperationDefinition root;
+        Stack<ISyntaxNode> stack = new Stack<ISyntaxNode>();
 
-        public GraphQLOperationDefinition Build(Expression expression)
+        public OperationDefinition Build(Expression expression)
         {
             Visit(expression);
-            return (GraphQLOperationDefinition)root.Node;
+            return root;
         }
 
         protected override Expression VisitConstant(ConstantExpression node)
@@ -27,7 +27,7 @@ namespace LinqToGraphQL.Builders
 
                 if (root != null)
                 {
-                    this.root = new RootFrame(node.Type);
+                    this.root = new OperationDefinition(OperationType.Query, node.Type.Name);
                     stack.Push(this.root);
                 }
                 else if (queryEntity != null)
@@ -37,11 +37,11 @@ namespace LinqToGraphQL.Builders
             }
             else
             {
-                var argument = stack.Peek() as ArgumentFrame;
+                var argument = stack.Peek() as Argument;
 
                 if (argument != null)
                 {
-                    argument.SetValue(node.Value);
+                    argument.Value = node.Value;
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace LinqToGraphQL.Builders
 
             if (memberExpression != null)
             {
-                stack.Push(new FieldFrame(stack.Peek(), memberExpression.Member));
+                stack.Push(new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member));
             }
             else if (newExpression != null)
             {
@@ -82,7 +82,7 @@ namespace LinqToGraphQL.Builders
         protected override Expression VisitMember(MemberExpression node)
         {
             Visit(node.Expression);
-            stack.Push(new FieldFrame(stack.Peek(), node.Member));
+            stack.Push(new FieldSelection((ISelectionSet)stack.Peek(), node.Member));
             return node;
         }
 
@@ -96,13 +96,13 @@ namespace LinqToGraphQL.Builders
             else if (IsOfType(node.Method))
             {
                 Visit(node.Arguments[0]);
-                stack.Push(new InlineFragmentFrame(stack.Peek(), node.Method.GetGenericArguments()[0]));
+                stack.Push(new InlineFragment((ISelectionSet)stack.Peek(), node.Method.GetGenericArguments()[0]));
             }
             else if (IsQueryEntity(node.Method))
             {
                 Visit(node.Object);
 
-                stack.Push(new FieldFrame(stack.Peek(), node.Method));
+                stack.Push(new FieldSelection((ISelectionSet)stack.Peek(), node.Method));
 
                 var parameters = node.Method.GetParameters();
 
@@ -112,7 +112,7 @@ namespace LinqToGraphQL.Builders
 
                     if (!IsNullConstant(arg))
                     {
-                        using (Push(new ArgumentFrame(stack.Peek().Node, parameters[i].Name)))
+                        using (Push(new Argument((FieldSelection)stack.Peek(), parameters[i].Name)))
                         {
                             Visit(arg);
                         }
@@ -170,9 +170,9 @@ namespace LinqToGraphQL.Builders
             return typeof(QueryEntity).IsAssignableFrom(method.DeclaringType);
         }
 
-        private IDisposable Push(Frame frame)
+        private IDisposable Push(ISyntaxNode node)
         {
-            stack.Push(frame);
+            stack.Push(node);
             return Disposable.Create(() => stack.Pop());
         }
     }

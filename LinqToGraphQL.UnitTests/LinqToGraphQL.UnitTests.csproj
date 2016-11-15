@@ -68,10 +68,6 @@
       <Project>{42469d40-7485-4697-839e-493d89529ec6}</Project>
       <Name>LinqToGraphQL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\submodules\parser\src\GraphQLParser\GraphQLParser.Net452.csproj">
-      <Project>{ef6bb3fa-763e-45f0-b5d9-3cea0b46f33b}</Project>
-      <Name>GraphQLParser.Net452</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

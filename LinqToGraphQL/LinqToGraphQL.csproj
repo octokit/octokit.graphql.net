@@ -40,14 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\ArgumentFrame.cs" />
-    <Compile Include="Builders\InlineFragmentFrame.cs" />
-    <Compile Include="Builders\FieldFrame.cs" />
-    <Compile Include="Builders\Frame.cs" />
-    <Compile Include="Builders\IFieldFrame.cs" />
     <Compile Include="Builders\QueryBuilder.cs" />
     <Compile Include="Builders\QuerySerializer.cs" />
-    <Compile Include="Builders\RootFrame.cs" />
     <Compile Include="Builders\StringExtensions.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="FieldQuery.cs" />
@@ -57,14 +51,17 @@
     <Compile Include="QueryEntity.cs" />
     <Compile Include="QueryEntityExtensions.cs" />
     <Compile Include="QueryProvider.cs" />
+    <Compile Include="Syntax\Argument.cs" />
+    <Compile Include="Syntax\FieldSelection.cs" />
+    <Compile Include="Syntax\InlineFragment.cs" />
+    <Compile Include="Syntax\ISelectionSet.cs" />
+    <Compile Include="Syntax\ISyntaxNode.cs" />
+    <Compile Include="Syntax\OperationDefinition.cs" />
+    <Compile Include="Syntax\OperationType.cs" />
+    <Compile Include="Syntax\SelectionSet.cs" />
     <Compile Include="Utilities\ExpressionTreeDebug.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\submodules\parser\src\GraphQLParser\GraphQLParser.Net452.csproj">
-      <Project>{ef6bb3fa-763e-45f0-b5d9-3cea0b46f33b}</Project>
-      <Name>GraphQLParser.Net452</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
