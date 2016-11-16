@@ -20,7 +20,8 @@ namespace LinqToGraphQL.UnitTests
 
             var debug = ExpressionTreeDebug.Debug(query.Expression);
 
-            var result = new QuerySerializer().Serialize(new QueryBuilder().Build(query.Expression));
+            var operation = new QueryBuilder().Build(query.Expression);
+            var result = new QuerySerializer().Serialize(operation);
 
             Assert.Equal(expected, result);
         }
@@ -34,7 +35,8 @@ namespace LinqToGraphQL.UnitTests
                 .Simple("foo", 2)
                 .Select(x => new { x.Name, x.Description });
 
-            var result = new QuerySerializer().Serialize(new QueryBuilder().Build(query.Expression));
+            var operation = new QueryBuilder().Build(query.Expression);
+            var result = new QuerySerializer().Serialize(operation);
 
             Assert.Equal(expected, result);
         }
@@ -49,7 +51,8 @@ namespace LinqToGraphQL.UnitTests
                 .Simple("bar")
                 .Select(x => new { x.Name, x.Description });
 
-            var result = new QuerySerializer().Serialize(new QueryBuilder().Build(query.Expression));
+            var operation = new QueryBuilder().Build(query.Expression);
+            var result = new QuerySerializer().Serialize(operation);
 
             Assert.Equal(expected, result);
         }
@@ -67,7 +70,8 @@ namespace LinqToGraphQL.UnitTests
                     Items = x.Items.Select(i => i.Name),
                 });
 
-            var result = new QuerySerializer().Serialize(new QueryBuilder().Build(query.Expression));
+            var operation = new QueryBuilder().Build(query.Expression);
+            var result = new QuerySerializer().Serialize(operation);
 
             Assert.Equal(expected, result);
         }
@@ -86,7 +90,8 @@ namespace LinqToGraphQL.UnitTests
                     Items = x.Items.Select(i => i.Name),
                 });
 
-            var result = new QuerySerializer().Serialize(new QueryBuilder().Build(query.Expression));
+            var operation = new QueryBuilder().Build(query.Expression);
+            var result = new QuerySerializer().Serialize(operation);
 
             var debug = ExpressionTreeDebug.Debug(query.Expression);
 
@@ -112,8 +117,8 @@ namespace LinqToGraphQL.UnitTests
                     Bar = x.Simple("bar", 2).Select(i => i.Name),
                 });
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
+            var operation = new QueryBuilder().Build(query.Expression);
+            var result = new QuerySerializer().Serialize(operation);
 
             var debug = ExpressionTreeDebug.Debug(query.Expression);
 
