@@ -63,6 +63,10 @@ namespace LinqToGraphQL.Builders
             }
             else if (newExpression != null)
             {
+                var top = (SelectionSet)stack.Peek();
+
+                top.ResultConstructor = newExpression.Constructor;
+
                 foreach (var arg in newExpression.Arguments)
                 {
                     using (Checkpoint())

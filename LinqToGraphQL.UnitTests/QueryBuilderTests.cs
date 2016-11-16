@@ -4,6 +4,7 @@ using LinqToGraphQL.Builders;
 using LinqToGraphQL.UnitTests.Models;
 using Xunit;
 using LinqToGraphQL.Utilities;
+using LinqToGraphQL.Syntax;
 
 namespace LinqToGraphQL.UnitTests
 {
@@ -18,12 +19,16 @@ namespace LinqToGraphQL.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name);
 
-            var debug = ExpressionTreeDebug.Debug(query.Expression);
-
             var operation = new QueryBuilder().Build(query.Expression);
-            var result = new QuerySerializer().Serialize(operation);
+            var deserialized = new QuerySerializer().Serialize(operation);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, deserialized);
+
+            var simpleField = (FieldSelection)operation.Selections[0];
+            var nameField = (FieldSelection)simpleField.Selections[0];
+
+            Assert.Null(simpleField.ResultType);
+            Assert.Equal(typeof(string), nameField.ResultType);
         }
 
         [Fact]
@@ -36,9 +41,18 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             var operation = new QueryBuilder().Build(query.Expression);
-            var result = new QuerySerializer().Serialize(operation);
+            var deserialized = new QuerySerializer().Serialize(operation);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, deserialized);
+
+            var simpleField = (FieldSelection)operation.Selections[0];
+            var nameField = (FieldSelection)simpleField.Selections[0];
+            var descriptionField = (FieldSelection)simpleField.Selections[1];
+
+            Assert.Null(simpleField.ResultType);
+            Assert.NotNull(simpleField.ResultConstructor);
+            Assert.Equal(typeof(string), nameField.ResultType);
+            Assert.Equal(typeof(string), descriptionField.ResultType);
         }
 
         [Fact]
