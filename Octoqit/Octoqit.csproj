@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ISearchResultItem.cs" />
-    <Compile Include="Owner.cs" />
     <Compile Include="RepositoryConnection.cs" />
     <Compile Include="RepositoryEdge.cs" />
     <Compile Include="Repository.cs" />

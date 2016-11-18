@@ -8,7 +8,7 @@ namespace Octoqit
     {
         public string Id { get; }
         public string Name { get; }
-        public IQueryable<Owner> Owner { get; }
+        public IQueryable<RepositoryOwner> Owner { get; }
         public bool IsFork { get; }
         public bool IsPrivate { get; }
     }

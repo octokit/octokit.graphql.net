@@ -9,7 +9,7 @@ namespace Octoqit
     {
         public string Id { get; }
         public string Login { get; }
-        public string AvatarUrl { get; }
+        public string AvatarURL { get; }
 
         public RepositoryOwner(IQueryProvider provider, Expression expression)
             : base(provider, expression)
