@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using LinqToGraphQL;
 using LinqToGraphQL.Builders;
 using LinqToGraphQL.Deserializers;
 using Xunit;
@@ -52,5 +53,27 @@ namespace Octoqit.UnitTests
             Assert.Equal(false, result.IsFork);
             Assert.Equal(false, result.IsPrivate);
         }
+
+
+        [Fact]
+        public void Viewer_Login_Email()
+        {
+            var query = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
+            string data = @"{
+  ""data"": {
+    ""viewer"": {
+      ""login"": ""grokys"",
+      ""email"": ""grokys@gmail.com""
+    }
+  }
+}";
+            var operation = new QueryBuilder().Build(query.Expression);
+            var expectedType = query.GetType().GetGenericArguments()[0];
+            dynamic result = new ResponseDeserializer().Deserialize(operation, data);
+
+            Assert.Equal("grokys", result.Login);
+            Assert.Equal("grokys@gmail.com", result.Email);
+        }
+
     }
 }

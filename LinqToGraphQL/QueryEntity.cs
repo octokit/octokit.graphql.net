@@ -41,7 +41,7 @@ namespace LinqToGraphQL
             return Expression.Call(Expression.Constant(this), methodInfo, argExpressions);
         }
 
-        protected IQueryable<T> Property<T>(string name)
+        protected IQueryable<T> CollectionProperty<T>(string name)
         {
             var property = GetType().GetProperty(name);
             var expression = Expression.Property(Expression.Constant(this), property);

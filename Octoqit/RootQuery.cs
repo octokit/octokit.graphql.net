@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using LinqToGraphQL;
+using Exp = System.Linq.Expressions.Expression;
 
 namespace Octoqit
 {
@@ -9,12 +10,10 @@ namespace Octoqit
         public RootQuery()
             : base(new QueryProvider())
         {
+            Viewer = new User(Provider, Exp.Property(Expression, nameof(Viewer)));
         }
 
-        public IQueryable<User> Viewer
-        {
-            get { return Property<User>(nameof(Viewer)); }
-        }
+        public User Viewer { get; }
 
         public RepositoryOwner RepositoryOwner(string login)
         {

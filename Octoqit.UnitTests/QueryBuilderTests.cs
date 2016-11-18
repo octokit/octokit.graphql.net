@@ -129,6 +129,24 @@ namespace Octoqit.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Viewer_Login_Email()
+        {
+            var expected = @"query RootQuery {
+  viewer {
+    login
+    email
+  }
+}";
+
+            var query = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
+
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(query.Expression));
+
+            Assert.Equal(expected, result);
+        }
     }
 }
 

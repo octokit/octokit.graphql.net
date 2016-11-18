@@ -10,10 +10,10 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            RunQuery().Wait();
+            RunViewerQuery().Wait();
         }
 
-        private static async Task RunQuery()
+        private static async Task RunRepositoryQuery()
         {
             var query = new RootQuery()
                 .RepositoryOwner("grokys")
@@ -39,6 +39,16 @@ namespace Sandbox
             Console.WriteLine("Owner: " + result.Owner.Single().Login);
             Console.WriteLine("IsFork: " + result.IsFork);
             Console.WriteLine("IsPrivate: " + result.IsPrivate);
+        }
+
+        private static async Task RunViewerQuery()
+        {
+            var query = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
+            var connection = new Connection("https://api.github.com/graphql", "3e4cdca2928a89fd9cee364c2055129d06eac6b3");
+            var result = await connection.Run(query);
+
+            Console.WriteLine("Login: " + result.Login);
+            Console.WriteLine("Email: " + result.Email);
         }
     }
 }

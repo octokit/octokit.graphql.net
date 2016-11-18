@@ -12,7 +12,7 @@ namespace LinqToGraphQL.UnitTests.Models
 
         public IQueryable<NestedData> Data
         {
-            get { return Property<NestedData>(nameof(Data)); }
+            get { return CollectionProperty<NestedData>(nameof(Data)); }
         }
 
         public IQueryable<Simple> Simple(string arg1, int? arg2 = null)

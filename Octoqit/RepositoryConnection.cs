@@ -14,7 +14,7 @@ namespace Octoqit
 
         public IQueryable<RepositoryEdge> Edges
         {
-            get { return Property<RepositoryEdge>(nameof(Edges)); }
+            get { return CollectionProperty<RepositoryEdge>(nameof(Edges)); }
         }
 
         public int TotalCount { get; }
