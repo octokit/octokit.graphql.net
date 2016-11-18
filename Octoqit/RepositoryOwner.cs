@@ -9,7 +9,9 @@ namespace Octoqit
     {
         public string Id { get; }
         public string Login { get; }
-        public string AvatarURL { get; }
+
+        [GraphQLIdentifier("avatarURL")]
+        public string AvatarUrl { get; }
 
         public RepositoryOwner(IQueryProvider provider, Expression expression)
             : base(provider, expression)
