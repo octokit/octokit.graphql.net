@@ -39,7 +39,7 @@ namespace LinqToGraphQL.Builders
             return builder.ToString();
         }
 
-        public string SerializeSelections(ISelectionSet selectionSet)
+        private string SerializeSelections(ISelectionSet selectionSet)
         {
             StringBuilder builder = new StringBuilder();
             SerializeSelections(selectionSet, builder);

@@ -47,6 +47,7 @@
     <Compile Include="Builders\QueryBuilder.cs" />
     <Compile Include="Builders\QuerySerializer.cs" />
     <Compile Include="Builders\StringExtensions.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Deserializers\ResponseDeserializer.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="FieldQuery.cs" />
