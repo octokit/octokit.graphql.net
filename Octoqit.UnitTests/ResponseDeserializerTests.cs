@@ -54,6 +54,23 @@ namespace Octoqit.UnitTests
             Assert.Equal(false, result.IsPrivate);
         }
 
+        [Fact]
+        public void Viewer_Email()
+        {
+            var query = new RootQuery().Viewer.Select(x => new { x.Email });
+            string data = @"{
+  ""data"": {
+    ""viewer"": {
+      ""email"": ""grokys@gmail.com""
+    }
+  }
+}";
+            var operation = new QueryBuilder().Build(query.Expression);
+            var expectedType = query.GetType().GetGenericArguments()[0];
+            dynamic result = new ResponseDeserializer().Deserialize(operation, data);
+
+            Assert.Equal("grokys@gmail.com", result.Email);
+        }
 
         [Fact]
         public void Viewer_Login_Email()
@@ -74,6 +91,5 @@ namespace Octoqit.UnitTests
             Assert.Equal("grokys", result.Login);
             Assert.Equal("grokys@gmail.com", result.Email);
         }
-
     }
 }
