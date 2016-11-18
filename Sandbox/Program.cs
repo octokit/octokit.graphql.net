@@ -8,6 +8,8 @@ namespace Sandbox
 {
     class Program
     {
+        const string Token = "YOUR_TOKEN_HERE";
+
         static void Main(string[] args)
         {
             RunViewerQuery().Wait();
@@ -31,7 +33,7 @@ namespace Sandbox
                     x.IsPrivate,
                 });
 
-            var connection = new Connection("https://api.github.com/graphql", "3e4cdca2928a89fd9cee364c2055129d06eac6b3");
+            var connection = new Connection("https://api.github.com/graphql", Token);
             var result = await connection.Run(query);
 
             Console.WriteLine("Id: " + result.Id);
@@ -44,7 +46,7 @@ namespace Sandbox
         private static async Task RunViewerQuery()
         {
             var query = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
-            var connection = new Connection("https://api.github.com/graphql", "3e4cdca2928a89fd9cee364c2055129d06eac6b3");
+            var connection = new Connection("https://api.github.com/graphql", Token);
             var result = await connection.Run(query);
 
             Console.WriteLine("Login: " + result.Login);
