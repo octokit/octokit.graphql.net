@@ -5,9 +5,11 @@ namespace Octoqit
 {
     public class User : ISearchResultItem
     {
-        public string Id { get; }
-        public string Login { get; }
-        public string Name { get; }
+        public string Id { get; set; }
+        public string Bio { get; set; }
+        public string Email { get; set; }
+        public string Login { get; set; }
+        public string Name { get; set; }
 
         [GraphQLIdentifier("avatarURL")]
         public string AvatarUrl { get; }

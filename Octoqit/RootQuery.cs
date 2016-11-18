@@ -11,6 +11,11 @@ namespace Octoqit
         {
         }
 
+        public IQueryable<User> Viewer
+        {
+            get { return Property<User>(nameof(Viewer)); }
+        }
+
         public RepositoryOwner RepositoryOwner(string login)
         {
             return new RepositoryOwner(Provider, MethodCallExpression(nameof(RepositoryOwner), Arg(login)));
