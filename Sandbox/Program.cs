@@ -25,7 +25,7 @@ namespace Sandbox
                     Owner = x.Owner.Select(o => new
                     {
                         o.Login,
-                        o.AvatarURL,
+                        o.AvatarUrl,
                     }),
                     x.IsFork,
                     x.IsPrivate,
