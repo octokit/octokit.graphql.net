@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using LinqToGraphQL;
 using LinqToGraphQL.Syntax;
 using LinqToGraphQL.Utilities;
 using Newtonsoft.Json.Linq;

@@ -57,33 +57,33 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal("Goodbye cruel world", result.Description);
         }
 
-        //        [Fact]
-        //        public void NestedQuery_Select_Multiple_Members()
-        //        {
-        //            var query = new RootQuery()
-        //                .Nested("foo")
-        //                .Simple("bar")
-        //                .Select(x => new { x.Name, x.Description });
+        [Fact]
+        public void NestedQuery_Select_Multiple_Members()
+        {
+            var expression = new RootQuery()
+                .Nested("foo")
+                .Simple("bar")
+                .Select(x => new { x.Name, x.Description });
 
-        //            var data = @"{
-        //  ""data"":{
-        //    ""nested"": {
-        //      ""simple"":{
-        //        ""name"": ""Hello World!"",
-        //        ""description"": ""Goodbye cruel world""
-        //      }
-        //    }
-        //  }
-        //}";
+            var data = @"{
+    ""data"":{
+    ""nested"": {
+        ""simple"":{
+        ""name"": ""Hello World!"",
+        ""description"": ""Goodbye cruel world""
+        }
+    }
+    }
+}";
 
-        //            var operation = new QueryBuilder().Build(query.Expression);
-        //            var expectedType = query.GetType().GetGenericArguments()[0];
-        //            dynamic result = new ResponseDeserializer().Deserialize(operation, data);
+            var operation = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            dynamic result = new ResponseDeserializer().Deserialize(operation, data);
 
-        //            Assert.IsType(expectedType, result);
-        //            Assert.Equal("Hello World!", result.Name);
-        //            Assert.Equal("Goodbye cruel world", result.Description);
-        //        }
+            Assert.IsType(expectedType, result);
+            Assert.Equal("Hello World!", result.Name);
+            Assert.Equal("Goodbye cruel world", result.Description);
+        }
 
         //        [Fact]
         //        public void Nested_Data()
