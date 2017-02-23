@@ -1,134 +1,124 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using LinqToGraphQL;
 using LinqToGraphQL.Syntax;
+using LinqToGraphQL.Utilities;
+using Newtonsoft.Json.Linq;
 
 namespace LinqToGraphQL.Builders
 {
     public class QueryBuilder : ExpressionVisitor
     {
+        static readonly MethodInfo Indexer = typeof(JToken).GetMethod("get_Item");
+        static readonly MethodInfo ToObject = typeof(JToken).GetMethod("ToObject", new Type[0]);
+        static readonly ParameterExpression LambdaParameter = Expression.Parameter(typeof(JObject), "x");
+
         OperationDefinition root;
         Stack<ISyntaxNode> stack = new Stack<ISyntaxNode>();
 
-        public OperationDefinition Build(Expression expression)
+        public Query<TResult> Build<TResult>(IQueryable<TResult> query)
         {
-            Visit(expression);
-            return root;
-        }
-
-        protected override Expression VisitConstant(ConstantExpression node)
-        {
-            if (stack.Count == 0)
-            {
-                var root = node.Value as IRootQuery;
-                var queryEntity = node.Value as QueryEntity;
-
-                if (root != null)
-                {
-                    this.root = new OperationDefinition(OperationType.Query, node.Type.Name);
-                    stack.Push(this.root);
-                }
-                else if (queryEntity != null)
-                {
-                    Visit(queryEntity.Expression);
-                }
-            }
-            else
-            {
-                var argument = stack.Peek() as Argument;
-
-                if (argument != null)
-                {
-                    argument.Value = node.Value;
-                }
-                else
-                {
-                    throw new Exception("Unexpected constant.");
-                }
-            }
-
-            return node;
-        }
-
-        protected override Expression VisitLambda<T>(Expression<T> node)
-        {
-            var memberExpression = node.Body as MemberExpression;
-            var newExpression = node.Body as NewExpression;
-
-            if (memberExpression != null)
-            {
-                stack.Push(new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member));
-            }
-            else if (newExpression != null)
-            {
-                var top = (SelectionSet)stack.Peek();
-
-                top.ResultConstructor = newExpression.Constructor;
-
-                foreach (var arg in newExpression.Arguments)
-                {
-                    using (Checkpoint())
-                    {
-                        Visit(arg);
-                    }
-                }
-            }
-            else
-            {
-                throw new Exception("Unexpected lambda.");
-            }
-
-            return node;
-        }
-
-        protected override Expression VisitMember(MemberExpression node)
-        {
-            Visit(node.Expression);
-            stack.Push(new FieldSelection((ISelectionSet)stack.Peek(), node.Member));
-            return node;
+            var rewritten = Visit(query.Expression);
+            var expression = Expression.Lambda<Func<JObject, TResult>>(
+                Expression.Call(rewritten, ToObject.MakeGenericMethod(typeof(TResult))),
+                LambdaParameter);
+            return new Query<TResult>(root, expression);
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (IsSelect(node.Method))
             {
-                Visit(node.Arguments[0]);
-                Visit(node.Arguments[1]);
+                return VisitSelect(node.Arguments[0], node.Arguments[1]);
             }
-            else if (IsOfType(node.Method))
+            //else if (IsOfType(node.Method))
+            //{
+            //    Visit(node.Arguments[0]);
+            //    stack.Push(new InlineFragment((ISelectionSet)stack.Peek(), node.Method.GetGenericArguments()[0]));
+            //}
+            else if (IsQueryMethod(node.Method))
             {
-                Visit(node.Arguments[0]);
-                stack.Push(new InlineFragment((ISelectionSet)stack.Peek(), node.Method.GetGenericArguments()[0]));
-            }
-            else if (IsQueryEntity(node.Method))
-            {
-                Visit(node.Object);
-
-                stack.Push(new FieldSelection((ISelectionSet)stack.Peek(), node.Method));
-
-                var parameters = node.Method.GetParameters();
-
-                for (var i = 0; i < node.Arguments.Count; ++i)
-                {
-                    var arg = node.Arguments[i];
-
-                    if (!IsNullConstant(arg))
-                    {
-                        using (Push(new Argument((FieldSelection)stack.Peek(), parameters[i].Name)))
-                        {
-                            Visit(arg);
-                        }
-                    }
-                }
+                return VisitQueryMethod(node);
             }
             else
             {
                 throw new Exception("Unrecognised method.");
             }
+        }
 
-            return node;
+        private Expression VisitRootQuery(MethodCallExpression node)
+        {
+            root = new OperationDefinition(OperationType.Query, node.Object.Type.Name);
+            var selection = new FieldSelection(root, node.Method);
+
+            stack.Push(this.root);
+            stack.Push(selection);
+
+            return CreateIndexerExpression(CreateRootExpression(), selection.Name);
+        }
+
+        private Expression VisitQueryMethod(MethodCallExpression node)
+        {
+            var constant = node.Object as ConstantExpression;
+            var rootQuery = constant?.Value as IRootQuery;
+
+            if (rootQuery != null)
+            {
+                var result = VisitRootQuery(node);
+                VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
+                return result;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private void VisitQueryMethodArguments(ParameterInfo[] parameters, ReadOnlyCollection<Expression> arguments)
+        {
+            for (var i = 0; i < parameters.Length; ++i)
+            {
+                var parameter = parameters[i];
+                var arg = arguments[i] as ConstantExpression;
+                
+                if (arg == null)
+                {
+                    throw new NotSupportedException("Only constant expressions supported as field arguments.");
+                }
+
+                if (arg.Value != null)
+                {
+                    var argument = new Argument((FieldSelection)stack.Peek(), parameter.Name);
+                    argument.Value = arg.Value;
+                }
+            }
+        }
+
+        private Expression VisitSelect(Expression source, Expression selectExpression)
+        {
+            source = Visit(source);
+
+            var lambda = selectExpression.GetLambda();
+
+            if (lambda != null)
+            {
+                var memberExpression = lambda.Body as MemberExpression;
+
+                if (memberExpression != null)
+                {
+                    var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
+                    return CreateIndexerExpression(source, selection.Name);
+                }
+            }
+            else
+            {
+                selectExpression = Visit(selectExpression);
+            }
+
+            var indexer = typeof(JToken).GetMethod("get_Item");
+            return Expression.Call(source, indexer, selectExpression);
         }
 
         private IDisposable Checkpoint()
@@ -169,7 +159,7 @@ namespace LinqToGraphQL.Builders
                 method.GetParameters().Length == 2);
         }
 
-        private bool IsQueryEntity(MethodInfo method)
+        private bool IsQueryMethod(MethodInfo method)
         {
             return typeof(QueryEntity).IsAssignableFrom(method.DeclaringType);
         }
@@ -178,6 +168,22 @@ namespace LinqToGraphQL.Builders
         {
             stack.Push(node);
             return Disposable.Create(() => stack.Pop());
+        }
+
+        private Expression CreateRootExpression()
+        {
+            return Expression.Call(
+                LambdaParameter,
+                Indexer,
+                Expression.Constant("data"));
+        }
+
+        private Expression CreateIndexerExpression(Expression instance, string argument)
+        {
+            return Expression.Call(
+                instance,
+                Indexer,
+                Expression.Constant(argument));
         }
     }
 }

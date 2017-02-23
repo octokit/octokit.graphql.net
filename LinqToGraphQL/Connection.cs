@@ -28,8 +28,8 @@ namespace LinqToGraphQL
             var builder = new QueryBuilder();
             var serializer = new QuerySerializer(2);
             var deserializer = new ResponseDeserializer();
-            var operation = builder.Build(query.Expression);
-            var payload = new Payload(serializer.Serialize(operation));
+            var operation = builder.Build(query);
+            var payload = new Payload(serializer.Serialize(operation.OperationDefinition));
             var httpClient = CreateHttpClient();
             var payloadString = payload.ToString();
             var content = new StringContent(payloadString);
