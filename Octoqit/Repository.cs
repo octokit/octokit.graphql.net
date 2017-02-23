@@ -4,8 +4,13 @@ using LinqToGraphQL;
 
 namespace Octoqit
 {
-    public class Repository :  ISearchResultItem
+    public class Repository : QueryEntity, ISearchResultItem
     {
+        public Repository(IQueryProvider provider)
+            : base(provider)
+        {
+        }
+
         public string Id { get; }
         public string Name { get; }
         public IQueryable<RepositoryOwner> Owner { get; }
