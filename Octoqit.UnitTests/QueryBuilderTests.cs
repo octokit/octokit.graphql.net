@@ -50,19 +50,19 @@ namespace Octoqit.UnitTests
         {
             var expected = @"query RootQuery {
     repositoryOwner(login: ""foo"") {
-    repositories(first: 30) {
+      repositories(first: 30) {
         edges {
-        node {
+          node {
             id
             name
             owner {
-            login
+              login
             }
             isFork
             isPrivate
+          }
         }
-        }
-    }
+      }
     }
 }";
 
