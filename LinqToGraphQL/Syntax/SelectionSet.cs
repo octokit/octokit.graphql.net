@@ -15,7 +15,6 @@ namespace LinqToGraphQL.Syntax
         }
 
         public Type ResultType { get; set; }
-        public ConstructorInfo ResultConstructor { get; set; }
         public IList<ISyntaxNode> Selections { get; }
 
         protected static string GetIdentifier(MemberInfo member)

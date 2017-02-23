@@ -14,19 +14,45 @@ namespace LinqToGraphQL.Builders
     public class QueryBuilder : ExpressionVisitor
     {
         static readonly MethodInfo Indexer = typeof(JToken).GetMethod("get_Item");
-        static readonly MethodInfo ToObject = typeof(JToken).GetMethod("ToObject", new Type[0]);
-        static readonly ParameterExpression LambdaParameter = Expression.Parameter(typeof(JObject), "x");
+        static readonly MethodInfo JsonSelect = typeof(JsonExtensions).GetMethod(nameof(JsonExtensions.JsonSelect));
+        static readonly MethodInfo ToObject = typeof(JToken).GetMethod(nameof(JToken.ToObject), new Type[0]);
+        static readonly ParameterExpression DataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
-        Stack<ISyntaxNode> stack = new Stack<ISyntaxNode>();
+        Stack<ISyntaxNode> stack;
+        Dictionary<ParameterExpression, ParameterExpression> lambdaParameters;
 
         public Query<TResult> Build<TResult>(IQueryable<TResult> query)
         {
+            root = null;
+            stack = new Stack<ISyntaxNode>();
+            lambdaParameters = new Dictionary<ParameterExpression, ParameterExpression>();
+
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, TResult>>(
-                Expression.Call(rewritten, ToObject.MakeGenericMethod(typeof(TResult))),
-                LambdaParameter);
+                rewritten,
+                DataParameter);
             return new Query<TResult>(root, expression);
+        }
+
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            if (IsQueryMember(node.Member))
+            {
+                var parameterExpression = node.Expression as ParameterExpression;
+
+                if (parameterExpression != null)
+                {
+                    var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Member);
+                    stack.Push(selection);
+                    return CreateIndexerExpression(
+                        lambdaParameters[parameterExpression],
+                        selection.Name,
+                        selection.ResultType);
+                }
+            }
+
+            throw new NotImplementedException();
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
@@ -40,7 +66,7 @@ namespace LinqToGraphQL.Builders
             //    Visit(node.Arguments[0]);
             //    stack.Push(new InlineFragment((ISelectionSet)stack.Peek(), node.Method.GetGenericArguments()[0]));
             //}
-            else if (IsQueryMethod(node.Method))
+            else if (IsQueryMember(node.Method))
             {
                 return VisitQueryMethod(node);
             }
@@ -104,12 +130,32 @@ namespace LinqToGraphQL.Builders
 
             if (lambda != null)
             {
-                var memberExpression = lambda.Body as MemberExpression;
-
-                if (memberExpression != null)
+                switch (lambda.Body.NodeType)
                 {
-                    var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
-                    return CreateIndexerExpression(source, selection.Name);
+                    case ExpressionType.MemberAccess:
+                        var memberExpression = lambda.Body as MemberExpression;
+                        var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
+                        return CreateIndexerExpression(source, selection.Name, selection.ResultType);
+
+                    case ExpressionType.New:
+                        var newExpression = lambda.Body as NewExpression;
+                        var newArguments = new List<Expression>();
+                        var lambdaParameter = RewriteLambdaParameter(lambda.Parameters[0]);
+
+                        foreach (var arg in newExpression.Arguments)
+                        {
+                            using (Checkpoint())
+                            {
+                                newArguments.Add(Visit(arg));
+                            }
+                        }
+
+                        return Expression.Call(
+                            JsonSelect.MakeGenericMethod(newExpression.Constructor.DeclaringType),
+                            source,
+                            Expression.Lambda(
+                                Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
+                                lambdaParameter));
                 }
             }
             else
@@ -159,9 +205,9 @@ namespace LinqToGraphQL.Builders
                 method.GetParameters().Length == 2);
         }
 
-        private bool IsQueryMethod(MethodInfo method)
+        private bool IsQueryMember(MemberInfo member)
         {
-            return typeof(QueryEntity).IsAssignableFrom(method.DeclaringType);
+            return typeof(QueryEntity).IsAssignableFrom(member.DeclaringType);
         }
 
         private IDisposable Push(ISyntaxNode node)
@@ -173,7 +219,7 @@ namespace LinqToGraphQL.Builders
         private Expression CreateRootExpression()
         {
             return Expression.Call(
-                LambdaParameter,
+                DataParameter,
                 Indexer,
                 Expression.Constant("data"));
         }
@@ -184,6 +230,20 @@ namespace LinqToGraphQL.Builders
                 instance,
                 Indexer,
                 Expression.Constant(argument));
+        }
+
+        private Expression CreateIndexerExpression(Expression instance, string argument, Type cast)
+        {
+            return Expression.Call(
+                CreateIndexerExpression(instance, argument),
+                ToObject.MakeGenericMethod(cast));
+        }
+
+        private ParameterExpression RewriteLambdaParameter(ParameterExpression expression)
+        {
+            var result = Expression.Parameter(typeof(JToken), expression.Name);
+            lambdaParameters.Add(expression, result);
+            return result;
         }
     }
 }
