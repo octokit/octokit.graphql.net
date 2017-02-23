@@ -35,6 +35,23 @@ namespace LinqToGraphQL.Builders
             return new Query<TResult>(root, expression);
         }
 
+        protected override Expression VisitConstant(ConstantExpression node)
+        {
+            if (stack.Count == 0)
+            {
+                var rootQuery = node.Value as IRootQuery;
+
+                if (rootQuery != null)
+                {
+                    root = new OperationDefinition(OperationType.Query, node.Type.Name);
+                    stack.Push(this.root);
+                    return CreateIndexerExpression(RootDataParameter, "data");
+                }
+            }
+
+            return node;
+        }
+
         protected override Expression VisitMember(MemberExpression node)
         {
             if (IsQueryMember(node.Member))
@@ -76,41 +93,13 @@ namespace LinqToGraphQL.Builders
             }
         }
 
-        private Expression VisitRootQuery(MethodCallExpression node)
-        {
-            root = new OperationDefinition(OperationType.Query, node.Object.Type.Name);
-            stack.Push(this.root);
-            return CreateIndexerExpression(RootDataParameter, "data");
-        }
-
         private Expression VisitQueryMethod(MethodCallExpression node)
         {
-            var constant = node.Object as ConstantExpression;
-            var instance = default(Expression);
-
-            if (constant != null)
-            {
-                var rootQuery = constant.Value as IRootQuery;
-                var queryEntity = constant.Value as QueryEntity;
-
-                if (rootQuery != null)
-                {
-                    instance = VisitRootQuery(node);
-                }
-                else if (queryEntity != null)
-                {
-                    instance = Visit(queryEntity.Expression);
-                }
-            }
-
-            if (instance == null)
-            {
-                instance = Visit(node.Object);
-            }
-
+            var queryEntity = (node.Object as ConstantExpression)?.Value as QueryEntity;
+            var instance = Visit(queryEntity?.Expression ?? node.Object);
             var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Method);
-            stack.Push(selection);
 
+            stack.Push(selection);
             VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
 
             return CreateIndexerExpression(instance, selection.Name);
