@@ -90,11 +90,12 @@ namespace LinqToGraphQL.Builders
             {
                 return VisitSelect(node.Arguments[0], node.Arguments[1]);
             }
-            //else if (IsOfType(node.Method))
-            //{
-            //    Visit(node.Arguments[0]);
-            //    stack.Push(new InlineFragment((ISelectionSet)stack.Peek(), node.Method.GetGenericArguments()[0]));
-            //}
+            else if (IsOfType(node.Method))
+            {
+                var result = Visit(node.Arguments[0]);
+                stack.Push(new InlineFragment((ISelectionSet)stack.Peek(), node.Method.GetGenericArguments()[0]));
+                return result;
+            }
             else if (IsQueryMember(node.Method))
             {
                 return VisitQueryMethod(node);

@@ -90,27 +90,25 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(expected, result);
         }
 
-        //        [Fact]
-        //        public void Inline_Fragment()
-        //        {
-        //            var expected = "query RootQuery{data{... on NestedData{id items{name}}}}";
+        [Fact]
+        public void Inline_Fragment()
+        {
+            var expected = "query RootQuery{data{... on NestedData{id items{name}}}}";
 
-        //            var query = new RootQuery()
-        //                .Data
-        //                .OfType<NestedData>()
-        //                .Select(x => new
-        //                {
-        //                    x.Id,
-        //                    Items = x.Items.Select(i => i.Name),
-        //                });
+            var expression = new RootQuery()
+                .Data
+                .OfType<NestedData>()
+                .Select(x => new
+                {
+                    x.Id,
+                    Items = x.Items.Select(i => i.Name),
+                });
 
-        //            var operation = new QueryBuilder().Build(query.Expression);
-        //            var result = new QuerySerializer().Serialize(operation);
+            var operation = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(operation.OperationDefinition);
 
-        //            var debug = ExpressionTreeDebug.Debug(query.Expression);
-
-        //            Assert.Equal(expected, result);
-        //        }
+            Assert.Equal(expected, result);
+        }
 
         //        [Fact(Skip = "Not yet implemented")]
         //        public void Field_Aliases()
