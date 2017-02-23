@@ -110,31 +110,29 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(expected, result);
         }
 
-        //        [Fact(Skip = "Not yet implemented")]
-        //        public void Field_Aliases()
-        //        {
-        //            var expected = @"query RootQuery {
-        //  foo: simple(arg1: ""foo"", arg2: 1) {
-        //    name
-        //  }
-        //  bar: simple(arg1: ""bar"", arg2: 1) {
-        //    name
-        //  }
-        //}";
+        [Fact]
+        public void Field_Aliases()
+        {
+            var expected = @"query RootQuery {
+    foo: simple(arg1: ""foo"", arg2: 1) {
+        name
+    }
+    bar: simple(arg1: ""bar"", arg2: 2) {
+        name
+    }
+}";
 
-        //            var query = new RootQuery()
-        //                .Select(x => new
-        //                {
-        //                    Foo = x.Simple("foo", 1).Select(i => i.Name),
-        //                    Bar = x.Simple("bar", 2).Select(i => i.Name),
-        //                });
+            var expression = new RootQuery()
+                .Select(x => new
+                {
+                    Foo = x.Simple("foo", 1).Select(i => i.Name),
+                    Bar = x.Simple("bar", 2).Select(i => i.Name),
+                });
 
-        //            var operation = new QueryBuilder().Build(query.Expression);
-        //            var result = new QuerySerializer().Serialize(operation);
+            var operation = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer(4).Serialize(operation.OperationDefinition);
 
-        //            var debug = ExpressionTreeDebug.Debug(query.Expression);
-
-        //            Assert.Equal(expected, result);
-        //        }
+            Assert.Equal(expected, result);
+        }
     }
 }

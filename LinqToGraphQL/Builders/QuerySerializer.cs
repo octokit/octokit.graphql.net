@@ -48,6 +48,12 @@ namespace LinqToGraphQL.Builders
 
         private void Serialize(FieldSelection field, StringBuilder builder)
         {
+            if (field.Alias != null)
+            {
+                builder.Append(field.Alias);
+                builder.Append(": ");
+            }
+
             builder.Append(field.Name);
 
             if (field.Arguments?.Any() == true)

@@ -21,6 +21,7 @@ namespace LinqToGraphQL.Syntax
 
         public string Name { get; }
         public IList<Argument> Arguments { get; }
+        public string Alias { get; set; }
 
         private static Type GetReturnType(MemberInfo member)
         {

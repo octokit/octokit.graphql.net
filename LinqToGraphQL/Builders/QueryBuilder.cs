@@ -73,7 +73,7 @@ namespace LinqToGraphQL.Builders
                     var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Member);
                     stack.Push(selection);
                     return CreateIndexerExpression(
-                        lambdaParameters[parameterExpression],
+                        Visit(parameterExpression),
                         selection.Name,
                         selection.ResultType);
                 }
@@ -104,6 +104,18 @@ namespace LinqToGraphQL.Builders
             return node;
         }
 
+        protected override Expression VisitParameter(ParameterExpression node)
+        {
+            var result = node;
+
+            if (lambdaParameters.TryGetValue(node, out result))
+            {
+                return result;
+            }
+
+            return node;
+        }
+
         private Expression VisitQueryMethod(MethodCallExpression node)
         {
             var queryEntity = (node.Object as ConstantExpression)?.Value as QueryEntity;
@@ -121,17 +133,18 @@ namespace LinqToGraphQL.Builders
             for (var i = 0; i < parameters.Length; ++i)
             {
                 var parameter = parameters[i];
-                var arg = arguments[i] as ConstantExpression;
-                
-                if (arg == null)
+                var constantArgument = arguments[i] as ConstantExpression
+                    ?? (arguments[i] as UnaryExpression)?.Operand as ConstantExpression;
+
+                if (constantArgument == null)
                 {
                     throw new NotSupportedException("Non-constant field arguments not yet supported.");
                 }
 
-                if (arg.Value != null)
+                if (constantArgument.Value != null)
                 {
                     var argument = new Argument((FieldSelection)stack.Peek(), parameter.Name);
-                    argument.Value = arg.Value;
+                    argument.Value = constantArgument.Value;
                 }
             }
         }
@@ -162,13 +175,25 @@ namespace LinqToGraphQL.Builders
                     case ExpressionType.New:
                         var newExpression = lambda.Body as NewExpression;
                         var newArguments = new List<Expression>();
+                        var index = 0;
 
                         foreach (var arg in newExpression.Arguments)
                         {
+                            var memberName = newExpression.Members[index].Name.ToCamelCase();
+
                             using (Checkpoint())
                             {
                                 newArguments.Add(Visit(arg));
+
+                                var field = (FieldSelection)stack.Peek();
+
+                                if (field.Name != memberName)
+                                {
+                                    field.Alias = memberName;
+                                }
                             }
+
+                            ++index;
                         }
 
                         return Expression.Call(
