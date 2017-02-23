@@ -55,9 +55,20 @@ namespace LinqToGraphQL.Builders
         {
             if (IsQueryMember(node.Member))
             {
+                var constantExpression = node.Expression as ConstantExpression;
                 var parameterExpression = node.Expression as ParameterExpression;
 
-                if (parameterExpression != null)
+                if (constantExpression != null)
+                {
+                    var instance = Visit(constantExpression);
+                    var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Member);
+                    stack.Push(selection);
+                    return CreateIndexerExpression(
+                        instance,
+                        selection.Name,
+                        selection.ResultType);
+                }
+                else if (parameterExpression != null)
                 {
                     var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Member);
                     stack.Push(selection);
@@ -66,9 +77,11 @@ namespace LinqToGraphQL.Builders
                         selection.Name,
                         selection.ResultType);
                 }
+
+                throw new NotImplementedException();
             }
 
-            throw new NotImplementedException();
+            return node;
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
@@ -86,23 +99,8 @@ namespace LinqToGraphQL.Builders
             {
                 return VisitQueryMethod(node);
             }
-            else
-            {
-                throw new Exception("Unrecognised method.");
-            }
-        }
 
-        private static MethodInfo GetEnumerableSelectMethod()
-        {
-            return (from m in typeof(Enumerable).GetMethods()
-                    where m.Name == nameof(Enumerable.Select)
-                    let p = m.GetParameters()
-                    where p.Length == 2 &&
-                        p[0].ParameterType.IsGenericType &&
-                        p[0].ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>) &&
-                        p[1].ParameterType.IsGenericType &&
-                        p[1].ParameterType.GetGenericTypeDefinition() == typeof(Func<,>)
-                    select m).Single();
+            return node;
         }
 
         private Expression VisitQueryMethod(MethodCallExpression node)
@@ -126,7 +124,7 @@ namespace LinqToGraphQL.Builders
                 
                 if (arg == null)
                 {
-                    throw new NotSupportedException("Only constant expressions supported as field arguments.");
+                    throw new NotSupportedException("Non-constant field arguments not yet supported.");
                 }
 
                 if (arg.Value != null)
@@ -203,18 +201,17 @@ namespace LinqToGraphQL.Builders
             });
         }
 
-        private bool IsNullConstant(Expression arg)
-        {
-            var constant = arg as ConstantExpression;
-            return constant != null && constant.Value == null;
-        }
-
         private bool IsOfType(MethodInfo method)
         {
             return method.DeclaringType == typeof(Queryable) &&
                 method.Name == nameof(Queryable.OfType) &&
                 method.GetParameters().Length == 1 &&
                 method.GetGenericArguments().Length == 1;
+        }
+
+        private bool IsQueryable(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>);
         }
 
         private bool IsSelect(MethodInfo method)
@@ -232,12 +229,6 @@ namespace LinqToGraphQL.Builders
             return typeof(QueryEntity).IsAssignableFrom(member.DeclaringType);
         }
 
-        private IDisposable Push(ISyntaxNode node)
-        {
-            stack.Push(node);
-            return Disposable.Create(() => stack.Pop());
-        }
-
         private Expression CreateIndexerExpression(Expression instance, string argument)
         {
             return Expression.Call(
@@ -248,9 +239,16 @@ namespace LinqToGraphQL.Builders
 
         private Expression CreateIndexerExpression(Expression instance, string argument, Type cast)
         {
-            return Expression.Call(
-                CreateIndexerExpression(instance, argument),
-                ToObject.MakeGenericMethod(cast));
+            if (!IsQueryable(cast))
+            {
+                return Expression.Call(
+                    CreateIndexerExpression(instance, argument),
+                    ToObject.MakeGenericMethod(cast));
+            }
+            else
+            {
+                return CreateIndexerExpression(instance, argument);
+            }
         }
 
         private ParameterExpression RewriteLambdaParameter(ParameterExpression expression)

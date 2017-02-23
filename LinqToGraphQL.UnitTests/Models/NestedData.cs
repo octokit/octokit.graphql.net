@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinqToGraphQL.UnitTests.Models
 {
-    class NestedData
+    class NestedData : QueryEntity
     {
+        public NestedData(IQueryProvider provider)
+            : base(provider)
+        {
+        }
+
         public string Id { get; set; }
         public IQueryable<Simple> Items { get; set; }
     }

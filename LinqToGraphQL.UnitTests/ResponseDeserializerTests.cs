@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using LinqToGraphQL.Builders;
 using LinqToGraphQL.Deserializers;
 using LinqToGraphQL.UnitTests.Models;
@@ -68,12 +67,12 @@ namespace LinqToGraphQL.UnitTests
 
             var data = @"{
     ""data"":{
-    ""nested"": {
-        ""simple"":{
-        ""name"": ""Hello World!"",
-        ""description"": ""Goodbye cruel world""
+        ""nested"": {
+            ""simple"":{
+            ""name"": ""Hello World!"",
+            ""description"": ""Goodbye cruel world""
+            }
         }
-    }
     }
 }";
 
@@ -86,36 +85,38 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal("Goodbye cruel world", result.Description);
         }
 
-        //        [Fact]
-        //        public void Nested_Data()
-        //        {
-        //            var query = new RootQuery()
-        //                .Data
-        //                .Select(x => new
-        //                {
-        //                    x.Id,
-        //                    Items = x.Items.Select(i => i.Name),
-        //                });
+        [Fact]
+        public void Nested_Selects()
+        {
+            var expression = new RootQuery()
+                .Data
+                .Select(x => new
+                {
+                    x.Id,
+                    Items = x.Items.Select(i => i.Name),
+                });
 
-        //            var data = @"{
-        //  ""data"":{
-        //    ""data"": {
-        //      ""id"": ""foo"",
-        //      ""items"": [
-        //        { ""name"": ""item1"" },
-        //        { ""name"": ""item2"" }
-        //      ]
-        //    }
-        //  }
-        //}";
+            var data = @"{
+    ""data"":{
+        ""data"": {
+            ""id"": ""foo"",
+            ""items"": [
+                { ""name"": ""item1"" },
+                { ""name"": ""item2"" }
+            ]
+        }
+    }
+}";
 
-        //            var operation = new QueryBuilder().Build(query.Expression);
-        //            var expectedType = query.GetType().GetGenericArguments()[0];
-        //            dynamic result = new ResponseDeserializer().Deserialize(operation, data);
+            var foo = JObject.Parse(data);
 
-        //            Assert.IsType(expectedType, result);
-        //            Assert.Equal("Hello World!", result.Name);
-        //            Assert.Equal("Goodbye cruel world", result.Description);
-        //        }
+            var operation = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            dynamic result = new ResponseDeserializer().Deserialize(operation, data).Single();
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("foo", result.Id);
+            Assert.Equal(new[] { "item1", "item2" }, result.Items);
+        }
     }
 }

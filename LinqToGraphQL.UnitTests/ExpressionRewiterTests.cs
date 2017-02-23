@@ -62,5 +62,29 @@ namespace LinqToGraphQL.UnitTests
             var operation = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), operation.Expression.ToString());
         }
+
+        [Fact]
+        public void Nested_Selects()
+        {
+            var expression = new RootQuery()
+                .Data
+                .Select(x => new
+                {
+                    x.Id,
+                    Items = x.Items.Select(i => i.Name),
+                });
+
+            Expression<Func<JObject, object>> expected = data =>
+                JsonUtilities.Select(
+                    data["data"]["data"],
+                    x => new
+                    {
+                        Id = x["id"].ToObject<string>(),
+                        Items = JsonUtilities.Select(x["items"], i => i["name"].ToObject<string>())
+                    });
+
+            var operation = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+        }
     }
 }

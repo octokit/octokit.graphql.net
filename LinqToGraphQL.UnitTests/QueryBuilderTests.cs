@@ -71,24 +71,24 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(expected, result);
         }
 
-        //        [Fact]
-        //        public void Nested_Data()
-        //        {
-        //            var expected = "query RootQuery{data{id items{name}}}";
+        [Fact]
+        public void Nested_Selects()
+        {
+            var expected = "query RootQuery{data{id items{name}}}";
 
-        //            var query = new RootQuery()
-        //                .Data
-        //                .Select(x => new
-        //                {
-        //                    x.Id,
-        //                    Items = x.Items.Select(i => i.Name),
-        //                });
+            var expression = new RootQuery()
+                .Data
+                .Select(x => new
+                {
+                    x.Id,
+                    Items = x.Items.Select(i => i.Name),
+                });
 
-        //            var operation = new QueryBuilder().Build(query.Expression);
-        //            var result = new QuerySerializer().Serialize(operation);
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
-        //            Assert.Equal(expected, result);
-        //        }
+            Assert.Equal(expected, result);
+        }
 
         //        [Fact]
         //        public void Inline_Fragment()
