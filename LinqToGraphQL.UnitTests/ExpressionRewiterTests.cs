@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using LinqToGraphQL.Builders;
@@ -18,8 +19,8 @@ namespace LinqToGraphQL.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name);
 
-            Expression<Func<JObject, string>> expected = data =>
-                data["data"]["simple"]["name"].ToObject<string>();
+            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
+                JsonUtilities.Select(data["data"]["simple"], x => x["name"].ToObject<string>());
 
             var operation = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), operation.Expression.ToString());
@@ -33,7 +34,7 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                data["data"]["simple"].JsonSelect(x => new
+                JsonUtilities.Select(data["data"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),
@@ -52,7 +53,7 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                data["data"]["nested"]["simple"].JsonSelect(x => new
+                JsonUtilities.Select(data["data"]["nested"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),

@@ -13,7 +13,7 @@ namespace LinqToGraphQL.Builders
     public class QueryBuilder : ExpressionVisitor
     {
         static readonly MethodInfo Indexer = typeof(JToken).GetMethod("get_Item");
-        static readonly MethodInfo JsonSelect = typeof(JsonExtensions).GetMethod(nameof(JsonExtensions.JsonSelect));
+        static readonly MethodInfo JsonSelect = typeof(JsonUtilities).GetMethod(nameof(JsonUtilities.Select));
         static readonly MethodInfo ToObject = typeof(JToken).GetMethod(nameof(JToken.ToObject), new Type[0]);
         static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
@@ -28,7 +28,7 @@ namespace LinqToGraphQL.Builders
             lambdaParameters = new Dictionary<ParameterExpression, ParameterExpression>();
 
             var rewritten = Visit(query.Expression);
-            var expression = Expression.Lambda<Func<JObject, TResult>>(
+            var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
                 rewritten,
                 RootDataParameter);
             return new Query<TResult>(root, expression);
@@ -92,6 +92,19 @@ namespace LinqToGraphQL.Builders
             }
         }
 
+        private static MethodInfo GetEnumerableSelectMethod()
+        {
+            return (from m in typeof(Enumerable).GetMethods()
+                    where m.Name == nameof(Enumerable.Select)
+                    let p = m.GetParameters()
+                    where p.Length == 2 &&
+                        p[0].ParameterType.IsGenericType &&
+                        p[0].ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>) &&
+                        p[1].ParameterType.IsGenericType &&
+                        p[1].ParameterType.GetGenericTypeDefinition() == typeof(Func<,>)
+                    select m).Single();
+        }
+
         private Expression VisitQueryMethod(MethodCallExpression node)
         {
             var queryEntity = (node.Object as ConstantExpression)?.Value as QueryEntity;
@@ -132,17 +145,24 @@ namespace LinqToGraphQL.Builders
 
             if (lambda != null)
             {
+                var lambdaParameter = RewriteLambdaParameter(lambda.Parameters[0]);
+
                 switch (lambda.Body.NodeType)
                 {
                     case ExpressionType.MemberAccess:
                         var memberExpression = lambda.Body as MemberExpression;
                         var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
-                        return CreateIndexerExpression(source, selection.Name, selection.ResultType);
+
+                        return Expression.Call(
+                            JsonSelect.MakeGenericMethod(memberExpression.Type),
+                            source,
+                            Expression.Lambda(
+                                CreateIndexerExpression(lambdaParameter, selection.Name, selection.ResultType),
+                                lambdaParameter));
 
                     case ExpressionType.New:
                         var newExpression = lambda.Body as NewExpression;
                         var newArguments = new List<Expression>();
-                        var lambdaParameter = RewriteLambdaParameter(lambda.Parameters[0]);
 
                         foreach (var arg in newExpression.Arguments)
                         {
