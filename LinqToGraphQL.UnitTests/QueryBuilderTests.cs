@@ -55,21 +55,21 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(typeof(string), descriptionField.ResultType);
         }
 
-        //        [Fact]
-        //        public void NestedQuery_Select_Multiple_Members()
-        //        {
-        //            var expected = "query RootQuery{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
+        [Fact]
+        public void NestedQuery_Select_Multiple_Members()
+        {
+            var expected = "query RootQuery{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
 
-        //            var query = new RootQuery()
-        //                .Nested("foo")
-        //                .Simple("bar")
-        //                .Select(x => new { x.Name, x.Description });
+            var expression = new RootQuery()
+                .Nested("foo")
+                .Simple("bar")
+                .Select(x => new { x.Name, x.Description });
 
-        //            var operation = new QueryBuilder().Build(query.Expression);
-        //            var result = new QuerySerializer().Serialize(operation);
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
-        //            Assert.Equal(expected, result);
-        //        }
+            Assert.Equal(expected, result);
+        }
 
         //        [Fact]
         //        public void Nested_Data()

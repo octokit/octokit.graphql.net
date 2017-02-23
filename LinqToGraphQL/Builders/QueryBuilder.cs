@@ -16,7 +16,7 @@ namespace LinqToGraphQL.Builders
         static readonly MethodInfo Indexer = typeof(JToken).GetMethod("get_Item");
         static readonly MethodInfo JsonSelect = typeof(JsonExtensions).GetMethod(nameof(JsonExtensions.JsonSelect));
         static readonly MethodInfo ToObject = typeof(JToken).GetMethod(nameof(JToken.ToObject), new Type[0]);
-        static readonly ParameterExpression DataParameter = Expression.Parameter(typeof(JObject), "data");
+        static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
         Stack<ISyntaxNode> stack;
@@ -31,7 +31,7 @@ namespace LinqToGraphQL.Builders
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, TResult>>(
                 rewritten,
-                DataParameter);
+                RootDataParameter);
             return new Query<TResult>(root, expression);
         }
 
@@ -79,27 +79,41 @@ namespace LinqToGraphQL.Builders
         private Expression VisitRootQuery(MethodCallExpression node)
         {
             root = new OperationDefinition(OperationType.Query, node.Object.Type.Name);
-            var selection = new FieldSelection(root, node.Method);
-
             stack.Push(this.root);
-            stack.Push(selection);
-
-            return CreateIndexerExpression(CreateRootExpression(), selection.Name);
+            return CreateIndexerExpression(RootDataParameter, "data");
         }
 
         private Expression VisitQueryMethod(MethodCallExpression node)
         {
             var constant = node.Object as ConstantExpression;
-            var rootQuery = constant?.Value as IRootQuery;
+            var instance = default(Expression);
 
-            if (rootQuery != null)
+            if (constant != null)
             {
-                var result = VisitRootQuery(node);
-                VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
-                return result;
+                var rootQuery = constant.Value as IRootQuery;
+                var queryEntity = constant.Value as QueryEntity;
+
+                if (rootQuery != null)
+                {
+                    instance = VisitRootQuery(node);
+                }
+                else if (queryEntity != null)
+                {
+                    instance = Visit(queryEntity.Expression);
+                }
             }
 
-            throw new NotImplementedException();
+            if (instance == null)
+            {
+                instance = Visit(node.Object);
+            }
+
+            var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Method);
+            stack.Push(selection);
+
+            VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
+
+            return CreateIndexerExpression(instance, selection.Name);
         }
 
         private void VisitQueryMethodArguments(ParameterInfo[] parameters, ReadOnlyCollection<Expression> arguments)
@@ -214,14 +228,6 @@ namespace LinqToGraphQL.Builders
         {
             stack.Push(node);
             return Disposable.Create(() => stack.Pop());
-        }
-
-        private Expression CreateRootExpression()
-        {
-            return Expression.Call(
-                DataParameter,
-                Indexer,
-                Expression.Constant("data"));
         }
 
         private Expression CreateIndexerExpression(Expression instance, string argument)
