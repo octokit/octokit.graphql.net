@@ -31,6 +31,13 @@ namespace LinqToGraphQL.Builders
             return new Query<TResult>(root, expression);
         }
 
+        protected override Expression VisitBinary(BinaryExpression node)
+        {
+            var left = BookmarkAndVisit(node.Left).AddCast(node.Left.Type);
+            var right = BookmarkAndVisit(node.Right).AddCast(node.Right.Type);
+            return node.Update(left, node.Conversion, right);
+        }
+
         protected override Expression VisitConstant(ConstantExpression node)
         {
             if (syntax.Root == null)
@@ -52,13 +59,20 @@ namespace LinqToGraphQL.Builders
             return node;
         }
 
+        protected override Expression VisitLambda<T>(Expression<T> node)
+        {
+            var parameters = Visit(node.Parameters);
+            var body = Visit(node.Body);
+            return Expression.Lambda(body, parameters);
+        }
+
         protected override Expression VisitMember(MemberExpression node)
         {
             if (IsQueryMember(node.Member))
             {
                 var constantExpression = node.Expression as ConstantExpression;
                 var parameterExpression = node.Expression as ParameterExpression;
-
+                
                 if (constantExpression != null)
                 {
                     var instance = Visit(constantExpression);
@@ -73,8 +87,19 @@ namespace LinqToGraphQL.Builders
 
                 throw new NotImplementedException();
             }
+            else
+            {
+                var source = node.Expression as ParameterExpression;
+                ParameterExpression target;
 
-            return node;
+                if (source != null && lambdaParameters.TryGetValue(source, out target))
+                {
+                    var field = syntax.AddField(node.Member);
+                    return target.AddIndexer(field.Name);
+                }
+
+                return node;
+            }
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
@@ -99,10 +124,20 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitParameter(ParameterExpression node)
         {
-            var result = node;
-
-            if (lambdaParameters.TryGetValue(node, out result))
+            if (IsQueryEntity(node.Type))
             {
+                ParameterExpression result;
+
+                if (lambdaParameters.TryGetValue(node, out result))
+                {
+                    return result;
+                }
+                else
+                {
+                    result = Expression.Parameter(typeof(JToken), node.Name);
+                    lambdaParameters.Add(node, result);
+                }
+
                 return result;
             }
 
@@ -156,8 +191,8 @@ namespace LinqToGraphQL.Builders
         private Expression VisitSelectMember(Expression source, LambdaExpression selectExpression)
         {
             var instance = Visit(source);
-            var parameters = RewriteLambdaParameters(selectExpression.Parameters);
-            var rewrittenSelect = PartialEvaluator.Evaluate(syntax, selectExpression, lambdaParameters);
+            var parameters = Visit(selectExpression.Parameters);
+            var rewrittenSelect = (LambdaExpression)Visit(selectExpression);
 
             return Expression.Call(
                 ExpressionMethods.SelectEntityMethod.MakeGenericMethod(rewrittenSelect.ReturnType),
@@ -168,7 +203,7 @@ namespace LinqToGraphQL.Builders
         private Expression VisitSelectNew(Expression source, LambdaExpression selectExpression)
         {
             var instance = Visit(source);
-            var parameters = RewriteLambdaParameters(selectExpression.Parameters);
+            var parameters = Visit(selectExpression.Parameters);
             var newExpression = (NewExpression)selectExpression.Body;
             var newArguments = new List<Expression>();
             var index = 0;
@@ -210,18 +245,20 @@ namespace LinqToGraphQL.Builders
             }
         }
 
-        private IEnumerable<ParameterExpression> RewriteLambdaParameters(IEnumerable<ParameterExpression> parameters)
+        private IEnumerable<ParameterExpression> Visit(ReadOnlyCollection<ParameterExpression> parameters)
         {
-            var result = new List<ParameterExpression>();
-
-            foreach (var expression in parameters)
+            foreach (var p in parameters)
             {
-                var p = Expression.Parameter(typeof(JToken), expression.Name);
-                lambdaParameters.Add(expression, p);
-                result.Add(p);
+                yield return (ParameterExpression)VisitParameter(p);
             }
+        }
 
-            return result;
+        private Expression BookmarkAndVisit(Expression left)
+        {
+            using (syntax.Bookmark())
+            {
+                return Visit(left);
+            }
         }
 
         private static Type GetQueryableResultType(Type type)
@@ -257,7 +294,12 @@ namespace LinqToGraphQL.Builders
 
         private static bool IsQueryMember(MemberInfo member)
         {
-            return typeof(QueryEntity).IsAssignableFrom(member.DeclaringType);
+            return IsQueryEntity(member.DeclaringType);
+        }
+
+        private static bool IsQueryEntity(Type type)
+        {
+            return typeof(QueryEntity).IsAssignableFrom(type);
         }
     }
 }

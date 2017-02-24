@@ -79,17 +79,13 @@ namespace LinqToGraphQL.Syntax
                 {
                     throw new Exception("You must reset to the checkpoint before calling GetAddedField.");
                 }
-                else if (tree.head.Selections.Count > selectionCount + 1)
+                else if (tree.head.Selections.Count == selectionCount + 1)
                 {
-                    throw new Exception("Multiple selections were added.");
-                }
-                else if (tree.head.Selections.Count == selectionCount)
-                {
-                    return null;
+                    return tree.head.Selections[selectionCount] as FieldSelection;
                 }
                 else
                 {
-                    return tree.head.Selections[selectionCount] as FieldSelection;
+                    return null;
                 }
             }
         }

@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\PartialEvaluator.cs" />
     <Compile Include="Builders\QueryBuilder.cs" />
     <Compile Include="Builders\QuerySerializer.cs" />
     <Compile Include="Builders\StringExtensions.cs" />
