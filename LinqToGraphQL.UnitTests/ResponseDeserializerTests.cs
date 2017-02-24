@@ -108,7 +108,7 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
-        public void NestedQuery_Select_Multiple_Members_To_Named_Class()
+        public void NestedQuery_Select_Multiple_Members_As_Ctor_Parameters()
         {
             var expression = new RootQuery()
                 .Nested("foo")
@@ -136,7 +136,7 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
-        public void NestedQuery_Select_Multiple_Members_As_Ctor_Parameters()
+        public void NestedQuery_Select_Multiple_Members_To_Named_Class()
         {
             var expression = new RootQuery()
                 .Nested("foo")
