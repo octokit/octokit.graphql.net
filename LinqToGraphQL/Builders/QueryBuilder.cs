@@ -39,12 +39,17 @@ namespace LinqToGraphQL.Builders
             if (stack.Count == 0)
             {
                 var rootQuery = node.Value as IRootQuery;
+                var queryEntity = node.Value as QueryEntity;
 
                 if (rootQuery != null)
                 {
                     root = new OperationDefinition(OperationType.Query, node.Type.Name);
                     stack.Push(this.root);
                     return CreateIndexerExpression(RootDataParameter, "data");
+                }
+                else if (queryEntity != null)
+                {
+                    return Visit(queryEntity.Expression);
                 }
             }
 
