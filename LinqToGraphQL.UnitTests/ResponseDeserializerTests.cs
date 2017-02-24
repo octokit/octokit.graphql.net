@@ -73,8 +73,8 @@ namespace LinqToGraphQL.UnitTests
   }
 }";
 
-            var operation = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(operation, data);
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal(new[] { "foo", "bar" }, result);
         }
@@ -98,9 +98,9 @@ namespace LinqToGraphQL.UnitTests
     }
 }";
 
-            var operation = new QueryBuilder().Build(expression);
+            var query = new QueryBuilder().Build(expression);
             var expectedType = expression.GetType().GetGenericArguments()[0];
-            dynamic result = new ResponseDeserializer().Deserialize(operation, data).Single();
+            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result.Name);
@@ -132,9 +132,9 @@ namespace LinqToGraphQL.UnitTests
 
             var foo = JObject.Parse(data);
 
-            var operation = new QueryBuilder().Build(expression);
+            var query = new QueryBuilder().Build(expression);
             var expectedType = expression.GetType().GetGenericArguments()[0];
-            dynamic result = new ResponseDeserializer().Deserialize(operation, data).Single();
+            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.IsType(expectedType, result);
             Assert.Equal("foo", result.Id);

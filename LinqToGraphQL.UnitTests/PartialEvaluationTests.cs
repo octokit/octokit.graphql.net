@@ -11,7 +11,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void SimpleQuery_Select_Single_Member_Append_String()
         {
-            var query = new RootQuery()
+            var expression = new RootQuery()
                 .Simple("foo")
                 .Select(x => x.Name + " World!");
 
@@ -23,9 +23,33 @@ namespace LinqToGraphQL.UnitTests
   }
 }";
 
-            var operation = new QueryBuilder().Build(query);
-            var expectedType = query.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(operation, data).Single();
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("Hello World!", result);
+        }
+
+        [Fact]
+        public void SimpleQuery_Select_Append_Two_Members()
+        {
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + x.Description);
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""Hello"",
+      ""description"": "" World!""
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);

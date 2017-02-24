@@ -17,10 +17,9 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => x.Name);
 
             var query = new QueryBuilder().Build(expression);
-            var operation = query.OperationDefinition;
-            var deserialized = new QuerySerializer().Serialize(operation);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
-            Assert.Equal(expected, deserialized);
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -33,10 +32,39 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             var query = new QueryBuilder().Build(expression);
-            var operation = query.OperationDefinition;
-            var deserialized = new QuerySerializer().Serialize(operation);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
-            Assert.Equal(expected, deserialized);
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void SimpleQuery_Select_Single_Member_Append_String()
+        {
+            var expected = "query RootQuery{simple(arg1:\"foo\"){name}}";
+
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + " World!");
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void SimpleQuery_Select_Append_Two_Members()
+        {
+            var expected = "query RootQuery{simple(arg1:\"foo\"){name description}}";
+
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + x.Description);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -49,10 +77,9 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => x.Id);
 
             var query = new QueryBuilder().Build(expression);
-            var operation = query.OperationDefinition;
-            var deserialized = new QuerySerializer().Serialize(operation);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
-            Assert.Equal(expected, deserialized);
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -104,8 +131,8 @@ namespace LinqToGraphQL.UnitTests
                     Items = x.Items.Select(i => i.Name),
                 });
 
-            var operation = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(operation.OperationDefinition);
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
             Assert.Equal(expected, result);
         }
@@ -129,8 +156,8 @@ namespace LinqToGraphQL.UnitTests
                     Bar = x.Simple("bar", 2).Select(i => i.Name),
                 });
 
-            var operation = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer(4).Serialize(operation.OperationDefinition);
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
 
             Assert.Equal(expected, result);
         }

@@ -22,8 +22,8 @@ namespace LinqToGraphQL.UnitTests
             Expression<Func<JObject, IEnumerable<string>>> expected = data =>
                 ExpressionMethods.SelectEntity(data["data"]["simple"], x => x["name"].ToObject<string>());
 
-            var operation = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
         [Fact]
@@ -40,8 +40,8 @@ namespace LinqToGraphQL.UnitTests
                     Description = x["description"].ToObject<string>(),
                 });
 
-            var operation = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
         [Fact]
@@ -54,8 +54,8 @@ namespace LinqToGraphQL.UnitTests
             Expression<Func<JObject, IEnumerable<string>>> expected = data =>
                 ExpressionMethods.SelectEntity(data["data"]["data"], x => x["id"].ToObject<string>());
 
-            var operation = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
         [Fact]
@@ -73,8 +73,8 @@ namespace LinqToGraphQL.UnitTests
                     Description = x["description"].ToObject<string>(),
                 });
 
-            var operation = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
         [Fact]
@@ -97,8 +97,8 @@ namespace LinqToGraphQL.UnitTests
                         Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
                     });
 
-            var operation = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
         [Fact]
@@ -122,8 +122,8 @@ namespace LinqToGraphQL.UnitTests
                         Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
                     });
 
-            var operation = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
     }
 }
