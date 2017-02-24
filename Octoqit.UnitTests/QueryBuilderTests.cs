@@ -90,6 +90,55 @@ namespace Octoqit.UnitTests
         }
 
         [Fact]
+        public void RepositoryOwner_Repositories_Query_Viewer()
+        {
+            var expected = @"query RootQuery {
+  repositoryOwner(login: ""foo"") {
+    repositories(first: 30) {
+      edges {
+        node {
+          id
+          name
+          owner {
+            login
+          }
+          isFork
+          isPrivate
+        }
+      }
+    }
+  }
+  viewer {
+    login
+  }
+}";
+
+            var expression = new RootQuery()
+                .Select(root => root
+                    .RepositoryOwner("foo")
+                    .Repositories(30, null, null, null)
+                    .Edges.Select(x => x.Node)
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Name,
+                        Owner = x.Owner.Select(o => new
+                        {
+                            o.Login,
+                            o.AvatarUrl,
+                        }),
+                        x.IsFork,
+                        x.IsPrivate,
+                        root.Viewer.Login,
+                    }));
+
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void User_Email_Query()
         {
             var expected = @"query RootQuery {
