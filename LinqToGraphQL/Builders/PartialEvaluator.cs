@@ -30,8 +30,8 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            var left = Visit(node.Left).AddCast(node.Left.Type);
-            var right = Visit(node.Right).AddCast(node.Right.Type);
+            var left = BookmarkAndVisit(node.Left).AddCast(node.Left.Type);
+            var right = BookmarkAndVisit(node.Right).AddCast(node.Right.Type);
             return node.Update(left, node.Conversion, right);
         }
 
@@ -54,6 +54,14 @@ namespace LinqToGraphQL.Builders
             }
 
             return node;
+        }
+
+        private Expression BookmarkAndVisit(Expression left)
+        {
+            using (syntax.Bookmark())
+            {
+                return Visit(left);
+            }
         }
 
         private ParameterExpression RewriteParameter(ParameterExpression parameter)

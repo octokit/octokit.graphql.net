@@ -179,7 +179,7 @@ namespace LinqToGraphQL.Builders
                 var memberName = memberExpression != null ?
                     SelectionSet.GetIdentifier(memberExpression.Member) :
                     SelectionSet.GetIdentifier(newExpression.Members[index]);
-                var checkpoint = syntax.Checkpoint();
+                var checkpoint = syntax.Bookmark();
 
                 using (checkpoint)
                 {

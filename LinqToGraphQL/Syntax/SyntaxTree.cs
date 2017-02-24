@@ -40,15 +40,15 @@ namespace LinqToGraphQL.Syntax
             return result;
         }
 
-        public CheckpointState Checkpoint() => new CheckpointState(this);
+        public BookmarkState Bookmark() => new BookmarkState(this);
 
-        public class CheckpointState : IDisposable
+        public class BookmarkState : IDisposable
         {
             private SyntaxTree tree;
             private ISelectionSet reset;
             private int selectionCount;
 
-            internal CheckpointState(SyntaxTree tree)
+            internal BookmarkState(SyntaxTree tree)
             {
                 this.tree = tree;
                 reset = tree.head;
