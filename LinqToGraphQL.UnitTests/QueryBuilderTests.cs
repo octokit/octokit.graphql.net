@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using LinqToGraphQL.Builders;
-using LinqToGraphQL.Syntax;
 using LinqToGraphQL.UnitTests.Models;
 using Xunit;
 
@@ -23,12 +21,6 @@ namespace LinqToGraphQL.UnitTests
             var deserialized = new QuerySerializer().Serialize(operation);
 
             Assert.Equal(expected, deserialized);
-
-            var simpleField = (FieldSelection)operation.Selections[0];
-            var nameField = (FieldSelection)simpleField.Selections[0];
-
-            Assert.Null(simpleField.ResultType);
-            Assert.Equal(typeof(string), nameField.ResultType);
         }
 
         [Fact]
@@ -45,14 +37,22 @@ namespace LinqToGraphQL.UnitTests
             var deserialized = new QuerySerializer().Serialize(operation);
 
             Assert.Equal(expected, deserialized);
+        }
 
-            var simpleField = (FieldSelection)operation.Selections[0];
-            var nameField = (FieldSelection)simpleField.Selections[0];
-            var descriptionField = (FieldSelection)simpleField.Selections[1];
+        [Fact]
+        public void Data_Select_Single_Member()
+        {
+            var expected = "query RootQuery{data{id}}";
 
-            Assert.Null(simpleField.ResultType);
-            Assert.Equal(typeof(string), nameField.ResultType);
-            Assert.Equal(typeof(string), descriptionField.ResultType);
+            var expression = new RootQuery()
+                .Data
+                .Select(x => x.Id);
+
+            var query = new QueryBuilder().Build(expression);
+            var operation = query.OperationDefinition;
+            var deserialized = new QuerySerializer().Serialize(operation);
+
+            Assert.Equal(expected, deserialized);
         }
 
         [Fact]

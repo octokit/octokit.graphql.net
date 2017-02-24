@@ -58,6 +58,28 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
+        public void Data_Select_Single_Member()
+        {
+            var expression = new RootQuery()
+                .Data
+                .Select(x => x.Id);
+
+            var data = @"{
+  ""data"":{
+    ""data"":[
+      { ""id"": ""foo"" },
+      { ""id"": ""bar"" }
+    ]
+  }
+}";
+
+            var operation = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(operation, data);
+
+            Assert.Equal(new[] { "foo", "bar" }, result);
+        }
+
+        [Fact]
         public void NestedQuery_Select_Multiple_Members()
         {
             var expression = new RootQuery()

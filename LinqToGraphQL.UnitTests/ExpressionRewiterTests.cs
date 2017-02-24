@@ -45,6 +45,20 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
+        public void Data_Select_Single_Member()
+        {
+            var expression = new RootQuery()
+                .Data
+                .Select(x => x.Id);
+
+            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
+                JsonUtilities.Select(data["data"]["data"], x => x["id"].ToObject<string>());
+
+            var operation = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), operation.Expression.ToString());
+        }
+
+        [Fact]
         public void NestedQuery_Select_Multiple_Members()
         {
             var expression = new RootQuery()
