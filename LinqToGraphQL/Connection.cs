@@ -23,7 +23,7 @@ namespace LinqToGraphQL
             this.token = token;
         }
 
-        public async Task<T> Run<T>(IQueryable<T> query)
+        public async Task<IEnumerable<T>> Run<T>(IQueryable<T> query)
         {
             var builder = new QueryBuilder();
             var serializer = new QuerySerializer(2);
@@ -35,8 +35,7 @@ namespace LinqToGraphQL
             var content = new StringContent(payloadString);
             var response = await httpClient.PostAsync(uri, content);
             var data = await response.Content.ReadAsStringAsync();
-            var result = deserializer.Deserialize(operation, data);
-            return (T)result;
+            return deserializer.Deserialize(operation, data);
         }
 
         private HttpClient CreateHttpClient()

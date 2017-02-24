@@ -8,14 +8,13 @@ namespace Sandbox
 {
     class Program
     {
-        const string Token = "YOUR_TOKEN_HERE";
-
         static void Main(string[] args)
         {
-            RunViewerQuery().Wait();
+            RunRepositoryQuery(args[0]).Wait();
+            Console.ReadKey();
         }
 
-        private static async Task RunRepositoryQuery()
+        private static async Task RunRepositoryQuery(string token)
         {
             var query = new RootQuery()
                 .RepositoryOwner("grokys")
@@ -33,8 +32,8 @@ namespace Sandbox
                     x.IsPrivate,
                 });
 
-            var connection = new Connection("https://api.github.com/graphql", Token);
-            var result = await connection.Run(query);
+            var connection = new Connection("https://api.github.com/graphql", token);
+            var result = (await connection.Run(query)).Single();
 
             Console.WriteLine("Id: " + result.Id);
             Console.WriteLine("Name: " + result.Name);
@@ -43,11 +42,11 @@ namespace Sandbox
             Console.WriteLine("IsPrivate: " + result.IsPrivate);
         }
 
-        private static async Task RunViewerQuery()
+        private static async Task RunViewerQuery(string token)
         {
             var query = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
-            var connection = new Connection("https://api.github.com/graphql", Token);
-            var result = await connection.Run(query);
+            var connection = new Connection("https://api.github.com/graphql", token);
+            var result = (await connection.Run(query)).Single();
 
             Console.WriteLine("Login: " + result.Login);
             Console.WriteLine("Email: " + result.Email);
