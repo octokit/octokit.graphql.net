@@ -95,13 +95,13 @@ namespace Octoqit.UnitTests
             var expected = @"query RootQuery {
   search(type: USER, query: ""foo"", first: 1) {
     userCount
-    edges {
+    user: edges {
       node {
         ... on User {
           id
           login
-          avatarURL
-          websiteURL
+          avatarUrl: avatarURL
+          websiteUrl: websiteURL
           name
         }
       }

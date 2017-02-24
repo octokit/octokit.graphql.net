@@ -171,6 +171,8 @@ namespace LinqToGraphQL.Builders
             var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
             var lambdaParameter = RewriteLambdaParameter(selectExpression.Parameters[0]);
 
+            stack.Push(selection);
+
             return Expression.Call(
                 ExpressionMethods.SelectEntityMethod.MakeGenericMethod(typeof(JToken)),
                 instance,
@@ -189,18 +191,18 @@ namespace LinqToGraphQL.Builders
 
             foreach (var arg in newExpression.Arguments)
             {
-                var memberName = newExpression.Members[index].Name.ToCamelCase();
+                var memberName = SelectionSet.GetIdentifier(newExpression.Members[index]);
 
                 using (Checkpoint())
                 {
                     newArguments.Add(Cast(Visit(arg), arg.Type));
+                }
 
-                    var field = (FieldSelection)stack.Peek();
+                var field = (FieldSelection)((ISelectionSet)stack.Peek()).Selections.Last();
 
-                    if (field.Name != memberName)
-                    {
-                        field.Alias = memberName;
-                    }
+                if (field.Name != memberName)
+                {
+                    field.Alias = memberName;
                 }
 
                 ++index;

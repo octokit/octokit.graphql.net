@@ -17,7 +17,7 @@ namespace LinqToGraphQL.Syntax
         public Type ResultType { get; set; }
         public IList<ISyntaxNode> Selections { get; }
 
-        protected static string GetIdentifier(MemberInfo member)
+        public static string GetIdentifier(MemberInfo member)
         {
             var attr = member.GetCustomAttribute<GraphQLIdentifierAttribute>();
             return attr != null ? attr.Identifier : member.Name.ToCamelCase();
