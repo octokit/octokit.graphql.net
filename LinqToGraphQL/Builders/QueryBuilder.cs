@@ -68,7 +68,7 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (IsQueryMember(node.Member))
+            if (IsQueryEntityMember(node.Member))
             {
                 var constantExpression = node.Expression as ConstantExpression;
                 var parameterExpression = node.Expression as ParameterExpression;
@@ -102,6 +102,17 @@ namespace LinqToGraphQL.Builders
             }
         }
 
+        protected override MemberAssignment VisitMemberAssignment(MemberAssignment node)
+        {
+            if (IsQueryEntityMember(node.Expression))
+            {
+                var expression = Visit(node.Expression).AddCast(node.Expression.Type);
+                return Expression.Bind(node.Member, expression);
+            }
+
+            return node;
+        }
+
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (IsSelect(node.Method))
@@ -114,12 +125,37 @@ namespace LinqToGraphQL.Builders
                 syntax.AddInlineFragment(node.Method.GetGenericArguments()[0]);
                 return result;
             }
-            else if (IsQueryMember(node.Method))
+            else if (IsQueryEntityMember(node.Method))
             {
                 return VisitQueryMethod(node);
             }
 
             return node;
+        }
+
+        protected override Expression VisitNew(NewExpression node)
+        {
+            var newArguments = new List<Expression>();
+            var index = 0;
+
+            foreach (var arg in node.Arguments)
+            {
+                var memberExpression = arg as MemberExpression;
+                var member = memberExpression?.Member ?? node.Members[index];
+                var checkpoint = syntax.Bookmark();
+
+                using (checkpoint)
+                {
+                    newArguments.Add(Visit(arg).AddCast(arg.Type));
+                }
+
+                checkpoint.GetAddedField()?.SetAlias(member);
+                ++index;
+            }
+
+            return node.Members != null ?
+                Expression.New(node.Constructor, newArguments, node.Members) :
+                Expression.New(node.Constructor, newArguments);
         }
 
         protected override Expression VisitParameter(ParameterExpression node)
@@ -204,24 +240,7 @@ namespace LinqToGraphQL.Builders
         {
             var instance = Visit(source);
             var parameters = Visit(selectExpression.Parameters);
-            var newExpression = (NewExpression)selectExpression.Body;
-            var newArguments = new List<Expression>();
-            var index = 0;
-
-            foreach (var arg in newExpression.Arguments)
-            {
-                var memberExpression = arg as MemberExpression;
-                var member = memberExpression?.Member ?? newExpression.Members[index];
-                var checkpoint = syntax.Bookmark();
-
-                using (checkpoint)
-                {
-                    newArguments.Add(Visit(arg).AddCast(arg.Type));
-                }
-
-                checkpoint.GetAddedField()?.SetAlias(member);
-                ++index;
-            }
+            var newExpression = (NewExpression)Visit(selectExpression.Body);
 
             var sourceQueryableResultType = GetQueryableResultType(instance.Type);
 
@@ -230,18 +249,14 @@ namespace LinqToGraphQL.Builders
                 return Expression.Call(
                     ExpressionMethods.SelectEntityMethod.MakeGenericMethod(newExpression.Constructor.DeclaringType),
                     instance,
-                    Expression.Lambda(
-                        Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
-                        parameters));
+                    Expression.Lambda(newExpression, parameters));
             }
             else
             {
                 return Expression.Call(
                     ExpressionMethods.SelectMethod.MakeGenericMethod(newExpression.Constructor.DeclaringType),
                     instance,
-                    Expression.Lambda(
-                        Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
-                        parameters));
+                    Expression.Lambda(newExpression, parameters));
             }
         }
 
@@ -292,14 +307,20 @@ namespace LinqToGraphQL.Builders
                 method.GetParameters().Length == 2);
         }
 
-        private static bool IsQueryMember(MemberInfo member)
-        {
-            return IsQueryEntity(member.DeclaringType);
-        }
-
         private static bool IsQueryEntity(Type type)
         {
             return typeof(QueryEntity).IsAssignableFrom(type);
+        }
+
+        private static bool IsQueryEntityMember(Expression expression)
+        {
+            var memberExpression = expression as MemberExpression;
+            return memberExpression != null && IsQueryEntityMember(memberExpression.Member);
+        }
+
+        private static bool IsQueryEntityMember(MemberInfo member)
+        {
+            return IsQueryEntity(member.DeclaringType);
         }
     }
 }
