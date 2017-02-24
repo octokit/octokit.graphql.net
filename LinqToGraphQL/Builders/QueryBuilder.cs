@@ -238,31 +238,22 @@ namespace LinqToGraphQL.Builders
         {
             var lambda = selectExpression.GetLambda();
             var instance = Visit(source);
-            var rewrittenSelect = (LambdaExpression)Visit(lambda);
-            var parameters = Visit(lambda.Parameters);
+            var select = (LambdaExpression)Visit(lambda);
             var isQueryable = GetQueryableResultType(instance.Type) != null;
 
             if (!isQueryable)
             {
                 return Expression.Call(
-                    ExpressionMethods.SelectEntityMethod.MakeGenericMethod(rewrittenSelect.ReturnType),
+                    ExpressionMethods.SelectEntityMethod.MakeGenericMethod(select.ReturnType),
                     instance,
-                    rewrittenSelect);
+                    select);
             }
             else
             {
                 return Expression.Call(
-                    ExpressionMethods.SelectMethod.MakeGenericMethod(rewrittenSelect.ReturnType),
+                    ExpressionMethods.SelectMethod.MakeGenericMethod(select.ReturnType),
                     instance,
-                    rewrittenSelect);
-            }
-        }
-
-        private IEnumerable<ParameterExpression> Visit(ReadOnlyCollection<ParameterExpression> parameters)
-        {
-            foreach (var p in parameters)
-            {
-                yield return (ParameterExpression)VisitParameter(p);
+                    select);
             }
         }
 
@@ -309,13 +300,6 @@ namespace LinqToGraphQL.Builders
                 method.Name == nameof(Queryable.OfType) &&
                 method.GetParameters().Length == 1 &&
                 method.GetGenericArguments().Length == 1;
-        }
-
-        private static bool IsJsonSelect(MethodInfo method)
-        {
-            return (method.DeclaringType == typeof(ExpressionMethods) &&
-                method.Name == nameof(ExpressionMethods.SelectEntity) &&
-                method.GetParameters().Length == 2);
         }
 
         private static bool IsSelect(MethodInfo method)
