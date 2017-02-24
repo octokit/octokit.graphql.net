@@ -191,7 +191,10 @@ namespace LinqToGraphQL.Builders
 
             foreach (var arg in newExpression.Arguments)
             {
-                var memberName = SelectionSet.GetIdentifier(newExpression.Members[index]);
+                var memberExpression = arg as MemberExpression;
+                var memberName = memberExpression != null ?
+                    SelectionSet.GetIdentifier(memberExpression.Member) :
+                    SelectionSet.GetIdentifier(newExpression.Members[index]);
 
                 using (Checkpoint())
                 {

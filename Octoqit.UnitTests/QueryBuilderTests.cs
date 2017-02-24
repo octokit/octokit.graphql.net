@@ -100,8 +100,8 @@ namespace Octoqit.UnitTests
         ... on User {
           id
           login
-          avatarUrl: avatarURL
-          websiteUrl: websiteURL
+          avatarURL
+          websiteURL
           name
         }
       }
