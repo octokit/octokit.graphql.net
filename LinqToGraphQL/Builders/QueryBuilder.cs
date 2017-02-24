@@ -129,8 +129,12 @@ namespace LinqToGraphQL.Builders
             {
                 return VisitQueryMethod(node);
             }
-
-            return node;
+            else
+            {
+                return node.Update(
+                    Visit(node.Object),
+                    VisitMethodArguments(node.Method, node.Arguments));
+            }
         }
 
         protected override Expression VisitNew(NewExpression node)
@@ -178,6 +182,23 @@ namespace LinqToGraphQL.Builders
             }
 
             return node;
+        }
+
+        protected override Expression VisitUnary(UnaryExpression node)
+        {
+            return node.Update(Visit(node.Operand));
+        }
+
+        private IEnumerable<Expression> VisitMethodArguments(MethodInfo method, ReadOnlyCollection<Expression> arguments)
+        {
+            var parameters = method.GetParameters();
+            var index = 0;
+
+            foreach (var arg in arguments)
+            {
+                var parameter = parameters[index++];
+                yield return Visit(arg).AddCast(parameter.ParameterType);
+            }
         }
 
         private Expression VisitQueryMethod(MethodCallExpression node)

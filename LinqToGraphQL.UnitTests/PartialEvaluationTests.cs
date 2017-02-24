@@ -9,7 +9,7 @@ namespace LinqToGraphQL.UnitTests
     public class PartialEvaluationTests
     {
         [Fact]
-        public void SimpleQuery_Select_Single_Member_Append_String()
+        public void Append_String()
         {
             var expression = new RootQuery()
                 .Simple("foo")
@@ -32,7 +32,78 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
-        public void SimpleQuery_Select_Append_Two_Members()
+        public void Append_Number()
+        {
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + x.Number);
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""Hello"",
+      ""number"": 5
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("Hello5", result);
+        }
+
+        [Fact]
+        public void Append_Closure()
+        {
+            var world = " World!";
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + world);
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""Hello"",
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("Hello World!", result);
+        }
+
+        [Fact]
+        public void Call_Method()
+        {
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => Greet(x.Name));
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""World!"",
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("Hello World!", result);
+        }
+
+        [Fact]
+        public void Append_Two_Members()
         {
             var expression = new RootQuery()
                 .Simple("foo")
@@ -56,7 +127,7 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
-        public void SimpleQuery_Select_Append_Two_Identical_Members()
+        public void Append_Two_Identical_Members()
         {
             var expression = new RootQuery()
                 .Simple("foo")
@@ -77,6 +148,11 @@ namespace LinqToGraphQL.UnitTests
 
             Assert.IsType(expectedType, result);
             Assert.Equal("HelloHello", result);
+        }
+
+        private static string Greet(string s)
+        {
+            return "Hello " + s;
         }
     }
 }
