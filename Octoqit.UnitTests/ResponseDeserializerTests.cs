@@ -53,6 +53,91 @@ namespace Octoqit.UnitTests
             Assert.Equal(false, result.IsPrivate);
         }
 
+
+        [Fact]
+        public void RepositoryOwner_Repositories_Query()
+        {
+            var expression = new RootQuery()
+                .RepositoryOwner(login: "foo")
+                .Repositories(first: 30)
+                .Edges
+                .Select(x => x.Node)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    Owner = x.Owner.Select(o => new
+                    {
+                        o.Login
+                    }),
+                    x.IsFork,
+                    x.IsPrivate,
+                });
+
+            string data = @"{
+  ""data"": {
+    ""repositoryOwner"": {
+      ""repositories"": {
+        ""edges"": [
+          {
+            ""node"": {
+              ""id"": ""1234"",
+              ""name"": ""LinqToGraphQL"",
+              ""owner"": {
+                ""login"": ""grokys""
+              },
+              ""isFork"": false,
+              ""isPrivate"": false
+            }
+          },
+          {
+            ""node"": {
+              ""id"": ""2345"",
+              ""name"": ""Avalonia"",
+              ""owner"": {
+                ""login"": ""grokys""
+              },
+              ""isFork"": true,
+              ""isPrivate"": false
+            }
+          }
+        ]
+      }
+    }
+  }
+}";
+            var query = new QueryBuilder().Build(expression);
+            dynamic result = new ResponseDeserializer().Deserialize(query, data);
+
+            Assert.Equal(
+                new[]
+                {
+                    new
+                    {
+                        Id = "1234",
+                        Name = "LinqToGraphQL",
+                        Owner = new
+                        {
+                            Login = "grokys",
+                        },
+                        IsFork = false,
+                        IsPrivate = false,
+                    },
+                    new
+                    {
+                        Id = "2345",
+                        Name = "Avalonia",
+                        Owner = new
+                        {
+                            Login = "grokys",
+                        },
+                        IsFork = true,
+                        IsPrivate = false,
+                    },
+                },
+                result);
+        }
+
         [Fact]
         public void Viewer_Email()
         {
