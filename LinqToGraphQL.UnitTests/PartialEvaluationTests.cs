@@ -24,10 +24,8 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);
         }
 
@@ -48,10 +46,8 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("Hello5", result);
         }
 
@@ -72,10 +68,8 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);
         }
 
@@ -95,10 +89,8 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);
         }
 
@@ -119,10 +111,8 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);
         }
 
@@ -143,11 +133,31 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("HelloHello", result);
+        }
+
+        [Fact]
+        public void Cast_Value()
+        {
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => (float)x.Number);
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""number"": ""12"",
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.IsType(typeof(float), result);
+            Assert.Equal(12, result);
         }
 
         private static string Greet(string s)
