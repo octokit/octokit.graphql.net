@@ -61,7 +61,7 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
-            var parameters = Visit(node.Parameters);
+            var parameters = RewriteParameters(node.Parameters);
             var body = Visit(node.Body);
             return Expression.Lambda(body, parameters);
         }
@@ -178,15 +178,9 @@ namespace LinqToGraphQL.Builders
                 }
                 else
                 {
-                    var rewritten = Expression.Parameter(typeof(JToken), node.Name);
-                    result = new LambdaParameter(
-                        node,
-                        rewritten,
-                        syntax.Head);
-                    lambdaParameters.Add(node, result);
+                    throw new Exception(
+                        "Internal Error: encountered a lambda parameter that hasn't previously been rewritten.");
                 }
-
-                return result.Rewritten;
             }
 
             return node;
@@ -243,49 +237,24 @@ namespace LinqToGraphQL.Builders
         private Expression VisitSelect(Expression source, Expression selectExpression)
         {
             var lambda = selectExpression.GetLambda();
-
-            switch (lambda.Body.NodeType)
-            {
-                case ExpressionType.New:
-                    return VisitSelectNew(source, lambda);
-                default:
-                    return VisitSelectMember(source, lambda);
-            }
-        }
-
-        private Expression VisitSelectMember(Expression source, LambdaExpression selectExpression)
-        {
             var instance = Visit(source);
-            var parameters = Visit(selectExpression.Parameters);
-            var rewrittenSelect = (LambdaExpression)Visit(selectExpression);
+            var rewrittenSelect = (LambdaExpression)Visit(lambda);
+            var parameters = Visit(lambda.Parameters);
+            var isQueryable = GetQueryableResultType(instance.Type) != null;
 
-            return Expression.Call(
-                ExpressionMethods.SelectEntityMethod.MakeGenericMethod(rewrittenSelect.ReturnType),
-                instance,
-                rewrittenSelect);
-        }
-
-        private Expression VisitSelectNew(Expression source, LambdaExpression selectExpression)
-        {
-            var instance = Visit(source);
-            var parameters = Visit(selectExpression.Parameters);
-            var newExpression = (NewExpression)Visit(selectExpression.Body);
-
-            var sourceQueryableResultType = GetQueryableResultType(instance.Type);
-
-            if (sourceQueryableResultType == null)
+            if (!isQueryable)
             {
                 return Expression.Call(
-                    ExpressionMethods.SelectEntityMethod.MakeGenericMethod(newExpression.Constructor.DeclaringType),
+                    ExpressionMethods.SelectEntityMethod.MakeGenericMethod(rewrittenSelect.ReturnType),
                     instance,
-                    Expression.Lambda(newExpression, parameters));
+                    rewrittenSelect);
             }
             else
             {
                 return Expression.Call(
-                    ExpressionMethods.SelectMethod.MakeGenericMethod(newExpression.Constructor.DeclaringType),
+                    ExpressionMethods.SelectMethod.MakeGenericMethod(rewrittenSelect.ReturnType),
                     instance,
-                    Expression.Lambda(newExpression, parameters));
+                    rewrittenSelect);
             }
         }
 
@@ -295,6 +264,24 @@ namespace LinqToGraphQL.Builders
             {
                 yield return (ParameterExpression)VisitParameter(p);
             }
+        }
+
+        private IEnumerable<ParameterExpression> RewriteParameters(IEnumerable<ParameterExpression> parameters)
+        {
+            var result = new List<ParameterExpression>();
+
+            foreach (var parameter in parameters)
+            {
+                var rewritten = Expression.Parameter(typeof(JToken), parameter.Name);
+                var p = new LambdaParameter(
+                    parameter,
+                    rewritten,
+                    syntax.Head);
+                lambdaParameters.Add(parameter, p);
+                result.Add(rewritten);
+            }
+
+            return result;
         }
 
         private Expression BookmarkAndVisit(Expression left)
