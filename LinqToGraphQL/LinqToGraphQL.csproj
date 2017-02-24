@@ -52,6 +52,7 @@
     <Compile Include="Disposable.cs" />
     <Compile Include="FieldQuery.cs" />
     <Compile Include="GraphQLIdentifierAttribute.cs" />
+    <Compile Include="GraphQLQueryException.cs" />
     <Compile Include="IRootQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query.cs" />

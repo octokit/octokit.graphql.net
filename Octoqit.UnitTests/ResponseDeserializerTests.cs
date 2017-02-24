@@ -161,5 +161,40 @@ namespace Octoqit.UnitTests
             Assert.Equal("grokys", result.Login);
             Assert.Equal("grokys@gmail.com", result.Email);
         }
+
+        [Fact]
+        public void Should_Throw_Exception()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""Error message."",
+      ""locations"":[
+        {
+          ""line"":5,
+          ""column"":6
+        }
+      ]
+    }
+  ]
+}";
+            var expression = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var thrown = true;
+
+            try
+            {
+                new ResponseDeserializer().Deserialize(query, data);
+            }
+            catch (GraphQLQueryException e)
+            {
+                thrown = e.Message == "Error message." &&
+                         e.Line == 5 &&
+                         e.Column == 6;
+            }
+
+            Assert.True(thrown);
+        }
     }
 }
