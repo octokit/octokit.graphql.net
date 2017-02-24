@@ -94,6 +94,29 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal("Hello World!", result);
         }
 
+
+        [Fact]
+        public void Append_Method_Call()
+        {
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + Greet("World!"));
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""Wow! "",
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.Equal("Wow! Hello World!", result);
+        }
+
+
         [Fact]
         public void Append_Two_Members()
         {
