@@ -147,5 +147,39 @@ namespace Octoqit.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+
+        [Fact]
+        public void Repository_Details_With_Viewer()
+        {
+            var expected = @"query RootQuery {
+  repositoryOwner(login: ""foo"") {
+    repositories(first: 30) {
+      node {
+        name
+        isPrivate
+      }
+    }
+  }
+  viewer
+}";
+
+            var expression = new RootQuery()
+                .Select(x => x.RepositoryOwner("foo")
+                              .Repositories(30, null, null, null)
+                              .Edges
+                              .Select(y => y.Node)
+                              .Select(y => new
+                              {
+                                  y.Name,
+                                  y.IsPrivate,
+                                  x.Viewer
+                              }));
+
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
     }
 }
