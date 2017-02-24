@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\PartialEvaluator.cs" />
     <Compile Include="Builders\QueryBuilder.cs" />
     <Compile Include="Builders\QuerySerializer.cs" />
     <Compile Include="Builders\StringExtensions.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Syntax\OperationDefinition.cs" />
     <Compile Include="Syntax\OperationType.cs" />
     <Compile Include="Syntax\SelectionSet.cs" />
+    <Compile Include="Syntax\SyntaxTree.cs" />
     <Compile Include="Utilities\ExpressionExtensions.cs" />
     <Compile Include="Utilities\ExpressionTreeDebug.cs" />
     <Compile Include="Utilities\ExpressionMethods.cs" />

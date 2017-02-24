@@ -26,7 +26,7 @@ namespace LinqToGraphQL.Builders
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
-                Cast(rewritten, typeof(IQueryable<TResult>)),
+                rewritten.AddCast(typeof(IQueryable<TResult>)),
                 RootDataParameter);
             return new Query<TResult>(root, expression);
         }
@@ -41,7 +41,7 @@ namespace LinqToGraphQL.Builders
                 if (rootQuery != null)
                 {
                     root = syntax.AddRoot(OperationType.Query, node.Type.Name);
-                    return CreateIndexerExpression(RootDataParameter, "data");
+                    return RootDataParameter.AddIndexer("data");
                 }
                 else if (queryEntity != null)
                 {
@@ -63,16 +63,12 @@ namespace LinqToGraphQL.Builders
                 {
                     var instance = Visit(constantExpression);
                     var field = syntax.AddField(node.Member);
-                    return CreateIndexerExpression(
-                        instance,
-                        field.Name);
+                    return instance.AddIndexer(field.Name);
                 }
                 else if (parameterExpression != null)
                 {
                     var field = syntax.AddField(node.Member);
-                    return CreateIndexerExpression(
-                        Visit(parameterExpression),
-                        field.Name);
+                    return Visit(parameterExpression).AddIndexer(field.Name);
                 }
 
                 throw new NotImplementedException();
@@ -121,7 +117,7 @@ namespace LinqToGraphQL.Builders
 
             VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
 
-            return CreateIndexerExpression(instance, field.Name);
+            return instance.AddIndexer(field.Name);
         }
 
         private void VisitQueryMethodArguments(ParameterInfo[] parameters, ReadOnlyCollection<Expression> arguments)
@@ -150,34 +146,29 @@ namespace LinqToGraphQL.Builders
 
             switch (lambda.Body.NodeType)
             {
-                case ExpressionType.MemberAccess:
-                    return VisitSelectMember(source, lambda);
                 case ExpressionType.New:
                     return VisitSelectNew(source, lambda);
                 default:
-                    throw new NotImplementedException();
+                    return VisitSelectMember(source, lambda);
             }
         }
 
         private Expression VisitSelectMember(Expression source, LambdaExpression selectExpression)
         {
             var instance = Visit(source);
-            var memberExpression = (MemberExpression)selectExpression.Body;
-            var lambdaParameter = RewriteLambdaParameter(selectExpression.Parameters[0]);
-            var field = syntax.AddField(memberExpression.Member);
+            var parameters = RewriteLambdaParameters(selectExpression.Parameters);
+            var rewrittenSelect = PartialEvaluator.Evaluate(syntax, selectExpression, lambdaParameters);
 
             return Expression.Call(
-                ExpressionMethods.SelectEntityMethod.MakeGenericMethod(typeof(JToken)),
+                ExpressionMethods.SelectEntityMethod.MakeGenericMethod(rewrittenSelect.ReturnType),
                 instance,
-                Expression.Lambda(
-                    CreateIndexerExpression(lambdaParameter, field.Name),
-                    lambdaParameter));
+                rewrittenSelect);
         }
 
         private Expression VisitSelectNew(Expression source, LambdaExpression selectExpression)
         {
             var instance = Visit(source);
-            var lambdaParameter = RewriteLambdaParameter(selectExpression.Parameters[0]);
+            var parameters = RewriteLambdaParameters(selectExpression.Parameters);
             var newExpression = (NewExpression)selectExpression.Body;
             var newArguments = new List<Expression>();
             var index = 0;
@@ -192,7 +183,7 @@ namespace LinqToGraphQL.Builders
 
                 using (checkpoint)
                 {
-                    newArguments.Add(Cast(Visit(arg), arg.Type));
+                    newArguments.Add(Visit(arg).AddCast(arg.Type));
                 }
 
                 var field = checkpoint.GetAddedField();
@@ -214,7 +205,7 @@ namespace LinqToGraphQL.Builders
                     instance,
                     Expression.Lambda(
                         Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
-                        lambdaParameter));
+                        parameters));
             }
             else
             {
@@ -223,14 +214,21 @@ namespace LinqToGraphQL.Builders
                     instance,
                     Expression.Lambda(
                         Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
-                        lambdaParameter));
+                        parameters));
             }
         }
 
-        private ParameterExpression RewriteLambdaParameter(ParameterExpression expression)
+        private IEnumerable<ParameterExpression> RewriteLambdaParameters(IEnumerable<ParameterExpression> parameters)
         {
-            var result = Expression.Parameter(typeof(JToken), expression.Name);
-            lambdaParameters.Add(expression, result);
+            var result = new List<ParameterExpression>();
+
+            foreach (var expression in parameters)
+            {
+                var p = Expression.Parameter(typeof(JToken), expression.Name);
+                lambdaParameters.Add(expression, p);
+                result.Add(p);
+            }
+
             return result;
         }
 
@@ -268,49 +266,6 @@ namespace LinqToGraphQL.Builders
         private static bool IsQueryMember(MemberInfo member)
         {
             return typeof(QueryEntity).IsAssignableFrom(member.DeclaringType);
-        }
-
-        private static Expression Cast(Expression expression, Type type)
-        {
-            if (expression.Type == type)
-            {
-                return expression;
-            }
-            else if (typeof(JToken).IsAssignableFrom(expression.Type))
-            {
-                return Expression.Call(
-                    expression,
-                    ExpressionMethods.JTokenToObject.MakeGenericMethod(type));
-            }
-            else if (GetQueryableResultType(type) != null && 
-                     GetQueryableResultType(expression.Type) == typeof(JToken))
-            {
-                var queryType = type.GetGenericArguments()[0];
-                var methodCall = expression as MethodCallExpression;
-
-                if (methodCall != null && IsJsonSelect(methodCall.Method))
-                {
-                    var instance = methodCall.Arguments[0];
-                    var lambda = methodCall.Arguments[1].GetLambda();
-                    return Expression.Call(
-                        ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
-                        instance,
-                        Expression.Lambda(
-                            Cast(lambda.Body, queryType),
-                            lambda.Parameters));
-                }
-            }
-
-            throw new NotImplementedException(
-                $"Don't know how to cast '{expression}' to '{type}'.");
-        }
-
-        private static Expression CreateIndexerExpression(Expression instance, string argument)
-        {
-            return Expression.Call(
-                instance,
-                ExpressionMethods.JTokenIndexer,
-                Expression.Constant(argument));
         }
     }
 }
