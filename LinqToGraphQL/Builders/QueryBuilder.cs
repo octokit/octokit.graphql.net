@@ -16,13 +16,13 @@ namespace LinqToGraphQL.Builders
 
         OperationDefinition root;
         SyntaxTree syntax;
-        Dictionary<ParameterExpression, ParameterExpression> lambdaParameters;
+        Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
 
         public Query<TResult> Build<TResult>(IQueryable<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
-            lambdaParameters = new Dictionary<ParameterExpression, ParameterExpression>();
+            lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
@@ -76,26 +76,30 @@ namespace LinqToGraphQL.Builders
                 if (constantExpression != null)
                 {
                     var instance = Visit(constantExpression);
-                    var field = syntax.AddField(node.Member);
+                    var field = syntax.AddField(syntax.Head, node.Member);
                     return instance.AddIndexer(field.Name);
                 }
                 else if (parameterExpression != null)
                 {
-                    var field = syntax.AddField(node.Member);
+                    var parameter = (ParameterExpression)Visit(parameterExpression);
+                    var parentSelection = GetSelectionSet(parameterExpression);
+                    var field = syntax.AddField(parentSelection, node.Member);
                     return Visit(parameterExpression).AddIndexer(field.Name);
                 }
-
-                throw new NotImplementedException();
+                else
+                {
+                    return Visit(node.Expression);
+                }
             }
             else
             {
                 var source = node.Expression as ParameterExpression;
-                ParameterExpression target;
+                LambdaParameter parameter;
 
-                if (source != null && lambdaParameters.TryGetValue(source, out target))
+                if (source != null && lambdaParameters.TryGetValue(source, out parameter))
                 {
-                    var field = syntax.AddField(node.Member);
-                    return target.AddIndexer(field.Name);
+                    var field = syntax.AddField(parameter.SelectionSet, node.Member);
+                    return parameter.Rewritten.AddIndexer(field.Name);
                 }
 
                 return node;
@@ -166,19 +170,23 @@ namespace LinqToGraphQL.Builders
         {
             if (IsQueryEntity(node.Type))
             {
-                ParameterExpression result;
+                LambdaParameter result;
 
                 if (lambdaParameters.TryGetValue(node, out result))
                 {
-                    return result;
+                    return result.Rewritten;
                 }
                 else
                 {
-                    result = Expression.Parameter(typeof(JToken), node.Name);
+                    var rewritten = Expression.Parameter(typeof(JToken), node.Name);
+                    result = new LambdaParameter(
+                        node,
+                        rewritten,
+                        syntax.Head);
                     lambdaParameters.Add(node, result);
                 }
 
-                return result;
+                return result.Rewritten;
             }
 
             return node;
@@ -205,7 +213,7 @@ namespace LinqToGraphQL.Builders
         {
             var queryEntity = (node.Object as ConstantExpression)?.Value as QueryEntity;
             var instance = Visit(queryEntity?.Expression ?? node.Object);
-            var field = syntax.AddField(node.Method);
+            var field = syntax.AddField(syntax.Head, node.Method);
 
             VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
 
@@ -303,6 +311,11 @@ namespace LinqToGraphQL.Builders
                 type.GetGenericArguments()[0] : null;
         }
 
+        private ISelectionSet GetSelectionSet(ParameterExpression parameter)
+        {
+            return lambdaParameters[parameter].SelectionSet;
+        }
+
         private static bool IsOfType(MethodInfo method)
         {
             return method.DeclaringType == typeof(Queryable) &&
@@ -342,6 +355,23 @@ namespace LinqToGraphQL.Builders
         private static bool IsQueryEntityMember(MemberInfo member)
         {
             return IsQueryEntity(member.DeclaringType);
+        }
+
+        private class LambdaParameter
+        {
+            public LambdaParameter(
+                ParameterExpression original,
+                ParameterExpression rewritten,
+                ISelectionSet selectionSet)
+            {
+                Original = original;
+                Rewritten = rewritten;
+                SelectionSet = selectionSet;
+            }
+
+            public ParameterExpression Original { get; }
+            public ParameterExpression Rewritten { get; }
+            public ISelectionSet SelectionSet { get; }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace LinqToGraphQL.Syntax
         private ISelectionSet head;
 
         public OperationDefinition Root => root;
+        public ISelectionSet Head => head;
 
         public OperationDefinition AddRoot(OperationType type, string name)
         {
@@ -18,24 +19,28 @@ namespace LinqToGraphQL.Syntax
             return root;
         }
 
-        public FieldSelection AddField(MemberInfo member)
+        public FieldSelection AddField(ISelectionSet parent, MemberInfo member)
         {
             var result = new FieldSelection(member);
-            var existing = head.Selections
+            var existing = parent.Selections
                 .OfType<FieldSelection>()
                 .FirstOrDefault(x => x.Name == result.Name && x.Alias == null);
 
             if (existing == null)
             {
-                head.Selections.Add(result);
-                head = result;
-                return result;
+                parent.Selections.Add(result);
             }
             else
             {
-                head = existing;
-                return existing;
+                result = existing;
             }
+
+            if (parent == head)
+            {
+                head = result;
+            }
+
+            return result;
         }
 
         public Argument AddArgument(string name, object value)
