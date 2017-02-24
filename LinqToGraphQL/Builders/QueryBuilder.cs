@@ -14,7 +14,7 @@ namespace LinqToGraphQL.Builders
     {
         static readonly MethodInfo Indexer = typeof(JToken).GetMethod("get_Item");
         static readonly MethodInfo JsonSelect = typeof(JsonUtilities).GetMethod(nameof(JsonUtilities.Select));
-        static readonly MethodInfo ToObject = typeof(JToken).GetMethod(nameof(JToken.ToObject), new Type[0]);
+        static readonly MethodInfo JTokenToObject = typeof(JToken).GetMethod(nameof(JToken.ToObject), new Type[0]);
         static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
@@ -29,7 +29,7 @@ namespace LinqToGraphQL.Builders
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
-                rewritten,
+                Cast(rewritten, typeof(IQueryable<TResult>)),
                 RootDataParameter);
             return new Query<TResult>(root, expression);
         }
@@ -70,8 +70,7 @@ namespace LinqToGraphQL.Builders
                     stack.Push(selection);
                     return CreateIndexerExpression(
                         instance,
-                        selection.Name,
-                        selection.ResultType);
+                        selection.Name);
                 }
                 else if (parameterExpression != null)
                 {
@@ -79,8 +78,7 @@ namespace LinqToGraphQL.Builders
                     stack.Push(selection);
                     return CreateIndexerExpression(
                         Visit(parameterExpression),
-                        selection.Name,
-                        selection.ResultType);
+                        selection.Name);
                 }
 
                 throw new NotImplementedException();
@@ -156,66 +154,67 @@ namespace LinqToGraphQL.Builders
 
         private Expression VisitSelect(Expression source, Expression selectExpression)
         {
-            source = Visit(source);
-
             var lambda = selectExpression.GetLambda();
 
-            if (lambda != null)
+            switch (lambda.Body.NodeType)
             {
-                var lambdaParameter = RewriteLambdaParameter(lambda.Parameters[0]);
+                case ExpressionType.MemberAccess:
+                    return VisitSelectMember(source, lambda);
+                case ExpressionType.New:
+                    return VisitSelectNew(source, lambda);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
-                switch (lambda.Body.NodeType)
+        private Expression VisitSelectMember(Expression source, LambdaExpression selectExpression)
+        {
+            var instance = Visit(source);
+            var memberExpression = (MemberExpression)selectExpression.Body;
+            var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
+            var lambdaParameter = RewriteLambdaParameter(selectExpression.Parameters[0]);
+
+            return Expression.Call(
+                JsonSelect.MakeGenericMethod(typeof(JToken)),
+                instance,
+                Expression.Lambda(
+                    CreateIndexerExpression(lambdaParameter, selection.Name),
+                    lambdaParameter));
+        }
+
+        private Expression VisitSelectNew(Expression source, LambdaExpression selectExpression)
+        {
+            var instance = Visit(source);
+            var lambdaParameter = RewriteLambdaParameter(selectExpression.Parameters[0]);
+            var newExpression = (NewExpression)selectExpression.Body;
+            var newArguments = new List<Expression>();
+            var index = 0;
+
+            foreach (var arg in newExpression.Arguments)
+            {
+                var memberName = newExpression.Members[index].Name.ToCamelCase();
+
+                using (Checkpoint())
                 {
-                    case ExpressionType.MemberAccess:
-                        var memberExpression = lambda.Body as MemberExpression;
-                        var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
+                    newArguments.Add(Cast(Visit(arg), arg.Type));
 
-                        return Expression.Call(
-                            JsonSelect.MakeGenericMethod(memberExpression.Type),
-                            source,
-                            Expression.Lambda(
-                                CreateIndexerExpression(lambdaParameter, selection.Name, selection.ResultType),
-                                lambdaParameter));
+                    var field = (FieldSelection)stack.Peek();
 
-                    case ExpressionType.New:
-                        var newExpression = lambda.Body as NewExpression;
-                        var newArguments = new List<Expression>();
-                        var index = 0;
-
-                        foreach (var arg in newExpression.Arguments)
-                        {
-                            var memberName = newExpression.Members[index].Name.ToCamelCase();
-
-                            using (Checkpoint())
-                            {
-                                newArguments.Add(Visit(arg));
-
-                                var field = (FieldSelection)stack.Peek();
-
-                                if (field.Name != memberName)
-                                {
-                                    field.Alias = memberName;
-                                }
-                            }
-
-                            ++index;
-                        }
-
-                        return Expression.Call(
-                            JsonSelect.MakeGenericMethod(newExpression.Constructor.DeclaringType),
-                            source,
-                            Expression.Lambda(
-                                Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
-                                lambdaParameter));
+                    if (field.Name != memberName)
+                    {
+                        field.Alias = memberName;
+                    }
                 }
-            }
-            else
-            {
-                selectExpression = Visit(selectExpression);
+
+                ++index;
             }
 
-            var indexer = typeof(JToken).GetMethod("get_Item");
-            return Expression.Call(source, indexer, selectExpression);
+            return Expression.Call(
+                JsonSelect.MakeGenericMethod(newExpression.Constructor.DeclaringType),
+                instance,
+                Expression.Lambda(
+                    Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
+                    lambdaParameter));
         }
 
         private IDisposable Checkpoint()
@@ -232,7 +231,20 @@ namespace LinqToGraphQL.Builders
             });
         }
 
-        private bool IsOfType(MethodInfo method)
+        private ParameterExpression RewriteLambdaParameter(ParameterExpression expression)
+        {
+            var result = Expression.Parameter(typeof(JToken), expression.Name);
+            lambdaParameters.Add(expression, result);
+            return result;
+        }
+
+        private static Type GetQueryableResultType(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>) ?
+                type.GetGenericArguments()[0] : null;
+        }
+
+        private static bool IsOfType(MethodInfo method)
         {
             return method.DeclaringType == typeof(Queryable) &&
                 method.Name == nameof(Queryable.OfType) &&
@@ -240,12 +252,14 @@ namespace LinqToGraphQL.Builders
                 method.GetGenericArguments().Length == 1;
         }
 
-        private bool IsQueryable(Type type)
+        private static bool IsJsonSelect(MethodInfo method)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>);
+            return (method.DeclaringType == typeof(JsonUtilities) &&
+                method.Name == nameof(JsonUtilities.Select) &&
+                method.GetParameters().Length == 2);
         }
 
-        private bool IsSelect(MethodInfo method)
+        private static bool IsSelect(MethodInfo method)
         {
             return (method.DeclaringType == typeof(Queryable) &&
                 method.Name == nameof(Queryable.Select) &&
@@ -255,38 +269,52 @@ namespace LinqToGraphQL.Builders
                 method.GetParameters().Length == 2);
         }
 
-        private bool IsQueryMember(MemberInfo member)
+        private static bool IsQueryMember(MemberInfo member)
         {
             return typeof(QueryEntity).IsAssignableFrom(member.DeclaringType);
         }
 
-        private Expression CreateIndexerExpression(Expression instance, string argument)
+        private static Expression Cast(Expression expression, Type type)
+        {
+            if (expression.Type == type)
+            {
+                return expression;
+            }
+            else if (typeof(JToken).IsAssignableFrom(expression.Type))
+            {
+                return Expression.Call(
+                    expression,
+                    JTokenToObject.MakeGenericMethod(type));
+            }
+            else if (GetQueryableResultType(type) != null && 
+                     GetQueryableResultType(expression.Type) == typeof(JToken))
+            {
+                var queryType = type.GetGenericArguments()[0];
+                var methodCall = expression as MethodCallExpression;
+
+                if (methodCall != null && IsJsonSelect(methodCall.Method))
+                {
+                    var instance = methodCall.Arguments[0];
+                    var lambda = methodCall.Arguments[1].GetLambda();
+                    return Expression.Call(
+                        JsonSelect.MakeGenericMethod(queryType),
+                        instance,
+                        Expression.Lambda(
+                            Cast(lambda.Body, queryType),
+                            lambda.Parameters));
+                }
+            }
+
+            throw new NotImplementedException(
+                $"Don't know how to cast '{expression}' to '{type}'.");
+        }
+
+        private static Expression CreateIndexerExpression(Expression instance, string argument)
         {
             return Expression.Call(
                 instance,
                 Indexer,
                 Expression.Constant(argument));
-        }
-
-        private Expression CreateIndexerExpression(Expression instance, string argument, Type cast)
-        {
-            if (!IsQueryable(cast))
-            {
-                return Expression.Call(
-                    CreateIndexerExpression(instance, argument),
-                    ToObject.MakeGenericMethod(cast));
-            }
-            else
-            {
-                return CreateIndexerExpression(instance, argument);
-            }
-        }
-
-        private ParameterExpression RewriteLambdaParameter(ParameterExpression expression)
-        {
-            var result = Expression.Parameter(typeof(JToken), expression.Name);
-            lambdaParameters.Add(expression, result);
-            return result;
         }
     }
 }
