@@ -15,13 +15,13 @@ namespace LinqToGraphQL.Builders
         static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
-        Stack<ISyntaxNode> stack;
+        SyntaxTree syntax;
         Dictionary<ParameterExpression, ParameterExpression> lambdaParameters;
 
         public Query<TResult> Build<TResult>(IQueryable<TResult> query)
         {
             root = null;
-            stack = new Stack<ISyntaxNode>();
+            syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, ParameterExpression>();
 
             var rewritten = Visit(query.Expression);
@@ -33,15 +33,14 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            if (stack.Count == 0)
+            if (syntax.Root == null)
             {
                 var rootQuery = node.Value as IRootQuery;
                 var queryEntity = node.Value as QueryEntity;
 
                 if (rootQuery != null)
                 {
-                    root = new OperationDefinition(OperationType.Query, node.Type.Name);
-                    stack.Push(this.root);
+                    root = syntax.AddRoot(OperationType.Query, node.Type.Name);
                     return CreateIndexerExpression(RootDataParameter, "data");
                 }
                 else if (queryEntity != null)
@@ -63,19 +62,17 @@ namespace LinqToGraphQL.Builders
                 if (constantExpression != null)
                 {
                     var instance = Visit(constantExpression);
-                    var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Member);
-                    stack.Push(selection);
+                    var field = syntax.AddField(node.Member);
                     return CreateIndexerExpression(
                         instance,
-                        selection.Name);
+                        field.Name);
                 }
                 else if (parameterExpression != null)
                 {
-                    var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Member);
-                    stack.Push(selection);
+                    var field = syntax.AddField(node.Member);
                     return CreateIndexerExpression(
                         Visit(parameterExpression),
-                        selection.Name);
+                        field.Name);
                 }
 
                 throw new NotImplementedException();
@@ -93,7 +90,7 @@ namespace LinqToGraphQL.Builders
             else if (IsOfType(node.Method))
             {
                 var result = Visit(node.Arguments[0]);
-                stack.Push(new InlineFragment((ISelectionSet)stack.Peek(), node.Method.GetGenericArguments()[0]));
+                syntax.AddInlineFragment(node.Method.GetGenericArguments()[0]);
                 return result;
             }
             else if (IsQueryMember(node.Method))
@@ -120,12 +117,11 @@ namespace LinqToGraphQL.Builders
         {
             var queryEntity = (node.Object as ConstantExpression)?.Value as QueryEntity;
             var instance = Visit(queryEntity?.Expression ?? node.Object);
-            var selection = new FieldSelection((ISelectionSet)stack.Peek(), node.Method);
+            var field = syntax.AddField(node.Method);
 
-            stack.Push(selection);
             VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
 
-            return CreateIndexerExpression(instance, selection.Name);
+            return CreateIndexerExpression(instance, field.Name);
         }
 
         private void VisitQueryMethodArguments(ParameterInfo[] parameters, ReadOnlyCollection<Expression> arguments)
@@ -143,8 +139,7 @@ namespace LinqToGraphQL.Builders
 
                 if (constantArgument.Value != null)
                 {
-                    var argument = new Argument((FieldSelection)stack.Peek(), parameter.Name);
-                    argument.Value = constantArgument.Value;
+                    syntax.AddArgument(parameter.Name, constantArgument.Value);
                 }
             }
         }
@@ -168,16 +163,14 @@ namespace LinqToGraphQL.Builders
         {
             var instance = Visit(source);
             var memberExpression = (MemberExpression)selectExpression.Body;
-            var selection = new FieldSelection((ISelectionSet)stack.Peek(), memberExpression.Member);
             var lambdaParameter = RewriteLambdaParameter(selectExpression.Parameters[0]);
-
-            stack.Push(selection);
+            var field = syntax.AddField(memberExpression.Member);
 
             return Expression.Call(
                 ExpressionMethods.SelectEntityMethod.MakeGenericMethod(typeof(JToken)),
                 instance,
                 Expression.Lambda(
-                    CreateIndexerExpression(lambdaParameter, selection.Name),
+                    CreateIndexerExpression(lambdaParameter, field.Name),
                     lambdaParameter));
         }
 
@@ -195,13 +188,14 @@ namespace LinqToGraphQL.Builders
                 var memberName = memberExpression != null ?
                     SelectionSet.GetIdentifier(memberExpression.Member) :
                     SelectionSet.GetIdentifier(newExpression.Members[index]);
+                var checkpoint = syntax.Checkpoint();
 
-                using (Checkpoint())
+                using (checkpoint)
                 {
                     newArguments.Add(Cast(Visit(arg), arg.Type));
                 }
 
-                var field = (FieldSelection)((ISelectionSet)stack.Peek()).Selections.Last();
+                var field = checkpoint.GetAddedField();
 
                 if (field.Name != memberName)
                 {
@@ -231,20 +225,6 @@ namespace LinqToGraphQL.Builders
                         Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
                         lambdaParameter));
             }
-        }
-
-        private IDisposable Checkpoint()
-        {
-            var count = stack.Count;
-            return Disposable.Create(() =>
-            {
-                while (stack.Count > count)
-                {
-                    stack.Pop();
-                }
-
-                if (stack.Count == 0) { }
-            });
         }
 
         private ParameterExpression RewriteLambdaParameter(ParameterExpression expression)

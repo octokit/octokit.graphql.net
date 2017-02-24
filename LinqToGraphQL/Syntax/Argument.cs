@@ -4,10 +4,10 @@ namespace LinqToGraphQL.Syntax
 {
     public class Argument : ISyntaxNode
     {
-        public Argument(FieldSelection parent, string name)
+        public Argument(string name, object value)
         {
             Name = name;
-            parent.Arguments.Add(this);
+            Value = value;
         }
 
         public string Name { get; }
