@@ -176,9 +176,7 @@ namespace LinqToGraphQL.Builders
             foreach (var arg in newExpression.Arguments)
             {
                 var memberExpression = arg as MemberExpression;
-                var memberName = memberExpression != null ?
-                    SelectionSet.GetIdentifier(memberExpression.Member) :
-                    SelectionSet.GetIdentifier(newExpression.Members[index]);
+                var member = memberExpression?.Member ?? newExpression.Members[index];
                 var checkpoint = syntax.Bookmark();
 
                 using (checkpoint)
@@ -186,13 +184,7 @@ namespace LinqToGraphQL.Builders
                     newArguments.Add(Visit(arg).AddCast(arg.Type));
                 }
 
-                var field = checkpoint.GetAddedField();
-
-                if (field.Name != memberName)
-                {
-                    field.Alias = memberName;
-                }
-
+                checkpoint.GetAddedField()?.SetAlias(member);
                 ++index;
             }
 

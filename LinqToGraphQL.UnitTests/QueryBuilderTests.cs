@@ -68,6 +68,21 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
+        public void SimpleQuery_Select_Append_Two_Identical_Members()
+        {
+            var expected = "query RootQuery{simple(arg1:\"foo\"){name}}";
+
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Data_Select_Single_Member()
         {
             var expected = "query RootQuery{data{id}}";

@@ -20,7 +20,17 @@ namespace LinqToGraphQL.Syntax
 
         public string Name { get; }
         public IList<Argument> Arguments { get; }
-        public string Alias { get; set; }
+        public string Alias { get; private set; }
+
+        public void SetAlias(MemberInfo member)
+        {
+            var alias = GetIdentifier(member);
+
+            if (Name != alias)
+            {
+                Alias = alias;
+            }
+        }
 
         private static Type GetReturnType(MemberInfo member)
         {

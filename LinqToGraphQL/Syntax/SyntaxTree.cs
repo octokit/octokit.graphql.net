@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace LinqToGraphQL.Syntax
@@ -20,9 +21,21 @@ namespace LinqToGraphQL.Syntax
         public FieldSelection AddField(MemberInfo member)
         {
             var result = new FieldSelection(member);
-            head.Selections.Add(result);
-            head = result;
-            return result;
+            var existing = head.Selections
+                .OfType<FieldSelection>()
+                .FirstOrDefault(x => x.Name == result.Name && x.Alias == null);
+
+            if (existing == null)
+            {
+                head.Selections.Add(result);
+                head = result;
+                return result;
+            }
+            else
+            {
+                head = existing;
+                return existing;
+            }
         }
 
         public Argument AddArgument(string name, object value)
@@ -66,16 +79,18 @@ namespace LinqToGraphQL.Syntax
                 {
                     throw new Exception("You must reset to the checkpoint before calling GetAddedField.");
                 }
-                else if (tree.head.Selections.Count == selectionCount)
-                {
-                    throw new Exception("No selections were added.");
-                }
-                else if (tree.head.Selections.Count != selectionCount + 1)
+                else if (tree.head.Selections.Count > selectionCount + 1)
                 {
                     throw new Exception("Multiple selections were added.");
                 }
-
-                return tree.head.Selections[selectionCount] as FieldSelection;
+                else if (tree.head.Selections.Count == selectionCount)
+                {
+                    return null;
+                }
+                else
+                {
+                    return tree.head.Selections[selectionCount] as FieldSelection;
+                }
             }
         }
     }

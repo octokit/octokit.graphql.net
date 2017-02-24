@@ -54,5 +54,29 @@ namespace LinqToGraphQL.UnitTests
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);
         }
+
+        [Fact]
+        public void SimpleQuery_Select_Append_Two_Identical_Members()
+        {
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name + x.Name);
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""Hello"",
+      ""description"": "" World!""
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("HelloHello", result);
+        }
     }
 }
