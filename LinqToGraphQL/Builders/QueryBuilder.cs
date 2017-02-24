@@ -93,15 +93,6 @@ namespace LinqToGraphQL.Builders
             }
             else
             {
-                var source = node.Expression as ParameterExpression;
-                LambdaParameter parameter;
-
-                if (source != null && lambdaParameters.TryGetValue(source, out parameter))
-                {
-                    var field = syntax.AddField(parameter.SelectionSet, node.Member);
-                    return parameter.Rewritten.AddIndexer(field.Name);
-                }
-
                 return node;
             }
         }
