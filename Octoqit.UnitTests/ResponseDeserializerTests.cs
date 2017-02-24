@@ -108,35 +108,21 @@ namespace Octoqit.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            IEnumerable<object> result = new ResponseDeserializer().Deserialize(query, data);
+            IEnumerable<object> result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal(
-                new[]
-                {
-                    new
-                    {
-                        Id = "1234",
-                        Name = "LinqToGraphQL",
-                        Owner = new
-                        {
-                            Login = "grokys",
-                        },
-                        IsFork = false,
-                        IsPrivate = false,
-                    },
-                    new
-                    {
-                        Id = "2345",
-                        Name = "Avalonia",
-                        Owner = new
-                        {
-                            Login = "grokys",
-                        },
-                        IsFork = true,
-                        IsPrivate = false,
-                    },
-                },
-                result);
+            dynamic item = result.ElementAt(0);
+            Assert.Equal("1234", item.Id);
+            Assert.Equal("LinqToGraphQL", item.Name);
+            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
+            Assert.False(item.IsFork);
+            Assert.False(item.IsPrivate);
+
+            item = result.ElementAt(1);
+            Assert.Equal("2345", item.Id);
+            Assert.Equal("Avalonia", item.Name);
+            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
+            Assert.True(item.IsFork);
+            Assert.False(item.IsPrivate);
         }
 
         [Fact]
