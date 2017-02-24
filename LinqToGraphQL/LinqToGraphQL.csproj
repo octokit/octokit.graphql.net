@@ -68,7 +68,7 @@
     <Compile Include="Syntax\SelectionSet.cs" />
     <Compile Include="Utilities\ExpressionExtensions.cs" />
     <Compile Include="Utilities\ExpressionTreeDebug.cs" />
-    <Compile Include="Utilities\JsonUtilities.cs" />
+    <Compile Include="Utilities\ExpressionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
