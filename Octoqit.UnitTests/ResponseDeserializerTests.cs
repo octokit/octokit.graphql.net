@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LinqToGraphQL;
 using LinqToGraphQL.Builders;
@@ -107,7 +108,7 @@ namespace Octoqit.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            dynamic result = new ResponseDeserializer().Deserialize(query, data);
+            IEnumerable<object> result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal(
                 new[]

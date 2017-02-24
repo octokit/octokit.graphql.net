@@ -30,13 +30,13 @@ namespace Octoqit.UnitTests
                 });
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                JsonUtilities.Select(
+                ExpressionMethods.SelectEntity(
                     data["data"]["repositoryOwner"]["repository"],
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
                         Name = x["name"].ToObject<string>(),
-                        Owner = JsonUtilities.Select(x["owner"], o => new { Login = o["login"].ToObject<string>() }),
+                        Owner = ExpressionMethods.SelectEntity(x["owner"], o => new { Login = o["login"].ToObject<string>() }),
                         IsFork = x["isFork"].ToObject<string>(),
                         IsPrivate = x["isPrivate"].ToObject<string>(),
                     });
@@ -66,13 +66,15 @@ namespace Octoqit.UnitTests
                 });
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                JsonUtilities.Select(
-                    data["data"]["repositoryOwner"]["repositories"],
+                ExpressionMethods.Select(
+                    ExpressionMethods.SelectEntity(
+                        data["data"]["repositoryOwner"]["repositories"]["edges"],
+                        x => x["node"]),
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
                         Name = x["name"].ToObject<string>(),
-                        Owner = JsonUtilities.Select(x["owner"], o => new { Login = o["login"].ToObject<string>() }),
+                        Owner = ExpressionMethods.SelectEntity(x["owner"], o => new { Login = o["login"].ToObject<string>() }),
                         IsFork = x["isFork"].ToObject<string>(),
                         IsPrivate = x["isPrivate"].ToObject<string>(),
                     });

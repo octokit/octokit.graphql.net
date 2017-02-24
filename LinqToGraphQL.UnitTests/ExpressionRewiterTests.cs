@@ -20,7 +20,7 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => x.Name);
 
             Expression<Func<JObject, IEnumerable<string>>> expected = data =>
-                JsonUtilities.Select(data["data"]["simple"], x => x["name"].ToObject<string>());
+                ExpressionMethods.SelectEntity(data["data"]["simple"], x => x["name"].ToObject<string>());
 
             var operation = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), operation.Expression.ToString());
@@ -34,7 +34,7 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                JsonUtilities.Select(data["data"]["simple"], x => new
+                ExpressionMethods.SelectEntity(data["data"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),
@@ -52,7 +52,7 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => x.Id);
 
             Expression<Func<JObject, IEnumerable<string>>> expected = data =>
-                JsonUtilities.Select(data["data"]["data"], x => x["id"].ToObject<string>());
+                ExpressionMethods.SelectEntity(data["data"]["data"], x => x["id"].ToObject<string>());
 
             var operation = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), operation.Expression.ToString());
@@ -67,7 +67,7 @@ namespace LinqToGraphQL.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                JsonUtilities.Select(data["data"]["nested"]["simple"], x => new
+                ExpressionMethods.SelectEntity(data["data"]["nested"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),
@@ -89,12 +89,12 @@ namespace LinqToGraphQL.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                JsonUtilities.Select(
+                ExpressionMethods.SelectEntity(
                     data["data"]["data"],
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = JsonUtilities.Select(x["items"], i => i["name"].ToObject<string>())
+                        Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
                     });
 
             var operation = new QueryBuilder().Build(expression);
@@ -114,12 +114,12 @@ namespace LinqToGraphQL.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                JsonUtilities.Select(
+                ExpressionMethods.SelectEntity(
                     data["data"]["data"],
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = JsonUtilities.Select(x["items"], i => i["name"].ToObject<string>())
+                        Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
                     });
 
             var operation = new QueryBuilder().Build(expression);

@@ -49,21 +49,21 @@ namespace Octoqit.UnitTests
         public void RepositoryOwner_Repositories_Query()
         {
             var expected = @"query RootQuery {
-    repositoryOwner(login: ""foo"") {
-      repositories(first: 30) {
-        edges {
-          node {
-            id
-            name
-            owner {
-              login
-            }
-            isFork
-            isPrivate
+  repositoryOwner(login: ""foo"") {
+    repositories(first: 30) {
+      edges {
+        node {
+          id
+          name
+          owner {
+            login
           }
+          isFork
+          isPrivate
         }
       }
     }
+  }
 }";
 
             var expression = new RootQuery()

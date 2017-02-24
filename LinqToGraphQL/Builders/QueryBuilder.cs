@@ -12,9 +12,6 @@ namespace LinqToGraphQL.Builders
 {
     public class QueryBuilder : ExpressionVisitor
     {
-        static readonly MethodInfo Indexer = typeof(JToken).GetMethod("get_Item");
-        static readonly MethodInfo JsonSelect = typeof(JsonUtilities).GetMethod(nameof(JsonUtilities.Select));
-        static readonly MethodInfo JTokenToObject = typeof(JToken).GetMethod(nameof(JToken.ToObject), new Type[0]);
         static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
@@ -175,7 +172,7 @@ namespace LinqToGraphQL.Builders
             var lambdaParameter = RewriteLambdaParameter(selectExpression.Parameters[0]);
 
             return Expression.Call(
-                JsonSelect.MakeGenericMethod(typeof(JToken)),
+                ExpressionMethods.SelectEntityMethod.MakeGenericMethod(typeof(JToken)),
                 instance,
                 Expression.Lambda(
                     CreateIndexerExpression(lambdaParameter, selection.Name),
@@ -209,12 +206,26 @@ namespace LinqToGraphQL.Builders
                 ++index;
             }
 
-            return Expression.Call(
-                JsonSelect.MakeGenericMethod(newExpression.Constructor.DeclaringType),
-                instance,
-                Expression.Lambda(
-                    Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
-                    lambdaParameter));
+            var sourceQueryableResultType = GetQueryableResultType(instance.Type);
+
+            if (sourceQueryableResultType == null)
+            {
+                return Expression.Call(
+                    ExpressionMethods.SelectEntityMethod.MakeGenericMethod(newExpression.Constructor.DeclaringType),
+                    instance,
+                    Expression.Lambda(
+                        Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
+                        lambdaParameter));
+            }
+            else
+            {
+                return Expression.Call(
+                    ExpressionMethods.SelectMethod.MakeGenericMethod(newExpression.Constructor.DeclaringType),
+                    instance,
+                    Expression.Lambda(
+                        Expression.New(newExpression.Constructor, newArguments, newExpression.Members),
+                        lambdaParameter));
+            }
         }
 
         private IDisposable Checkpoint()
@@ -254,8 +265,8 @@ namespace LinqToGraphQL.Builders
 
         private static bool IsJsonSelect(MethodInfo method)
         {
-            return (method.DeclaringType == typeof(JsonUtilities) &&
-                method.Name == nameof(JsonUtilities.Select) &&
+            return (method.DeclaringType == typeof(ExpressionMethods) &&
+                method.Name == nameof(ExpressionMethods.SelectEntity) &&
                 method.GetParameters().Length == 2);
         }
 
@@ -284,7 +295,7 @@ namespace LinqToGraphQL.Builders
             {
                 return Expression.Call(
                     expression,
-                    JTokenToObject.MakeGenericMethod(type));
+                    ExpressionMethods.JTokenToObject.MakeGenericMethod(type));
             }
             else if (GetQueryableResultType(type) != null && 
                      GetQueryableResultType(expression.Type) == typeof(JToken))
@@ -297,7 +308,7 @@ namespace LinqToGraphQL.Builders
                     var instance = methodCall.Arguments[0];
                     var lambda = methodCall.Arguments[1].GetLambda();
                     return Expression.Call(
-                        JsonSelect.MakeGenericMethod(queryType),
+                        ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
                         instance,
                         Expression.Lambda(
                             Cast(lambda.Body, queryType),
@@ -313,7 +324,7 @@ namespace LinqToGraphQL.Builders
         {
             return Expression.Call(
                 instance,
-                Indexer,
+                ExpressionMethods.JTokenIndexer,
                 Expression.Constant(argument));
         }
     }
