@@ -17,29 +17,36 @@ namespace Sandbox
         private static async Task RunRepositoryQuery(string token)
         {
             var query = new RootQuery()
-                .RepositoryOwner("grokys")
-                .Repository("VisualStudio")
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    Owner = x.Owner.Select(o => new
+                .Select(root => root
+                    .RepositoryOwner("grokys")
+                    .Repositories(10, null, null, null)
+                    .Edges.Select(x => x.Node)
+                    .Select(x => new
                     {
-                        o.Login,
-                        o.AvatarUrl,
-                    }),
-                    x.IsFork,
-                    x.IsPrivate,
-                });
+                        x.Id,
+                        x.Name,
+                        Owner = x.Owner.Select(o => new
+                        {
+                            o.Login,
+                            o.AvatarUrl,
+                        }),
+                        x.IsFork,
+                        x.IsPrivate,
+                        root.Viewer.Login,
+                    }));
 
             var connection = new Connection("https://api.github.com/graphql", token);
-            var result = (await connection.Run(query)).Single();
+            var result = (await connection.Run(query));
 
-            Console.WriteLine("Id: " + result.Id);
-            Console.WriteLine("Name: " + result.Name);
-            Console.WriteLine("Owner: " + result.Owner.Single().Login);
-            Console.WriteLine("IsFork: " + result.IsFork);
-            Console.WriteLine("IsPrivate: " + result.IsPrivate);
+            foreach (var i in result.SelectMany(x => x))
+            {
+                Console.WriteLine("Id: " + i.Id);
+                Console.WriteLine("Name: " + i.Name);
+                Console.WriteLine("Owner: " + i.Owner.Single().Login);
+                Console.WriteLine("IsFork: " + i.IsFork);
+                Console.WriteLine("IsPrivate: " + i.IsPrivate);
+                Console.WriteLine("Viewer Login: " + i.Login);
+            }
         }
 
         private static async Task RunViewerQuery(string token)

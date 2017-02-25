@@ -19,6 +19,8 @@ namespace LinqToGraphQL.Syntax
             return root;
         }
 
+        public FieldSelection AddField(MemberInfo member) => AddField(head, member);
+
         public FieldSelection AddField(ISelectionSet parent, MemberInfo member)
         {
             var result = new FieldSelection(member);
@@ -35,11 +37,7 @@ namespace LinqToGraphQL.Syntax
                 result = existing;
             }
 
-            if (parent == head)
-            {
-                head = result;
-            }
-
+            head = result;
             return result;
         }
 

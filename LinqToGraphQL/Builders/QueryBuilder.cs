@@ -70,16 +70,9 @@ namespace LinqToGraphQL.Builders
         {
             if (IsQueryEntityMember(node.Member))
             {
-                var constantExpression = node.Expression as ConstantExpression;
                 var parameterExpression = node.Expression as ParameterExpression;
                 
-                if (constantExpression != null)
-                {
-                    var instance = Visit(constantExpression);
-                    var field = syntax.AddField(syntax.Head, node.Member);
-                    return instance.AddIndexer(field.Name);
-                }
-                else if (parameterExpression != null)
+                if (parameterExpression != null)
                 {
                     var parameter = (ParameterExpression)Visit(parameterExpression);
                     var parentSelection = GetSelectionSet(parameterExpression);
@@ -88,7 +81,9 @@ namespace LinqToGraphQL.Builders
                 }
                 else
                 {
-                    return Visit(node.Expression);
+                    var instance = Visit(node.Expression);
+                    var field = syntax.AddField(node.Member);
+                    return instance.AddIndexer(field.Name);
                 }
             }
             else
@@ -198,7 +193,7 @@ namespace LinqToGraphQL.Builders
         {
             var queryEntity = (node.Object as ConstantExpression)?.Value as QueryEntity;
             var instance = Visit(queryEntity?.Expression ?? node.Object);
-            var field = syntax.AddField(syntax.Head, node.Method);
+            var field = syntax.AddField(node.Method);
 
             VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
 
