@@ -101,6 +101,7 @@ namespace Octoqit.UnitTests
           name
           owner {
             login
+            avatarURL
           }
           isFork
           isPrivate
@@ -110,6 +111,7 @@ namespace Octoqit.UnitTests
   }
   viewer {
     login
+    email
   }
 }";
 
@@ -129,7 +131,8 @@ namespace Octoqit.UnitTests
                         }),
                         x.IsFork,
                         x.IsPrivate,
-                        root.Viewer.Login,
+                        Login = root.Viewer.Select(l => l.Login),
+                        root.Viewer.Email
                     }));
 
             var serializer = new QuerySerializer(2);
@@ -204,9 +207,11 @@ namespace Octoqit.UnitTests
             var expected = @"query RootQuery {
   repositoryOwner(login: ""foo"") {
     repositories(first: 30) {
-      node {
-        name
-        isPrivate
+      edges {
+        node {
+          name
+          isPrivate
+        }
       }
     }
   }
