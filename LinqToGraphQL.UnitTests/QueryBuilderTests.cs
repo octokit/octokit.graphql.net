@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using LinqToGraphQL.Builders;
+using LinqToGraphQL.Serializers;
 using LinqToGraphQL.UnitTests.Models;
 using Xunit;
 

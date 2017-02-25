@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using LinqToGraphQL;
 using LinqToGraphQL.Builders;
+using LinqToGraphQL.Serializers;
 using Xunit;
 
 namespace Octoqit.UnitTests

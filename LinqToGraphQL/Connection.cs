@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LinqToGraphQL.Builders;
 using LinqToGraphQL.Deserializers;
+using LinqToGraphQL.Serializers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -14,6 +15,9 @@ namespace LinqToGraphQL
 {
     public class Connection
     {
+        private static readonly QueryBuilder builder = new QueryBuilder();
+        private static readonly QuerySerializer serializer = new QuerySerializer();
+        private static readonly ResponseDeserializer deserializer = new ResponseDeserializer();
         private string uri;
         private string token;
 
@@ -25,9 +29,6 @@ namespace LinqToGraphQL
 
         public async Task<IEnumerable<T>> Run<T>(IQueryable<T> query)
         {
-            var builder = new QueryBuilder();
-            var serializer = new QuerySerializer(2);
-            var deserializer = new ResponseDeserializer();
             var operation = builder.Build(query);
             var payload = new Payload(serializer.Serialize(operation.OperationDefinition));
             var httpClient = CreateHttpClient();
