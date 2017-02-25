@@ -183,6 +183,27 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(12, result);
         }
 
+        [Fact]
+        public void Select_String_Length()
+        {
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Select(x => x.Name.Length);
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""Hello World!"",
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.Equal(12, result);
+        }
+
         private static string Greet(string s)
         {
             return "Hello " + s;

@@ -88,7 +88,14 @@ namespace LinqToGraphQL.Builders
             }
             else
             {
-                return node;
+                var instance = Visit(node.Expression);
+
+                if (ExpressionWasRewritten(node.Expression, instance))
+                {
+                    instance = instance.AddCast(node.Expression.Type);
+                }
+
+                return node.Update(instance);
             }
         }
 
@@ -278,6 +285,11 @@ namespace LinqToGraphQL.Builders
         private ISelectionSet GetSelectionSet(ParameterExpression parameter)
         {
             return lambdaParameters[parameter].SelectionSet;
+        }
+
+        private static bool ExpressionWasRewritten(Expression oldExpression, Expression newExpression)
+        {
+            return newExpression.Type == typeof(JToken) && oldExpression.Type != typeof(JToken);
         }
 
         private static bool IsOfType(MethodInfo method)
