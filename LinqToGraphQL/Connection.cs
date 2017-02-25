@@ -27,16 +27,14 @@ namespace LinqToGraphQL
             this.token = token;
         }
 
-        public async Task<IEnumerable<T>> Run<T>(IQueryable<T> query)
+        public async Task<IEnumerable<T>> Run<T>(IQueryable<T> queryable)
         {
-            var operation = builder.Build(query);
-            var payload = new Payload(serializer.Serialize(operation.OperationDefinition));
+            var query = builder.Build(queryable);
             var httpClient = CreateHttpClient();
-            var payloadString = payload.ToString();
-            var content = new StringContent(payloadString);
+            var content = new StringContent(query.ToString(false));
             var response = await httpClient.PostAsync(uri, content);
             var data = await response.Content.ReadAsStringAsync();
-            return deserializer.Deserialize(operation, data);
+            return deserializer.Deserialize(query, data);
         }
 
         private HttpClient CreateHttpClient()
@@ -47,24 +45,6 @@ namespace LinqToGraphQL
             result.DefaultRequestHeaders.Authorization = auth;
             result.DefaultRequestHeaders.UserAgent.Add(userAgent);
             return result;
-        }
-
-        private class Payload
-        {
-            public Payload(string query)
-            {
-                Query = query;
-            }
-
-            public string Query { get; }
-
-            public override string ToString()
-            {
-                return JsonConvert.SerializeObject(
-                    this,
-                    Formatting.Indented,
-                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-            }
         }
     }
 }
