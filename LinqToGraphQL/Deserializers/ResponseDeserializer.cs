@@ -7,12 +7,12 @@ namespace LinqToGraphQL.Deserializers
 {
     public class ResponseDeserializer
     {
-        public IEnumerable<TResult> Deserialize<TResult>(Query<TResult> query, string data)
+        public IEnumerable<TResult> Deserialize<TResult>(GraphQLQuery<TResult> query, string data)
         {
             return Deserialize(query, JObject.Parse(data));
         }
 
-        public IEnumerable<TResult> Deserialize<TResult>(Query<TResult> query, JObject data)
+        public IEnumerable<TResult> Deserialize<TResult>(GraphQLQuery<TResult> query, JObject data)
         {
             if (data["errors"] != null)
             {

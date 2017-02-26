@@ -18,7 +18,7 @@ namespace LinqToGraphQL.Builders
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
 
-        public Query<TResult> Build<TResult>(IQueryable<TResult> query)
+        public GraphQLQuery<TResult> Build<TResult>(IQueryable<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
@@ -28,7 +28,7 @@ namespace LinqToGraphQL.Builders
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
                 rewritten.AddCast(typeof(IQueryable<TResult>)),
                 RootDataParameter);
-            return new Query<TResult>(root, expression);
+            return new GraphQLQuery<TResult>(root, expression);
         }
 
         protected override Expression VisitBinary(BinaryExpression node)

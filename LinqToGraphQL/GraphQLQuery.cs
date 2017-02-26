@@ -9,9 +9,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace LinqToGraphQL
 {
-    public class Query<TResult>
+    public class GraphQLQuery<TResult>
     {
-        public Query(
+        public GraphQLQuery(
             OperationDefinition operationDefinition,
             Expression<Func<JObject,
                 IEnumerable<TResult>>> expression)
