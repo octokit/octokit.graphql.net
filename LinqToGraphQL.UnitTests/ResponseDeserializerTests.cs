@@ -49,10 +49,8 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result.Name);
             Assert.Equal("Goodbye cruel world", result.Description);
         }
@@ -99,10 +97,8 @@ namespace LinqToGraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result.Name);
             Assert.Equal("Goodbye cruel world", result.Description);
         }
@@ -193,10 +189,8 @@ namespace LinqToGraphQL.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("foo", result.Id);
             Assert.Equal(new[] { "item1", "item2" }, result.Items);
         }
@@ -227,10 +221,8 @@ namespace LinqToGraphQL.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var expectedType = expression.GetType().GetGenericArguments()[0];
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.IsType(expectedType, result);
             Assert.Equal("foo", result.Id);
             Assert.Equal(new[] { "item1", "item2" }, result.Items);
         }
