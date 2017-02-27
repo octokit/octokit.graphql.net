@@ -36,7 +36,7 @@ namespace LinqToGraphQL.Utilities
 
         public static Expression AddCast(this Expression expression, Type type)
         {
-            if (expression.Type == type)
+            if (type.IsAssignableFrom(expression.Type))
             {
                 return expression;
             }
