@@ -201,6 +201,40 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(new[] { "item1", "item2" }, result.Items);
         }
 
+        [Fact]
+        public void Select_ToList()
+        {
+            var expression = new RootQuery()
+                .Data
+                .Select(x => new
+                {
+                    x.Id,
+                    Items = x.Items.Select(i => i.Name).ToList(),
+                });
+
+            var data = @"{
+    ""data"":{
+        ""data"": {
+            ""id"": ""foo"",
+            ""items"": [
+                { ""name"": ""item1"" },
+                { ""name"": ""item2"" }
+            ]
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("foo", result.Id);
+            Assert.Equal(new[] { "item1", "item2" }, result.Items);
+        }
+
         private class NamedClass
         {
             public NamedClass()
