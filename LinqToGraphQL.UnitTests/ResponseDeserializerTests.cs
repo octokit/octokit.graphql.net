@@ -227,6 +227,43 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(new[] { "item1", "item2" }, result.Items);
         }
 
+        [Fact]
+        public void Select_ToDictionary()
+        {
+            var expression = new RootQuery()
+                .Data
+                .Select(x => new
+                {
+                    x.Id,
+                    Items = x.Items.Select(i => new
+                    {
+                        i.Name,
+                        i.Description,
+                    }).ToDictionary(d => d.Name, d => d.Description),
+                });
+
+            var data = @"{
+    ""data"":{
+        ""data"": {
+            ""id"": ""foo"",
+            ""items"": [
+                { ""name"": ""item1"", ""description"": ""foo"" },
+                { ""name"": ""item2"", ""description"": ""bar"" }
+            ]
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.Equal("foo", result.Id);
+            Assert.Equal(new[] { "item1", "item2" }, result.Items.Keys);
+            Assert.Equal(new[] { "foo", "bar" }, result.Items.Values);
+        }
+
         private class NamedClass
         {
             public NamedClass()
