@@ -27,9 +27,25 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
-        public void Select_Schema_Type_Kind_Name_Description()
+        public void Select_Schema_Types()
         {
-            var expectedQuery = "{__schema{types{kind name description}}}";
+            var expectedQuery = @"{
+  __schema {
+    types {
+      kind
+      name
+      description
+      fields(includeDeprecated: true) {
+        name
+        description
+        type {
+          name
+        }
+      }
+    }
+  }
+}";
+
             var data = @"{
   ""data"": {
     ""__schema"": {
@@ -37,7 +53,8 @@ namespace LinqToGraphQL.UnitTests
         {
           ""kind"": ""SCALAR"",
           ""name"": ""Scalar"",
-          ""description"": ""A scalar value.""
+          ""description"": ""A scalar value."",
+          ""fields"": null
         },
         {
           ""kind"": ""INPUT_OBJECT"",
@@ -58,11 +75,17 @@ namespace LinqToGraphQL.UnitTests
                         Kind = t.Kind,
                         Name = t.Name,
                         Description = t.Description,
+                        Fields = t.Fields(true).Select((Field f) => new FieldModel
+                        {
+                            Name = f.Name,
+                            Description = f.Description,
+                            Type = f.Type.Name,
+                        }).ToList()
                     }).ToList()
                 });
 
             var query = new QueryBuilder().Build(expression);
-            var queryResult = new QuerySerializer().Serialize(query.OperationDefinition);
+            var queryResult = new QuerySerializer(2).Serialize(query.OperationDefinition);
 
             Assert.Equal(expectedQuery, queryResult);
 
@@ -89,6 +112,14 @@ namespace LinqToGraphQL.UnitTests
             public TypeKind Kind { get; set; } 
             public string Name { get; set; }
             public string Description { get; set; }
+            public IList<FieldModel> Fields { get; set; }
+        }
+
+        private class FieldModel
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public string Type { get; set; }
         }
     }
 }
