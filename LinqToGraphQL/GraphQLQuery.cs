@@ -27,18 +27,21 @@ namespace LinqToGraphQL
 
         public Func<JObject, IEnumerable<TResult>> CompiledExpression { get; }
 
-        public override string ToString() => ToString(true);
+        public override string ToString()
+        {
+            return new QuerySerializer().Serialize(OperationDefinition);
+        }
 
-        public string ToString(bool indented)
+        public string GetPayload()
         {
             var payload = new
             {
-                Query = new QuerySerializer(indented ? 2 : 0).Serialize(OperationDefinition),
+                Query = new QuerySerializer().Serialize(OperationDefinition),
             };
 
             return JsonConvert.SerializeObject(
                 payload,
-                indented ? Formatting.Indented : Formatting.None,
+                Formatting.None,
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
     }

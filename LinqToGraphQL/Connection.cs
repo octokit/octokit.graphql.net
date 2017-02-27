@@ -31,7 +31,7 @@ namespace LinqToGraphQL
         {
             var query = builder.Build(queryable);
             var httpClient = CreateHttpClient();
-            var content = new StringContent(query.ToString(false));
+            var content = new StringContent(query.GetPayload());
             var response = await httpClient.PostAsync(uri, content);
             var data = await response.Content.ReadAsStringAsync();
             return deserializer.Deserialize(query, data);
