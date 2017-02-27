@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -46,8 +47,7 @@ namespace LinqToGraphQL.Utilities
                     expression,
                     ExpressionMethods.JTokenToObject.MakeGenericMethod(type));
             }
-            else if (GetQueryableResultType(type) != null &&
-                     GetQueryableResultType(expression.Type) == typeof(JToken))
+            else if (GetEnumerableResultType(type) != null && IsIQueryableOfJToken(expression.Type))
             {
                 var queryType = type.GetGenericArguments()[0];
                 var methodCall = expression as MethodCallExpression;
@@ -97,10 +97,27 @@ namespace LinqToGraphQL.Utilities
                 Expression.Constant(parameter));
         }
 
-        private static Type GetQueryableResultType(Type type)
+        private static Type GetEnumerableResultType(Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>) ?
-                type.GetGenericArguments()[0] : null;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
+                return type.GetGenericArguments()[0];
+            }
+
+            foreach (var i in type.GetInterfaces())
+            {
+                if (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                {
+                    return i.GetGenericArguments()[0];
+                }
+            }
+
+            return null;
+        }
+
+        private static bool IsIQueryableOfJToken(Type type)
+        {
+            return typeof(IQueryable<JToken>).IsAssignableFrom(type);
         }
 
         private static bool IsSelect(MethodInfo method)
