@@ -59,7 +59,8 @@ namespace LinqToGraphQL.UnitTests
         {
           ""kind"": ""INPUT_OBJECT"",
           ""name"": ""InputObject"",
-          ""description"": ""An input object.""
+          ""description"": ""An input object."",
+          ""fields"": null
         },
       ]
     }
