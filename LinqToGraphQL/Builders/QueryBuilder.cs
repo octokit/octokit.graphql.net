@@ -258,13 +258,20 @@ namespace LinqToGraphQL.Builders
 
             foreach (var parameter in parameters)
             {
-                var rewritten = Expression.Parameter(typeof(JToken), parameter.Name);
-                var p = new LambdaParameter(
-                    parameter,
-                    rewritten,
-                    syntax.Head);
-                lambdaParameters.Add(parameter, p);
-                result.Add(rewritten);
+                if (IsQueryEntity(parameter.Type))
+                {
+                    var rewritten = Expression.Parameter(typeof(JToken), parameter.Name);
+                    var p = new LambdaParameter(
+                        parameter,
+                        rewritten,
+                        syntax.Head);
+                    lambdaParameters.Add(parameter, p);
+                    result.Add(rewritten);
+                }
+                else
+                {
+                    result.Add(parameter);
+                }
             }
 
             return result;
