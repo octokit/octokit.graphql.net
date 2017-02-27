@@ -103,7 +103,7 @@ namespace LinqToGraphQL.Builders
         {
             if (IsQueryEntityMember(node.Expression))
             {
-                var expression = Visit(node.Expression).AddCast(node.Expression.Type);
+                var expression = BookmarkAndVisit(node.Expression).AddCast(node.Expression.Type);
                 return Expression.Bind(node.Member, expression);
             }
             else
