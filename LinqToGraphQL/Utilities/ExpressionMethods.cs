@@ -23,6 +23,10 @@ namespace LinqToGraphQL.Utilities
             {
                 return token.Select(selector).AsQueryable();
             }
+            else if (token.Type == JTokenType.Null)
+            {
+                return Enumerable.Empty<T>().AsQueryable();
+            }
             else
             {
                 return Enumerable.Repeat(selector(token), 1).AsQueryable();
