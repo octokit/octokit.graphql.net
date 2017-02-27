@@ -13,7 +13,7 @@ namespace LinqToGraphQL.Introspection
             Interfaces = this.CreateProperty(x => Interfaces);
             PossibleTypes = this.CreateProperty(x => x.PossibleTypes);
             InputFields = this.CreateProperty(x => x.InputFields);
-            OfType = this.CreateProperty(x => x.OfType, SchemaType.Create);
+            //OfType = this.CreateProperty(x => x.OfType, SchemaType.Create);
         }
 
         public TypeKind Kind { get; }

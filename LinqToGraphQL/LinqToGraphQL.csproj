@@ -52,6 +52,7 @@
     <Compile Include="Introspection\Field.cs" />
     <Compile Include="Introspection\InputValue.cs" />
     <Compile Include="Introspection\DirectiveLocation.cs" />
+    <Compile Include="Introspection\IntrospectionQuery.cs" />
     <Compile Include="Introspection\Schema.cs" />
     <Compile Include="Introspection\SchemaType.cs" />
     <Compile Include="Introspection\TypeKind.cs" />

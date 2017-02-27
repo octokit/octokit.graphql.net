@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpressionRewiterTests.cs" />
+    <Compile Include="IntrospectionTests.cs" />
     <Compile Include="Models\NestedData.cs" />
     <Compile Include="Models\RootQuery.cs" />
     <Compile Include="Models\NestedQuery.cs" />

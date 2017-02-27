@@ -52,16 +52,30 @@ namespace LinqToGraphQL.Utilities
                 var queryType = type.GetGenericArguments()[0];
                 var methodCall = expression as MethodCallExpression;
 
-                if (methodCall != null && IsJsonSelect(methodCall.Method))
+                if (methodCall != null)
                 {
-                    var instance = methodCall.Arguments[0];
-                    var lambda = methodCall.Arguments[1].GetLambda();
-                    return Expression.Call(
-                        ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
-                        instance,
-                        Expression.Lambda(
-                            lambda.Body.AddCast(queryType),
-                            lambda.Parameters));
+                    if (IsSelect(methodCall.Method))
+                    {
+                        var instance = methodCall.Arguments[0];
+                        var lambda = methodCall.Arguments[1].GetLambda();
+                        return Expression.Call(
+                            ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
+                            instance,
+                            Expression.Lambda(
+                                lambda.Body.AddCast(queryType),
+                                lambda.Parameters));
+                    }
+                    else if (IsSelectEntity(methodCall.Method))
+                    {
+                        var instance = methodCall.Arguments[0];
+                        var lambda = methodCall.Arguments[1].GetLambda();
+                        return Expression.Call(
+                            ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
+                            instance,
+                            Expression.Lambda(
+                                lambda.Body.AddCast(queryType),
+                                lambda.Parameters));
+                    }
                 }
             }
 
@@ -89,7 +103,14 @@ namespace LinqToGraphQL.Utilities
                 type.GetGenericArguments()[0] : null;
         }
 
-        private static bool IsJsonSelect(MethodInfo method)
+        private static bool IsSelect(MethodInfo method)
+        {
+            return (method.DeclaringType == typeof(ExpressionMethods) &&
+                method.Name == nameof(ExpressionMethods.Select) &&
+                method.GetParameters().Length == 2);
+        }
+
+        private static bool IsSelectEntity(MethodInfo method)
         {
             return (method.DeclaringType == typeof(ExpressionMethods) &&
                 method.Name == nameof(ExpressionMethods.SelectEntity) &&
