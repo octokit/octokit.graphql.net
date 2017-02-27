@@ -11,7 +11,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void RepositoryOwner_Repository_Query()
         {
-            var expected = @"query RootQuery {
+            var expected = @"{
   repositoryOwner(login: ""foo"") {
     repository(name: ""bar"") {
       id
@@ -49,7 +49,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void RepositoryOwner_Repositories_Query()
         {
-            var expected = @"query RootQuery {
+            var expected = @"{
   repositoryOwner(login: ""foo"") {
     repositories(first: 30) {
       edges {
@@ -93,7 +93,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void RepositoryOwner_Repositories_Query_Viewer()
         {
-            var expected = @"query RootQuery {
+            var expected = @"{
   repositoryOwner(login: ""foo"") {
     repositories(first: 30) {
       edges {
@@ -145,7 +145,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void User_Email_Query()
         {
-            var expected = @"query RootQuery {
+            var expected = @"{
   search(type: USER, query: ""foo"", first: 1) {
     userCount
     user: edges {
@@ -186,7 +186,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void Viewer_Login_Email()
         {
-            var expected = @"query RootQuery {
+            var expected = @"{
   viewer {
     login
     email
@@ -205,7 +205,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void Repository_Details_With_Viewer()
         {
-            var expected = @"query RootQuery {
+            var expected = @"{
   repositoryOwner(login: ""foo"") {
     repositories(first: 30) {
       edges {
