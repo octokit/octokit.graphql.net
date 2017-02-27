@@ -23,5 +23,10 @@ namespace Octoqit
 
         [GraphQLIdentifier("websiteURL")]
         public string WebsiteUrl { get; }
+
+        internal static User Create(IQueryProvider provider, Expression expression)
+        {
+            return new User(provider, expression);
+        }
     }
 }

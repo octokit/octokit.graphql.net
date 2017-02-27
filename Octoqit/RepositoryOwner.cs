@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using LinqToGraphQL;
+using LinqToGraphQL.Builders;
 
 namespace Octoqit
 {
@@ -24,14 +25,17 @@ namespace Octoqit
             int? last = null,
             string before = null)
         {
-            return new RepositoryConnection(
-                Provider,
-                MethodCallExpression(nameof(Repositories), Arg(first), Arg(after), Arg(last), Arg(before)));
+            return this.CreateMethodCall(x => x.Repositories(first, after, last, before), RepositoryConnection.Create);
         }
 
         public IQueryable<Repository> Repository(string name)
         {
-            return MethodCall<Repository>(nameof(Repository), Arg(name));
+            return this.CreateMethodCall(x => x.Repository(name));
+        }
+
+        internal static RepositoryOwner Create(IQueryProvider provider, Expression expression)
+        {
+            return new RepositoryOwner(provider, expression);
         }
     }
 }

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\QueryBuilder.cs" />
+    <Compile Include="Builders\QueryEntityBuilders.cs" />
     <Compile Include="GraphQLQuery.cs" />
     <Compile Include="Serializers\QuerySerializer.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />

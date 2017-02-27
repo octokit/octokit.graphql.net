@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using LinqToGraphQL.Builders;
 
 namespace LinqToGraphQL.UnitTests.Models
 {
@@ -8,22 +9,19 @@ namespace LinqToGraphQL.UnitTests.Models
         public RootQuery()
             : base(new QueryProvider())
         {
+            Data = this.CreateProperty(x => Data);
         }
 
-        public IQueryable<NestedData> Data
-        {
-            get { return CollectionProperty<NestedData>(nameof(Data)); }
-        }
+        public IQueryable<NestedData> Data { get; }
 
         public IQueryable<Simple> Simple(string arg1, int? arg2 = null)
         {
-            return MethodCall<Simple>(nameof(Simple), Arg(arg1), Arg(arg2));
+            return this.CreateMethodCall(x => x.Simple(arg1, arg2));
         }
 
         public NestedQuery Nested(string arg1, int? arg2 = null)
         {
-            var expression = MethodCallExpression(nameof(Nested), Arg(arg1), Arg(arg2));
-            return new NestedQuery(Provider, expression);
+            return this.CreateMethodCall(x => x.Nested(arg1, arg2), NestedQuery.Create);
         }
     }
 }

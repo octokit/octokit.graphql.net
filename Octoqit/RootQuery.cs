@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 using LinqToGraphQL;
-using Exp = System.Linq.Expressions.Expression;
+using LinqToGraphQL.Builders;
 
 namespace Octoqit
 {
@@ -10,14 +9,15 @@ namespace Octoqit
         public RootQuery()
             : base(new QueryProvider())
         {
-            Viewer = new User(Provider, Exp.Property(Expression, nameof(Viewer)));
+            Viewer = this.CreateProperty(x => x.Viewer, User.Create);
+            
         }
 
         public User Viewer { get; }
 
         public RepositoryOwner RepositoryOwner(string login)
         {
-            return new RepositoryOwner(Provider, MethodCallExpression(nameof(RepositoryOwner), Arg(login)));
+            return this.CreateMethodCall(x => x.RepositoryOwner(login), Octoqit.RepositoryOwner.Create);
         }
 
         public SearchResultItemConnection Search(
@@ -28,7 +28,7 @@ namespace Octoqit
             int? last = null,
             string before = null)
         {
-            return new SearchResultItemConnection(Provider, MethodCallExpression(nameof(Search), Arg(type), Arg(query), Arg(first), Arg(after), Arg(last), Arg(before)));
+            return this.CreateMethodCall(x => x.Search(type, query, first, after, last, before), SearchResultItemConnection.Create);
         }
     }
 }

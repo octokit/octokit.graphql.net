@@ -65,7 +65,7 @@ namespace LinqToGraphQL.Utilities
                 }
             }
 
-            throw new NotImplementedException(
+            throw new NotSupportedException(
                 $"Don't know how to cast '{expression}' to '{type}'.");
         }
 
