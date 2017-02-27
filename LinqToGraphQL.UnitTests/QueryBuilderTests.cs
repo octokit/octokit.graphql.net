@@ -11,7 +11,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void SimpleQuery_Select_Single_Member()
         {
-            var expected = "query RootQuery{simple(arg1:\"foo\"){name}}";
+            var expected = "{simple(arg1:\"foo\"){name}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -26,7 +26,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void SimpleQuery_Select_Multiple_Members()
         {
-            var expected = "query RootQuery{simple(arg1:\"foo\",arg2:2){name description}}";
+            var expected = "{simple(arg1:\"foo\",arg2:2){name description}}";
 
             var expression = new RootQuery()
                 .Simple("foo", 2)
@@ -41,7 +41,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void SimpleQuery_Select_Single_Member_Append_String()
         {
-            var expected = "query RootQuery{simple(arg1:\"foo\"){name}}";
+            var expected = "{simple(arg1:\"foo\"){name}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -56,7 +56,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void SimpleQuery_Select_Append_Two_Members()
         {
-            var expected = "query RootQuery{simple(arg1:\"foo\"){name description}}";
+            var expected = "{simple(arg1:\"foo\"){name description}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -71,7 +71,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void SimpleQuery_Select_Append_Two_Identical_Members()
         {
-            var expected = "query RootQuery{simple(arg1:\"foo\"){name}}";
+            var expected = "{simple(arg1:\"foo\"){name}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -86,7 +86,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void Data_Select_Single_Member()
         {
-            var expected = "query RootQuery{data{id}}";
+            var expected = "{data{id}}";
 
             var expression = new RootQuery()
                 .Data
@@ -101,7 +101,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void NestedQuery_Select_Multiple_Members()
         {
-            var expected = "query RootQuery{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
+            var expected = "{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
 
             var expression = new RootQuery()
                 .Nested("foo")
@@ -117,7 +117,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void Nested_Selects()
         {
-            var expected = "query RootQuery{data{id items{name}}}";
+            var expected = "{data{id items{name}}}";
 
             var expression = new RootQuery()
                 .Data
@@ -136,7 +136,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void Inline_Fragment()
         {
-            var expected = "query RootQuery{data{... on NestedData{id items{name}}}}";
+            var expected = "{data{... on NestedData{id items{name}}}}";
 
             var expression = new RootQuery()
                 .Data
@@ -156,7 +156,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void Field_Aliases()
         {
-            var expected = @"query RootQuery {
+            var expected = @"{
     foo: simple(arg1: ""foo"", arg2: 1) {
         name
     }

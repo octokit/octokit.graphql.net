@@ -34,7 +34,12 @@ namespace LinqToGraphQL.Serializers
         public string Serialize(OperationDefinition operation)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append("query ").Append(operation.Name);
+
+            if (operation.Type != OperationType.Query || operation.Name != null)
+            {
+                builder.Append("query ").Append(operation.Name);
+            }
+
             SerializeSelections(operation, builder);
             return builder.ToString();
         }
@@ -143,7 +148,12 @@ namespace LinqToGraphQL.Serializers
             }
             else
             {
-                builder.Append(" {\r\n");
+                if (builder.Length > 0)
+                {
+                    builder.Append(' ');
+                }
+
+                builder.Append("{\r\n");
                 currentIndent += indentation;
                 Indent(builder);
             }

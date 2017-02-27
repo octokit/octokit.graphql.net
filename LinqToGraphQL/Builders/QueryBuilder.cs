@@ -47,7 +47,7 @@ namespace LinqToGraphQL.Builders
 
                 if (rootQuery != null)
                 {
-                    root = syntax.AddRoot(OperationType.Query, node.Type.Name);
+                    root = syntax.AddRoot(OperationType.Query, null);
                     return RootDataParameter.AddIndexer("data");
                 }
                 else if (queryEntity != null)
