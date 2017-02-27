@@ -9,13 +9,11 @@ namespace LinqToGraphQL.Introspection
         public Directive(IQueryProvider provider)
             : base(provider)
         {
-            Locations = this.CreateProperty(x => x.Locations);
-            Args = this.CreateProperty(x => x.Args);
         }
 
         public string Name { get; }
         public string Description { get; }
-        public IQueryable<DirectiveLocation> Locations { get; }
-        public IQueryable<InputValue> Args { get; }
+        public IQueryable<DirectiveLocation> Locations => this.CreateProperty(x => x.Locations);
+        public IQueryable<InputValue> Args => this.CreateProperty(x => x.Args);
     }
 }

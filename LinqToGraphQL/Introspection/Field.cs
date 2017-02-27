@@ -9,14 +9,12 @@ namespace LinqToGraphQL.Introspection
         public Field(IQueryProvider provider)
             : base(provider)
         {
-            Args = this.CreateProperty(x => x.Args);
-            Type = this.CreateProperty(x => x.Type, SchemaType.Create);
         }
 
         public string Name { get; }
         public string Description { get; }
-        public IQueryable<InputValue> Args { get; }
-        public SchemaType Type { get; }
+        public IQueryable<InputValue> Args => this.CreateProperty(x => x.Args);
+        public SchemaType Type => this.CreateProperty(x => x.Type, SchemaType.Create);
         public bool IsDeprecated { get; }
         public string DeprecationReason { get; }
     }

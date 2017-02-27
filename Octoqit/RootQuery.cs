@@ -9,11 +9,9 @@ namespace Octoqit
         public RootQuery()
             : base(new QueryProvider())
         {
-            Viewer = this.CreateProperty(x => x.Viewer, User.Create);
-            
         }
 
-        public User Viewer { get; }
+        public User Viewer => this.CreateProperty(x => x.Viewer, User.Create);
 
         public RepositoryOwner RepositoryOwner(string login)
         {

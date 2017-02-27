@@ -11,10 +11,9 @@ namespace Octoqit
         public RepositoryConnection(IQueryProvider provider, Expression expression)
             : base(provider, expression)
         {
-            Edges = this.CreateProperty(x => x.Edges);
         }
 
-        public IQueryable<RepositoryEdge> Edges { get; }
+        public IQueryable<RepositoryEdge> Edges => this.CreateProperty(x => x.Edges);
 
         public int TotalCount { get; }
 

@@ -8,10 +8,9 @@ namespace LinqToGraphQL.Introspection
         public IntrospectionQuery()
             : base(new QueryProvider())
         {
-            Schema = this.CreateProperty(x => x.Schema, Schema.Create);
         }
 
         [GraphQLIdentifier("__schema")]
-        public Schema Schema { get; }
+        public Schema Schema => this.CreateProperty(x => x.Schema, Schema.Create);
     }
 }

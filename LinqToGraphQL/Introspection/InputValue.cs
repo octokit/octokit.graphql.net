@@ -9,12 +9,11 @@ namespace LinqToGraphQL.Introspection
         public InputValue(IQueryProvider provider)
             : base(provider)
         {
-            Type = this.CreateProperty(x => x.Type, SchemaType.Create);
         }
 
         public string Name { get; }
         public string Description { get; }
-        public SchemaType Type { get; }
+        public SchemaType Type => this.CreateProperty(x => x.Type, SchemaType.Create);
         public string DefaultValue { get; }
     }
 }

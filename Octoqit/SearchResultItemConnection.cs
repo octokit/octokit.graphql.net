@@ -11,11 +11,10 @@ namespace Octoqit
         public SearchResultItemConnection(IQueryProvider provider, Expression expression)
             : base(provider, expression)
         {
-            Edges = this.CreateProperty(x => x.Edges);
         }
 
         public int EdgeCount { get; }
-        public IQueryable<SearchResultItemEdge> Edges { get; }
+        public IQueryable<SearchResultItemEdge> Edges => this.CreateProperty(x => x.Edges);
         public int IssueCount { get; }
         public int RepositoryCount { get; }
         public int UserCount { get; }

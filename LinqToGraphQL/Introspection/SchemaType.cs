@@ -10,19 +10,15 @@ namespace LinqToGraphQL.Introspection
         public SchemaType(IQueryProvider provider, Expression expression)
             : base(provider, expression)
         {
-            Interfaces = this.CreateProperty(x => Interfaces);
-            PossibleTypes = this.CreateProperty(x => x.PossibleTypes);
-            InputFields = this.CreateProperty(x => x.InputFields);
-            //OfType = this.CreateProperty(x => x.OfType, SchemaType.Create);
         }
 
         public TypeKind Kind { get; }
         public string Name { get; }
         public string Description { get; }
-        public IQueryable<SchemaType> Interfaces { get; }
-        public IQueryable<SchemaType> PossibleTypes { get; }
-        public IQueryable<InputValue> InputFields { get; }
-        public SchemaType OfType { get; }
+        public IQueryable<SchemaType> Interfaces => this.CreateProperty(x => Interfaces);
+        public IQueryable<SchemaType> PossibleTypes => this.CreateProperty(x => x.PossibleTypes);
+        public IQueryable<InputValue> InputFields => this.CreateProperty(x => x.InputFields);
+        public SchemaType OfType => this.CreateProperty(x => x.OfType, SchemaType.Create);
 
         public IQueryable<Field> Fields(bool includeDeprecated = false)
         {

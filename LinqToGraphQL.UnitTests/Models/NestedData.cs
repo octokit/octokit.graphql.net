@@ -9,10 +9,9 @@ namespace LinqToGraphQL.UnitTests.Models
         public NestedData(IQueryProvider provider)
             : base(provider)
         {
-            Items = this.CreateProperty(x => x.Items);
         }
 
         public string Id { get; set; }
-        public IQueryable<Simple> Items { get; }
+        public IQueryable<Simple> Items => this.CreateProperty(x => x.Items);
     }
 }

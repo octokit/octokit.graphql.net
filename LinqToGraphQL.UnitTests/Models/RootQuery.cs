@@ -9,10 +9,9 @@ namespace LinqToGraphQL.UnitTests.Models
         public RootQuery()
             : base(new QueryProvider())
         {
-            Data = this.CreateProperty(x => Data);
         }
 
-        public IQueryable<NestedData> Data { get; }
+        public IQueryable<NestedData> Data => this.CreateProperty(x => Data);
 
         public IQueryable<Simple> Simple(string arg1, int? arg2 = null)
         {
