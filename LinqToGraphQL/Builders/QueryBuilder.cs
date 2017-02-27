@@ -106,8 +106,10 @@ namespace LinqToGraphQL.Builders
                 var expression = Visit(node.Expression).AddCast(node.Expression.Type);
                 return Expression.Bind(node.Member, expression);
             }
-
-            return node;
+            else
+            {
+                return node.Update(Visit(node.Expression));
+            }
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
