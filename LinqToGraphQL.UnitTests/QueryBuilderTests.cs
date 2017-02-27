@@ -177,5 +177,20 @@ namespace LinqToGraphQL.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Boolean_Paramter()
+        {
+            var expected = "{another(boolean:false){name}}";
+
+            var expression = new RootQuery()
+                .Another(false)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
     }
 }

@@ -23,5 +23,10 @@ namespace LinqToGraphQL.UnitTests.Models
         {
             return this.CreateMethodCall(x => x.Nested(arg1, arg2), NestedQuery.Create);
         }
+
+        public IQueryable<Simple> Another(bool boolean)
+        {
+            return this.CreateMethodCall(x => x.Another(boolean));
+        }
     }
 }
