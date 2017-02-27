@@ -134,6 +134,10 @@ namespace LinqToGraphQL.Serializers
             {
                 return value.ToString().ToUpperInvariant();
             }
+            else if (value is bool)
+            {
+                return ((bool)value) ? "true" : "false";
+            }
             else
             {
                 return value.ToString();
