@@ -47,6 +47,14 @@
     <Compile Include="Builders\QueryBuilder.cs" />
     <Compile Include="Builders\QueryEntityBuilders.cs" />
     <Compile Include="GraphQLQuery.cs" />
+    <Compile Include="Introspection\Directive.cs" />
+    <Compile Include="Introspection\EnumValue.cs" />
+    <Compile Include="Introspection\Field.cs" />
+    <Compile Include="Introspection\InputValue.cs" />
+    <Compile Include="Introspection\DirectiveLocation.cs" />
+    <Compile Include="Introspection\Schema.cs" />
+    <Compile Include="Introspection\SchemaType.cs" />
+    <Compile Include="Introspection\TypeKind.cs" />
     <Compile Include="Serializers\QuerySerializer.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Connection.cs" />
