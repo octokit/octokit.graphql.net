@@ -1,24 +1,28 @@
 ﻿using System;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace LinqToGraphQL.Introspection
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TypeKind
     {
-        [GraphQLIdentifier("SCALAR")]
+        [EnumMember(Value = "SCALAR")]
         Scalar,
-        [GraphQLIdentifier("OBJECT")]
+        [EnumMember(Value = "OBJECT")]
         Object,
-        [GraphQLIdentifier("UNION")]
+        [EnumMember(Value = "UNION")]
         Union,
-        [GraphQLIdentifier("INTERFACE")]
+        [EnumMember(Value = "INTERFACE")]
         Interface,
-        [GraphQLIdentifier("ENUM")]
+        [EnumMember(Value = "ENUM")]
         Enum,
-        [GraphQLIdentifier("INPUT_OBJECT")]
+        [EnumMember(Value = "INPUT_OBJECT")]
         InputObject,
-        [GraphQLIdentifier("LIST")]
+        [EnumMember(Value = "LIST")]
         List,
-        [GraphQLIdentifier("NON_NULL")]
+        [EnumMember(Value = "NON_NULL")]
         NonNull
     }
 }

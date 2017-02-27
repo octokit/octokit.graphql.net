@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LinqToGraphQL.Builders;
+using LinqToGraphQL.Deserializers;
 using LinqToGraphQL.Introspection;
 using LinqToGraphQL.Serializers;
 using Xunit;
@@ -28,7 +29,25 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void Select_Schema_Type_Kind_Name_Description()
         {
-            var expected = "{__schema{types{kind name description}}}";
+            var expectedQuery = "{__schema{types{kind name description}}}";
+            var data = @"{
+  ""data"": {
+    ""__schema"": {
+      ""types"": [
+        {
+          ""kind"": ""SCALAR"",
+          ""name"": ""Scalar"",
+          ""description"": ""A scalar value.""
+        },
+        {
+          ""kind"": ""INPUT_OBJECT"",
+          ""name"": ""InputObject"",
+          ""description"": ""An input object.""
+        },
+      ]
+    }
+  }
+}";
 
             var expression = new IntrospectionQuery()
                 .Schema
@@ -43,9 +62,21 @@ namespace LinqToGraphQL.UnitTests
                 });
 
             var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var queryResult = new QuerySerializer().Serialize(query.OperationDefinition);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expectedQuery, queryResult);
+
+            var responseResult = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            var type = responseResult.Types[0];
+            Assert.Equal(TypeKind.Scalar, type.Kind);
+            Assert.Equal("Scalar", type.Name);
+            Assert.Equal("A scalar value.", type.Description);
+
+            type = responseResult.Types[1];
+            Assert.Equal(TypeKind.InputObject, type.Kind);
+            Assert.Equal("InputObject", type.Name);
+            Assert.Equal("An input object.", type.Description);
         }
 
         private class SchemaModel
