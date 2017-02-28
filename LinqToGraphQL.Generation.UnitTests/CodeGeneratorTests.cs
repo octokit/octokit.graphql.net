@@ -7,25 +7,30 @@ namespace LinqToGraphQL.Generation.UnitTests
 {
     public class CodeGeneratorTests
     {
-        [Fact]
-        public void Generates_Property_For_Field()
-        {
-            var expected = @"using System.Linq;
+        const string Template = @"using System.Linq;
 using System.Linq.Expressions;
 using LinqToGraphQL;
 using LinqToGraphQL.Builders;
 
 namespace Test
-{
+{{
     public class Entity : QueryEntity
-    {
+    {{
         public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
-        {
-        }
+        {{
+        }}
 
-        public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);
-    }
-}";
+        {0}
+    }}
+}}";
+
+        [Fact]
+        public void Generates_Property_For_Field()
+        {
+            var expected = string.Format(
+                Template,
+                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+
             var model = new TypeModel
             {
                 Name = "Entity",
@@ -48,22 +53,10 @@ namespace Test
         [Fact]
         public void Generates_Property_For_NonNull_Field()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
+            var expected = string.Format(
+                Template,
+                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
 
-namespace Test
-{
-    public class Entity : QueryEntity
-    {
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
-        {
-        }
-
-        public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);
-    }
-}";
             var model = new TypeModel
             {
                 Name = "Entity",
@@ -86,22 +79,10 @@ namespace Test
         [Fact]
         public void Generates_Property_For_List_Field()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
+            var expected = string.Format(
+                Template,
+                "public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
 
-namespace Test
-{
-    public class Entity : QueryEntity
-    {
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
-        {
-        }
-
-        public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);
-    }
-}";
             var model = new TypeModel
             {
                 Name = "Entity",
@@ -124,22 +105,10 @@ namespace Test
         [Fact]
         public void Generates_Method_For_Field_With_Args()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
+            var expected = string.Format(
+                Template,
+                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
 
-namespace Test
-{
-    public class Entity : QueryEntity
-    {
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
-        {
-        }
-
-        public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);
-    }
-}";
             var model = new TypeModel
             {
                 Name = "Entity",
@@ -170,22 +139,10 @@ namespace Test
         [Fact]
         public void Generates_Method_For_NonNull_Field_With_Args()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
+            var expected = string.Format(
+                Template,
+                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
 
-namespace Test
-{
-    public class Entity : QueryEntity
-    {
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
-        {
-        }
-
-        public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);
-    }
-}";
             var model = new TypeModel
             {
                 Name = "Entity",
@@ -216,22 +173,10 @@ namespace Test
         [Fact]
         public void Generates_Method_For_List_Field_With_Args()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
+            var expected = string.Format(
+                Template,
+                "public IQueryable<Other> Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
-namespace Test
-{
-    public class Entity : QueryEntity
-    {
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
-        {
-        }
-
-        public IQueryable<Other> Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar));
-    }
-}";
             var model = new TypeModel
             {
                 Name = "Entity",
