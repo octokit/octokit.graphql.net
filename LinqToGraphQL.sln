@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octoqit.UnitTests", "Octoqi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToGraphQL.Generation", "LinqToGraphQL.Generation\LinqToGraphQL.Generation.csproj", "{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToGraphQL.Generation.UnitTests", "LinqToGraphQL.Generation.UnitTests\LinqToGraphQL.Generation.UnitTests.csproj", "{A0E130E4-6282-4B4B-B44E-32992DB9993B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0E130E4-6282-4B4B-B44E-32992DB9993B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E130E4-6282-4B4B-B44E-32992DB9993B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E130E4-6282-4B4B-B44E-32992DB9993B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E130E4-6282-4B4B-B44E-32992DB9993B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
