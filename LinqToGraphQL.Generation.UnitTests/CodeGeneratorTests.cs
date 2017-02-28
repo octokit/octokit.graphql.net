@@ -23,7 +23,9 @@ namespace Test
         {
         }
 
-        public Other NullableField => this.CreateProperty(x => x.NullableField, Other.Create);
+        public Other NullableFieldProperty => this.CreateProperty(x => x.NullableFieldProperty, Other.Create);
+        public Other NotNullFieldProperty => this.CreateProperty(x => x.NotNullFieldProperty, Other.Create);
+        public IQueryable<Other> ListFieldProperty => this.CreateProperty(x => x.ListFieldProperty);
     }
 }";
             var model = new TypeModel
@@ -34,20 +36,45 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "NullableField",
+                        Name = "NullableFieldProperty",
                         Type = new TypeModel
                         {
                             Kind = TypeKind.Object,
                             Name = "Other",
                         },
-                    }
+                    },
+                    new FieldModel
+                    {
+                        Name = "NotNullFieldProperty",
+                        Type = new TypeModel
+                        {
+                            Kind = TypeKind.NonNull,
+                            OfType = new TypeModel
+                            {
+                               Kind = TypeKind.Object,
+                               Name = "Other",
+                            }
+                        },
+                    },
+                    new FieldModel
+                    {
+                        Name = "ListFieldProperty",
+                        Type = new TypeModel
+                        {
+                            Kind = TypeKind.List,
+                            OfType = new TypeModel
+                            {
+                               Kind = TypeKind.Object,
+                               Name = "Other",
+                            }
+                        },
+                    },
                 }
             };
 
-            var compilation = CodeGenerator.GenerateType(model, "Test");
-            var formatted = CodeGenerator.Format(compilation);
+            var result = CodeGenerator.GenerateType(model, "Test");
 
-            Assert.Equal(expected, formatted);
+            Assert.Equal(expected, result);
         }
     }
 }
