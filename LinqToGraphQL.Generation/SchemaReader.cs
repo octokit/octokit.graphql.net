@@ -40,7 +40,16 @@ namespace LinqToGraphQL.Generation
                                 Name = a.Name,
                                 Description = a.Description,
                                 DefaultValue = a.DefaultValue,
-                                Type = a.Type.Name,
+                                Type = a.Type.Select((SchemaType y) => new TypeModel
+                                {
+                                    Kind = y.Kind,
+                                    Name = y.Name,
+                                    OfType = y.OfType.Select((SchemaType p) => new TypeModel
+                                    {
+                                        Kind = p.Kind,
+                                        Name = p.Name,
+                                    }).SingleOrDefault(),
+                                }).Single(),
                             }).ToList(),
                             IsDeprecated = f.IsDeprecated,
                             DeprecationReason = f.DeprecationReason,
