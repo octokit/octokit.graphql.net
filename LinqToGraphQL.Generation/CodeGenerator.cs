@@ -17,6 +17,10 @@ namespace LinqToGraphQL.Generation
                 {
                     yield return GenerateRootEntity(type, rootNamespace);
                 }
+                else
+                {
+                    yield return GenerateEntity(type, rootNamespace);
+                }
             }
         }
 
@@ -35,9 +39,7 @@ namespace {rootNamespace}
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}
-
-{GenerateFields(type)}
+        }}{GenerateFields(type)}
     }}
 }}";
         }
@@ -57,9 +59,7 @@ namespace {rootNamespace}
     {{
         public {className}() : base(new QueryProvider())
         {{
-        }}
-
-{GenerateFields(type)}
+        }}{GenerateFields(type)}
     }}
 }}";
         }
@@ -67,17 +67,16 @@ namespace {rootNamespace}
         private static string GenerateFields(TypeModel type)
         {
             var builder = new StringBuilder();
-            var first = true;
 
-            foreach (var field in type.Fields)
+            if (type.Fields?.Count > 0)
             {
-                if (!first)
+                builder.AppendLine();
+
+                foreach (var field in type.Fields)
                 {
                     builder.AppendLine();
+                    builder.Append(GenerateField(field));
                 }
-
-                builder.Append(GenerateField(field));
-                first = false;
             }
 
             return builder.ToString();
@@ -91,6 +90,7 @@ namespace {rootNamespace}
             switch (field.Type.Kind)
             {
                 case TypeKind.Object:
+                case TypeKind.Interface:
                     result += method ?
                         GenerateObjectMethod(field, field.Type) :
                         GenerateObjectField(field, field.Type);

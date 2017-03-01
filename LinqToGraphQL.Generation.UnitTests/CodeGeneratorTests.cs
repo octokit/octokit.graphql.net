@@ -222,8 +222,6 @@ namespace Test
         public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
-
-
     }
 }";
 

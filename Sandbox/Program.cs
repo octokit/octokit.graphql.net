@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LinqToGraphQL;
+using LinqToGraphQL.Generation;
 using Octoqit;
 
 namespace Sandbox
@@ -10,8 +11,20 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            RunRepositoryQuery(args[0]).Wait();
+            GenerateEntities(args[0]).Wait();
+            //RunRepositoryQuery(args[0]).Wait();
             Console.ReadKey();
+        }
+
+        private static async Task GenerateEntities(string token)
+        {
+            var connection = new Connection("https://api.github.com/graphql", token);
+            var schema = await SchemaReader.ReadSchema(connection);
+
+            foreach (var file in CodeGenerator.Generate(schema, "Octoqit"))
+            {
+                Console.WriteLine(file);
+            }
         }
 
         private static async Task RunRepositoryQuery(string token)

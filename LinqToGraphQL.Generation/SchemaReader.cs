@@ -25,14 +25,24 @@ namespace LinqToGraphQL.Generation
                         {
                             Name = f.Name,
                             Description = f.Description,
-                            Type = f.Type.Select((SchemaType y) => new TypeModel
+                            Type = f.Type.Select((SchemaType t1) => new TypeModel
                             {
-                                Kind = y.Kind,
-                                Name = y.Name,
-                                OfType = y.OfType.Select((SchemaType p) => new TypeModel
+                                Kind = t1.Kind,
+                                Name = t1.Name,
+                                OfType = t1.OfType.Select((SchemaType t2) => new TypeModel
                                 {
-                                    Kind = p.Kind,
-                                    Name = p.Name,
+                                    Kind = t2.Kind,
+                                    Name = t2.Name,
+                                    OfType = t2.OfType.Select((SchemaType t3) => new TypeModel
+                                    {
+                                        Kind = t3.Kind,
+                                        Name = t3.Name,
+                                        OfType = t3.OfType.Select((SchemaType t4) => new TypeModel
+                                        {
+                                            Kind = t4.Kind,
+                                            Name = t4.Name,
+                                        }).SingleOrDefault(),
+                                    }).SingleOrDefault(),
                                 }).SingleOrDefault(),
                             }).Single(),
                             Args = f.Args.Select((InputValue a) => new InputValueModel
@@ -40,14 +50,24 @@ namespace LinqToGraphQL.Generation
                                 Name = a.Name,
                                 Description = a.Description,
                                 DefaultValue = a.DefaultValue,
-                                Type = a.Type.Select((SchemaType y) => new TypeModel
+                                Type = f.Type.Select((SchemaType t1) => new TypeModel
                                 {
-                                    Kind = y.Kind,
-                                    Name = y.Name,
-                                    OfType = y.OfType.Select((SchemaType p) => new TypeModel
+                                    Kind = t1.Kind,
+                                    Name = t1.Name,
+                                    OfType = t1.OfType.Select((SchemaType t2) => new TypeModel
                                     {
-                                        Kind = p.Kind,
-                                        Name = p.Name,
+                                        Kind = t2.Kind,
+                                        Name = t2.Name,
+                                        OfType = t2.OfType.Select((SchemaType t3) => new TypeModel
+                                        {
+                                            Kind = t3.Kind,
+                                            Name = t3.Name,
+                                            OfType = t3.OfType.Select((SchemaType t4) => new TypeModel
+                                            {
+                                                Kind = t4.Kind,
+                                                Name = t4.Name,
+                                            }).SingleOrDefault(),
+                                        }).SingleOrDefault(),
                                     }).SingleOrDefault(),
                                 }).Single(),
                             }).ToList(),

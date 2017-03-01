@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LinqToGraphQL.Generation\LinqToGraphQL.Generation.csproj">
+      <Project>{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}</Project>
+      <Name>LinqToGraphQL.Generation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LinqToGraphQL\LinqToGraphQL.csproj">
       <Project>{42469d40-7485-4697-839e-493d89529ec6}</Project>
       <Name>LinqToGraphQL</Name>
