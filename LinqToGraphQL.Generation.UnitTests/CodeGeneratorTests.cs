@@ -7,7 +7,7 @@ namespace LinqToGraphQL.Generation.UnitTests
 {
     public class CodeGeneratorTests
     {
-        const string Template = @"using System.Linq;
+        const string MemberTemplate = @"using System.Linq;
 using System.Linq.Expressions;
 using LinqToGraphQL;
 using LinqToGraphQL.Builders;
@@ -28,7 +28,7 @@ namespace Test
         public void Generates_Property_For_Field()
         {
             var expected = string.Format(
-                Template,
+                MemberTemplate,
                 "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
 
             var model = new TypeModel
@@ -54,7 +54,7 @@ namespace Test
         public void Generates_Property_For_NonNull_Field()
         {
             var expected = string.Format(
-                Template,
+                MemberTemplate,
                 "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
 
             var model = new TypeModel
@@ -80,7 +80,7 @@ namespace Test
         public void Generates_Property_For_List_Field()
         {
             var expected = string.Format(
-                Template,
+                MemberTemplate,
                 "public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
@@ -106,7 +106,7 @@ namespace Test
         public void Generates_Method_For_Field_With_Args()
         {
             var expected = string.Format(
-                Template,
+                MemberTemplate,
                 "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
 
             var model = new TypeModel
@@ -140,7 +140,7 @@ namespace Test
         public void Generates_Method_For_NonNull_Field_With_Args()
         {
             var expected = string.Format(
-                Template,
+                MemberTemplate,
                 "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
 
             var model = new TypeModel
@@ -174,7 +174,7 @@ namespace Test
         public void Generates_Method_For_List_Field_With_Args()
         {
             var expected = string.Format(
-                Template,
+                MemberTemplate,
                 "public IQueryable<Other> Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -203,5 +203,117 @@ namespace Test
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Generates_Doc_Comments_For_Class()
+        {
+            var expected = @"using System.Linq;
+using System.Linq.Expressions;
+using LinqToGraphQL;
+using LinqToGraphQL.Builders;
+
+namespace Test
+{
+    /// <summary>
+    /// Testing if doc comments are generated.
+    /// </summary>
+    public class Entity : QueryEntity
+    {
+        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        {
+        }
+
+
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Description = "Testing if doc comments are generated.",
+                Kind = TypeKind.Object,
+                Fields = new FieldModel[0],
+            };
+
+            var result = CodeGenerator.GenerateType(model, "Test");
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Doc_Comments_For_Property()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                @"/// <summary>
+        /// Testing if doc comments are generated.
+        /// </summary>
+        public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "Foo",
+                        Description = "Testing if doc comments are generated.",
+                        Type = TypeModel.Object("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.GenerateType(model, "Test");
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Doc_Comments_For_Method()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                @"/// <summary>
+        /// Testing if doc comments are generated.
+        /// </summary>
+        /// <param name=""arg1"">The first argument.</param>
+        public Other Foo(int arg1, int arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "Foo",
+                        Description = "Testing if doc comments are generated.",
+                        Type = TypeModel.Object("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "arg1",
+                                Description = "The first argument.",
+                                Type = TypeModel.Int(),
+                            },
+                            new InputValueModel
+                            {
+                                Name = "arg2",
+                                Type = TypeModel.Int(),
+                            },
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.GenerateType(model, "Test");
+
+            Assert.Equal(expected, result);
+        }
+
     }
 }

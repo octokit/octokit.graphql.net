@@ -18,7 +18,7 @@ using LinqToGraphQL.Builders;
 
 namespace {rootNamespace}
 {{
-    public class {className} : QueryEntity
+    {GenerateDocComments(type)}public class {className} : QueryEntity
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
@@ -51,23 +51,72 @@ namespace {rootNamespace}
         private static string GenerateField(FieldModel field)
         {
             var method = field.Args?.Count > 0;
+            var result = GenerateDocComments(field);
 
             switch (field.Type.Kind)
             {
                 case TypeKind.Object:
-                    return method ?
+                    result += method ?
                         GenerateObjectMethod(field, field.Type) :
                         GenerateObjectField(field, field.Type);
+                    break;
                 case TypeKind.NonNull:
-                    return method ?
+                    result += method ?
                         GenerateObjectMethod(field, field.Type.OfType) :
                         GenerateObjectField(field, field.Type.OfType);
+                    break;
                 case TypeKind.List:
-                    return method ?
+                    result += method ?
                         GenerateListMethod(field, field.Type.OfType) :
                         GenerateListField(field, field.Type.OfType);
+                    break;
                 default:
                     throw new NotImplementedException();
+            }
+
+            return result;
+        }
+
+        private static string GenerateDocComments(TypeModel type)
+        {
+            if (!string.IsNullOrWhiteSpace(type.Description))
+            {
+                return $@"/// <summary>
+    /// {type.Description}
+    /// </summary>
+    ";
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static string GenerateDocComments(FieldModel field)
+        {
+            if (!string.IsNullOrWhiteSpace(field.Description))
+            {
+                var builder = new StringBuilder($@"        /// <summary>
+        /// {field.Description}
+        /// </summary>
+");
+
+                if (field.Args != null)
+                {
+                    foreach (var arg in field.Args)
+                    {
+                        if (!string.IsNullOrWhiteSpace(arg.Description))
+                        {
+                            builder.AppendLine($"        /// <param name=\"{arg.Name}\">{arg.Description}</param>");
+                        }
+                    }
+                }
+
+                return builder.ToString();
+            }
+            else
+            {
+                return null;
             }
         }
 
