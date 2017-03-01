@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using LinqToGraphQL.Generation.Models;
 using LinqToGraphQL.Introspection;
@@ -90,7 +91,7 @@ using Newtonsoft.Json.Converters;
 namespace Test
 {{
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum TestEnum
+    public enum {type.Name}
     {{{GenerateEnumValues(type)}    }}
 }}";
         }
@@ -253,7 +254,7 @@ namespace Test
         private static string GenerateEnumValue(EnumValueModel value)
         {
             return $@"        [EnumMember(Value = ""{value.Name}"")]
-        {PascalCase(value.Name)},";
+        {PascalCaseEnum(value.Name)},";
         }
 
         private static string GetCSharpType(TypeModel type, bool nullable = true)
@@ -306,16 +307,14 @@ namespace Test
 
         private static string PascalCase(string value)
         {
-            if (value.Contains("_"))
-            {
-                return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
-                    value.ToLowerInvariant().Replace('_', ' '))
-                    .Replace(" ", "");
-            }
-            else
-            {
-                return value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
-            }
+            return value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
+        }
+
+        private static string PascalCaseEnum(string value)
+        {
+            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
+                value.ToLowerInvariant().Replace('_', ' '))
+                .Replace(" ", "");
         }
 
         private static void GenerateArguments(FieldModel field, out string arguments, out string parameters)

@@ -26,8 +26,8 @@ namespace Test
         {
             var expected = string.Format(
                 MemberTemplate,
-                @"[EnumMember(Value = ""VALUE_1"")]
-        Value1,
+                @"[EnumMember(Value = ""VALUE"")]
+        Value,
 
         [EnumMember(Value = ""VALUE_2"")]
         Value2,");
@@ -38,7 +38,7 @@ namespace Test
                 Kind = TypeKind.Enum,
                 EnumValues = new[]
                 {
-                    new EnumValueModel { Name = "VALUE_1" },
+                    new EnumValueModel { Name = "VALUE" },
                     new EnumValueModel { Name = "VALUE_2" },
                 }
             };
