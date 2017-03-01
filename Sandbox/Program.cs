@@ -24,6 +24,7 @@ namespace Sandbox
             foreach (var file in CodeGenerator.Generate(schema, "Octoqit"))
             {
                 Console.WriteLine(file);
+                Console.ReadKey();
             }
         }
 

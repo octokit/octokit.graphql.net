@@ -50,7 +50,7 @@ namespace LinqToGraphQL.Generation
                                 Name = a.Name,
                                 Description = a.Description,
                                 DefaultValue = a.DefaultValue,
-                                Type = f.Type.Select((SchemaType t1) => new TypeModel
+                                Type = a.Type.Select((SchemaType t1) => new TypeModel
                                 {
                                     Kind = t1.Kind,
                                     Name = t1.Name,

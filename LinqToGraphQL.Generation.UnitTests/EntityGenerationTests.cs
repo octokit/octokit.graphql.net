@@ -5,7 +5,7 @@ using Xunit;
 
 namespace LinqToGraphQL.Generation.UnitTests
 {
-    public class CodeGeneratorTests
+    public class EntityGenerationTests
     {
         const string MemberTemplate = @"using System.Linq;
 using System.Linq.Expressions;
@@ -25,7 +25,59 @@ namespace Test
 }}";
 
         [Fact]
-        public void Generates_Property_For_Field()
+        public void Generates_Property_For_Scalar_Field()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                "public int? Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "Foo",
+                        Type = TypeModel.Int()
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_NonNull_Scalar_Field()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                "public int Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "Foo",
+                        Type = TypeModel.NonNull(TypeModel.Int()),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Object_Field()
         {
             var expected = string.Format(
                 MemberTemplate,
@@ -45,13 +97,13 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
 
         [Fact]
-        public void Generates_Property_For_NonNull_Field()
+        public void Generates_Property_For_NonNull_Object_Field()
         {
             var expected = string.Format(
                 MemberTemplate,
@@ -71,7 +123,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
@@ -97,13 +149,13 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
 
         [Fact]
-        public void Generates_Method_For_Field_With_Args()
+        public void Generates_Method_For_Object_Field_With_Args()
         {
             var expected = string.Format(
                 MemberTemplate,
@@ -124,20 +176,20 @@ namespace Test
                             new InputValueModel
                             {
                                 Name = "bar",
-                                Type = TypeModel.Int(),
+                                Type = TypeModel.NonNull(TypeModel.Int()),
                             }
                         }
                     },
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
 
         [Fact]
-        public void Generates_Method_For_NonNull_Field_With_Args()
+        public void Generates_Method_For_NonNull_Object_Field_With_Args()
         {
             var expected = string.Format(
                 MemberTemplate,
@@ -158,14 +210,14 @@ namespace Test
                             new InputValueModel
                             {
                                 Name = "bar",
-                                Type = TypeModel.Int(),
+                                Type = TypeModel.NonNull(TypeModel.Int()),
                             }
                         }
                     },
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
@@ -175,7 +227,7 @@ namespace Test
         {
             var expected = string.Format(
                 MemberTemplate,
-                "public IQueryable<Other> Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar));");
+                "public IQueryable<Other> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -199,7 +251,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
@@ -233,7 +285,7 @@ namespace Test
                 Fields = new FieldModel[0],
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
@@ -263,7 +315,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
@@ -277,7 +329,7 @@ namespace Test
         /// Testing if doc comments are generated.
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
-        public Other Foo(int arg1, int arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Other.Create);");
+        public Other Foo(int? arg1, int? arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Other.Create);");
 
             var model = new TypeModel
             {
@@ -308,7 +360,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
         }
@@ -347,7 +399,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateRootEntity(model, "Test");
+            var result = CodeGenerator.Generate(model, "Test", model.Name);
 
             Assert.Equal(expected, result);
         }

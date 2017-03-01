@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using LinqToGraphQL.Generation.Models;
 using LinqToGraphQL.Introspection;
@@ -13,18 +14,33 @@ namespace LinqToGraphQL.Generation
         {
             foreach (var type in schema.Types)
             {
-                if (type.Name == schema.QueryType)
-                {
-                    yield return GenerateRootEntity(type, rootNamespace);
-                }
-                else
-                {
-                    yield return GenerateEntity(type, rootNamespace);
-                }
+                yield return Generate(type, rootNamespace, schema.QueryType);
             }
         }
 
-        public static string GenerateEntity(TypeModel type, string rootNamespace)
+        public static string Generate(TypeModel type, string rootNamespace, string queryType)
+        {
+            switch (type.Kind)
+            {
+                case TypeKind.Object:
+                    if (type.Name == queryType)
+                    {
+                        return GenerateRootEntity(type, rootNamespace);
+                    }
+                    else
+                    {
+                        return GenerateEntity(type, rootNamespace);
+                    }
+
+                case TypeKind.Enum:
+                    return GenerateEnum(type, rootNamespace);
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private static string GenerateEntity(TypeModel type, string rootNamespace)
         {
             var className = type.Name;
 
@@ -44,7 +60,7 @@ namespace {rootNamespace}
 }}";
         }
 
-        public static string GenerateRootEntity(TypeModel type, string rootNamespace)
+        private static string GenerateRootEntity(TypeModel type, string rootNamespace)
         {
             var className = type.Name;
 
@@ -61,6 +77,21 @@ namespace {rootNamespace}
         {{
         }}{GenerateFields(type)}
     }}
+}}";
+        }
+
+        private static string GenerateEnum(TypeModel type, string rootNamespace)
+        {
+            return $@"using System;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Test
+{{
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum TestEnum
+    {{{GenerateEnumValues(type)}    }}
 }}";
         }
 
@@ -86,9 +117,15 @@ namespace {rootNamespace}
         {
             var method = field.Args?.Count > 0;
             var result = GenerateDocComments(field);
+            var reduced = ReduceKind(field.Type);
 
-            switch (field.Type.Kind)
+            switch (reduced)
             {
+                case TypeKind.Scalar:
+                    result += method ?
+                        GenerateScalarMethod(field, field.Type) :
+                        GenerateScalarField(field, field.Type);
+                    break;
                 case TypeKind.Object:
                 case TypeKind.Interface:
                     result += method ?
@@ -155,9 +192,19 @@ namespace {rootNamespace}
             }
         }
 
+        private static string GenerateScalarField(FieldModel field, TypeModel type)
+        {
+            return $"        public {GetCSharpType(type)} {field.Name} {{ get; }}";
+        }
+
         private static string GenerateObjectField(FieldModel field, TypeModel type)
         {
             return $"        public {type.Name} {field.Name} => this.CreateProperty(x => x.{field.Name}, {type.Name}.Create);";
+        }
+
+        private static string GenerateScalarMethod(FieldModel field, TypeModel type)
+        {
+            throw new NotImplementedException();
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
@@ -183,23 +230,45 @@ namespace {rootNamespace}
             return $"        public IQueryable<{type.Name}> {field.Name}({arguments}) => this.CreateMethodCall(x => x.{field.Name}({parameters}));";
         }
 
-        private static string GetCSharpType(TypeModel type)
+        private static string GenerateEnumValues(TypeModel type)
         {
+            var builder = new StringBuilder();
+
+            foreach (var value in type.EnumValues)
+            {
+                builder.AppendLine();
+                builder.AppendLine(GenerateEnumValue(value));
+            }
+
+            return builder.ToString();
+        }
+
+        private static string GenerateEnumValue(EnumValueModel value)
+        {
+            return $@"        [EnumMember(Value = ""{value.Name}"")]
+        {PascalCase(value.Name)},";
+        }
+
+        private static string GetCSharpType(TypeModel type, bool nullable = true)
+        {
+
             switch (type.Kind)
             {
                 case TypeKind.Scalar:
+                    var question = nullable ? "?" : "";
                     switch (type.Name)
                     {
-                        case "Boolean": return "bool";
-                        case "ID": return "string";
-                        default: return type.Name.ToLowerInvariant();
+                        case "Boolean": return "bool" + question;
+                        case "ID": return "string" + question;
+                        default: return type.Name.ToLowerInvariant() + question;
                     }
                 case TypeKind.Object:
                 case TypeKind.Enum:
                 case TypeKind.Interface:
+                case TypeKind.InputObject:
                     return type.Name;
                 case TypeKind.NonNull:
-                    return GetCSharpType(type.OfType);
+                    return GetCSharpType(type.OfType, false);
                 case TypeKind.List:
                     return $"IQueryable<{GetCSharpType(type.OfType)}>";
                 default:
@@ -226,6 +295,13 @@ namespace {rootNamespace}
             }
 
             throw new NotImplementedException();
+        }
+
+        private static string PascalCase(string value)
+        {
+            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
+                value.ToLowerInvariant().Replace('_', ' '))
+                .Replace(" ", "");
         }
 
         private static void GenerateArguments(FieldModel field, out string arguments, out string parameters)
@@ -258,6 +334,19 @@ namespace {rootNamespace}
 
             arguments = argBuilder.ToString();
             parameters = paramBuilder.ToString();
+        }
+
+        private static TypeKind ReduceKind(TypeModel type)
+        {
+            if (type.Kind == TypeKind.Scalar || 
+                type.Kind == TypeKind.NonNull && type.OfType.Kind == TypeKind.Scalar)
+            {
+                return TypeKind.Scalar;
+            }
+            else
+            {
+                return type.Kind;
+            }
         }
     }
 }
