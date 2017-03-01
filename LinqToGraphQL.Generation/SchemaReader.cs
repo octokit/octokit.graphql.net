@@ -74,6 +74,13 @@ namespace LinqToGraphQL.Generation
                             IsDeprecated = f.IsDeprecated,
                             DeprecationReason = f.DeprecationReason,
                         }).ToList(),
+                        EnumValues = t.EnumValues(true).Select((EnumValue e) => new EnumValueModel
+                        {
+                            Name = e.Name,
+                            Description = e.Description,
+                            IsDeprecated = e.IsDeprecated,
+                            DeprecationReason = e.DeprecationReason,
+                        }).ToList(),
                     }).ToList()
                 });
 
