@@ -42,7 +42,7 @@ namespace LinqToGraphQL.Generation
 
         private static string GenerateEntity(TypeModel type, string rootNamespace)
         {
-            var className = type.Name;
+            var className = PascalCase(type.Name);
 
             return $@"using System.Linq;
 using System.Linq.Expressions;
@@ -194,12 +194,14 @@ namespace Test
 
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
-            return $"        public {GetCSharpType(type)} {field.Name} {{ get; }}";
+            var name = PascalCase(field.Name);
+            return $"        public {GetCSharpType(type)} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type)
         {
-            return $"        public {type.Name} {field.Name} => this.CreateProperty(x => x.{field.Name}, {type.Name}.Create);";
+            var name = PascalCase(field.Name);
+            return $"        public {type.Name} {name} => this.CreateProperty(x => x.{name}, {type.Name}.Create);";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
@@ -209,25 +211,30 @@ namespace Test
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
         {
+            var name = PascalCase(field.Name);
+
             string arguments;
             string parameters;
             GenerateArguments(field, out arguments, out parameters);
 
-            return $"        public {type.Name} {field.Name}({arguments}) => this.CreateMethodCall(x => x.{field.Name}({parameters}), {type.Name}.Create);";
+            return $"        public {type.Name} {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}), {type.Name}.Create);";
         }
 
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
-            return $"        public IQueryable<{type.Name}> {field.Name} => this.CreateProperty(x => x.{field.Name});";
+            var name = PascalCase(field.Name);
+            return $"        public IQueryable<{type.Name}> {name} => this.CreateProperty(x => x.{name});";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
         {
+            var name = PascalCase(field.Name);
+
             string arguments;
             string parameters;
             GenerateArguments(field, out arguments, out parameters);
 
-            return $"        public IQueryable<{type.Name}> {field.Name}({arguments}) => this.CreateMethodCall(x => x.{field.Name}({parameters}));";
+            return $"        public IQueryable<{type.Name}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
         }
 
         private static string GenerateEnumValues(TypeModel type)
@@ -299,9 +306,16 @@ namespace Test
 
         private static string PascalCase(string value)
         {
-            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
-                value.ToLowerInvariant().Replace('_', ' '))
-                .Replace(" ", "");
+            if (value.Contains("_"))
+            {
+                return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
+                    value.ToLowerInvariant().Replace('_', ' '))
+                    .Replace(" ", "");
+            }
+            else
+            {
+                return value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
+            }
         }
 
         private static void GenerateArguments(FieldModel field, out string arguments, out string parameters)

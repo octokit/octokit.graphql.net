@@ -39,7 +39,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.Int()
                     },
                 }
@@ -55,7 +55,7 @@ namespace Test
         {
             var expected = string.Format(
                 MemberTemplate,
-                "public int Foo { get; }");
+                "public int FooBar { get; }");
 
             var model = new TypeModel
             {
@@ -65,7 +65,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "fooBar",
                         Type = TypeModel.NonNull(TypeModel.Int()),
                     },
                 }
@@ -91,7 +91,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.Object("Other")
                     },
                 }
@@ -117,7 +117,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.NonNull(TypeModel.Object("Other")),
                     },
                 }
@@ -143,7 +143,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.List(TypeModel.Object("Other")),
                     },
                 }
@@ -169,7 +169,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.Object("Other"),
                         Args = new[]
                         {
@@ -203,7 +203,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.NonNull(TypeModel.Object("Other")),
                         Args = new[]
                         {
@@ -237,7 +237,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.List(TypeModel.Object("Other")),
                         Args = new[]
                         {
@@ -339,7 +339,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Description = "Testing if doc comments are generated.",
                         Type = TypeModel.Object("Other"),
                         Args = new[]
@@ -393,7 +393,7 @@ namespace Test
                 {
                     new FieldModel
                     {
-                        Name = "Foo",
+                        Name = "foo",
                         Type = TypeModel.Object("Other")
                     },
                 }
