@@ -103,6 +103,44 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal("An input object.", type.Description);
         }
 
+        [Fact]
+        public void Select_Schema_Enum_Types()
+        {
+            var expression = new IntrospectionQuery()
+                .Schema
+                .Select(x => new SchemaModel
+                {
+                    Types = x.Types.Select(t => new TypeModel
+                    {
+                        Fields = t.Fields(true).Select((Field f) => new FieldModel
+                        {
+                            Name = f.Name,
+                        }).ToList(),
+                        EnumValues = t.EnumValues(true).Select((EnumValue e) => new EnumValueModel
+                        {
+                            Name = e.Name,
+                        }).ToList(),
+                    }).ToList()
+                });
+
+            var expectedQuery = @"{
+  __schema {
+    types {
+      fields(includeDeprecated: true) {
+        name
+      }
+      enumValues(includeDeprecated: true) {
+        name
+      }
+    }
+  }
+}";
+            var query = new QueryBuilder().Build(expression);
+            var queryResult = new QuerySerializer(2).Serialize(query.OperationDefinition);
+
+            Assert.Equal(expectedQuery, queryResult);
+        }
+
         private class SchemaModel
         {
             public IList<TypeModel> Types { get; set; }
@@ -114,6 +152,7 @@ namespace LinqToGraphQL.UnitTests
             public string Name { get; set; }
             public string Description { get; set; }
             public IList<FieldModel> Fields { get; set; }
+            public IList<EnumValueModel> EnumValues { get; set; }
         }
 
         private class FieldModel
@@ -121,6 +160,12 @@ namespace LinqToGraphQL.UnitTests
             public string Name { get; set; }
             public string Description { get; set; }
             public string Type { get; set; }
+        }
+
+        private class EnumValueModel
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
         }
     }
 }
