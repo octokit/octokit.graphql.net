@@ -54,7 +54,7 @@ namespace LinqToGraphQL.Generation
                             IsDeprecated = f.IsDeprecated,
                             DeprecationReason = f.DeprecationReason,
                         }).ToList(),
-                    }).ToDictionary(d => d.Name, d => d)
+                    }).ToList()
                 });
 
             return (await connection.Run(query)).Single();

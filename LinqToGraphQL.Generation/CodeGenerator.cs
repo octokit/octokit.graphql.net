@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using LinqToGraphQL.Generation.Models;
 using LinqToGraphQL.Introspection;
@@ -7,7 +9,18 @@ namespace LinqToGraphQL.Generation
 {
     public static class CodeGenerator
     {
-        public static string GenerateType(TypeModel type, string rootNamespace)
+        public static IEnumerable<string> Generate(SchemaModel schema, string rootNamespace)
+        {
+            foreach (var type in schema.Types)
+            {
+                if (type.Name == schema.QueryType)
+                {
+                    yield return GenerateRootEntity(type, rootNamespace);
+                }
+            }
+        }
+
+        public static string GenerateEntity(TypeModel type, string rootNamespace)
         {
             var className = type.Name;
 
@@ -21,6 +34,28 @@ namespace {rootNamespace}
     {GenerateDocComments(type)}public class {className} : QueryEntity
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        {{
+        }}
+
+{GenerateFields(type)}
+    }}
+}}";
+        }
+
+        public static string GenerateRootEntity(TypeModel type, string rootNamespace)
+        {
+            var className = type.Name;
+
+            return $@"using System.Linq;
+using System.Linq.Expressions;
+using LinqToGraphQL;
+using LinqToGraphQL.Builders;
+
+namespace {rootNamespace}
+{{
+    {GenerateDocComments(type)}public class {className} : QueryEntity, IRootQuery
+    {{
+        public {className}() : base(new QueryProvider())
         {{
         }}
 

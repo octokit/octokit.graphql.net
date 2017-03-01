@@ -45,7 +45,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -71,7 +71,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -97,7 +97,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -131,7 +131,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -165,7 +165,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -199,7 +199,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -235,7 +235,7 @@ namespace Test
                 Fields = new FieldModel[0],
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -265,7 +265,7 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
@@ -310,10 +310,48 @@ namespace Test
                 }
             };
 
-            var result = CodeGenerator.GenerateType(model, "Test");
+            var result = CodeGenerator.GenerateEntity(model, "Test");
 
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public void Generates_Root_Query()
+        {
+            var expected = @"using System.Linq;
+using System.Linq.Expressions;
+using LinqToGraphQL;
+using LinqToGraphQL.Builders;
+
+namespace Test
+{
+    public class Entity : QueryEntity, IRootQuery
+    {
+        public Entity() : base(new QueryProvider())
+        {
+        }
+
+        public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "Foo",
+                        Type = TypeModel.Object("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.GenerateRootEntity(model, "Test");
+
+            Assert.Equal(expected, result);
+        }
     }
 }
