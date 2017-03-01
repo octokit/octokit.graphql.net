@@ -29,7 +29,7 @@ namespace LinqToGraphQL
 
         public override string ToString()
         {
-            return new QuerySerializer().Serialize(OperationDefinition);
+            return new QuerySerializer(2).Serialize(OperationDefinition);
         }
 
         public string GetPayload()
