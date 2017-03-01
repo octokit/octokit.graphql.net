@@ -207,7 +207,14 @@ namespace Test
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
-            throw new NotImplementedException();
+            var name = PascalCase(field.Name);
+            type = TypeModel.NonNull(ReduceNonNull(type));
+
+            string arguments;
+            string parameters;
+            GenerateArguments(field, out arguments, out parameters);
+
+            return $"        public IQueryable<{GetCSharpType(type)}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
@@ -360,6 +367,11 @@ namespace Test
             {
                 return type.Kind;
             }
+        }
+
+        private static TypeModel ReduceNonNull(TypeModel type)
+        {
+            return type.Kind == TypeKind.NonNull ? type.OfType : type;
         }
     }
 }

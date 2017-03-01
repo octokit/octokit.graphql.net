@@ -257,6 +257,74 @@ namespace Test
         }
 
         [Fact]
+        public void Generates_Method_For_Scalar()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                "public IQueryable<int> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_NonNull_Scalar()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                "public IQueryable<int> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.Int()),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Doc_Comments_For_Class()
         {
             var expected = @"using System.Linq;
