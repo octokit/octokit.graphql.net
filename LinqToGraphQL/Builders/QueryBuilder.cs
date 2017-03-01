@@ -108,7 +108,7 @@ namespace LinqToGraphQL.Builders
             }
             else
             {
-                return node.Update(Visit(node.Expression));
+                return node.Update(BookmarkAndVisit(node.Expression));
             }
         }
 
