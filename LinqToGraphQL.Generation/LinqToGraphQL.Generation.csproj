@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneratedFile.cs" />
     <Compile Include="InterfaceGenerator.cs" />
     <Compile Include="EnumGenerator.cs" />
     <Compile Include="EntityGenerator.cs" />

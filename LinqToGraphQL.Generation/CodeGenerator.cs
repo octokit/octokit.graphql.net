@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using LinqToGraphQL.Generation.Models;
 using LinqToGraphQL.Introspection;
 
@@ -11,11 +7,13 @@ namespace LinqToGraphQL.Generation
 {
     public static class CodeGenerator
     {
-        public static IEnumerable<string> Generate(SchemaModel schema, string rootNamespace)
+        public static IEnumerable<GeneratedFile> Generate(SchemaModel schema, string rootNamespace)
         {
             foreach (var type in schema.Types)
             {
-                yield return Generate(type, rootNamespace, schema.QueryType);
+                yield return new GeneratedFile(
+                    type.Name + ".cs",
+                    Generate(type, rootNamespace, schema.QueryType));
             }
         }
 
