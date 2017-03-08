@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LinqToGraphQL;
 using LinqToGraphQL.Generation;
 using Octoqit;
+using System.IO;
 
 namespace Sandbox
 {
@@ -21,10 +22,12 @@ namespace Sandbox
             var connection = new Connection("https://api.github.com/graphql", token);
             var schema = await SchemaReader.ReadSchema(connection);
 
+            Directory.CreateDirectory("src");
+
             foreach (var file in CodeGenerator.Generate(schema, "Octoqit"))
             {
-                Console.WriteLine(file.Content);
-                //Console.ReadKey();
+                Console.WriteLine("Writing " + file.FileName);
+                File.WriteAllText(Path.Combine("src", file.FileName), file.Content);
             }
         }
 
