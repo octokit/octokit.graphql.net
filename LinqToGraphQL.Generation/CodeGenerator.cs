@@ -90,7 +90,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Test
 {{
-    [JsonConverter(typeof(StringEnumConverter))]
+    {GenerateDocComments(type)}[JsonConverter(typeof(StringEnumConverter))]
     public enum {type.Name}
     {{{GenerateEnumValues(type)}    }}
 }}";
@@ -193,6 +193,21 @@ namespace Test
             }
         }
 
+        private static string GenerateDocComments(EnumValueModel value)
+        {
+            if (!string.IsNullOrWhiteSpace(value.Description))
+            {
+                return $@"        /// <summary>
+        /// {value.Description}
+        /// </summary>
+";
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
             var name = PascalCase(field.Name);
@@ -249,10 +264,18 @@ namespace Test
         {
             var builder = new StringBuilder();
 
-            foreach (var value in type.EnumValues)
+            if (type.EnumValues?.Count > 0)
+            {
+                foreach (var value in type.EnumValues)
+                {
+                    builder.AppendLine();
+                    builder.Append(GenerateDocComments(value));
+                    builder.AppendLine(GenerateEnumValue(value));
+                }
+            }
+            else
             {
                 builder.AppendLine();
-                builder.AppendLine(GenerateEnumValue(value));
             }
 
             return builder.ToString();
