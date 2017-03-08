@@ -33,6 +33,9 @@ namespace LinqToGraphQL.Generation
                         return EntityGenerator.Generate(type, rootNamespace);
                     }
 
+                case TypeKind.Interface:
+                    return InterfaceGenerator.Generate(type, rootNamespace);
+
                 case TypeKind.Enum:
                     return EnumGenerator.Generate(type, rootNamespace);
 

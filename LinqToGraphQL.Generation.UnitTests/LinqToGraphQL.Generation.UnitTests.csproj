@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InterfaceGenerationTests.cs" />
     <Compile Include="EnumGenerationTests.cs" />
     <Compile Include="EntityGenerationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,11 +5,11 @@ using LinqToGraphQL.Introspection;
 
 namespace LinqToGraphQL.Generation
 {
-    internal static class EntityGenerator
+    internal static class InterfaceGenerator
     {
         public static string Generate(TypeModel type, string rootNamespace)
         {
-            var className = PascalCase(type.Name);
+            var className = "I" + PascalCase(type.Name);
 
             return $@"using System.Linq;
 using System.Linq.Expressions;
@@ -18,31 +18,8 @@ using LinqToGraphQL.Builders;
 
 namespace {rootNamespace}
 {{
-    {GenerateDocComments(type)}public class {className} : QueryEntity
-    {{
-        public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
-        {{
-        }}{GenerateFields(type)}
-    }}
-}}";
-        }
-
-        public static string GenerateRoot(TypeModel type, string rootNamespace)
-        {
-            var className = type.Name;
-
-            return $@"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace {rootNamespace}
-{{
-    {GenerateDocComments(type)}public class {className} : QueryEntity, IRootQuery
-    {{
-        public {className}() : base(new QueryProvider())
-        {{
-        }}{GenerateFields(type)}
+    {GenerateDocComments(type)}public interface {className}
+    {{{GenerateFields(type)}
     }}
 }}";
         }
@@ -62,9 +39,9 @@ namespace {rootNamespace}
                     if (!first)
                     {
                         builder.AppendLine();
+                        builder.AppendLine();
                     }
 
-                    builder.AppendLine();
                     builder.Append(GenerateField(field));
 
                     first = false;
@@ -156,13 +133,13 @@ namespace {rootNamespace}
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
             var name = PascalCase(field.Name);
-            return $"        public {GetCSharpType(type)} {name} {{ get; }}";
+            return $"        {GetCSharpType(type)} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type)
         {
             var name = PascalCase(field.Name);
-            return $"        public {type.Name} {name} => this.CreateProperty(x => x.{name}, {type.Name}.Create);";
+            return $"        {type.Name} {name} {{ get; }}";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
@@ -174,7 +151,7 @@ namespace {rootNamespace}
             string parameters;
             GenerateArguments(field, out arguments, out parameters);
 
-            return $"        public IQueryable<{GetCSharpType(type)}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
+            return $"        IQueryable<{GetCSharpType(type)}> {name}({arguments});";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
@@ -185,13 +162,13 @@ namespace {rootNamespace}
             string parameters;
             GenerateArguments(field, out arguments, out parameters);
 
-            return $"        public {type.Name} {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}), {type.Name}.Create);";
+            return $"        {type.Name} {name}({arguments});";
         }
 
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
             var name = PascalCase(field.Name);
-            return $"        public IQueryable<{type.Name}> {name} => this.CreateProperty(x => x.{name});";
+            return $"        IQueryable<{type.Name}> {name} {{ get; }}";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
@@ -202,7 +179,7 @@ namespace {rootNamespace}
             string parameters;
             GenerateArguments(field, out arguments, out parameters);
 
-            return $"        public IQueryable<{type.Name}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
+            return $"        IQueryable<{type.Name}> {name}({arguments});";
         }
 
         private static string GetCSharpType(TypeModel type, bool nullable = true)
