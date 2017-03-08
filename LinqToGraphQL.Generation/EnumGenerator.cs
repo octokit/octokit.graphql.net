@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using LinqToGraphQL.Generation.Models;
+using LinqToGraphQL.Generation.Utilities;
 
 namespace LinqToGraphQL.Generation
 {
@@ -9,6 +10,8 @@ namespace LinqToGraphQL.Generation
     {
         public static string Generate(TypeModel type, string rootNamespace)
         {
+            var enumName = TypeUtilities.GetClassName(type);
+
             return $@"using System;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -17,7 +20,7 @@ using Newtonsoft.Json.Converters;
 namespace Test
 {{
     {GenerateDocComments(type)}[JsonConverter(typeof(StringEnumConverter))]
-    public enum {type.Name}
+    public enum {enumName}
     {{{GenerateEnumValues(type)}    }}
 }}";
         }

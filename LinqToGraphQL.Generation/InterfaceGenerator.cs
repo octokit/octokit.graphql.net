@@ -10,7 +10,7 @@ namespace LinqToGraphQL.Generation
     {
         public static string Generate(TypeModel type, string rootNamespace)
         {
-            var className = "I" + TypeUtilities.PascalCase(type.Name);
+            var className = TypeUtilities.GetInterfaceName(type);
 
             return $@"using System.Linq;
 using System.Linq.Expressions;
@@ -141,50 +141,46 @@ namespace {rootNamespace}
         private static string GenerateObjectField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            return $"        {type.Name} {name} {{ get; }}";
+            var typeName = TypeUtilities.GetCSharpType(type);
+            return $"        {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            type = TypeModel.NonNull(TypeUtilities.ReduceNonNull(type));
+            var nonNullType = TypeModel.NonNull(TypeUtilities.ReduceNonNull(type));
+            var csharpType = TypeUtilities.GetCSharpType(nonNullType);
+            var arguments = GenerateArguments(field);
 
-            string arguments;
-            string parameters;
-            GenerateArguments(field, out arguments, out parameters);
-
-            return $"        IQueryable<{TypeUtilities.GetCSharpType(type)}> {name}({arguments});";
+            return $"        IQueryable<{csharpType}> {name}({arguments});";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
+            var typeName = TypeUtilities.GetCSharpType(type);
+            var arguments = GenerateArguments(field);
 
-            string arguments;
-            string parameters;
-            GenerateArguments(field, out arguments, out parameters);
-
-            return $"        {type.Name} {name}({arguments});";
+            return $"        {typeName} {name}({arguments});";
         }
 
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            return $"        IQueryable<{type.Name}> {name} {{ get; }}";
+            var typeName = TypeUtilities.GetCSharpType(type);
+            return $"        IQueryable<{typeName}> {name} {{ get; }}";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
+            var typeName = TypeUtilities.GetCSharpType(type);
+            var arguments = GenerateArguments(field);
 
-            string arguments;
-            string parameters;
-            GenerateArguments(field, out arguments, out parameters);
-
-            return $"        IQueryable<{type.Name}> {name}({arguments});";
+            return $"        IQueryable<{typeName}> {name}({arguments});";
         }
 
-        private static void GenerateArguments(FieldModel field, out string arguments, out string parameters)
+        private static string GenerateArguments(FieldModel field)
         {
             var argBuilder = new StringBuilder();
             var paramBuilder = new StringBuilder();
@@ -198,10 +194,11 @@ namespace {rootNamespace}
                     paramBuilder.Append(", ");
                 }
 
+                var argName = TypeUtilities.GetArgName(arg);
                 argBuilder.Append(TypeUtilities.GetCSharpType(arg.Type));
                 argBuilder.Append(' ');
-                argBuilder.Append(arg.Name);
-                paramBuilder.Append(arg.Name);
+                argBuilder.Append(argName);
+                paramBuilder.Append(argName);
 
                 if (arg.DefaultValue != null)
                 {
@@ -212,8 +209,7 @@ namespace {rootNamespace}
                 first = false;
             }
 
-            arguments = argBuilder.ToString();
-            parameters = paramBuilder.ToString();
+            return argBuilder.ToString();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace LinqToGraphQL.Generation
     {
         public static string Generate(TypeModel type, string rootNamespace)
         {
-            var className = TypeUtilities.PascalCase(type.Name);
+            var className = TypeUtilities.GetClassName(type);
 
             return $@"using System.Linq;
 using System.Linq.Expressions;
@@ -30,7 +30,7 @@ namespace {rootNamespace}
 
         public static string GenerateRoot(TypeModel type, string rootNamespace)
         {
-            var className = type.Name;
+            var className = TypeUtilities.GetClassName(type);
 
             return $@"using System.Linq;
 using System.Linq.Expressions;
@@ -159,53 +159,53 @@ namespace {rootNamespace}
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            return $"        public {TypeUtilities.GetCSharpType(type)} {name} {{ get; }}";
+            var typeName = TypeUtilities.GetCSharpType(type);
+            return $"        public {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            return $"        public {type.Name} {name} => this.CreateProperty(x => x.{name}, {type.Name}.Create);";
+            var typeName = TypeUtilities.GetCSharpType(type);
+            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {type.Name}.Create);";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            type = TypeModel.NonNull(TypeUtilities.ReduceNonNull(type));
+            var nonNullType = TypeModel.NonNull(TypeUtilities.ReduceNonNull(type));
+            var csharpType = TypeUtilities.GetCSharpType(nonNullType);
 
-            string arguments;
-            string parameters;
-            GenerateArguments(field, out arguments, out parameters);
+            GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public IQueryable<{TypeUtilities.GetCSharpType(type)}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
+            return $"        public IQueryable<{csharpType}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
+            var typeName = TypeUtilities.GetCSharpType(type);
 
-            string arguments;
-            string parameters;
-            GenerateArguments(field, out arguments, out parameters);
+            GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public {type.Name} {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}), {type.Name}.Create);";
+            return $"        public {typeName} {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}), {typeName}.Create);";
         }
 
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            return $"        public IQueryable<{type.Name}> {name} => this.CreateProperty(x => x.{name});";
+            var typeName = TypeUtilities.GetCSharpType(type);
+            return $"        public IQueryable<{typeName}> {name} => this.CreateProperty(x => x.{name});";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
+            var typeName = TypeUtilities.GetCSharpType(type);
 
-            string arguments;
-            string parameters;
-            GenerateArguments(field, out arguments, out parameters);
+            GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public IQueryable<{type.Name}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
+            return $"        public IQueryable<{typeName}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
         }
 
         private static void GenerateArguments(FieldModel field, out string arguments, out string parameters)
@@ -222,10 +222,11 @@ namespace {rootNamespace}
                     paramBuilder.Append(", ");
                 }
 
+                var argName = TypeUtilities.GetArgName(arg);
                 argBuilder.Append(TypeUtilities.GetCSharpType(arg.Type));
                 argBuilder.Append(' ');
-                argBuilder.Append(arg.Name);
-                paramBuilder.Append(arg.Name);
+                argBuilder.Append(argName);
+                paramBuilder.Append(argName);
 
                 if (arg.DefaultValue != null)
                 {

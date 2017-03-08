@@ -56,6 +56,21 @@ namespace LinqToGraphQL.Generation.Utilities
             }
         }
 
+        public static string GetClassName(TypeModel type)
+        {
+            return PascalCase(type.Name);
+        }
+
+        public static string GetInterfaceName(TypeModel type)
+        {
+            return "I" + PascalCase(type.Name);
+        }
+
+        internal static object GetArgName(InputValueModel arg)
+        {
+            return arg.Name;
+        }
+
         public static string PascalCase(string value)
         {
             return value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
