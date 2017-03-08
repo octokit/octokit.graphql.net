@@ -42,9 +42,10 @@ namespace LinqToGraphQL.Generation.Utilities
                         case "Boolean": return "bool" + question;
                         default: return "string";
                     }
+                case TypeKind.Interface:
+                    return "I" + type.Name;
                 case TypeKind.Object:
                 case TypeKind.Enum:
-                case TypeKind.Interface:
                 case TypeKind.InputObject:
                     return type.Name;
                 case TypeKind.NonNull:

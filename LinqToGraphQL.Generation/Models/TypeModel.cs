@@ -25,6 +25,15 @@ namespace LinqToGraphQL.Generation.Models
             };
         }
 
+        public static TypeModel Interface(string name)
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Interface,
+                Name = name,
+            };
+        }
+
         public static TypeModel List(TypeModel ofType)
         {
             return new TypeModel

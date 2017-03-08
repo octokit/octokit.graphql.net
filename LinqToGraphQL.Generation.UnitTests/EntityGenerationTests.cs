@@ -103,6 +103,32 @@ namespace Test
         }
 
         [Fact]
+        public void Generates_Property_For_Interface_Field()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                "public IOther Foo => this.CreateProperty(x => x.Foo, IOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Property_For_NonNull_Object_Field()
         {
             var expected = string.Format(
