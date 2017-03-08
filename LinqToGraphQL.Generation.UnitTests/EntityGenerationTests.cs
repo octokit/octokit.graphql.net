@@ -21,6 +21,11 @@ namespace Test
         }}
 
         {0}
+
+        internal static Entity Create(IQueryProvider provider, Expression expression)
+        {{
+            return new Entity(provider, expression);
+        }}
     }}
 }}";
 
@@ -367,6 +372,11 @@ namespace Test
     {
         public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
+        }
+
+        internal static Entity Create(IQueryProvider provider, Expression expression)
+        {
+            return new Entity(provider, expression);
         }
     }
 }";

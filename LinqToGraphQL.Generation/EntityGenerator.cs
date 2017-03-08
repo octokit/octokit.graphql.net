@@ -24,6 +24,11 @@ namespace {rootNamespace}
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
         }}{GenerateFields(type)}
+
+        internal static {className} Create(IQueryProvider provider, Expression expression)
+        {{
+            return new {className}(provider, expression);
+        }}
     }}
 }}";
         }
