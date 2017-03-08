@@ -11,9 +11,12 @@ namespace LinqToGraphQL.Generation
         {
             foreach (var type in schema.Types)
             {
-                yield return new GeneratedFile(
-                    type.Name + ".cs",
-                    Generate(type, rootNamespace, schema.QueryType));
+                if (!type.Name.StartsWith("__") && type.Kind != TypeKind.Scalar)
+                {
+                    yield return new GeneratedFile(
+                        type.Name + ".cs",
+                        Generate(type, rootNamespace, schema.QueryType));
+                }
             }
         }
 
