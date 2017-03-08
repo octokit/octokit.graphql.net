@@ -17,7 +17,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Test
+namespace {rootNamespace}
 {{
     {GenerateDocComments(type)}[JsonConverter(typeof(StringEnumConverter))]
     public enum {enumName}
