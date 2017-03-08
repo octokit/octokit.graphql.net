@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using LinqToGraphQL.Generation.Models;
+using LinqToGraphQL.Generation.Utilities;
 using LinqToGraphQL.Introspection;
 
 namespace LinqToGraphQL.Generation
@@ -9,7 +10,7 @@ namespace LinqToGraphQL.Generation
     {
         public static string Generate(TypeModel type, string rootNamespace)
         {
-            var className = PascalCase(type.Name);
+            var className = TypeUtilities.PascalCase(type.Name);
 
             return $@"using System.Linq;
 using System.Linq.Expressions;
@@ -78,17 +79,19 @@ namespace {rootNamespace}
         {
             var method = field.Args?.Count > 0;
             var result = GenerateDocComments(field);
-            var reduced = ReduceKind(field.Type);
+            var reduced = TypeUtilities.ReduceKind(field.Type);
 
             switch (reduced)
             {
                 case TypeKind.Scalar:
+                case TypeKind.Enum:
                     result += method ?
                         GenerateScalarMethod(field, field.Type) :
                         GenerateScalarField(field, field.Type);
                     break;
                 case TypeKind.Object:
                 case TypeKind.Interface:
+                case TypeKind.Union:
                     result += method ?
                         GenerateObjectMethod(field, field.Type) :
                         GenerateObjectField(field, field.Type);
@@ -155,31 +158,31 @@ namespace {rootNamespace}
 
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
-            var name = PascalCase(field.Name);
-            return $"        public {GetCSharpType(type)} {name} {{ get; }}";
+            var name = TypeUtilities.PascalCase(field.Name);
+            return $"        public {TypeUtilities.GetCSharpType(type)} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type)
         {
-            var name = PascalCase(field.Name);
+            var name = TypeUtilities.PascalCase(field.Name);
             return $"        public {type.Name} {name} => this.CreateProperty(x => x.{name}, {type.Name}.Create);";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
-            var name = PascalCase(field.Name);
-            type = TypeModel.NonNull(ReduceNonNull(type));
+            var name = TypeUtilities.PascalCase(field.Name);
+            type = TypeModel.NonNull(TypeUtilities.ReduceNonNull(type));
 
             string arguments;
             string parameters;
             GenerateArguments(field, out arguments, out parameters);
 
-            return $"        public IQueryable<{GetCSharpType(type)}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
+            return $"        public IQueryable<{TypeUtilities.GetCSharpType(type)}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
         {
-            var name = PascalCase(field.Name);
+            var name = TypeUtilities.PascalCase(field.Name);
 
             string arguments;
             string parameters;
@@ -190,72 +193,19 @@ namespace {rootNamespace}
 
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
-            var name = PascalCase(field.Name);
+            var name = TypeUtilities.PascalCase(field.Name);
             return $"        public IQueryable<{type.Name}> {name} => this.CreateProperty(x => x.{name});";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
         {
-            var name = PascalCase(field.Name);
+            var name = TypeUtilities.PascalCase(field.Name);
 
             string arguments;
             string parameters;
             GenerateArguments(field, out arguments, out parameters);
 
             return $"        public IQueryable<{type.Name}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
-        }
-
-        private static string GetCSharpType(TypeModel type, bool nullable = true)
-        {
-
-            switch (type.Kind)
-            {
-                case TypeKind.Scalar:
-                    var question = nullable ? "?" : "";
-                    switch (type.Name)
-                    {
-                        case "Boolean": return "bool" + question;
-                        case "ID": return "string" + question;
-                        default: return type.Name.ToLowerInvariant() + question;
-                    }
-                case TypeKind.Object:
-                case TypeKind.Enum:
-                case TypeKind.Interface:
-                case TypeKind.InputObject:
-                    return type.Name;
-                case TypeKind.NonNull:
-                    return GetCSharpType(type.OfType, false);
-                case TypeKind.List:
-                    return $"IQueryable<{GetCSharpType(type.OfType)}>";
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        private static string GetCSharpLiteral(string value, TypeModel type)
-        {
-            if (type.Kind == TypeKind.Scalar)
-            {
-                if (type.Name == "String" || type.Name == "ID")
-                {
-                    return value == null ? "null" : $"\"{value}\"";
-                }
-                else
-                {
-                    return value;
-                }
-            }
-            else if (type.Kind == TypeKind.Enum)
-            {
-                return $"{type.Name}.{value}";
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private static string PascalCase(string value)
-        {
-            return value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
         }
 
         private static void GenerateArguments(FieldModel field, out string arguments, out string parameters)
@@ -272,7 +222,7 @@ namespace {rootNamespace}
                     paramBuilder.Append(", ");
                 }
 
-                argBuilder.Append(GetCSharpType(arg.Type));
+                argBuilder.Append(TypeUtilities.GetCSharpType(arg.Type));
                 argBuilder.Append(' ');
                 argBuilder.Append(arg.Name);
                 paramBuilder.Append(arg.Name);
@@ -280,7 +230,7 @@ namespace {rootNamespace}
                 if (arg.DefaultValue != null)
                 {
                     argBuilder.Append(" = ");
-                    argBuilder.Append(GetCSharpLiteral(arg.DefaultValue, arg.Type));
+                    argBuilder.Append(TypeUtilities.GetCSharpLiteral(arg.DefaultValue, arg.Type));
                 }
 
                 first = false;
@@ -288,24 +238,6 @@ namespace {rootNamespace}
 
             arguments = argBuilder.ToString();
             parameters = paramBuilder.ToString();
-        }
-
-        private static TypeKind ReduceKind(TypeModel type)
-        {
-            if (type.Kind == TypeKind.Scalar || 
-                type.Kind == TypeKind.NonNull && type.OfType.Kind == TypeKind.Scalar)
-            {
-                return TypeKind.Scalar;
-            }
-            else
-            {
-                return type.Kind;
-            }
-        }
-
-        private static TypeModel ReduceNonNull(TypeModel type)
-        {
-            return type.Kind == TypeKind.NonNull ? type.OfType : type;
         }
     }
 }

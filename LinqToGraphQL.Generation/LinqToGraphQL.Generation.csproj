@@ -52,6 +52,7 @@
     <Compile Include="Models\TypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemaReader.cs" />
+    <Compile Include="Utilities\TypeUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LinqToGraphQL\LinqToGraphQL.csproj">

@@ -40,7 +40,7 @@ namespace LinqToGraphQL.Generation
                     return EnumGenerator.Generate(type, rootNamespace);
 
                 default:
-                    throw new NotImplementedException();
+                    return null;
             }
         }
     }
