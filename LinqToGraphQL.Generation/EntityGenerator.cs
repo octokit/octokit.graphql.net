@@ -167,7 +167,7 @@ namespace {rootNamespace}
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(type);
-            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {type.Name}.Create);";
+            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {typeName}.Create);";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
