@@ -172,6 +172,54 @@ namespace Test
         }
 
         [Fact]
+        public void Generates_Property_For_NonNull_List_Of_NonNull_Enums_Field()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.List(TypeModel.NonNull(TypeModel.Enum("Bar")))),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_NonNull_List_Of_Nullable_Enums_Field()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Bar?> Foo => this.CreateProperty(x => x.Foo);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.List(TypeModel.Enum("Bar"))),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Method_For_Object_Field_With_Args()
         {
             var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");

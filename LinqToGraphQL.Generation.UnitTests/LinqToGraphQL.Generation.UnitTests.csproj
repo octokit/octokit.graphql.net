@@ -60,6 +60,7 @@
     <Compile Include="EnumGenerationTests.cs" />
     <Compile Include="EntityGenerationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\TypeUtilitiesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LinqToGraphQL.Generation\LinqToGraphQL.Generation.csproj">

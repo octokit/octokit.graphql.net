@@ -32,6 +32,33 @@ namespace LinqToGraphQL.Generation.Models
             };
         }
 
+        public static TypeModel Boolean()
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Scalar,
+                Name = "Boolean",
+            };
+        }
+
+        public static TypeModel Enum(string name)
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Enum,
+                Name = name,
+            };
+        }
+
+        public static TypeModel Float()
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Scalar,
+                Name = "Float",
+            };
+        }
+
         public static TypeModel Int()
         {
             return new TypeModel
@@ -74,6 +101,15 @@ namespace LinqToGraphQL.Generation.Models
             {
                 Kind = TypeKind.Object,
                 Name = name,
+            };
+        }
+
+        public static TypeModel String()
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Scalar,
+                Name = "String",
             };
         }
     }

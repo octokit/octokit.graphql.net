@@ -88,35 +88,25 @@ namespace {rootNamespace}
         {
             var method = field.Args?.Count > 0;
             var result = GenerateDocComments(field, generateDocComments);
-            var reduced = TypeUtilities.ReduceKind(field.Type);
+            var reduced = TypeUtilities.ReduceType(field.Type);
 
-            switch (reduced)
+            if (TypeUtilities.IsCSharpPrimitive(reduced))
             {
-                case TypeKind.Scalar:
-                case TypeKind.Enum:
-                    result += method ?
-                        GenerateScalarMethod(field, field.Type) :
-                        GenerateScalarField(field, field.Type);
-                    break;
-                case TypeKind.Object:
-                case TypeKind.Interface:
-                case TypeKind.Union:
-                    result += method ?
-                        GenerateObjectMethod(field, field.Type) :
-                        GenerateObjectField(field, field.Type);
-                    break;
-                case TypeKind.NonNull:
-                    result += method ?
-                        GenerateObjectMethod(field, field.Type.OfType) :
-                        GenerateObjectField(field, field.Type.OfType);
-                    break;
-                case TypeKind.List:
-                    result += method ?
-                        GenerateListMethod(field, field.Type.OfType) :
-                        GenerateListField(field, field.Type.OfType);
-                    break;
-                default:
-                    throw new NotImplementedException();
+                result += method ?
+                    GenerateScalarMethod(field, reduced) :
+                    GenerateScalarField(field, reduced);
+            }
+            else if (reduced.Kind == TypeKind.List)
+            {
+                result += method ?
+                    GenerateListMethod(field, reduced) :
+                    GenerateListField(field, reduced);
+            }
+            else
+            {
+                result += method ?
+                    GenerateObjectMethod(field, reduced) :
+                    GenerateObjectField(field, reduced);
             }
 
             return result;
@@ -206,7 +196,7 @@ namespace {rootNamespace}
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(type);
-            return $"        public IQueryable<{typeName}> {name} => this.CreateProperty(x => x.{name});";
+            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name});";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
@@ -216,7 +206,7 @@ namespace {rootNamespace}
 
             GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public IQueryable<{typeName}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
+            return $"        public {typeName} {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
         }
 
         private static void GenerateArguments(FieldModel field, out string arguments, out string parameters)
