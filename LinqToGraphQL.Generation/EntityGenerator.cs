@@ -176,7 +176,8 @@ namespace {rootNamespace}
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(type);
-            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {typeName}.Create);";
+            var implName = GetEntityImplementationName(type);
+            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
@@ -194,10 +195,11 @@ namespace {rootNamespace}
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(type);
+            var implName = GetEntityImplementationName(type);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public {typeName} {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}), {typeName}.Create);";
+            return $"        public {typeName} {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}), {implName}.Create);";
         }
 
         private static string GenerateListField(FieldModel field, TypeModel type)
@@ -264,6 +266,19 @@ namespace {rootNamespace}
             }
 
             return builder.ToString();
+        }
+
+        private static object GetEntityImplementationName(TypeModel type)
+        {
+            switch (type.Kind)
+            {
+                case TypeKind.Object:
+                    return TypeUtilities.GetClassName(type);
+                case TypeKind.Interface:
+                    return "Internal.Stub" + TypeUtilities.GetInterfaceName(type);
+                default:
+                    throw new NotSupportedException();
+            }
         }
     }
 }

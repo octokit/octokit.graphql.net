@@ -100,30 +100,6 @@ namespace Test
         }
 
         [Fact]
-        public void Generates_Property_For_Interface_Field()
-        {
-            var expected = FormatMemberTemplate("public IOther Foo => this.CreateProperty(x => x.Foo, IOther.Create);");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Object,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.Interface("Other")
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            Assert.Equal(expected, result);
-        }
-
-        [Fact]
         public void Generates_Property_For_NonNull_Object_Field()
         {
             var expected = FormatMemberTemplate("public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
@@ -138,6 +114,30 @@ namespace Test
                     {
                         Name = "foo",
                         Type = TypeModel.NonNull(TypeModel.Object("Other")),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Interface_Field()
+        {
+            var expected = FormatMemberTemplate("public IOther Foo => this.CreateProperty(x => x.Foo, Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other")
                     },
                 }
             };
@@ -218,6 +218,38 @@ namespace Test
                     {
                         Name = "foo",
                         Type = TypeModel.NonNull(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.NonNull(TypeModel.Int()),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_Interface_Field_With_Args()
+        {
+            var expected = FormatMemberTemplate("public IOther Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
                         Args = new[]
                         {
                             new InputValueModel
