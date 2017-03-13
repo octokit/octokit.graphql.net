@@ -19,7 +19,7 @@ using LinqToGraphQL.Builders;
 
 namespace {rootNamespace}
 {{
-    {GenerateDocComments(type)}public class {className} : QueryEntity
+    {GenerateDocComments(type)}public class {className} : QueryEntity{GenerateImplementedInterfaces(type)}
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
@@ -244,6 +244,22 @@ namespace {rootNamespace}
 
             arguments = argBuilder.ToString();
             parameters = paramBuilder.ToString();
+        }
+
+        private static string GenerateImplementedInterfaces(TypeModel type)
+        {
+            var builder = new StringBuilder();
+
+            if (type.Interfaces != null)
+            {
+                foreach (var iface in type.Interfaces)
+                {
+                    builder.Append(", ");
+                    builder.Append(TypeUtilities.GetInterfaceName(iface));
+                }
+            }
+
+            return builder.ToString();
         }
     }
 }
