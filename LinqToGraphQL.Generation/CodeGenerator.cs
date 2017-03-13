@@ -40,6 +40,9 @@ namespace LinqToGraphQL.Generation
                 case TypeKind.Enum:
                     return EnumGenerator.Generate(type, rootNamespace);
 
+                case TypeKind.InputObject:
+                    return InputObjectGenerator.Generate(type, rootNamespace);
+
                 default:
                     return null;
             }

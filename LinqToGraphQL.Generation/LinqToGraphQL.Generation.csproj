@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeneratedFile.cs" />
+    <Compile Include="InputObjectGenerator.cs" />
     <Compile Include="InterfaceGenerator.cs" />
     <Compile Include="EnumGenerator.cs" />
     <Compile Include="EntityGenerator.cs" />
