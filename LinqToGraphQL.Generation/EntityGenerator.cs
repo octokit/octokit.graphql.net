@@ -272,12 +272,10 @@ namespace {rootNamespace}
         {
             switch (type.Kind)
             {
-                case TypeKind.Object:
-                    return TypeUtilities.GetClassName(type);
                 case TypeKind.Interface:
                     return "Internal.Stub" + TypeUtilities.GetInterfaceName(type);
                 default:
-                    throw new NotSupportedException();
+                    return TypeUtilities.GetClassName(type);
             }
         }
     }
