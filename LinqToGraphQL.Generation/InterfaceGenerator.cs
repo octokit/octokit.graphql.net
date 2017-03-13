@@ -219,7 +219,7 @@ namespace LinqToGraphQL.Generation
             stubType.Name = "Stub" + TypeUtilities.GetInterfaceName(type);
             stubType.Kind = TypeKind.Object;
             stubType.Interfaces = new[] { type };
-            return EntityGenerator.Generate(stubType, rootNamespace + ".Internal", "internal ", false);
+            return EntityGenerator.Generate(stubType, rootNamespace + ".Internal", "internal ", false, rootNamespace);
         }
     }
 }

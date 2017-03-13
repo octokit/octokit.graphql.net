@@ -78,7 +78,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_Object_Field()
         {
-            var expected = FormatMemberTemplate("public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+            var expected = FormatMemberTemplate("public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -102,7 +102,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_NonNull_Object_Field()
         {
-            var expected = FormatMemberTemplate("public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+            var expected = FormatMemberTemplate("public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -126,7 +126,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_Interface_Field()
         {
-            var expected = FormatMemberTemplate("public IOther Foo => this.CreateProperty(x => x.Foo, Internal.StubIOther.Create);");
+            var expected = FormatMemberTemplate("public IOther Foo => this.CreateProperty(x => x.Foo, Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
             {
@@ -247,7 +247,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Object_Field_With_Args()
         {
-            var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
+            var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -279,7 +279,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_Object_Field_With_Args()
         {
-            var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
+            var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -311,7 +311,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Interface_Field_With_Args()
         {
-            var expected = FormatMemberTemplate("public IOther Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Internal.StubIOther.Create);");
+            var expected = FormatMemberTemplate("public IOther Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
             {
@@ -481,7 +481,7 @@ namespace LinqToGraphQL.Generation.UnitTests
             var expected = FormatMemberTemplate(@"/// <summary>
         /// Testing if doc comments are generated.
         /// </summary>
-        public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -510,7 +510,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         /// Testing if doc comments are generated.
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
-        public Other Foo(int? arg1, int? arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Other.Create);");
+        public Other Foo(int? arg1, int? arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -562,7 +562,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         {
         }
 
-        public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);
+        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);
     }
 }";
 

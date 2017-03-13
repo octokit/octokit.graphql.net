@@ -12,9 +12,12 @@ namespace LinqToGraphQL.Generation
             TypeModel type,
             string rootNamespace,
             string modifiers = "public ",
-            bool generateDocComments = true)
+            bool generateDocComments = true,
+            string entityNamespace = null)
         {
             var className = TypeUtilities.GetClassName(type);
+
+            entityNamespace = entityNamespace ?? rootNamespace;
 
             return $@"namespace {rootNamespace}
 {{
@@ -27,7 +30,7 @@ namespace LinqToGraphQL.Generation
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}{GenerateFields(type, generateDocComments)}
+        }}{GenerateFields(type, generateDocComments, entityNamespace)}
 
         internal static {className} Create(IQueryProvider provider, Expression expression)
         {{
@@ -52,12 +55,12 @@ namespace LinqToGraphQL.Generation
     {{
         public {className}() : base(new QueryProvider())
         {{
-        }}{GenerateFields(type, true)}
+        }}{GenerateFields(type, true, rootNamespace)}
     }}
 }}";
         }
 
-        private static string GenerateFields(TypeModel type, bool generateDocComments)
+        private static string GenerateFields(TypeModel type, bool generateDocComments, string rootNamespace)
         {
             var builder = new StringBuilder();
 
@@ -75,7 +78,7 @@ namespace LinqToGraphQL.Generation
                     }
 
                     builder.AppendLine();
-                    builder.Append(GenerateField(field, generateDocComments));
+                    builder.Append(GenerateField(field, generateDocComments, rootNamespace));
 
                     first = false;
                 }
@@ -84,7 +87,7 @@ namespace LinqToGraphQL.Generation
             return builder.ToString();
         }
 
-        private static string GenerateField(FieldModel field, bool generateDocComments)
+        private static string GenerateField(FieldModel field, bool generateDocComments, string rootNamespace)
         {
             var method = field.Args?.Count > 0;
             var result = GenerateDocComments(field, generateDocComments);
@@ -113,8 +116,8 @@ namespace LinqToGraphQL.Generation
             else
             {
                 result += method ?
-                    GenerateObjectMethod(field, reduced) :
-                    GenerateObjectField(field, reduced);
+                    GenerateObjectMethod(field, reduced, rootNamespace) :
+                    GenerateObjectField(field, reduced, rootNamespace);
             }
 
             return result;
@@ -170,11 +173,11 @@ namespace LinqToGraphQL.Generation
             return $"        public {typeName} {name} {{ get; }}";
         }
 
-        private static string GenerateObjectField(FieldModel field, TypeModel type)
+        private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace)
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(type);
-            var implName = GetEntityImplementationName(type);
+            var implName = GetEntityImplementationName(type, rootNamespace);
             return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
 
@@ -189,11 +192,11 @@ namespace LinqToGraphQL.Generation
             return $"        public IQueryable<{csharpType}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
         }
 
-        private static string GenerateObjectMethod(FieldModel field, TypeModel type)
+        private static string GenerateObjectMethod(FieldModel field, TypeModel type, string rootNamespace)
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(type);
-            var implName = GetEntityImplementationName(type);
+            var implName = GetEntityImplementationName(type, rootNamespace);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
@@ -266,14 +269,14 @@ namespace LinqToGraphQL.Generation
             return builder.ToString();
         }
 
-        private static object GetEntityImplementationName(TypeModel type)
+        private static object GetEntityImplementationName(TypeModel type, string rootNamespace)
         {
             switch (type.Kind)
             {
                 case TypeKind.Interface:
-                    return "Internal.Stub" + TypeUtilities.GetInterfaceName(type);
+                    return rootNamespace + ".Internal.Stub" + TypeUtilities.GetInterfaceName(type);
                 default:
-                    return TypeUtilities.GetClassName(type);
+                    return rootNamespace + "." + TypeUtilities.GetClassName(type);
             }
         }
     }

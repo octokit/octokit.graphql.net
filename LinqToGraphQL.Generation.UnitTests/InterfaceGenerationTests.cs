@@ -123,7 +123,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo { get; }",
-                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+                "public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -149,7 +149,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo { get; }",
-                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+                "public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -201,7 +201,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo(int bar);",
-                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
+                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -235,7 +235,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo(int bar);",
-                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
+                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -413,7 +413,7 @@ namespace Test.Internal
         /// Testing if doc comments are generated.
         /// </summary>
         Other Foo { get; }",
-                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
+                "public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -444,7 +444,7 @@ namespace Test.Internal
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
         Other Foo(int? arg1, int? arg2);",
-                "public Other Foo(int? arg1, int? arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Other.Create);");
+                "public Other Foo(int? arg1, int? arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
             {
