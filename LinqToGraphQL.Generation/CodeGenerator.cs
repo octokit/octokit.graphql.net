@@ -13,9 +13,12 @@ namespace LinqToGraphQL.Generation
             {
                 if (!type.Name.StartsWith("__") && type.Kind != TypeKind.Scalar)
                 {
-                    yield return new GeneratedFile(
-                        type.Name + ".cs",
-                        Generate(type, rootNamespace, schema.QueryType));
+                    var content = Generate(type, rootNamespace, schema.QueryType);
+
+                    if (content != null)
+                    {
+                        yield return new GeneratedFile(type.Name + ".cs", content);
+                    }
                 }
             }
         }
@@ -44,7 +47,7 @@ namespace LinqToGraphQL.Generation
                     return InputObjectGenerator.Generate(type, rootNamespace);
 
                 default:
-                    throw new NotImplementedException();
+                    return null;
             }
         }
     }
