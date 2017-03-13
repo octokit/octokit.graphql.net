@@ -8,7 +8,11 @@ namespace LinqToGraphQL.Generation
 {
     internal static class EntityGenerator
     {
-        public static string Generate(TypeModel type, string rootNamespace)
+        public static string Generate(
+            TypeModel type,
+            string rootNamespace,
+            string modifiers = "public ",
+            bool generateDocComments = true)
         {
             var className = TypeUtilities.GetClassName(type);
 
@@ -19,11 +23,11 @@ using LinqToGraphQL.Builders;
 
 namespace {rootNamespace}
 {{
-    {GenerateDocComments(type)}public class {className} : QueryEntity{GenerateImplementedInterfaces(type)}
+    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryEntity{GenerateImplementedInterfaces(type)}
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}{GenerateFields(type)}
+        }}{GenerateFields(type, generateDocComments)}
 
         internal static {className} Create(IQueryProvider provider, Expression expression)
         {{
@@ -44,16 +48,16 @@ using LinqToGraphQL.Builders;
 
 namespace {rootNamespace}
 {{
-    {GenerateDocComments(type)}public class {className} : QueryEntity, IRootQuery
+    {GenerateDocComments(type, true)}public class {className} : QueryEntity, IRootQuery
     {{
         public {className}() : base(new QueryProvider())
         {{
-        }}{GenerateFields(type)}
+        }}{GenerateFields(type, true)}
     }}
 }}";
         }
 
-        private static string GenerateFields(TypeModel type)
+        private static string GenerateFields(TypeModel type, bool generateDocComments)
         {
             var builder = new StringBuilder();
 
@@ -71,7 +75,7 @@ namespace {rootNamespace}
                     }
 
                     builder.AppendLine();
-                    builder.Append(GenerateField(field));
+                    builder.Append(GenerateField(field, generateDocComments));
 
                     first = false;
                 }
@@ -80,10 +84,10 @@ namespace {rootNamespace}
             return builder.ToString();
         }
 
-        private static string GenerateField(FieldModel field)
+        private static string GenerateField(FieldModel field, bool generateDocComments)
         {
             var method = field.Args?.Count > 0;
-            var result = GenerateDocComments(field);
+            var result = GenerateDocComments(field, generateDocComments);
             var reduced = TypeUtilities.ReduceKind(field.Type);
 
             switch (reduced)
@@ -118,9 +122,9 @@ namespace {rootNamespace}
             return result;
         }
 
-        private static string GenerateDocComments(TypeModel type)
+        private static string GenerateDocComments(TypeModel type, bool generate)
         {
-            if (!string.IsNullOrWhiteSpace(type.Description))
+            if (generate && !string.IsNullOrWhiteSpace(type.Description))
             {
                 return $@"/// <summary>
     /// {type.Description}
@@ -133,9 +137,9 @@ namespace {rootNamespace}
             }
         }
 
-        private static string GenerateDocComments(FieldModel field)
+        private static string GenerateDocComments(FieldModel field, bool generate)
         {
-            if (!string.IsNullOrWhiteSpace(field.Description))
+            if (generate && !string.IsNullOrWhiteSpace(field.Description))
             {
                 var builder = new StringBuilder($@"        /// <summary>
         /// {field.Description}

@@ -16,6 +16,22 @@ namespace LinqToGraphQL.Generation.Models
         public IList<InputValueModel> InputFields { get; set; }
         public TypeModel OfType { get; set; }
 
+        public TypeModel Clone()
+        {
+            return new TypeModel
+            {
+                Kind = Kind,
+                Name = Name,
+                Description = Description,
+                Fields = Fields,
+                Interfaces = Interfaces,
+                PossibleTypes = PossibleTypes,
+                EnumValues = EnumValues,
+                InputFields = InputFields,
+                OfType = OfType?.Clone(),
+            };
+        }
+
         public static TypeModel Int()
         {
             return new TypeModel

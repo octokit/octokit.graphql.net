@@ -22,7 +22,9 @@ namespace {rootNamespace}
     {GenerateDocComments(type)}public interface {className}
     {{{GenerateFields(type)}
     }}
-}}";
+}}
+
+{GenerateStub(type, rootNamespace)}";
         }
 
         private static string GenerateFields(TypeModel type)
@@ -210,6 +212,15 @@ namespace {rootNamespace}
             }
 
             return argBuilder.ToString();
+        }
+
+        private static string GenerateStub(TypeModel type, string rootNamespace)
+        {
+            var stubType = type.Clone();
+            stubType.Name = "Stub" + TypeUtilities.GetInterfaceName(type);
+            stubType.Kind = TypeKind.Object;
+            stubType.Interfaces = new[] { type };
+            return EntityGenerator.Generate(stubType, rootNamespace + ".Internal", "internal ", false);
         }
     }
 }

@@ -18,14 +18,34 @@ namespace Test
     {{
         {0}
     }}
+}}
+
+using System.Linq;
+using System.Linq.Expressions;
+using LinqToGraphQL;
+using LinqToGraphQL.Builders;
+
+namespace Test.Internal
+{{
+    internal class StubIEntity : QueryEntity, IEntity
+    {{
+        public StubIEntity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        {{
+        }}
+{1}
+        internal static StubIEntity Create(IQueryProvider provider, Expression expression)
+        {{
+            return new StubIEntity(provider, expression);
+        }}
+    }}
 }}";
 
         [Fact]
         public void Generates_Property_For_Scalar_Field()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "int? Foo { get; }");
+            var expected = FormatMemberTemplate(
+                "int? Foo { get; }",
+                "public int? Foo { get; }");
 
             var model = new TypeModel
             {
@@ -49,9 +69,9 @@ namespace Test
         [Fact]
         public void Generates_Property_For_NonNull_Scalar_Field()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "int FooBar { get; }");
+            var expected = FormatMemberTemplate(
+                "int FooBar { get; }",
+                "public int FooBar { get; }");
 
             var model = new TypeModel
             {
@@ -75,9 +95,9 @@ namespace Test
         [Fact]
         public void Generates_Property_For_Object_Field()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "Other Foo { get; }");
+            var expected = FormatMemberTemplate(
+                "Other Foo { get; }",
+                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
 
             var model = new TypeModel
             {
@@ -101,9 +121,9 @@ namespace Test
         [Fact]
         public void Generates_Property_For_NonNull_Object_Field()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "Other Foo { get; }");
+            var expected = FormatMemberTemplate(
+                "Other Foo { get; }",
+                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
 
             var model = new TypeModel
             {
@@ -127,9 +147,9 @@ namespace Test
         [Fact]
         public void Generates_Property_For_List_Field()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "IQueryable<Other> Foo { get; }");
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo { get; }",
+                "public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -153,9 +173,9 @@ namespace Test
         [Fact]
         public void Generates_Method_For_Object_Field_With_Args()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "Other Foo(int bar);");
+            var expected = FormatMemberTemplate(
+                "Other Foo(int bar);",
+                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
 
             var model = new TypeModel
             {
@@ -187,9 +207,9 @@ namespace Test
         [Fact]
         public void Generates_Method_For_NonNull_Object_Field_With_Args()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "Other Foo(int bar);");
+            var expected = FormatMemberTemplate(
+                "Other Foo(int bar);",
+                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
 
             var model = new TypeModel
             {
@@ -221,9 +241,9 @@ namespace Test
         [Fact]
         public void Generates_Method_For_List_Field_With_Args()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "IQueryable<Other> Foo(int? bar);");
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo(int? bar);",
+                "public IQueryable<Other> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -255,9 +275,9 @@ namespace Test
         [Fact]
         public void Generates_Method_For_Scalar()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "IQueryable<int> Foo(int? bar);");
+            var expected = FormatMemberTemplate(
+                "IQueryable<int> Foo(int? bar);",
+                "public IQueryable<int> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -289,9 +309,9 @@ namespace Test
         [Fact]
         public void Generates_Method_For_NonNull_Scalar()
         {
-            var expected = string.Format(
-                MemberTemplate,
-                "IQueryable<int> Foo(int? bar);");
+            var expected = FormatMemberTemplate(
+                "IQueryable<int> Foo(int? bar);",
+                "public IQueryable<int> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -362,12 +382,12 @@ namespace Test
         [Fact]
         public void Generates_Doc_Comments_For_Property()
         {
-            var expected = string.Format(
-                MemberTemplate,
+            var expected = FormatMemberTemplate(
                 @"/// <summary>
         /// Testing if doc comments are generated.
         /// </summary>
-        Other Foo { get; }");
+        Other Foo { get; }",
+                "public Other Foo => this.CreateProperty(x => x.Foo, Other.Create);");
 
             var model = new TypeModel
             {
@@ -392,13 +412,13 @@ namespace Test
         [Fact]
         public void Generates_Doc_Comments_For_Method()
         {
-            var expected = string.Format(
-                MemberTemplate,
+            var expected = FormatMemberTemplate(
                 @"/// <summary>
         /// Testing if doc comments are generated.
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
-        Other Foo(int? arg1, int? arg2);");
+        Other Foo(int? arg1, int? arg2);",
+                "public Other Foo(int? arg1, int? arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Other.Create);");
 
             var model = new TypeModel
             {
@@ -432,6 +452,16 @@ namespace Test
             var result = CodeGenerator.Generate(model, "Test", null);
 
             Assert.Equal(expected, result);
+        }
+
+        private string FormatMemberTemplate(string interfaceMembers, string stubMembers)
+        {
+            if (stubMembers != null)
+            {
+                stubMembers = "\r\n        " + stubMembers + "\r\n";
+            }
+
+            return string.Format(MemberTemplate, interfaceMembers, stubMembers);
         }
     }
 }
