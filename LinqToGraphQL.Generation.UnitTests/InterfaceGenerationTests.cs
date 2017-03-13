@@ -7,26 +7,26 @@ namespace LinqToGraphQL.Generation.UnitTests
 {
     public class InterfaceGenerationTests
     {
-        const string MemberTemplate = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace Test
+        const string MemberTemplate = @"namespace Test
 {{
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     public interface IEntity
     {{
         {0}
     }}
 }}
 
-using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
 namespace Test.Internal
 {{
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     internal class StubIEntity : QueryEntity, IEntity
     {{
         public StubIEntity(IQueryProvider provider, Expression expression) : base(provider, expression)
@@ -343,13 +343,13 @@ namespace Test.Internal
         [Fact]
         public void Generates_Doc_Comments_For_Class()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace Test
+            var expected = @"namespace Test
 {
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     /// <summary>
     /// Testing if doc comments are generated.
     /// </summary>

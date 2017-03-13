@@ -16,13 +16,13 @@ namespace LinqToGraphQL.Generation
         {
             var className = TypeUtilities.GetClassName(type);
 
-            return $@"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace {rootNamespace}
+            return $@"namespace {rootNamespace}
 {{
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryEntity{GenerateImplementedInterfaces(type)}
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
@@ -41,13 +41,13 @@ namespace {rootNamespace}
         {
             var className = TypeUtilities.GetClassName(type);
 
-            return $@"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace {rootNamespace}
+            return $@"namespace {rootNamespace}
 {{
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     {GenerateDocComments(type, true)}public class {className} : QueryEntity, IRootQuery
     {{
         public {className}() : base(new QueryProvider())

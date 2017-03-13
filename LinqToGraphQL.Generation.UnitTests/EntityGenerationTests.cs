@@ -7,13 +7,13 @@ namespace LinqToGraphQL.Generation.UnitTests
 {
     public class EntityGenerationTests
     {
-        const string MemberTemplate = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace Test
+        const string MemberTemplate = @"namespace Test
 {{
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     public class Entity : QueryEntity{1}
     {{
         public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
@@ -414,13 +414,13 @@ namespace Test
         [Fact]
         public void Generates_Doc_Comments_For_Class()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace Test
+            var expected = @"namespace Test
 {
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     /// <summary>
     /// Testing if doc comments are generated.
     /// </summary>
@@ -524,13 +524,13 @@ namespace Test
         [Fact]
         public void Generates_Root_Query()
         {
-            var expected = @"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace Test
+            var expected = @"namespace Test
 {
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     public class Entity : QueryEntity, IRootQuery
     {
         public Entity() : base(new QueryProvider())

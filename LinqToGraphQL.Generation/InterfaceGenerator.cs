@@ -12,13 +12,13 @@ namespace LinqToGraphQL.Generation
         {
             var className = TypeUtilities.GetInterfaceName(type);
 
-            return $@"using System.Linq;
-using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-
-namespace {rootNamespace}
+            return $@"namespace {rootNamespace}
 {{
+    using System.Linq;
+    using System.Linq.Expressions;
+    using LinqToGraphQL;
+    using LinqToGraphQL.Builders;
+
     {GenerateDocComments(type)}public interface {className}
     {{{GenerateFields(type)}
     }}
