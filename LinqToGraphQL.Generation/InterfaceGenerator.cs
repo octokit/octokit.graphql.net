@@ -58,34 +58,33 @@ namespace LinqToGraphQL.Generation
         {
             var method = field.Args?.Count > 0;
             var result = GenerateDocComments(field);
-            var reduced = TypeUtilities.ReduceKind(field.Type);
+            var reduced = TypeUtilities.ReduceType(field.Type);
 
-            switch (reduced)
+            if (TypeUtilities.IsCSharpPrimitive(reduced))
             {
-                case TypeKind.Scalar:
-                case TypeKind.Enum:
-                    result += method ?
-                        GenerateScalarMethod(field, field.Type) :
-                        GenerateScalarField(field, field.Type);
-                    break;
-                case TypeKind.Object:
-                case TypeKind.Interface:
-                    result += method ?
-                        GenerateObjectMethod(field, field.Type) :
-                        GenerateObjectField(field, field.Type);
-                    break;
-                case TypeKind.NonNull:
-                    result += method ?
-                        GenerateObjectMethod(field, field.Type.OfType) :
-                        GenerateObjectField(field, field.Type.OfType);
-                    break;
-                case TypeKind.List:
-                    result += method ?
-                        GenerateListMethod(field, field.Type.OfType) :
-                        GenerateListField(field, field.Type.OfType);
-                    break;
-                default:
-                    throw new NotImplementedException();
+                result += method ?
+                    GenerateScalarMethod(field, reduced) :
+                    GenerateScalarField(field, reduced);
+            }
+            else if (reduced.Kind == TypeKind.List)
+            {
+                result += method ?
+                    GenerateListMethod(field, reduced) :
+                    GenerateListField(field, reduced);
+            }
+            else if (reduced.Kind == TypeKind.Union)
+            {
+                // HACK: Returning IQueryable<object> for unions for now until we decide how to handle them.
+                reduced = TypeModel.List(reduced);
+                result += method ?
+                    GenerateListMethod(field, reduced) :
+                    GenerateListField(field, reduced);
+            }
+            else
+            {
+                result += method ?
+                    GenerateObjectMethod(field, reduced) :
+                    GenerateObjectField(field, reduced);
             }
 
             return result;
@@ -170,7 +169,7 @@ namespace LinqToGraphQL.Generation
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(type);
-            return $"        IQueryable<{typeName}> {name} {{ get; }}";
+            return $"        {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
@@ -179,7 +178,7 @@ namespace LinqToGraphQL.Generation
             var typeName = TypeUtilities.GetCSharpType(type);
             var arguments = GenerateArguments(field);
 
-            return $"        IQueryable<{typeName}> {name}({arguments});";
+            return $"        {typeName} {name}({arguments});";
         }
 
         private static string GenerateArguments(FieldModel field)

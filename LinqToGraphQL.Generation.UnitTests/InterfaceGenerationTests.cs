@@ -93,6 +93,32 @@ namespace Test.Internal
         }
 
         [Fact]
+        public void Generates_Property_For_NonNull_Enum_Field()
+        {
+            var expected = FormatMemberTemplate(
+                "Baz FooBar { get; }",
+                "public Baz FooBar { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "fooBar",
+                        Type = TypeModel.NonNull(TypeModel.Enum("Baz")),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Property_For_Object_Field()
         {
             var expected = FormatMemberTemplate(
