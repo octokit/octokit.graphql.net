@@ -52,8 +52,10 @@ namespace LinqToGraphQL.Generation.Utilities
                     return GetCSharpType(type.OfType, false);
                 case TypeKind.List:
                     return $"IQueryable<{GetCSharpType(type.OfType, true)}>";
+                case TypeKind.Union:
+                    return "object";
                 default:
-                    return type.Name;
+                    throw new NotSupportedException();
             }
         }
 

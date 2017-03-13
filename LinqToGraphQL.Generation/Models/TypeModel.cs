@@ -112,5 +112,14 @@ namespace LinqToGraphQL.Generation.Models
                 Name = "String",
             };
         }
+
+        public static TypeModel Union(string name)
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Union,
+                Name = name,
+            };
+        }
     }
 }

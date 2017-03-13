@@ -44,7 +44,7 @@ namespace LinqToGraphQL.Generation
                     return InputObjectGenerator.Generate(type, rootNamespace);
 
                 default:
-                    return null;
+                    throw new NotImplementedException();
             }
         }
     }

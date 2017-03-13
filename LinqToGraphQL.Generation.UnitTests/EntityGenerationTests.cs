@@ -220,6 +220,31 @@ namespace LinqToGraphQL.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Property_For_Union()
+        {
+            // HACK: Returning IQueryable<object> for unions for now until we decide how to handle them.
+            var expected = FormatMemberTemplate("public IQueryable<object> Foo => this.CreateProperty(x => x.Foo);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.Union("Bar")),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Method_For_Object_Field_With_Args()
         {
             var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Other.Create);");
