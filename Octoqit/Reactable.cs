@@ -36,7 +36,7 @@ namespace Octoqit
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
-        ReactionConnection Reactions(int? first, string after, int? last, string before, ReactionContent? content, ReactionOrder orderBy);
+        ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null);
 
         /// <summary>
         /// The websocket channel ID for reaction live updates.
@@ -76,7 +76,7 @@ namespace Octoqit.Internal
 
         public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
-        public ReactionConnection Reactions(int? first, string after, int? last, string before, ReactionContent? content, ReactionOrder orderBy) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octoqit.ReactionConnection.Create);
+        public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octoqit.ReactionConnection.Create);
 
         public string ReactionsWebsocket { get; }
 

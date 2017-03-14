@@ -21,7 +21,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public UserConnection Assignees(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octoqit.UserConnection.Create);
+        public UserConnection Assignees(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octoqit.UserConnection.Create);
 
         /// <summary>
         /// The author of the issue or pull request.
@@ -50,7 +50,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public IssueCommentConnection Comments(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octoqit.IssueCommentConnection.Create);
+        public IssueCommentConnection Comments(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octoqit.IssueCommentConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -81,7 +81,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public LabelConnection Labels(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octoqit.LabelConnection.Create);
+        public LabelConnection Labels(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octoqit.LabelConnection.Create);
 
         /// <summary>
         /// The moment the editor made the last edit
@@ -110,7 +110,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public UserConnection Participants(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octoqit.UserConnection.Create);
+        public UserConnection Participants(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octoqit.UserConnection.Create);
 
         /// <summary>
         /// The HTTP path for this issue
@@ -131,7 +131,7 @@ namespace Octoqit
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
-        public ReactionConnection Reactions(int? first, string after, int? last, string before, ReactionContent? content, ReactionOrder orderBy) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octoqit.ReactionConnection.Create);
+        public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octoqit.ReactionConnection.Create);
 
         /// <summary>
         /// The websocket channel ID for reaction live updates.
@@ -156,7 +156,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="since">Allows filtering timeline events by a `since` timestamp.</param>
-        public IssueTimelineConnection Timeline(int? first, string after, int? last, string before, string since) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octoqit.IssueTimelineConnection.Create);
+        public IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octoqit.IssueTimelineConnection.Create);
 
         /// <summary>
         /// Identifies the issue title.

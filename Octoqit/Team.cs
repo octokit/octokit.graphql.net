@@ -38,7 +38,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public OrganizationInvitationConnection Invitations(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Invitations(first, after, last, before), Octoqit.OrganizationInvitationConnection.Create);
+        public OrganizationInvitationConnection Invitations(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Invitations(first, after, last, before), Octoqit.OrganizationInvitationConnection.Create);
 
         /// <summary>
         /// The name of the team.

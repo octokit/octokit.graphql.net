@@ -43,7 +43,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public DeploymentStatusConnection Statuses(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Statuses(first, after, last, before), Octoqit.DeploymentStatusConnection.Create);
+        public DeploymentStatusConnection Statuses(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Statuses(first, after, last, before), Octoqit.DeploymentStatusConnection.Create);
 
         internal static Deployment Create(IQueryProvider provider, Expression expression)
         {

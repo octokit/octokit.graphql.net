@@ -18,7 +18,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="since">Allows filtering timeline events by a `since` timestamp.</param>
-        IssueTimelineConnection Timeline(int? first, string after, int? last, string before, string since);
+        IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null);
     }
 }
 
@@ -35,7 +35,7 @@ namespace Octoqit.Internal
         {
         }
 
-        public IssueTimelineConnection Timeline(int? first, string after, int? last, string before, string since) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octoqit.IssueTimelineConnection.Create);
+        public IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octoqit.IssueTimelineConnection.Create);
 
         internal static StubITimeline Create(IQueryProvider provider, Expression expression)
         {

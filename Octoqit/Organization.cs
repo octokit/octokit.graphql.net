@@ -18,7 +18,7 @@ namespace Octoqit
         /// A URL pointing to the organization's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        public IQueryable<string> AvatarURL(int? size) => this.CreateMethodCall(x => x.AvatarURL(size));
+        public IQueryable<string> AvatarURL(int? size = null) => this.CreateMethodCall(x => x.AvatarURL(size));
 
         /// <summary>
         /// Find gist by repo name.
@@ -34,7 +34,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="visibility">Allows filtering by gist visibility.</param>
-        public GistConnection Gists(int? first, string after, int? last, string before, GistVisibility? visibility) => this.CreateMethodCall(x => x.Gists(first, after, last, before, visibility), Octoqit.GistConnection.Create);
+        public GistConnection Gists(int? first = null, string after = null, int? last = null, string before = null, GistVisibility? visibility = null) => this.CreateMethodCall(x => x.Gists(first, after, last, before, visibility), Octoqit.GistConnection.Create);
 
         public string Id { get; }
 
@@ -50,7 +50,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public UserConnection Members(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Members(first, after, last, before), Octoqit.UserConnection.Create);
+        public UserConnection Members(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Members(first, after, last, before), Octoqit.UserConnection.Create);
 
         /// <summary>
         /// The organization's public profile name.
@@ -78,7 +78,7 @@ namespace Octoqit
         /// <param name="orderBy">Ordering options for projects returned from the connection</param>
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
-        public ProjectConnection Projects(int? first, string after, int? last, string before, ProjectOrder orderBy, string search, IQueryable<ProjectState> states) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octoqit.ProjectConnection.Create);
+        public ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IQueryable<ProjectState> states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octoqit.ProjectConnection.Create);
 
         /// <summary>
         /// The HTTP path listing organization's projects
@@ -101,7 +101,7 @@ namespace Octoqit
         /// <param name="isFork">If non-null, filters repositories according to whether they are forks of another repository</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliation">Affiliation options for repositories returned from the connection</param>
-        public RepositoryConnection Repositories(int? first, string after, int? last, string before, RepositoryPrivacy? privacy, bool? isFork, RepositoryOrder orderBy, IQueryable<RepositoryAffiliation?> affiliation) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation), Octoqit.RepositoryConnection.Create);
+        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation), Octoqit.RepositoryConnection.Create);
 
         /// <summary>
         /// Find Repository.
@@ -113,7 +113,7 @@ namespace Octoqit
         /// Find an organization's team by its slug.
         /// </summary>
         /// <param name="slug">The name or slug of the team to find.</param>
-        public Team Team(string slug) => this.CreateMethodCall(x => x.Team(slug), Octoqit.Team.Create);
+        public Team Team(string slug = null) => this.CreateMethodCall(x => x.Team(slug), Octoqit.Team.Create);
 
         /// <summary>
         /// A list of teams in this organization.
@@ -126,7 +126,7 @@ namespace Octoqit
         /// <param name="role">If non-null, filters teams according to whether the viewer is an admin or member on team</param>
         /// <param name="query">If non-null, filters teams with query on team name and team slug</param>
         /// <param name="orderBy">Ordering options for teams returned from the connection</param>
-        public TeamConnection Teams(int? first, string after, int? last, string before, TeamPrivacy? privacy, TeamRole? role, string query, TeamOrder orderBy) => this.CreateMethodCall(x => x.Teams(first, after, last, before, privacy, role, query, orderBy), Octoqit.TeamConnection.Create);
+        public TeamConnection Teams(int? first = null, string after = null, int? last = null, string before = null, TeamPrivacy? privacy = null, TeamRole? role = null, string query = null, TeamOrder orderBy = null) => this.CreateMethodCall(x => x.Teams(first, after, last, before, privacy, role, query, orderBy), Octoqit.TeamConnection.Create);
 
         /// <summary>
         /// The HTTP path listing organization's teams

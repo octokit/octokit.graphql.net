@@ -44,7 +44,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="name">A list of names to filter the assets by.</param>
-        public ReleaseAssetConnection ReleaseAsset(int? first, string after, int? last, string before, string name) => this.CreateMethodCall(x => x.ReleaseAsset(first, after, last, before, name), Octoqit.ReleaseAssetConnection.Create);
+        public ReleaseAssetConnection ReleaseAsset(int? first = null, string after = null, int? last = null, string before = null, string name = null) => this.CreateMethodCall(x => x.ReleaseAsset(first, after, last, before, name), Octoqit.ReleaseAssetConnection.Create);
 
         /// <summary>
         /// List of releases assets which are dependent on this release.
@@ -53,7 +53,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public ReleaseAssetConnection ReleaseAssets(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.ReleaseAssets(first, after, last, before), Octoqit.ReleaseAssetConnection.Create);
+        public ReleaseAssetConnection ReleaseAssets(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReleaseAssets(first, after, last, before), Octoqit.ReleaseAssetConnection.Create);
 
         /// <summary>
         /// The Git tag the release points to

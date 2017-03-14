@@ -22,7 +22,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="states">A list of states to filter the pull requests by.</param>
-        public PullRequestConnection AssociatedPullRequests(int? first, string after, int? last, string before, IQueryable<PullRequestState> states) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, states), Octoqit.PullRequestConnection.Create);
+        public PullRequestConnection AssociatedPullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, states), Octoqit.PullRequestConnection.Create);
 
         public string Id { get; }
 

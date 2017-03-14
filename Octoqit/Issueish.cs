@@ -17,7 +17,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        UserConnection Assignees(int? first, string after, int? last, string before);
+        UserConnection Assignees(int? first = null, string after = null, int? last = null, string before = null);
 
         /// <summary>
         /// The author of the issue or pull request.
@@ -43,7 +43,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        LabelConnection Labels(int? first, string after, int? last, string before);
+        LabelConnection Labels(int? first = null, string after = null, int? last = null, string before = null);
 
         /// <summary>
         /// Identifies the issue number.
@@ -75,7 +75,7 @@ namespace Octoqit.Internal
         {
         }
 
-        public UserConnection Assignees(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octoqit.UserConnection.Create);
+        public UserConnection Assignees(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octoqit.UserConnection.Create);
 
         public IAuthor Author => this.CreateProperty(x => x.Author, Octoqit.Internal.StubIAuthor.Create);
 
@@ -85,7 +85,7 @@ namespace Octoqit.Internal
 
         public string Id { get; }
 
-        public LabelConnection Labels(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octoqit.LabelConnection.Create);
+        public LabelConnection Labels(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octoqit.LabelConnection.Create);
 
         public int Number { get; }
 

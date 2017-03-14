@@ -28,7 +28,7 @@ namespace Octoqit
         /// <param name="orderBy">Ordering options for projects returned from the connection</param>
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
-        ProjectConnection Projects(int? first, string after, int? last, string before, ProjectOrder orderBy, string search, IQueryable<ProjectState> states);
+        ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IQueryable<ProjectState> states = null);
 
         /// <summary>
         /// The HTTP path listing owners projects
@@ -64,7 +64,7 @@ namespace Octoqit.Internal
 
         public Project Project(int number) => this.CreateMethodCall(x => x.Project(number), Octoqit.Project.Create);
 
-        public ProjectConnection Projects(int? first, string after, int? last, string before, ProjectOrder orderBy, string search, IQueryable<ProjectState> states) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octoqit.ProjectConnection.Create);
+        public ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IQueryable<ProjectState> states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octoqit.ProjectConnection.Create);
 
         public string ProjectsPath { get; }
 

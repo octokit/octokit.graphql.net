@@ -68,7 +68,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octoqit.ReviewDismissalAllowanceConnection.Create);
+        public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octoqit.ReviewDismissalAllowanceConnection.Create);
 
         /// <summary>
         /// Check if required status checks is turned on.

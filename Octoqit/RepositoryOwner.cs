@@ -14,7 +14,7 @@ namespace Octoqit
         /// A URL pointing to the owner's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        IQueryable<string> AvatarURL(int? size);
+        IQueryable<string> AvatarURL(int? size = null);
 
         /// <summary>
         /// Find gist by repo name.
@@ -30,7 +30,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="visibility">Allows filtering by gist visibility.</param>
-        GistConnection Gists(int? first, string after, int? last, string before, GistVisibility? visibility);
+        GistConnection Gists(int? first = null, string after = null, int? last = null, string before = null, GistVisibility? visibility = null);
 
         string Id { get; }
 
@@ -55,7 +55,7 @@ namespace Octoqit
         /// <param name="isFork">If non-null, filters repositories according to whether they are forks of another repository</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliation">Affiliation options for repositories returned from the connection</param>
-        RepositoryConnection Repositories(int? first, string after, int? last, string before, RepositoryPrivacy? privacy, bool? isFork, RepositoryOrder orderBy, IQueryable<RepositoryAffiliation?> affiliation);
+        RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null);
 
         /// <summary>
         /// Find Repository.
@@ -83,11 +83,11 @@ namespace Octoqit.Internal
         {
         }
 
-        public IQueryable<string> AvatarURL(int? size) => this.CreateMethodCall(x => x.AvatarURL(size));
+        public IQueryable<string> AvatarURL(int? size = null) => this.CreateMethodCall(x => x.AvatarURL(size));
 
         public Gist Gist(string name) => this.CreateMethodCall(x => x.Gist(name), Octoqit.Gist.Create);
 
-        public GistConnection Gists(int? first, string after, int? last, string before, GistVisibility? visibility) => this.CreateMethodCall(x => x.Gists(first, after, last, before, visibility), Octoqit.GistConnection.Create);
+        public GistConnection Gists(int? first = null, string after = null, int? last = null, string before = null, GistVisibility? visibility = null) => this.CreateMethodCall(x => x.Gists(first, after, last, before, visibility), Octoqit.GistConnection.Create);
 
         public string Id { get; }
 
@@ -95,7 +95,7 @@ namespace Octoqit.Internal
 
         public string Path { get; }
 
-        public RepositoryConnection Repositories(int? first, string after, int? last, string before, RepositoryPrivacy? privacy, bool? isFork, RepositoryOrder orderBy, IQueryable<RepositoryAffiliation?> affiliation) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation), Octoqit.RepositoryConnection.Create);
+        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation), Octoqit.RepositoryConnection.Create);
 
         public Repository Repository(string name) => this.CreateMethodCall(x => x.Repository(name), Octoqit.Repository.Create);
 

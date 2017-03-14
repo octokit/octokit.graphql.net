@@ -28,7 +28,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public IssueConnection Issues(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.Issues(first, after, last, before), Octoqit.IssueConnection.Create);
+        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before), Octoqit.IssueConnection.Create);
 
         /// <summary>
         /// Identifies the label name.
@@ -42,7 +42,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public PullRequestConnection PullRequests(int? first, string after, int? last, string before) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before), Octoqit.PullRequestConnection.Create);
+        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before), Octoqit.PullRequestConnection.Create);
 
         /// <summary>
         /// The repository associated with this label.

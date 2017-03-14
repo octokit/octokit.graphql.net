@@ -58,7 +58,7 @@ namespace Octoqit
         /// Lookup resource by a URL.
         /// </summary>
         /// <param name="url">The URL.</param>
-        public IUniformResourceLocatable Resource(string url) => this.CreateMethodCall(x => x.Resource(url), Octoqit.Internal.StubIUniformResourceLocatable.Create);
+        public IUniformResourceLocatable Resource(string url = null) => this.CreateMethodCall(x => x.Resource(url), Octoqit.Internal.StubIUniformResourceLocatable.Create);
 
         /// <summary>
         /// Perform a search across resources.
@@ -69,7 +69,7 @@ namespace Octoqit
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="query">The search string to look for.</param>
         /// <param name="type">The types of search items to search within.</param>
-        public SearchResultItemConnection Search(int? first, string after, int? last, string before, string query, SearchType type) => this.CreateMethodCall(x => x.Search(first, after, last, before, query, type), Octoqit.SearchResultItemConnection.Create);
+        public SearchResultItemConnection Search(string query, SearchType type, int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octoqit.SearchResultItemConnection.Create);
 
         /// <summary>
         /// Lookup a user by login.
