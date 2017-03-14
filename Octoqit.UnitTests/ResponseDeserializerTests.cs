@@ -176,8 +176,7 @@ namespace Octoqit.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.False(true);
-            //Assert.Equal("https://foo/bar", result.AvatarUrl); // This needs to compile
+            Assert.Equal("https://foo/bar", result.AvatarUrl);
         }
 
         [Fact]
