@@ -31,36 +31,9 @@ namespace LinqToGraphQL.Generation.Utilities
             throw new NotImplementedException();
         }
 
-        public static string GetCSharpType(TypeModel type, bool nullable = true)
+        public static string GetCSharpType(TypeModel type)
         {
-            switch (type.Kind)
-            {
-                case TypeKind.Scalar:
-                    var question = nullable ? "?" : "";
-                    switch (type.Name)
-                    {
-                        case "Int": return "int" + question;
-                        case "Float": return "double" + question;
-                        case "String": return "string";
-                        case "Boolean": return "bool" + question;
-                        default: return "string";
-                    }
-                case TypeKind.Enum:
-                    return type.Name + (nullable ? "?" : "");
-                case TypeKind.Interface:
-                    return "I" + type.Name;
-                case TypeKind.Object:
-                case TypeKind.InputObject:
-                    return type.Name;
-                case TypeKind.NonNull:
-                    return GetCSharpType(type.OfType, false);
-                case TypeKind.List:
-                    return $"IQueryable<{GetCSharpType(type.OfType, true)}>";
-                case TypeKind.Union:
-                    return "object";
-                default:
-                    throw new NotSupportedException();
-            }
+            return GetCSharpType(ReduceType(type), true);
         }
 
         public static string GetClassName(TypeModel type)
@@ -88,19 +61,6 @@ namespace LinqToGraphQL.Generation.Utilities
         public static string PascalCase(string value)
         {
             return value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
-        }
-
-        public static TypeKind ReduceKind(TypeModel type)
-        {
-            if (type.Kind == TypeKind.Scalar ||
-                type.Kind == TypeKind.NonNull && type.OfType.Kind == TypeKind.Scalar)
-            {
-                return TypeKind.Scalar;
-            }
-            else
-            {
-                return type.Kind;
-            }
         }
 
         /// <summary>
@@ -141,9 +101,36 @@ namespace LinqToGraphQL.Generation.Utilities
             return type;
         }
 
-        public static TypeModel ReduceNonNull(TypeModel type)
+        private static string GetCSharpType(TypeModel type, bool nullable)
         {
-            return type.Kind == TypeKind.NonNull ? type.OfType : type;
+            switch (type.Kind)
+            {
+                case TypeKind.Scalar:
+                    var question = nullable ? "?" : "";
+                    switch (type.Name)
+                    {
+                        case "Int": return "int" + question;
+                        case "Float": return "double" + question;
+                        case "String": return "string";
+                        case "Boolean": return "bool" + question;
+                        default: return "string";
+                    }
+                case TypeKind.Enum:
+                    return type.Name + (nullable ? "?" : "");
+                case TypeKind.Interface:
+                    return "I" + type.Name;
+                case TypeKind.Object:
+                case TypeKind.InputObject:
+                    return type.Name;
+                case TypeKind.NonNull:
+                    return GetCSharpType(type.OfType, false);
+                case TypeKind.List:
+                    return $"IQueryable<{GetCSharpType(type.OfType, true)}>";
+                case TypeKind.Union:
+                    return "object";
+                default:
+                    throw new NotSupportedException();
+            }
         }
 
         private static bool IsValueType(TypeModel type)

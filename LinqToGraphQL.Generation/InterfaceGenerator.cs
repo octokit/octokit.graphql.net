@@ -149,7 +149,7 @@ namespace LinqToGraphQL.Generation
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var csharpType = TypeUtilities.GetCSharpType(TypeUtilities.ReduceType(type));
+            var csharpType = TypeUtilities.GetCSharpType(type);
             var arguments = GenerateArguments(field);
 
             return $"        {csharpType} {name}({arguments});";
