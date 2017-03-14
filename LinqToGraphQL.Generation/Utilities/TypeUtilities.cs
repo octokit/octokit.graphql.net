@@ -23,6 +23,10 @@ namespace LinqToGraphQL.Generation.Utilities
             {
                 return $"{type.Name}.{value}";
             }
+            else if (type.Kind == TypeKind.NonNull)
+            {
+                return GetCSharpLiteral(value, type.OfType);
+            }
 
             throw new NotImplementedException();
         }

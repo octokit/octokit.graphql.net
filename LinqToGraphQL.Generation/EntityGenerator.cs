@@ -254,6 +254,10 @@ namespace LinqToGraphQL.Generation
                     argBuilder.Append(" = ");
                     argBuilder.Append(TypeUtilities.GetCSharpLiteral(arg.DefaultValue, arg.Type));
                 }
+                else if (arg.Type.Kind != TypeKind.NonNull)
+                {
+                    argBuilder.Append(" = null");
+                }
 
                 first = false;
             }

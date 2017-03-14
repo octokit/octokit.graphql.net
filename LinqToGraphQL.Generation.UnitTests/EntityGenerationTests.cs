@@ -343,7 +343,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Args()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -375,7 +375,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Scalar()
         {
-            var expected = FormatMemberTemplate("public IQueryable<int> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryable<int> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -407,7 +407,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_Scalar()
         {
-            var expected = FormatMemberTemplate("public IQueryable<int> Foo(int? bar) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryable<int> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -425,6 +425,126 @@ namespace LinqToGraphQL.Generation.UnitTests
                             {
                                 Name = "bar",
                                 Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Theory]
+        [InlineData(TypeKind.Scalar, "Int", "int")]
+        [InlineData(TypeKind.Scalar, "Boolean", "bool")]
+        [InlineData(TypeKind.Scalar, "String", "string")]
+        [InlineData(TypeKind.InputObject, "InputObj", "InputObj")]
+        public void NonNull_Arg_With_Null_DefaultValue_Has_No_Default(TypeKind argType, string type, string csharpType)
+        {
+            var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.NonNull(new TypeModel
+                                {
+                                    Kind = argType,
+                                    Name = type,
+                                }),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Theory]
+        [InlineData(TypeKind.Scalar, "Int", "int", "5", "5")]
+        [InlineData(TypeKind.Scalar, "Boolean", "bool", "true", "true")]
+        [InlineData(TypeKind.Scalar, "String", "string", "foo", "\"foo\"")]
+        public void NonNull_Arg_With_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType, string defaultValue, string csharpDefaultValue)
+        {
+            var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar = {csharpDefaultValue}) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.NonNull(new TypeModel
+                                {
+                                    Kind = argType,
+                                    Name = type,
+                                }),
+                                DefaultValue = defaultValue,
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Theory]
+        [InlineData(TypeKind.Scalar, "Int", "int?")]
+        [InlineData(TypeKind.Scalar, "Boolean", "bool?")]
+        [InlineData(TypeKind.Scalar, "String", "string")]
+        [InlineData(TypeKind.InputObject, "InputObj", "InputObj")]
+        public void Nullable_Arg_With_No_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType)
+        {
+            var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = new TypeModel
+                                {
+                                    Kind = argType,
+                                    Name = type,
+                                },
                             }
                         }
                     },
