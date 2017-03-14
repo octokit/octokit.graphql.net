@@ -157,19 +157,18 @@ namespace LinqToGraphQL.UnitTests
         public void Field_Aliases()
         {
             var expected = @"{
-    foo: simple(arg1: ""foo"", arg2: 1) {
-        name
-    }
-    bar: simple(arg1: ""bar"", arg2: 2) {
-        name
+    simple(arg1: ""foo"", arg2: 1) {
+        foo: name
+        bar: description
     }
 }";
 
             var expression = new RootQuery()
+                .Simple("foo", 1)
                 .Select(x => new
                 {
-                    Foo = x.Simple("foo", 1).Select(i => i.Name),
-                    Bar = x.Simple("bar", 2).Select(i => i.Name),
+                    Foo = x.Name,
+                    Bar = x.Description,
                 });
 
             var query = new QueryBuilder().Build(expression);

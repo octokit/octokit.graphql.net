@@ -19,11 +19,14 @@ namespace LinqToGraphQL.Syntax
             return root;
         }
 
-        public FieldSelection AddField(MemberInfo member) => AddField(head, member);
-
-        public FieldSelection AddField(ISelectionSet parent, MemberInfo member)
+        public FieldSelection AddField(MemberInfo member, MemberInfo alias = null)
         {
-            var result = new FieldSelection(member);
+            return AddField(head, member, alias);
+        }
+
+        public FieldSelection AddField(ISelectionSet parent, MemberInfo member, MemberInfo alias = null)
+        {
+            var result = new FieldSelection(member, alias);
             var existing = parent.Selections
                 .OfType<FieldSelection>()
                 .FirstOrDefault(x => x.Name == result.Name && x.Alias == null);

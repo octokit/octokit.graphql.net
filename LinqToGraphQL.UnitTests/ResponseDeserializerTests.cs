@@ -196,6 +196,27 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
+        public void Field_Alias()
+        {
+            var expression = new RootQuery().Data.Select(x => new { Foo = x.Id });
+
+            var data = @"{
+    ""data"":{
+        ""data"": {
+            ""foo"": ""123"",
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.Equal("123", result.Foo);
+        }
+
+        [Fact]
         public void Select_ToList()
         {
             var expression = new RootQuery()

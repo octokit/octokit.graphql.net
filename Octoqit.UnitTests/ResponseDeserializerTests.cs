@@ -163,6 +163,24 @@ namespace Octoqit.UnitTests
         }
 
         [Fact]
+        public void AvatarUrl()
+        {
+            var expression = new Query().Viewer.Select(x => new { AvatarUrl = x.AvatarURL(null) });
+            string data = @"{
+  ""data"": {
+    ""viewer"": {
+      ""avatarUrl"": ""https://foo/bar"",
+    }
+  }
+}";
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.False(true);
+            //Assert.Equal("https://foo/bar", result.AvatarUrl); // This needs to compile
+        }
+
+        [Fact]
         public void Should_Throw_Exception()
         {
             var data = @"{

@@ -68,35 +68,7 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (IsQueryEntityMember(node.Member))
-            {
-                var parameterExpression = node.Expression as ParameterExpression;
-                
-                if (parameterExpression != null)
-                {
-                    var parameter = (ParameterExpression)Visit(parameterExpression);
-                    var parentSelection = GetSelectionSet(parameterExpression);
-                    var field = syntax.AddField(parentSelection, node.Member);
-                    return Visit(parameterExpression).AddIndexer(field.Name);
-                }
-                else
-                {
-                    var instance = Visit(node.Expression);
-                    var field = syntax.AddField(node.Member);
-                    return instance.AddIndexer(field.Name);
-                }
-            }
-            else
-            {
-                var instance = Visit(node.Expression);
-
-                if (ExpressionWasRewritten(node.Expression, instance))
-                {
-                    instance = instance.AddCast(node.Expression.Type);
-                }
-
-                return node.Update(instance);
-            }
+            return VisitMember(node, null);
         }
 
         protected override MemberAssignment VisitMemberAssignment(MemberAssignment node)
@@ -114,26 +86,7 @@ namespace LinqToGraphQL.Builders
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (IsSelect(node.Method))
-            {
-                return VisitSelect(node.Arguments[0], node.Arguments[1]);
-            }
-            else if (IsOfType(node.Method))
-            {
-                var result = Visit(node.Arguments[0]);
-                syntax.AddInlineFragment(node.Method.GetGenericArguments()[0]);
-                return result;
-            }
-            else if (IsQueryEntityMember(node.Method))
-            {
-                return VisitQueryMethod(node);
-            }
-            else
-            {
-                return node.Update(
-                    Visit(node.Object),
-                    VisitMethodArguments(node.Method, node.Arguments));
-            }
+            return VisitMethodCall(node, null);
         }
 
         protected override Expression VisitNew(NewExpression node)
@@ -143,16 +96,27 @@ namespace LinqToGraphQL.Builders
 
             foreach (var arg in node.Arguments)
             {
-                var memberExpression = arg as MemberExpression;
-                var member = memberExpression?.Member ?? node.Members[index];
-                var checkpoint = syntax.Bookmark();
-
-                using (checkpoint)
+                using (syntax.Bookmark())
                 {
-                    newArguments.Add(Visit(arg).AddCast(arg.Type));
+                    var alias = node.Members?[index];
+                    Expression rewritten;
+
+                    if (arg is MemberExpression member)
+                    {
+                        rewritten = VisitMember(member, alias);
+                    }
+                    else if (arg is MethodCallExpression call)
+                    {
+                        rewritten = VisitMethodCall(call, alias);
+                    }
+                    else
+                    {
+                        rewritten = Visit(arg);
+                    }
+
+                    newArguments.Add(rewritten.AddCast(arg.Type));
                 }
 
-                checkpoint.GetAddedField()?.SetAlias(member);
                 ++index;
             }
 
@@ -186,6 +150,39 @@ namespace LinqToGraphQL.Builders
             return node.Update(Visit(node.Operand));
         }
 
+        private Expression VisitMember(MemberExpression node, MemberInfo alias)
+        {
+            if (IsQueryEntityMember(node.Member))
+            {
+                var parameterExpression = node.Expression as ParameterExpression;
+
+                if (parameterExpression != null)
+                {
+                    var parameter = (ParameterExpression)Visit(parameterExpression);
+                    var parentSelection = GetSelectionSet(parameterExpression);
+                    var field = syntax.AddField(parentSelection, node.Member, alias);
+                    return Visit(parameterExpression).AddIndexer(field.Alias ?? field.Name);
+                }
+                else
+                {
+                    var instance = Visit(node.Expression);
+                    var field = syntax.AddField(node.Member, alias);
+                    return instance.AddIndexer(field.Alias ?? field.Name);
+                }
+            }
+            else
+            {
+                var instance = Visit(node.Expression);
+
+                if (ExpressionWasRewritten(node.Expression, instance))
+                {
+                    instance = instance.AddCast(node.Expression.Type);
+                }
+
+                return node.Update(instance);
+            }
+        }
+
         private IEnumerable<Expression> VisitMethodArguments(MethodInfo method, ReadOnlyCollection<Expression> arguments)
         {
             var parameters = method.GetParameters();
@@ -198,15 +195,39 @@ namespace LinqToGraphQL.Builders
             }
         }
 
-        private Expression VisitQueryMethod(MethodCallExpression node)
+        private Expression VisitMethodCall(MethodCallExpression node, MemberInfo alias)
+        {
+            if (IsSelect(node.Method))
+            {
+                return VisitSelect(node.Arguments[0], node.Arguments[1]);
+            }
+            else if (IsOfType(node.Method))
+            {
+                var result = Visit(node.Arguments[0]);
+                syntax.AddInlineFragment(node.Method.GetGenericArguments()[0]);
+                return result;
+            }
+            else if (IsQueryEntityMember(node.Method))
+            {
+                return VisitQueryMethod(node, alias);
+            }
+            else
+            {
+                return node.Update(
+                    Visit(node.Object),
+                    VisitMethodArguments(node.Method, node.Arguments));
+            }
+        }
+
+        private Expression VisitQueryMethod(MethodCallExpression node, MemberInfo alias)
         {
             var queryEntity = (node.Object as ConstantExpression)?.Value as IQueryEntity;
             var instance = Visit(queryEntity?.Expression ?? node.Object);
-            var field = syntax.AddField(node.Method);
+            var field = syntax.AddField(node.Method, alias);
 
             VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
 
-            return instance.AddIndexer(field.Name);
+            return instance.AddIndexer(field.Alias ?? field.Name);
         }
 
         private void VisitQueryMethodArguments(ParameterInfo[] parameters, ReadOnlyCollection<Expression> arguments)

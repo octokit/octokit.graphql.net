@@ -149,7 +149,7 @@ namespace Octoqit.UnitTests
             var expected = @"{
   search(query: ""foo"", type: USER, first: 1) {
     userCount
-    user: edges {
+    edges {
       node {
         ... on User {
           id

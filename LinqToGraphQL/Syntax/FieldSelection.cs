@@ -6,16 +6,17 @@ namespace LinqToGraphQL.Syntax
 {
     public class FieldSelection : SelectionSet
     {
-        public FieldSelection(MemberInfo member)
-            : this(GetReturnType(member), GetIdentifier(member))
+        public FieldSelection(MemberInfo member, MemberInfo alias)
+            : this(GetReturnType(member), GetIdentifier(member), GetIdentifier(alias))
         {
         }
 
-        public FieldSelection(Type type, string name)
+        public FieldSelection(Type type, string name, string alias)
         {
             Name = name;
             ResultType = type;
             Arguments = new List<Argument>();
+            Alias = alias != name ? alias : null;
         }
 
         public string Name { get; }
