@@ -171,7 +171,7 @@ namespace Octoqit
         /// The websocket channel ID for live updates.
         /// </summary>
         /// <param name="channel">The channel to use.</param>
-        public IQueryable<string> Websocket(PullRequestPubSubTopic channel) => this.CreateMethodCall(x => x.Websocket(channel));
+        public string Websocket(PullRequestPubSubTopic channel) => null;
 
         internal static PullRequestReviewComment Create(IQueryProvider provider, Expression expression)
         {

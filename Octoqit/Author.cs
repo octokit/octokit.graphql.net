@@ -14,7 +14,7 @@ namespace Octoqit
         /// A URL pointing to the author's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        IQueryable<string> AvatarURL(int? size = null);
+        string AvatarURL(int? size = null);
 
         /// <summary>
         /// The username of the author.
@@ -41,7 +41,7 @@ namespace Octoqit.Internal
         {
         }
 
-        public IQueryable<string> AvatarURL(int? size = null) => this.CreateMethodCall(x => x.AvatarURL(size));
+        public string AvatarURL(int? size = null) => null;
 
         public string Login { get; }
 

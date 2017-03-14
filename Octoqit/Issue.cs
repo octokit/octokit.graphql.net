@@ -202,7 +202,7 @@ namespace Octoqit
         /// The websocket channel ID for live updates.
         /// </summary>
         /// <param name="channel">The channel to use.</param>
-        public IQueryable<string> Websocket(IssuePubSubTopic channel) => this.CreateMethodCall(x => x.Websocket(channel));
+        public string Websocket(IssuePubSubTopic channel) => null;
 
         internal static Issue Create(IQueryProvider provider, Expression expression)
         {
