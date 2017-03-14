@@ -9,6 +9,8 @@ namespace LinqToGraphQL.Generation.UnitTests
     {
         const string MemberTemplate = @"namespace Test
 {{
+    using System.Linq;
+
     public class InputObject
     {{{0}
     }}
@@ -22,9 +24,9 @@ namespace LinqToGraphQL.Generation.UnitTests
             {
                 Name = "InputObject",
                 Kind = TypeKind.InputObject,
-                Fields = new[]
+                InputFields = new[]
                 {
-                    new FieldModel
+                    new InputValueModel
                     {
                         Name = "foo",
                         Type = TypeModel.Int()

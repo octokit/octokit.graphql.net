@@ -14,6 +14,8 @@ namespace LinqToGraphQL.Generation
 
             return $@"namespace {rootNamespace}
 {{
+    using System.Linq;
+
     {GenerateDocComments(type)}public class {className}
     {{{GenerateFields(type)}
     }}
@@ -24,13 +26,13 @@ namespace LinqToGraphQL.Generation
         {
             var builder = new StringBuilder();
 
-            if (type.Fields?.Count > 0)
+            if (type.InputFields?.Count > 0)
             {
                 var first = true;
 
                 builder.AppendLine();
 
-                foreach (var field in type.Fields)
+                foreach (var field in type.InputFields)
                 {
                     if (!first)
                     {
@@ -47,7 +49,7 @@ namespace LinqToGraphQL.Generation
             return builder.ToString();
         }
 
-        private static string GenerateField(FieldModel field)
+        private static string GenerateField(InputValueModel field)
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpType(field.Type);

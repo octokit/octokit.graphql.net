@@ -81,6 +81,32 @@ namespace LinqToGraphQL.Generation
                             IsDeprecated = e.IsDeprecated,
                             DeprecationReason = e.DeprecationReason,
                         }).ToList(),
+                        InputFields = t.InputFields.Select((InputValue i) => new InputValueModel
+                        {
+                            Name = i.Name,
+                            Description = i.Description,
+                            DefaultValue = i.DefaultValue,
+                            Type = i.Type.Select((SchemaType t1) => new TypeModel
+                            {
+                                Kind = t1.Kind,
+                                Name = t1.Name,
+                                OfType = t1.OfType.Select((SchemaType t2) => new TypeModel
+                                {
+                                    Kind = t2.Kind,
+                                    Name = t2.Name,
+                                    OfType = t2.OfType.Select((SchemaType t3) => new TypeModel
+                                    {
+                                        Kind = t3.Kind,
+                                        Name = t3.Name,
+                                        OfType = t3.OfType.Select((SchemaType t4) => new TypeModel
+                                        {
+                                            Kind = t4.Kind,
+                                            Name = t4.Name,
+                                        }).SingleOrDefault(),
+                                    }).SingleOrDefault(),
+                                }).SingleOrDefault(),
+                            }).Single(),
+                        }).ToList(),
                     }).ToList()
                 });
 
