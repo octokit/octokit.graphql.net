@@ -14,7 +14,7 @@ namespace LinqToGraphQL.Generation.UnitTests
     using LinqToGraphQL;
     using LinqToGraphQL.Builders;
 
-    public interface IEntity
+    public interface IEntity : IQueryEntity
     {{
         {0}
     }}

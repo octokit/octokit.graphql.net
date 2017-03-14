@@ -19,7 +19,7 @@ namespace LinqToGraphQL.Generation
     using LinqToGraphQL;
     using LinqToGraphQL.Builders;
 
-    {GenerateDocComments(type)}public interface {className}
+    {GenerateDocComments(type)}public interface {className} : IQueryEntity
     {{{GenerateFields(type)}
     }}
 }}

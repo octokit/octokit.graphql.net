@@ -43,7 +43,7 @@ namespace LinqToGraphQL.Builders
             if (syntax.Root == null)
             {
                 var rootQuery = node.Value as IRootQuery;
-                var queryEntity = node.Value as QueryEntity;
+                var queryEntity = node.Value as IQueryEntity;
 
                 if (rootQuery != null)
                 {
@@ -200,7 +200,7 @@ namespace LinqToGraphQL.Builders
 
         private Expression VisitQueryMethod(MethodCallExpression node)
         {
-            var queryEntity = (node.Object as ConstantExpression)?.Value as QueryEntity;
+            var queryEntity = (node.Object as ConstantExpression)?.Value as IQueryEntity;
             var instance = Visit(queryEntity?.Expression ?? node.Object);
             var field = syntax.AddField(node.Method);
 
@@ -321,7 +321,7 @@ namespace LinqToGraphQL.Builders
 
         private static bool IsQueryEntity(Type type)
         {
-            return typeof(QueryEntity).IsAssignableFrom(type);
+            return typeof(IQueryEntity).IsAssignableFrom(type);
         }
 
         private static bool IsQueryEntityMember(Expression expression)

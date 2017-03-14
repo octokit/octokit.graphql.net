@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace LinqToGraphQL
 {
-    public class QueryEntity
+    public class QueryEntity : IQueryEntity
     {
         protected QueryEntity(IQueryProvider provider)
         {

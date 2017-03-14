@@ -8,7 +8,7 @@ namespace LinqToGraphQL
     public static class QueryEntityExtensions
     {
         public static IQueryable<TResult> Select<TEntity, TResult>(this TEntity source, Expression<Func<TEntity, TResult>> selector)
-            where TEntity : QueryEntity
+            where TEntity : IQueryEntity
         {
             return new FieldQuery<TResult>(
                 source.Provider,
