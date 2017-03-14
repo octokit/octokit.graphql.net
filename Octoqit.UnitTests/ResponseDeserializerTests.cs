@@ -13,7 +13,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void RepositoryOwner_Repository_Query()
         {
-            var expression = new RootQuery()
+            var expression = new Query()
                 .RepositoryOwner("grokys")
                 .Repository("VisualStudio")
                 .Select(x => new
@@ -58,77 +58,78 @@ namespace Octoqit.UnitTests
         [Fact]
         public void RepositoryOwner_Repositories_Query()
         {
-            var expression = new RootQuery()
-                .RepositoryOwner(login: "foo")
-                .Repositories(first: 30)
-                .Edges
-                .Select(x => x.Node)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    Owner = x.Owner.Select(o => new
-                    {
-                        o.Login
-                    }),
-                    x.IsFork,
-                    x.IsPrivate,
-                });
+            throw new NotImplementedException();
+////            var expression = new Query()
+////                .RepositoryOwner(login: "foo")
+////                .Repositories(first: 30)
+////                .Edges
+////                .Select(x => x.Node)
+////                .Select(x => new
+////                {
+////                    x.Id,
+////                    x.Name,
+////                    Owner = x.Owner.Select(o => new
+////                    {
+////                        o.Login
+////                    }),
+////                    x.IsFork,
+////                    x.IsPrivate,
+////                });
 
-            string data = @"{
-  ""data"": {
-    ""repositoryOwner"": {
-      ""repositories"": {
-        ""edges"": [
-          {
-            ""node"": {
-              ""id"": ""1234"",
-              ""name"": ""LinqToGraphQL"",
-              ""owner"": {
-                ""login"": ""grokys""
-              },
-              ""isFork"": false,
-              ""isPrivate"": false
-            }
-          },
-          {
-            ""node"": {
-              ""id"": ""2345"",
-              ""name"": ""Avalonia"",
-              ""owner"": {
-                ""login"": ""grokys""
-              },
-              ""isFork"": true,
-              ""isPrivate"": false
-            }
-          }
-        ]
-      }
-    }
-  }
-}";
-            var query = new QueryBuilder().Build(expression);
-            IEnumerable<object> result = new ResponseDeserializer().Deserialize(query, data).ToList();
+////            string data = @"{
+////  ""data"": {
+////    ""repositoryOwner"": {
+////      ""repositories"": {
+////        ""edges"": [
+////          {
+////            ""node"": {
+////              ""id"": ""1234"",
+////              ""name"": ""LinqToGraphQL"",
+////              ""owner"": {
+////                ""login"": ""grokys""
+////              },
+////              ""isFork"": false,
+////              ""isPrivate"": false
+////            }
+////          },
+////          {
+////            ""node"": {
+////              ""id"": ""2345"",
+////              ""name"": ""Avalonia"",
+////              ""owner"": {
+////                ""login"": ""grokys""
+////              },
+////              ""isFork"": true,
+////              ""isPrivate"": false
+////            }
+////          }
+////        ]
+////      }
+////    }
+////  }
+////}";
+////            var query = new QueryBuilder().Build(expression);
+////            IEnumerable<object> result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            dynamic item = result.ElementAt(0);
-            Assert.Equal("1234", item.Id);
-            Assert.Equal("LinqToGraphQL", item.Name);
-            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
-            Assert.False(item.IsFork);
-            Assert.False(item.IsPrivate);
+////            dynamic item = result.ElementAt(0);
+////            Assert.Equal("1234", item.Id);
+////            Assert.Equal("LinqToGraphQL", item.Name);
+////            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
+////            Assert.False(item.IsFork);
+////            Assert.False(item.IsPrivate);
 
-            item = result.ElementAt(1);
-            Assert.Equal("2345", item.Id);
-            Assert.Equal("Avalonia", item.Name);
-            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
-            Assert.True(item.IsFork);
-            Assert.False(item.IsPrivate);
+////            item = result.ElementAt(1);
+////            Assert.Equal("2345", item.Id);
+////            Assert.Equal("Avalonia", item.Name);
+////            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
+////            Assert.True(item.IsFork);
+////            Assert.False(item.IsPrivate);
         }
 
         [Fact]
         public void Viewer_Email()
         {
-            var expression = new RootQuery().Viewer.Select(x => new { x.Email });
+            var expression = new Query().Viewer.Select(x => new { x.Email });
 
             string data = @"{
   ""data"": {
@@ -146,7 +147,7 @@ namespace Octoqit.UnitTests
         [Fact]
         public void Viewer_Login_Email()
         {
-            var expression = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
             string data = @"{
   ""data"": {
     ""viewer"": {
@@ -179,7 +180,7 @@ namespace Octoqit.UnitTests
     }
   ]
 }";
-            var expression = new RootQuery().Viewer.Select(x => new { x.Login, x.Email });
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
             var query = new QueryBuilder().Build(expression);
             var thrown = true;
 
