@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using LinqToGraphQL.Generation.Models;
 using LinqToGraphQL.Generation.Utilities;
@@ -235,7 +237,7 @@ namespace LinqToGraphQL.Generation
             var paramBuilder = new StringBuilder();
             var first = true;
 
-            foreach (var arg in field.Args)
+            foreach (var arg in Sort(field.Args))
             {
                 if (!first)
                 {
@@ -290,6 +292,24 @@ namespace LinqToGraphQL.Generation
                     return rootNamespace + ".Internal.Stub" + TypeUtilities.GetInterfaceName(type);
                 default:
                     return rootNamespace + "." + TypeUtilities.GetClassName(type);
+            }
+        }
+
+        private static IEnumerable<InputValueModel> Sort(IEnumerable<InputValueModel> args)
+        {
+            return args.OrderBy(x => x, new DefaultValueComparer());
+        }
+
+        private class DefaultValueComparer : IComparer<InputValueModel>
+        {
+            public int Compare(InputValueModel x, InputValueModel y)
+            {
+                return DefaultValueWeight(x) - DefaultValueWeight(y);
+            }
+
+            private static int DefaultValueWeight(InputValueModel i)
+            {
+                return i.DefaultValue != null || i.Type.Kind != TypeKind.NonNull ? 1 : -1;
             }
         }
     }

@@ -557,6 +557,39 @@ namespace LinqToGraphQL.Generation.UnitTests
         }
 
         [Fact]
+        public void Args_With_Default_Values_Come_After_Args_With_No_Default_Values()
+        {
+            var expected = FormatMemberTemplate(
+                "public IOther Foo(int req1, int req2, int? opt1 = null, int opt2 = 5) => " + 
+                "this.CreateMethodCall(x => x.Foo(req1, req2, opt1, opt2), Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel { Name = "req1", Type = TypeModel.NonNull(TypeModel.Int()) },
+                            new InputValueModel { Name = "opt1", Type = TypeModel.Int() },
+                            new InputValueModel { Name = "req2", Type = TypeModel.NonNull(TypeModel.Int()) },
+                            new InputValueModel { Name = "opt2", Type = TypeModel.NonNull(TypeModel.Int()), DefaultValue = "5" },
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Doc_Comments_For_Class()
         {
             var expected = @"namespace Test
@@ -630,7 +663,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         /// Testing if doc comments are generated.
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
-        public Other Foo(int? arg1, int? arg2) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
+        public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
             {
