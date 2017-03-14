@@ -45,7 +45,7 @@ namespace Octoqit.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.Equal("1234", result.Id);
             Assert.Equal("LinqToGraphQL", result.Name);
@@ -108,9 +108,9 @@ namespace Octoqit.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            IEnumerable<object> result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            dynamic item = result.ElementAt(0);
+            var item = result.ElementAt(0);
             Assert.Equal("1234", item.Id);
             Assert.Equal("LinqToGraphQL", item.Name);
             Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
@@ -156,7 +156,7 @@ namespace Octoqit.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.Equal("grokys", result.Login);
             Assert.Equal("grokys@gmail.com", result.Email);
