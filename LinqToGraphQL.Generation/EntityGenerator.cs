@@ -55,7 +55,16 @@ namespace LinqToGraphQL.Generation
     {{
         public {className}() : base(new QueryProvider())
         {{
+        }}
+
+        internal {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        {{
         }}{GenerateFields(type, true, rootNamespace)}
+
+        internal static {className} Create(IQueryProvider provider, Expression expression)
+        {{
+            return new {className}(provider, expression);
+        }}
     }}
 }}";
         }

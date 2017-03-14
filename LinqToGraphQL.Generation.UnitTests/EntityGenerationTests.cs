@@ -562,7 +562,16 @@ namespace LinqToGraphQL.Generation.UnitTests
         {
         }
 
+        internal Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        {
+        }
+
         public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);
+
+        internal static Entity Create(IQueryProvider provider, Expression expression)
+        {
+            return new Entity(provider, expression);
+        }
     }
 }";
 
