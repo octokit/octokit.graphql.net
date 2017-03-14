@@ -195,12 +195,11 @@ namespace LinqToGraphQL.Generation
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var nonNullType = TypeModel.NonNull(TypeUtilities.ReduceNonNull(type));
-            var csharpType = TypeUtilities.GetCSharpType(nonNullType);
+            var csharpType = TypeUtilities.GetCSharpType(TypeUtilities.ReduceType(type));
 
             GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public IQueryable<{csharpType}> {name}({arguments}) => this.CreateMethodCall(x => x.{name}({parameters}));";
+            return $"        public {csharpType} {name}({arguments}) => null;";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type, string rootNamespace)

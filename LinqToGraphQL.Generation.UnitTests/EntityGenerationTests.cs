@@ -375,7 +375,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Scalar()
         {
-            var expected = FormatMemberTemplate("public IQueryable<int> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public int? Foo(int? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -407,7 +407,7 @@ namespace LinqToGraphQL.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_Scalar()
         {
-            var expected = FormatMemberTemplate("public IQueryable<int> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public int Foo(int? bar = null) => null;");
 
             var model = new TypeModel
             {

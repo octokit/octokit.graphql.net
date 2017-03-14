@@ -302,8 +302,8 @@ namespace Test.Internal
         public void Generates_Method_For_Scalar()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<int> Foo(int? bar = null);",
-                "public IQueryable<int> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "int? Foo(int? bar = null);",
+                "public int? Foo(int? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -336,8 +336,8 @@ namespace Test.Internal
         public void Generates_Method_For_NonNull_Scalar()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<int> Foo(int? bar = null);",
-                "public IQueryable<int> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "int Foo(int? bar = null);",
+                "public int Foo(int? bar = null) => null;");
 
             var model = new TypeModel
             {
