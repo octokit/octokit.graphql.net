@@ -59,41 +59,10 @@ namespace LinqToGraphQL.Syntax
             return result;
         }
 
-        public BookmarkState Bookmark() => new BookmarkState(this);
-
-        public class BookmarkState : IDisposable
+        public IDisposable Bookmark()
         {
-            private SyntaxTree tree;
-            private ISelectionSet reset;
-            private int selectionCount;
-
-            internal BookmarkState(SyntaxTree tree)
-            {
-                this.tree = tree;
-                reset = tree.head;
-                selectionCount = reset.Selections.Count;
-            }
-
-            public void Dispose()
-            {
-                tree.head = reset;
-            }
-
-            public FieldSelection GetAddedField()
-            {
-                if (tree.head != reset)
-                {
-                    throw new Exception("You must reset to the checkpoint before calling GetAddedField.");
-                }
-                else if (tree.head.Selections.Count == selectionCount + 1)
-                {
-                    return tree.head.Selections[selectionCount] as FieldSelection;
-                }
-                else
-                {
-                    return null;
-                }
-            }
+            var oldHead = head;
+            return Disposable.Create(() => head = oldHead);
         }
     }
 }
