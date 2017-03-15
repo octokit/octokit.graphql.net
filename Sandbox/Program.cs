@@ -5,6 +5,7 @@ using LinqToGraphQL;
 using LinqToGraphQL.Generation;
 using Octoqit;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Sandbox
 {
@@ -12,8 +13,9 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            GenerateEntities(args[0]).Wait();
+            //GenerateEntities(args[0]).Wait();
             //RunRepositoryQuery(args[0]).Wait();
+            RunSearchQuery(args[0]).Wait();
             Console.ReadKey();
         }
 
@@ -54,15 +56,7 @@ namespace Sandbox
             var connection = new Connection("https://api.github.com/graphql", token);
             var result = (await connection.Run(query));
 
-            foreach (var i in result.SelectMany(x => x))
-            {
-                Console.WriteLine("Id: " + i.Id);
-                Console.WriteLine("Name: " + i.Name);
-                Console.WriteLine("Owner: " + i.Owner.Single().Login);
-                Console.WriteLine("IsFork: " + i.IsFork);
-                Console.WriteLine("IsPrivate: " + i.IsPrivate);
-                Console.WriteLine("Viewer Login: " + i.Login);
-            }
+            Console.WriteLine(JsonConvert.SerializeObject(result, Formatting.Indented));
         }
 
         private static async Task RunViewerQuery(string token)
@@ -71,8 +65,20 @@ namespace Sandbox
             var connection = new Connection("https://api.github.com/graphql", token);
             var result = (await connection.Run(query)).Single();
 
-            Console.WriteLine("Login: " + result.Login);
-            Console.WriteLine("Email: " + result.Email);
+            Console.WriteLine(JsonConvert.SerializeObject(result, Formatting.Indented));
+        }
+
+        private static async Task RunSearchQuery(string token)
+        {
+            var query = new Query()
+                .Search("Steven", SearchType.User, 30)
+                .Nodes
+                .Select(x => x.User.Name);
+
+            var connection = new Connection("https://api.github.com/graphql", token);
+            var result = await connection.Run(query);
+
+            Console.WriteLine(JsonConvert.SerializeObject(result, Formatting.Indented));
         }
     }
 }
