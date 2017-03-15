@@ -152,7 +152,13 @@ namespace LinqToGraphQL.Builders
 
         private Expression VisitMember(MemberExpression node, MemberInfo alias)
         {
-            if (IsQueryEntityMember(node.Member))
+            if (IsUnionMember(node.Member))
+            {
+                var instance = Visit(node.Expression);
+                syntax.AddInlineFragment(((PropertyInfo)node.Member).PropertyType);
+                return instance;
+            }
+            else if (IsQueryEntityMember(node.Member))
             {
                 var parameterExpression = node.Expression as ParameterExpression;
 
@@ -354,6 +360,16 @@ namespace LinqToGraphQL.Builders
         private static bool IsQueryEntityMember(MemberInfo member)
         {
             return IsQueryEntity(member.DeclaringType);
+        }
+
+        private static bool IsUnion(Type type)
+        {
+            return typeof(IUnion).IsAssignableFrom(type);
+        }
+
+        private static bool IsUnionMember(MemberInfo member)
+        {
+            return member is PropertyInfo && IsUnion(member.DeclaringType);
         }
 
         private class LambdaParameter

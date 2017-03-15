@@ -199,6 +199,7 @@ namespace LinqToGraphQL.UnitTests
     union {
         ... on Simple {
             name
+            description
         }
     }
 }";
@@ -206,7 +207,11 @@ namespace LinqToGraphQL.UnitTests
             var expression = new RootQuery()
                 .Union
                 .Select(x => x.Simple)
-                .Select(x => x.Name);
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Description,
+                });
 
             var query = new QueryBuilder().Build(expression);
             var result = new QuerySerializer(4).Serialize(query.OperationDefinition);

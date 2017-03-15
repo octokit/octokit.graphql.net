@@ -285,6 +285,38 @@ namespace LinqToGraphQL.UnitTests
             Assert.Equal(new[] { "foo", "bar" }, result.Items.Values);
         }
 
+        [Fact]
+        public void Union()
+        {
+            var expression = new RootQuery()
+                .Union
+                .Select(x => x.Simple)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Description,
+                });
+
+            var data = @"{
+    ""data"":{
+        ""union"": [
+            { 
+                ""name"": ""foo"",
+                ""description"": ""bar"" 
+            }
+        ]
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.Equal("foo", result.Name);
+            Assert.Equal("bar", result.Description);
+        }
+
         private class NamedClass
         {
             public NamedClass()
