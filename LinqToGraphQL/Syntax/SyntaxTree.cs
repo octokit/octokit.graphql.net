@@ -19,9 +19,9 @@ namespace LinqToGraphQL.Syntax
             return root;
         }
 
-        public FieldSelection AddField(Type type, string name)
+        public FieldSelection AddField(string name)
         {
-            return AddField(head, new FieldSelection(type, name, null));
+            return AddField(head, new FieldSelection(name, null));
         }
 
         public FieldSelection AddField(MemberInfo member, MemberInfo alias = null)

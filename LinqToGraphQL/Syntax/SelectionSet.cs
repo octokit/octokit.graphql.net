@@ -14,7 +14,6 @@ namespace LinqToGraphQL.Syntax
             Selections = new List<ISyntaxNode>();
         }
 
-        public Type ResultType { get; set; }
         public IList<ISyntaxNode> Selections { get; }
 
         public static string GetIdentifier(MemberInfo member)

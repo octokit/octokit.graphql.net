@@ -7,14 +7,13 @@ namespace LinqToGraphQL.Syntax
     public class FieldSelection : SelectionSet
     {
         public FieldSelection(MemberInfo member, MemberInfo alias)
-            : this(GetReturnType(member), GetIdentifier(member), GetIdentifier(alias))
+            : this(GetIdentifier(member), GetIdentifier(alias))
         {
         }
 
-        public FieldSelection(Type type, string name, string alias)
+        public FieldSelection(string name, string alias)
         {
             Name = name;
-            ResultType = type;
             Arguments = new List<Argument>();
             Alias = alias != name ? alias : null;
         }
@@ -31,12 +30,6 @@ namespace LinqToGraphQL.Syntax
             {
                 Alias = alias;
             }
-        }
-
-        private static Type GetReturnType(MemberInfo member)
-        {
-            var property = member as PropertyInfo;
-            return property?.PropertyType;
         }
     }
 }
