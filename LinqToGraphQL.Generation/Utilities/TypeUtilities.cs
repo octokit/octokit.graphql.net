@@ -121,13 +121,12 @@ namespace LinqToGraphQL.Generation.Utilities
                     return "I" + type.Name;
                 case TypeKind.Object:
                 case TypeKind.InputObject:
+                case TypeKind.Union:
                     return type.Name;
                 case TypeKind.NonNull:
                     return GetCSharpType(type.OfType, false);
                 case TypeKind.List:
                     return $"IQueryable<{GetCSharpType(type.OfType, true)}>";
-                case TypeKind.Union:
-                    return "object";
                 default:
                     throw new NotSupportedException();
             }

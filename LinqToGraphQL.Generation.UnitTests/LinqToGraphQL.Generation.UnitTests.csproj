@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InputObjectGenerationTests.cs" />
+    <Compile Include="UnionGenerationTests.cs" />
     <Compile Include="InterfaceGenerationTests.cs" />
     <Compile Include="EnumGenerationTests.cs" />
     <Compile Include="EntityGenerationTests.cs" />

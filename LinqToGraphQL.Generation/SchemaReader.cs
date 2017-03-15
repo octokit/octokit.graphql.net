@@ -107,6 +107,27 @@ namespace LinqToGraphQL.Generation
                                 }).SingleOrDefault(),
                             }).Single(),
                         }).ToList(),
+                        PossibleTypes = t.PossibleTypes.Select((SchemaType t1) => new TypeModel
+                        {
+                            Kind = t1.Kind,
+                            Name = t1.Name,
+                            Description = t1.Description,
+                            OfType = t1.OfType.Select((SchemaType t2) => new TypeModel
+                            {
+                                Kind = t2.Kind,
+                                Name = t2.Name,
+                                OfType = t2.OfType.Select((SchemaType t3) => new TypeModel
+                                {
+                                    Kind = t3.Kind,
+                                    Name = t3.Name,
+                                    OfType = t3.OfType.Select((SchemaType t4) => new TypeModel
+                                    {
+                                        Kind = t4.Kind,
+                                        Name = t4.Name,
+                                    }).SingleOrDefault(),
+                                }).SingleOrDefault(),
+                            }).SingleOrDefault(),
+                        }).ToList(),
                     }).ToList()
                 });
 

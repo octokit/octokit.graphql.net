@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnionGenerator.cs" />
     <Compile Include="GeneratedFile.cs" />
     <Compile Include="InputObjectGenerator.cs" />
     <Compile Include="InterfaceGenerator.cs" />

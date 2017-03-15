@@ -46,6 +46,9 @@ namespace LinqToGraphQL.Generation
                 case TypeKind.InputObject:
                     return InputObjectGenerator.Generate(type, rootNamespace);
 
+                case TypeKind.Union:
+                    return UnionGenerator.Generate(type, rootNamespace);
+
                 default:
                     return null;
             }
