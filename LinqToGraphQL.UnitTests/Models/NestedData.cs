@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using LinqToGraphQL.Builders;
 
 namespace LinqToGraphQL.UnitTests.Models
@@ -11,7 +12,17 @@ namespace LinqToGraphQL.UnitTests.Models
         {
         }
 
+        public NestedData(IQueryProvider provider, Expression expression)
+            : base(provider, expression)
+        {
+        }
+
         public string Id { get; set; }
         public IQueryable<Simple> Items => this.CreateProperty(x => x.Items);
+
+        internal NestedData Create(IQueryProvider provider, Expression expression)
+        {
+            return new NestedData(provider, expression);
+        }
     }
 }

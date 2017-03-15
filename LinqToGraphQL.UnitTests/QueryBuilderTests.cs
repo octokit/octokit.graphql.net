@@ -191,5 +191,27 @@ namespace LinqToGraphQL.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Union()
+        {
+            var expected = @"{
+    union {
+        ... on Simple {
+            name
+        }
+    }
+}";
+
+            var expression = new RootQuery()
+                .Union
+                .Select(x => x.Simple)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
     }
 }

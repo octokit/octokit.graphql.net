@@ -13,6 +13,8 @@ namespace LinqToGraphQL.UnitTests.Models
 
         public IQueryable<NestedData> Data => this.CreateProperty(x => Data);
 
+        public IQueryable<Union> Union => this.CreateProperty(x => Union);
+
         public IQueryable<Simple> Simple(string arg1, int? arg2 = null)
         {
             return this.CreateMethodCall(x => x.Simple(arg1, arg2));

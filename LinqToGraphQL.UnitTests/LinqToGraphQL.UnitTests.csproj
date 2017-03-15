@@ -66,6 +66,7 @@
     <Compile Include="Models\RootQuery.cs" />
     <Compile Include="Models\NestedQuery.cs" />
     <Compile Include="Models\Simple.cs" />
+    <Compile Include="Models\Union.cs" />
     <Compile Include="PartialEvaluationTests.cs" />
     <Compile Include="QueryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -58,6 +58,7 @@
     <Compile Include="Introspection\SchemaType.cs" />
     <Compile Include="Introspection\TypeKind.cs" />
     <Compile Include="IQueryEntity.cs" />
+    <Compile Include="IUnion.cs" />
     <Compile Include="Serializers\QuerySerializer.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Connection.cs" />
