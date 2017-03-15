@@ -198,6 +198,7 @@ namespace LinqToGraphQL.UnitTests
             var expected = @"{
     union {
         ... on Simple {
+            __typename
             name
             description
         }

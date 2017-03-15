@@ -156,6 +156,7 @@ namespace LinqToGraphQL.Builders
             {
                 var instance = Visit(node.Expression);
                 syntax.AddInlineFragment(((PropertyInfo)node.Member).PropertyType);
+                using (syntax.Bookmark()) syntax.AddField(typeof(string), "__typename");
                 return instance;
             }
             else if (IsQueryEntityMember(node.Member))

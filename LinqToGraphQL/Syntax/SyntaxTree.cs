@@ -19,6 +19,11 @@ namespace LinqToGraphQL.Syntax
             return root;
         }
 
+        public FieldSelection AddField(Type type, string name)
+        {
+            return AddField(head, new FieldSelection(type, name, null));
+        }
+
         public FieldSelection AddField(MemberInfo member, MemberInfo alias = null)
         {
             return AddField(head, member, alias);
@@ -26,22 +31,7 @@ namespace LinqToGraphQL.Syntax
 
         public FieldSelection AddField(ISelectionSet parent, MemberInfo member, MemberInfo alias = null)
         {
-            var result = new FieldSelection(member, alias);
-            var existing = parent.Selections
-                .OfType<FieldSelection>()
-                .FirstOrDefault(x => x.Name == result.Name && x.Alias == null);
-
-            if (existing == null)
-            {
-                parent.Selections.Add(result);
-            }
-            else
-            {
-                result = existing;
-            }
-
-            head = result;
-            return result;
+            return AddField(parent, new FieldSelection(member, alias));
         }
 
         public Argument AddArgument(string name, object value)
@@ -63,6 +53,27 @@ namespace LinqToGraphQL.Syntax
         {
             var oldHead = head;
             return Disposable.Create(() => head = oldHead);
+        }
+
+        private FieldSelection AddField(ISelectionSet parent, FieldSelection field)
+        {
+            var existing = field.Alias == null ?
+                parent.Selections
+                    .OfType<FieldSelection>()
+                    .FirstOrDefault(x => x.Name == field.Name && x.Alias == null) :
+                null;
+
+            if (existing == null)
+            {
+                parent.Selections.Add(field);
+            }
+            else
+            {
+                field = existing;
+            }
+
+            head = field;
+            return field;
         }
     }
 }

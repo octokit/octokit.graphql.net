@@ -244,6 +244,7 @@ namespace Octoqit.UnitTests
   search(query: ""foo"", type: USER, first: 30) {
     nodes {
       ... on User {
+        __typename
         name
         login
       }
