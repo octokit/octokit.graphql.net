@@ -17,7 +17,7 @@ namespace Octoqit
         /// <summary>
         /// The actor that can dismiss.
         /// </summary>
-        public IQueryable<object> Actor => this.CreateProperty(x => x.Actor);
+        public IQueryable<ReviewDismissalAllowanceActor> Actor => this.CreateProperty(x => x.Actor);
 
         public string Id { get; }
 

@@ -22,7 +22,7 @@ namespace Octoqit
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public IQueryable<object> Node => this.CreateProperty(x => x.Node);
+        public IQueryable<SearchResultItem> Node => this.CreateProperty(x => x.Node);
 
         internal static SearchResultItemEdge Create(IQueryProvider provider, Expression expression)
         {

@@ -55,7 +55,8 @@ namespace Octoqit
         /// <param name="isFork">If non-null, filters repositories according to whether they are forks of another repository</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliation">Affiliation options for repositories returned from the connection</param>
-        RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null);
+        /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
+        RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null, bool? isLocked = null);
 
         /// <summary>
         /// Find Repository.
@@ -95,7 +96,7 @@ namespace Octoqit.Internal
 
         public string Path { get; }
 
-        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation), Octoqit.RepositoryConnection.Create);
+        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation, isLocked), Octoqit.RepositoryConnection.Create);
 
         public Repository Repository(string name) => this.CreateMethodCall(x => x.Repository(name), Octoqit.Repository.Create);
 

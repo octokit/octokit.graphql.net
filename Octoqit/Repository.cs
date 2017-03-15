@@ -63,7 +63,8 @@ namespace Octoqit
         /// <param name="privacy">If non-null, filters repositories according to privacy</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliation">Affiliation options for repositories returned from the connection</param>
-        public RepositoryConnection Forks(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null) => this.CreateMethodCall(x => x.Forks(first, after, last, before, privacy, orderBy, affiliation), Octoqit.RepositoryConnection.Create);
+        /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
+        public RepositoryConnection Forks(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Forks(first, after, last, before, privacy, orderBy, affiliation, isLocked), Octoqit.RepositoryConnection.Create);
 
         /// <summary>
         /// Indicates if the repository has issues feature enabled.

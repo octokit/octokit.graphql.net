@@ -123,6 +123,7 @@
     <Compile Include="IssuePubSubTopic.cs" />
     <Compile Include="IssueState.cs" />
     <Compile Include="IssueTimelineConnection.cs" />
+    <Compile Include="IssueTimelineItem.cs" />
     <Compile Include="IssueTimelineItemEdge.cs" />
     <Compile Include="Label.cs" />
     <Compile Include="LabelConnection.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="ProjectCard.cs" />
     <Compile Include="ProjectCardConnection.cs" />
     <Compile Include="ProjectCardEdge.cs" />
+    <Compile Include="ProjectCardItem.cs" />
     <Compile Include="ProjectCardState.cs" />
     <Compile Include="ProjectColumn.cs" />
     <Compile Include="ProjectColumnConnection.cs" />
@@ -233,6 +235,7 @@
     <Compile Include="RequestReviewsInput.cs" />
     <Compile Include="RequestReviewsPayload.cs" />
     <Compile Include="ReviewDismissalAllowance.cs" />
+    <Compile Include="ReviewDismissalAllowanceActor.cs" />
     <Compile Include="ReviewDismissalAllowanceConnection.cs" />
     <Compile Include="ReviewDismissalAllowanceEdge.cs" />
     <Compile Include="ReviewDismissedEvent.cs" />
@@ -241,6 +244,7 @@
     <Compile Include="ReviewRequestedEvent.cs" />
     <Compile Include="ReviewRequestEdge.cs" />
     <Compile Include="ReviewRequestRemovedEvent.cs" />
+    <Compile Include="SearchResultItem.cs" />
     <Compile Include="SearchResultItemConnection.cs" />
     <Compile Include="SearchResultItemEdge.cs" />
     <Compile Include="SearchType.cs" />

@@ -120,7 +120,7 @@ namespace Octoqit.UnitTests
             var expression = new Query()
                 .Select(root => root
                     .RepositoryOwner("foo")
-                    .Repositories(30, null, null, null, null, null, null, null)
+                    .Repositories(30, null, null, null, null, null, null, null, null)
                     .Edges.Select(x => x.Node)
                     .Select((Repository x) => new
                     {
@@ -202,7 +202,6 @@ namespace Octoqit.UnitTests
             Assert.Equal(expected, result);
         }
 
-
         [Fact]
         public void Repository_Details_With_Viewer()
         {
@@ -222,7 +221,7 @@ namespace Octoqit.UnitTests
 
             var expression = new Query()
                 .Select(x => x.RepositoryOwner("foo")
-                              .Repositories(30, null, null, null, null, null, null, null)
+                              .Repositories(30, null, null, null, null, null, null, null, null)
                               .Edges
                               .Select(y => y.Node)
                               .Select(y => new

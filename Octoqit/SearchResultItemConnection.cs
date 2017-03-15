@@ -32,7 +32,7 @@ namespace Octoqit
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<object> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryable<SearchResultItem> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
