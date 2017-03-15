@@ -238,7 +238,32 @@ namespace Octoqit.UnitTests
         }
 
         [Fact]
-        public void Search_User()
+        public void Search_User_Name()
+        {
+            var expected = @"{
+  search(query: ""foo"", type: USER, first: 30) {
+    nodes {
+      ... on User {
+        __typename
+        name
+      }
+    }
+  }
+}";
+
+            var expression = new Query()
+                .Search("foo", SearchType.User, 30)
+                .Nodes
+                .Select(x => x.User.Name);
+
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Search_User_Name_Login()
         {
             var expected = @"{
   search(query: ""foo"", type: USER, first: 30) {
