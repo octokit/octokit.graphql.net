@@ -17,7 +17,7 @@ namespace Octoqit
         /// <summary>
         /// The card content item
         /// </summary>
-        public IQueryable<ProjectCardItem> Content => this.CreateProperty(x => x.Content);
+        public ProjectCardItem Content => this.CreateProperty(x => x.Content, Octoqit.ProjectCardItem.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.

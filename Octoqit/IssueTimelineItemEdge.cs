@@ -22,7 +22,7 @@ namespace Octoqit
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public IQueryable<IssueTimelineItem> Node => this.CreateProperty(x => x.Node);
+        public IssueTimelineItem Node => this.CreateProperty(x => x.Node, Octoqit.IssueTimelineItem.Create);
 
         internal static IssueTimelineItemEdge Create(IQueryProvider provider, Expression expression)
         {
