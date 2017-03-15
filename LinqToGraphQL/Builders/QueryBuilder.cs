@@ -212,6 +212,7 @@ namespace LinqToGraphQL.Builders
             {
                 var result = Visit(node.Arguments[0]);
                 syntax.AddInlineFragment(node.Method.GetGenericArguments()[0]);
+                using (syntax.Bookmark()) syntax.AddField("__typename");
                 return result;
             }
             else if (IsQueryEntityMember(node.Method))

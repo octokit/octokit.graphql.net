@@ -152,6 +152,7 @@ namespace Octoqit.UnitTests
     edges {
       node {
         ... on User {
+          __typename
           id
           login
           avatarURL

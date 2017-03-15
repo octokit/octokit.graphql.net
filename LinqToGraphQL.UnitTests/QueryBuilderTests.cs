@@ -136,7 +136,7 @@ namespace LinqToGraphQL.UnitTests
         [Fact]
         public void Inline_Fragment()
         {
-            var expected = "{data{... on NestedData{id items{name}}}}";
+            var expected = "{data{... on NestedData{__typename id items{name}}}}";
 
             var expression = new RootQuery()
                 .Data
