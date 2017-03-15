@@ -11,7 +11,7 @@ namespace LinqToGraphQL.Builders
         public static IQueryable<TValue> CreateMethodCall<TObject, TValue>(
             this TObject o,
             Expression<Func<TObject, IQueryable<TValue>>> selector)
-                where TObject : QueryEntity
+                where TObject : IQueryEntity
         {
             var methodCall = (MethodCallExpression)selector.Body;
             var arguments = new List<ConstantExpression>();
@@ -35,7 +35,7 @@ namespace LinqToGraphQL.Builders
             this TObject o,
             Expression<Func<TObject, TValue>> selector,
             Func<IQueryProvider, Expression, TValue> create)
-                where TObject : QueryEntity
+                where TObject : IQueryEntity
         {
             var methodCall = (MethodCallExpression)selector.Body;
             var arguments = new List<ConstantExpression>();
@@ -58,7 +58,7 @@ namespace LinqToGraphQL.Builders
         public static IQueryable<TValue> CreateProperty<TObject, TValue>(
             this TObject o,
             Expression<Func<TObject, IQueryable<TValue>>> selector)
-                where TObject : QueryEntity
+                where TObject : IQueryEntity
         {
             return new FieldQuery<TValue>(
                 o.Provider,
@@ -71,7 +71,7 @@ namespace LinqToGraphQL.Builders
             this TObject o,
             Expression<Func<TObject, TValue>> selector,
             Func<IQueryProvider, Expression, TValue> create)
-                where TObject : QueryEntity
+                where TObject : IQueryEntity
         {
             return create(
                 o.Provider,

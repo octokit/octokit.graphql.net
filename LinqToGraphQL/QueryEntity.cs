@@ -6,19 +6,22 @@ namespace LinqToGraphQL
 {
     public class QueryEntity : IQueryEntity
     {
+        private IQueryProvider provider;
+        private Expression expression;
+
         protected QueryEntity(IQueryProvider provider)
         {
-            Provider = provider;
-            Expression = Expression.Constant(this);
+            this.provider = provider;
+            expression = Expression.Constant(this);
         }
 
         protected QueryEntity(IQueryProvider provider, Expression expression)
         {
-            Provider = provider;
-            Expression = expression;
+            this.provider = provider;
+            this.expression = expression;
         }
 
-        public Expression Expression { get; }
-        public IQueryProvider Provider { get; }
+        Expression IQueryEntity.Expression => expression;
+        IQueryProvider IQueryEntity.Provider => provider;
     }
 }
