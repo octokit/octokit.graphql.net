@@ -114,8 +114,8 @@ namespace LinqToGraphQL.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.SelectEntity(
-                    data["data"]["data"],
+                ExpressionMethods.Select(
+                    ExpressionMethods.ChildrenOfType(data["data"]["data"], "NestedData"),
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
@@ -124,6 +124,52 @@ namespace LinqToGraphQL.UnitTests
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+
+        [Fact]
+        public void Union()
+        {
+            var expression = new RootQuery()
+                .Union
+                .Select(x => x.Simple)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Description,
+                });
+
+            Expression<Func<JObject, object>> expected = data =>
+                ExpressionMethods.Select(
+                    ((Func<JToken, IQueryable<JToken>>)(x => ExpressionMethods.ChildrenOfType(x, "Simple")))((data["data"]["union"])),
+                    x => new
+                    {
+                        Name = x["name"].ToObject<string>(),
+                        Description = x["description"].ToObject<string>(),
+                    });
+
+            // We need to remove the (Func<JToken, IQueryable<JToken>>) cast that is needed by
+            // C# but not by expression trees.
+            expected = (Expression<Func<JObject, object>>)RemoveConvert.Default.Visit(expected);
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+        class RemoveConvert : ExpressionVisitor
+        {
+            private RemoveConvert() { }
+            public static readonly RemoveConvert Default = new RemoveConvert();
+
+            protected override Expression VisitBinary(BinaryExpression node)
+            {
+                return base.VisitBinary(node);
+            }
+
+            protected override Expression VisitUnary(UnaryExpression node)
+            {
+                return Visit(node.NodeType == ExpressionType.Convert ? node.Operand : node);
+            }
         }
     }
 }

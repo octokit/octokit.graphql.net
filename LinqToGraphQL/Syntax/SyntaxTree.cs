@@ -19,11 +19,6 @@ namespace LinqToGraphQL.Syntax
             return root;
         }
 
-        public FieldSelection AddField(string name)
-        {
-            return AddField(head, new FieldSelection(name, null));
-        }
-
         public FieldSelection AddField(MemberInfo member, MemberInfo alias = null)
         {
             return AddField(head, member, alias);
@@ -41,9 +36,15 @@ namespace LinqToGraphQL.Syntax
             return result;
         }
 
-        public InlineFragment AddInlineFragment(Type typeCondition)
+        public InlineFragment AddInlineFragment(Type typeCondition, bool selectTypeName)
         {
             var result = new InlineFragment(typeCondition);
+
+            if (selectTypeName)
+            {
+                result.Selections.Add(new FieldSelection("__typename", null));
+            }
+
             head.Selections.Add(result);
             head = result;
             return result;

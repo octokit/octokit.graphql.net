@@ -154,10 +154,12 @@ namespace LinqToGraphQL.Builders
         {
             if (IsUnionMember(node.Member))
             {
-                var instance = Visit(node.Expression);
-                syntax.AddInlineFragment(((PropertyInfo)node.Member).PropertyType);
-                using (syntax.Bookmark()) syntax.AddField("__typename");
-                return instance;
+                var source = Visit(node.Expression);
+                var fragment = syntax.AddInlineFragment(((PropertyInfo)node.Member).PropertyType, true);
+                return Expression.Call(
+                    ExpressionMethods.ChildrenOfTypeMethod,
+                    source,
+                    Expression.Constant(fragment.TypeCondition.Name));
             }
             else if (IsQueryEntityMember(node.Member))
             {
@@ -174,7 +176,23 @@ namespace LinqToGraphQL.Builders
                 {
                     var instance = Visit(node.Expression);
                     var field = syntax.AddField(node.Member, alias);
-                    return instance.AddIndexer(field.Alias ?? field.Name);
+
+                    if (instance.Type == typeof(IQueryable<JToken>))
+                    {
+                        // This is here to allow a member to be selected from a union in the same Select
+                        // statement as the type, i.e. .Select(x => x.PossibleType.Field).
+                        var parameter = Expression.Parameter(typeof(JToken));
+                        return Expression.Call(
+                            ExpressionMethods.SelectMethod.MakeGenericMethod(typeof(JToken)),
+                            instance,
+                            Expression.Lambda(
+                                parameter.AddIndexer(field.Alias ?? field.Name),
+                                parameter));
+                    }
+                    else
+                    {
+                        return instance.AddIndexer(field.Alias ?? field.Name);
+                    }
                 }
             }
             else
@@ -210,10 +228,12 @@ namespace LinqToGraphQL.Builders
             }
             else if (IsOfType(node.Method))
             {
-                var result = Visit(node.Arguments[0]);
-                syntax.AddInlineFragment(node.Method.GetGenericArguments()[0]);
-                using (syntax.Bookmark()) syntax.AddField("__typename");
-                return result;
+                var source = Visit(node.Arguments[0]);
+                var fragment = syntax.AddInlineFragment(node.Method.GetGenericArguments()[0], true);
+                return Expression.Call(
+                    ExpressionMethods.ChildrenOfTypeMethod,
+                    source,
+                    Expression.Constant(fragment.TypeCondition.Name));
             }
             else if (IsQueryEntityMember(node.Method))
             {
@@ -267,10 +287,17 @@ namespace LinqToGraphQL.Builders
 
             if (!isQueryable)
             {
-                return Expression.Call(
-                    ExpressionMethods.SelectEntityMethod.MakeGenericMethod(select.ReturnType),
-                    instance,
-                    select);
+                if (select.ReturnType == typeof(IQueryable<JToken>))
+                {
+                    return Expression.Invoke(select, instance);
+                }
+                else
+                {
+                    return Expression.Call(
+                        ExpressionMethods.SelectEntityMethod.MakeGenericMethod(select.ReturnType),
+                        instance,
+                        select);
+                }
             }
             else
             {

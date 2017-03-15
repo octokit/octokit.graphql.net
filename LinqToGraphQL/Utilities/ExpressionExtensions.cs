@@ -50,9 +50,8 @@ namespace LinqToGraphQL.Utilities
             else if (GetEnumerableResultType(type) != null && IsIQueryableOfJToken(expression.Type))
             {
                 var queryType = type.GetGenericArguments()[0];
-                var methodCall = expression as MethodCallExpression;
 
-                if (methodCall != null)
+                if (expression is MethodCallExpression methodCall)
                 {
                     if (IsSelect(methodCall.Method))
                     {
@@ -76,6 +75,16 @@ namespace LinqToGraphQL.Utilities
                                 lambda.Body.AddCast(queryType),
                                 lambda.Parameters));
                     }
+                }
+                else
+                {
+                    var parameter = Expression.Parameter(typeof(JToken));
+                    return Expression.Call(
+                        ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
+                        expression,
+                        Expression.Lambda(
+                            parameter.AddCast(queryType),
+                            parameter));
                 }
             }
 

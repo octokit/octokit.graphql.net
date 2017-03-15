@@ -286,6 +286,42 @@ namespace LinqToGraphQL.UnitTests
         }
 
         [Fact]
+        public void Fragment()
+        {
+            var expression = new RootQuery()
+                .Data
+                .OfType<Simple>()
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Description,
+                });
+
+            var data = @"{
+    ""data"":{
+        ""data"": [
+            { 
+                ""__typename"": ""Simple"",
+                ""name"": ""foo"",
+                ""description"": ""bar"" 
+            },
+            { 
+                ""__typename"": ""Another"",
+            }
+        ]
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+
+            Assert.Equal("foo", result.Name);
+            Assert.Equal("bar", result.Description);
+        }
+
+        [Fact]
         public void Union()
         {
             var expression = new RootQuery()
@@ -301,8 +337,12 @@ namespace LinqToGraphQL.UnitTests
     ""data"":{
         ""union"": [
             { 
+                ""__typename"": ""Simple"",
                 ""name"": ""foo"",
                 ""description"": ""bar"" 
+            },
+            { 
+                ""__typename"": ""Another"",
             }
         ]
     }
