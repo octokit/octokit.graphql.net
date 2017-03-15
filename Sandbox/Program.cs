@@ -33,38 +33,36 @@ namespace Sandbox
 
         private static async Task RunRepositoryQuery(string token)
         {
-            throw new NotImplementedException();
-            ////var query = new Query()
-            ////    .Select(root => root
-            ////        .RepositoryOwner("grokys")
-            ////        .Repositories(10, null, null, null)
-            ////        .Edges.Select(x => x.Node)
-            ////        .Select(x => new
-            ////        {
-            ////            x.Id,
-            ////            x.Name,
-            ////            Owner = x.Owner.Select(o => new
-            ////            {
-            ////                o.Login,
-            ////                o.AvatarUrl,
-            ////            }),
-            ////            x.IsFork,
-            ////            x.IsPrivate,
-            ////            root.Viewer.Login,
-            ////        }));
+            var query = new Query()
+                .Select(root => root
+                    .RepositoryOwner("grokys")
+                    .Repositories(10, null, null, null, null, null, null, null, null)
+                    .Edges.Select(x => x.Node)
+                    .Select((Repository x) => new
+                    {
+                        x.Id,
+                        x.Name,
+                        Owner = x.Owner.Select(o => new
+                        {
+                            o.Login,
+                        }),
+                        x.IsFork,
+                        x.IsPrivate,
+                        root.Viewer.Login,
+                    }));
 
-            ////var connection = new Connection("https://api.github.com/graphql", token);
-            ////var result = (await connection.Run(query));
+            var connection = new Connection("https://api.github.com/graphql", token);
+            var result = (await connection.Run(query));
 
-            ////foreach (var i in result.SelectMany(x => x))
-            ////{
-            ////    Console.WriteLine("Id: " + i.Id);
-            ////    Console.WriteLine("Name: " + i.Name);
-            ////    Console.WriteLine("Owner: " + i.Owner.Single().Login);
-            ////    Console.WriteLine("IsFork: " + i.IsFork);
-            ////    Console.WriteLine("IsPrivate: " + i.IsPrivate);
-            ////    Console.WriteLine("Viewer Login: " + i.Login);
-            ////}
+            foreach (var i in result.SelectMany(x => x))
+            {
+                Console.WriteLine("Id: " + i.Id);
+                Console.WriteLine("Name: " + i.Name);
+                Console.WriteLine("Owner: " + i.Owner.Single().Login);
+                Console.WriteLine("IsFork: " + i.IsFork);
+                Console.WriteLine("IsPrivate: " + i.IsPrivate);
+                Console.WriteLine("Viewer Login: " + i.Login);
+            }
         }
 
         private static async Task RunViewerQuery(string token)
