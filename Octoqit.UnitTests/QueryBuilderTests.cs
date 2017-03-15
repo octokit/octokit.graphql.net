@@ -236,5 +236,35 @@ namespace Octoqit.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Search_User()
+        {
+            var expected = @"{
+  search(query: ""foo"", type: USER, first: 30) {
+    nodes {
+      ... on User {
+        name
+        login
+      }
+    }
+  }
+}";
+
+            var expression = new Query()
+                .Search("foo", SearchType.User, 30)
+                .Nodes
+                .Select(x => x.User)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Login,
+                });
+
+            var serializer = new QuerySerializer(2);
+            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
     }
 }
