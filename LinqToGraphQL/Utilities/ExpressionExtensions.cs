@@ -115,15 +115,15 @@ namespace LinqToGraphQL.Utilities
         {
             if (expression.Type.IsAssignableFrom(typeof(JToken)))
             {
-                // Returns `instance[fieldName];`
+                // Returns `expression[fieldName];`
                 return Expression.Call(
                     expression,
                     ExpressionMethods.JTokenIndexer,
                     Expression.Constant(fieldName));
             }
-            else if (GetEnumerableResultType(expression.Type) == typeof(JToken))
+            else if (IsIQueryableOfJToken(expression.Type))
             {
-                // Returns `instance.Select(x => x[fieldName]);`
+                // Returns `expression.Select(x => x[fieldName]);`
                 var lambdaParameter = Expression.Parameter(typeof(JToken));
                 return Expression.Call(
                     ExpressionMethods.SelectMethod.MakeGenericMethod(typeof(JToken)),
