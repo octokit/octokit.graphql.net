@@ -12,7 +12,7 @@ namespace LinqToGraphQL.Builders
 {
     public class QueryBuilder : ExpressionVisitor
     {
-        static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
+        static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JToken), "data");
 
         OperationDefinition root;
         SyntaxTree syntax;
@@ -170,29 +170,13 @@ namespace LinqToGraphQL.Builders
                     var parameter = (ParameterExpression)Visit(parameterExpression);
                     var parentSelection = GetSelectionSet(parameterExpression);
                     var field = syntax.AddField(parentSelection, node.Member, alias);
-                    return Visit(parameterExpression).AddIndexer(field.Alias ?? field.Name);
+                    return Visit(parameterExpression).AddIndexer(field);
                 }
                 else
                 {
                     var instance = Visit(node.Expression);
                     var field = syntax.AddField(node.Member, alias);
-
-                    if (instance.Type == typeof(IQueryable<JToken>))
-                    {
-                        // This is here to allow a member to be selected from a union in the same Select
-                        // statement as the type, i.e. .Select(x => x.PossibleType.Field).
-                        var parameter = Expression.Parameter(typeof(JToken));
-                        return Expression.Call(
-                            ExpressionMethods.SelectMethod.MakeGenericMethod(typeof(JToken)),
-                            instance,
-                            Expression.Lambda(
-                                parameter.AddIndexer(field.Alias ?? field.Name),
-                                parameter));
-                    }
-                    else
-                    {
-                        return instance.AddIndexer(field.Alias ?? field.Name);
-                    }
+                    return instance.AddIndexer(field);
                 }
             }
             else
@@ -255,7 +239,7 @@ namespace LinqToGraphQL.Builders
 
             VisitQueryMethodArguments(node.Method.GetParameters(), node.Arguments);
 
-            return instance.AddIndexer(field.Alias ?? field.Name);
+            return instance.AddIndexer(field);
         }
 
         private void VisitQueryMethodArguments(ParameterInfo[] parameters, ReadOnlyCollection<Expression> arguments)

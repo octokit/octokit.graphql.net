@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using LinqToGraphQL.Syntax;
 using Newtonsoft.Json.Linq;
 
 namespace LinqToGraphQL.Utilities
@@ -96,14 +97,45 @@ namespace LinqToGraphQL.Utilities
         /// Adds an indexer to an expression representing a <see cref="JToken"/>.
         /// </summary>
         /// <param name="instance">The expression.</param>
-        /// <param name="parameter">The indexer parameter</param>
+        /// <param name="field">The field to return.</param>
         /// <returns>A new expression.</returns>
-        public static Expression AddIndexer(this Expression instance, string parameter)
+        public static Expression AddIndexer(this Expression instance, FieldSelection field)
         {
-            return Expression.Call(
-                instance,
-                ExpressionMethods.JTokenIndexer,
-                Expression.Constant(parameter));
+            return AddIndexer(instance, field.Alias ?? field.Name);
+        }
+
+        /// <summary>
+        /// Adds an indexer to an expression representing a <see cref="JToken"/> or a collection of
+        /// <see cref="JToken"/>s.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <param name="field">The field to return.</param>
+        /// <returns>A new expression.</returns>
+        public static Expression AddIndexer(this Expression expression, string fieldName)
+        {
+            if (expression.Type.IsAssignableFrom(typeof(JToken)))
+            {
+                // Returns `instance[fieldName];`
+                return Expression.Call(
+                    expression,
+                    ExpressionMethods.JTokenIndexer,
+                    Expression.Constant(fieldName));
+            }
+            else if (GetEnumerableResultType(expression.Type) == typeof(JToken))
+            {
+                // Returns `instance.Select(x => x[fieldName]);`
+                var lambdaParameter = Expression.Parameter(typeof(JToken));
+                return Expression.Call(
+                    ExpressionMethods.SelectMethod.MakeGenericMethod(typeof(JToken)),
+                    expression,
+                    Expression.Lambda(
+                        lambdaParameter.AddIndexer(fieldName),
+                        lambdaParameter));
+            }
+            else
+            {
+                throw new NotSupportedException($"Don't know how to add an indexer to {expression}.");
+            }
         }
 
         private static Type GetEnumerableResultType(Type type)
