@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+using Octokit.GraphQL.Core.Utilities;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Generation.Utilities;
 
@@ -79,14 +80,7 @@ namespace {rootNamespace}
         private static string GenerateEnumValue(EnumValueModel value)
         {
             return $@"        [EnumMember(Value = ""{value.Name}"")]
-        {PascalCase(value.Name)},";
-        }
-
-        private static string PascalCase(string value)
-        {
-            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
-                value.ToLowerInvariant().Replace('_', ' '))
-                .Replace(" ", "");
+        {value.Name.ToPascalCase()},";
         }
     }
 }

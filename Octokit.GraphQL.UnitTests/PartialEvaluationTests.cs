@@ -37,7 +37,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.Equal("Octokit.GraphQL.Core: grokys", Enumerable.Single(result.Owner).Thing);
         }

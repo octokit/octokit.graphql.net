@@ -327,8 +327,8 @@ namespace Octokit.GraphQL.Core.Builders
 
         private static Type GetQueryableResultType(Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>) ?
-                type.GetGenericArguments()[0] : null;
+            return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>) ?
+                type.GetTypeInfo().GenericTypeArguments[0] : null;
         }
 
         private ISelectionSet GetSelectionSet(ParameterExpression parameter)
@@ -361,7 +361,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private static bool IsQueryEntity(Type type)
         {
-            return typeof(IQueryEntity).IsAssignableFrom(type);
+            return typeof(IQueryEntity).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
         private static bool IsQueryEntityMember(Expression expression)
@@ -377,7 +377,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private static bool IsUnion(Type type)
         {
-            return typeof(IUnion).IsAssignableFrom(type);
+            return typeof(IUnion).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
         private static bool IsUnionMember(MemberInfo member)
