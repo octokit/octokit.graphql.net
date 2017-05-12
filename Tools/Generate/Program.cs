@@ -18,7 +18,6 @@ namespace Generate
             }
 
             GenerateEntities(args[0], args[1]).Wait();
-            Console.ReadKey();
         }
 
         private static async Task GenerateEntities(string token, string path)
