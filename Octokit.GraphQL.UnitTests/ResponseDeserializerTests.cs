@@ -138,7 +138,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.Equal("grokys@gmail.com", result.Email);
         }

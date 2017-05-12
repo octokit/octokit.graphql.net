@@ -38,11 +38,11 @@ namespace Octokit.GraphQL.Core.Utilities
 
         public static Expression AddCast(this Expression expression, Type type)
         {
-            if (type.IsAssignableFrom(expression.Type))
+            if (type.GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
             {
                 return expression;
             }
-            else if (typeof(JToken).IsAssignableFrom(expression.Type))
+            else if (typeof(JToken).GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
             {
                 return Expression.Call(
                     expression,
@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Core.Utilities
             }
             else if (GetEnumerableResultType(type) != null && IsIQueryableOfJToken(expression.Type))
             {
-                var queryType = type.GetGenericArguments()[0];
+                var queryType = type.GetTypeInfo().GenericTypeArguments[0];
 
                 if (expression is MethodCallExpression methodCall)
                 {
@@ -113,7 +113,7 @@ namespace Octokit.GraphQL.Core.Utilities
         /// <returns>A new expression.</returns>
         public static Expression AddIndexer(this Expression expression, string fieldName)
         {
-            if (expression.Type.IsAssignableFrom(typeof(JToken)))
+            if (expression.Type.GetTypeInfo().IsAssignableFrom(typeof(JToken).GetTypeInfo()))
             {
                 // Returns `expression[fieldName];`
                 return Expression.Call(
@@ -140,16 +140,16 @@ namespace Octokit.GraphQL.Core.Utilities
 
         private static Type GetEnumerableResultType(Type type)
         {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
-                return type.GetGenericArguments()[0];
+                return type.GetTypeInfo().GenericTypeArguments[0];
             }
 
-            foreach (var i in type.GetInterfaces())
+            foreach (var i in type.GetTypeInfo().ImplementedInterfaces)
             {
-                if (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                if (i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                 {
-                    return i.GetGenericArguments()[0];
+                    return i.GetTypeInfo().GenericTypeArguments[0];
                 }
             }
 
@@ -158,7 +158,7 @@ namespace Octokit.GraphQL.Core.Utilities
 
         private static bool IsIQueryableOfJToken(Type type)
         {
-            return typeof(IQueryable<JToken>).IsAssignableFrom(type);
+            return typeof(IQueryable<JToken>).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
         private static bool IsSelect(MethodInfo method)

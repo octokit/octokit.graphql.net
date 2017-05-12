@@ -8,11 +8,11 @@ namespace Octokit.GraphQL.Core.Utilities
 {
     public static class ExpressionMethods
     {
-        public static readonly MethodInfo JTokenIndexer = typeof(JToken).GetMethod("get_Item");
-        public static readonly MethodInfo JTokenToObject = typeof(JToken).GetMethod(nameof(JToken.ToObject), new Type[0]);
-        public static readonly MethodInfo SelectMethod = typeof(ExpressionMethods).GetMethod(nameof(Select));
-        public static readonly MethodInfo SelectEntityMethod = typeof(ExpressionMethods).GetMethod(nameof(SelectEntity));
-        public static readonly MethodInfo ChildrenOfTypeMethod = typeof(ExpressionMethods).GetMethod(nameof(ChildrenOfType));
+        public static readonly MethodInfo JTokenIndexer = typeof(JToken).GetTypeInfo().GetDeclaredMethod("get_Item");
+        public static readonly MethodInfo JTokenToObject = GetMethod(typeof(JToken), nameof(JToken.ToObject), new Type[0]);
+        public static readonly MethodInfo SelectMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(Select));
+        public static readonly MethodInfo SelectEntityMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(SelectEntity));
+        public static readonly MethodInfo ChildrenOfTypeMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(ChildrenOfType));
 
         public static IQueryable<T> Select<T>(IQueryable<JToken> tokens, Func<JToken, T> selector)
         {
@@ -43,6 +43,12 @@ namespace Octokit.GraphQL.Core.Utilities
         public static IQueryable<JToken> ChildrenOfType(IEnumerable<JToken> parentToken, string typeName)
         {
             return parentToken.Where(x => (string)x["__typename"] == typeName).AsQueryable();
+        }
+
+        static MethodInfo GetMethod(Type type, string name, params Type[] parameters)
+        {
+            return type.GetTypeInfo().GetDeclaredMethods(name)
+                .First(x => Enumerable.Select(x.GetParameters(), y => y.ParameterType).SequenceEqual(parameters));
         }
     }
 }
