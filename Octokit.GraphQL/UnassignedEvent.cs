@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a 'unassigned' event on a given issue or pull request.
+    /// Represents a 'unassigned' event on any assignable object.
     /// </summary>
     public class UnassignedEvent : QueryEntity
     {
@@ -15,9 +15,14 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor (user) associated with the event.
+        /// Identifies the actor who performed the 'unassigned' event.
         /// </summary>
-        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
+
+        /// <summary>
+        /// Identifies the assignable associated with the event.
+        /// </summary>
+        public IAssignable Assignable => this.CreateProperty(x => x.Assignable, Octokit.GraphQL.Internal.StubIAssignable.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -27,24 +32,9 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
-        /// Identifies the issue associated with the event.
+        /// Identifies the subject (user) who was unassigned.
         /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
-
-        /// <summary>
-        /// Identifies the repository associated with the event.
-        /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
-
-        /// <summary>
-        /// Identifies the user who performed the 'unassigned' event.
-        /// </summary>
-        public User Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.User.Create);
-
-        /// <summary>
-        /// Identifies the event type associated with the event.
-        /// </summary>
-        public IssueEventType Type { get; }
+        public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.User.Create);
 
         internal static UnassignedEvent Create(IQueryProvider provider, Expression expression)
         {

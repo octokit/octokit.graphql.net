@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a 'referenced' event on a given issue or pull request.
+    /// Represents a 'referenced' event on a given `ReferencedSubject`.
     /// </summary>
     public class ReferencedEvent : QueryEntity
     {
@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor (user) associated with the event.
+        /// Identifies the actor who performed the 'label' event.
         /// </summary>
-        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the commit associated with the 'referenced' event.
@@ -37,19 +37,14 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
-        /// Identifies the issue associated with the event.
+        /// Reference originated in a different repository.
         /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
+        public bool IsCrossReference { get; }
 
         /// <summary>
-        /// Identifies the repository associated with the event.
+        /// Object referenced by event.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
-
-        /// <summary>
-        /// Identifies the event type associated with the event.
-        /// </summary>
-        public IssueEventType Type { get; }
+        public ReferencedSubject Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.ReferencedSubject.Create);
 
         internal static ReferencedEvent Create(IQueryProvider provider, Expression expression)
         {

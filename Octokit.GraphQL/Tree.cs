@@ -15,6 +15,26 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// An abbreviated version of the Git object ID
+        /// </summary>
+        public string AbbreviatedOid { get; }
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        public string CommitPath { get; }
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        public string CommitResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP url for this Git object
+        /// </summary>
+        public string CommitUrl { get; }
+
+        /// <summary>
         /// A list of tree entries.
         /// </summary>
         public IQueryable<TreeEntry> Entries => this.CreateProperty(x => x.Entries);

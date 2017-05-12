@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor (user) associated with the event.
+        /// Identifies the actor who performed the 'locked' event.
         /// </summary>
-        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -27,19 +27,9 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
-        /// Identifies the issue associated with the event.
+        /// Object that was locked.
         /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
-
-        /// <summary>
-        /// Identifies the repository associated with the event.
-        /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
-
-        /// <summary>
-        /// Identifies the event type associated with the event.
-        /// </summary>
-        public IssueEventType Type { get; }
+        public ILockable Lockable => this.CreateProperty(x => x.Lockable, Octokit.GraphQL.Internal.StubILockable.Create);
 
         internal static LockedEvent Create(IQueryProvider provider, Expression expression)
         {

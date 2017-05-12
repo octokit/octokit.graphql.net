@@ -56,6 +56,11 @@ namespace Octokit.GraphQL
         public ReleaseAssetConnection ReleaseAssets(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReleaseAssets(first, after, last, before), Octokit.GraphQL.ReleaseAssetConnection.Create);
 
         /// <summary>
+        /// The HTTP path for this issue
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// The Git tag the release points to
         /// </summary>
         public Ref Tag => this.CreateProperty(x => x.Tag, Octokit.GraphQL.Ref.Create);

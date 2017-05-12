@@ -15,9 +15,29 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// An abbreviated version of the Git object ID
+        /// </summary>
+        public string AbbreviatedOid { get; }
+
+        /// <summary>
         /// Byte size of Blob object
         /// </summary>
         public int ByteSize { get; }
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        public string CommitPath { get; }
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        public string CommitResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP url for this Git object
+        /// </summary>
+        public string CommitUrl { get; }
 
         public string Id { get; }
 

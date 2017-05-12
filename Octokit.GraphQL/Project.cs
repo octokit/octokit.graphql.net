@@ -44,9 +44,9 @@ namespace Octokit.GraphQL
         public string CreatedAt { get; }
 
         /// <summary>
-        /// The user that originally created the project.
+        /// The actor who originally created the project.
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
+        public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the primary key from the database.
@@ -76,6 +76,11 @@ namespace Octokit.GraphQL
         public string Path { get; }
 
         /// <summary>
+        /// The HTTP path for this project
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// Whether the project is open or closed.
         /// </summary>
         public ProjectState State { get; }
@@ -91,9 +96,9 @@ namespace Octokit.GraphQL
         public string Url { get; }
 
         /// <summary>
-        /// Can the current viewer edit this project.
+        /// Check if the current viewer can update this object.
         /// </summary>
-        public bool ViewerCanEdit { get; }
+        public bool ViewerCanUpdate { get; }
 
         internal static Project Create(IQueryProvider provider, Expression expression)
         {

@@ -15,9 +15,19 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// An abbreviated version of the Git object ID
+        /// </summary>
+        public string AbbreviatedOid { get; }
+
+        /// <summary>
         /// Authorship details of the commit.
         /// </summary>
         public GitActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.GitActor.Create);
+
+        /// <summary>
+        /// Check if the committer and the author match.
+        /// </summary>
+        public bool AuthoredByCommitter { get; }
 
         /// <summary>
         /// Fetches `git blame` information.
@@ -33,6 +43,26 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         public CommitCommentConnection Comments(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.CommitCommentConnection.Create);
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        public string CommitPath { get; }
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        public string CommitResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP url for this Git object
+        /// </summary>
+        public string CommitUrl { get; }
+
+        /// <summary>
+        /// The datetime when this commit was committed.
+        /// </summary>
+        public string CommittedDate { get; }
 
         /// <summary>
         /// Check if commited via GitHub web UI.
@@ -100,6 +130,11 @@ namespace Octokit.GraphQL
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
+        /// The HTTP path for this commit
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// Commit signing information, if present.
         /// </summary>
         public IGitSignature Signature => this.CreateProperty(x => x.Signature, Octokit.GraphQL.Internal.StubIGitSignature.Create);
@@ -118,11 +153,6 @@ namespace Octokit.GraphQL
         /// The HTTP url for this commit
         /// </summary>
         public string Url { get; }
-
-        /// <summary>
-        /// The websocket channel ID for live updates.
-        /// </summary>
-        public string Websocket { get; }
 
         internal static Commit Create(IQueryProvider provider, Expression expression)
         {

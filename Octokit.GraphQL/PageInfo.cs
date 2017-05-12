@@ -15,22 +15,22 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// When paginating forwards, the cursor to continue
+        /// When paginating forwards, the cursor to continue.
         /// </summary>
         public string EndCursor { get; }
 
         /// <summary>
-        /// Indicates if there are more pages to fetch
+        /// When paginating forwards, are there more items?
         /// </summary>
         public bool HasNextPage { get; }
 
         /// <summary>
-        /// Indicates if there are any pages prior to the current page
+        /// When paginating backwards, are there more items?
         /// </summary>
         public bool HasPreviousPage { get; }
 
         /// <summary>
-        /// When paginating backwards, the cursor to continue
+        /// When paginating backwards, the cursor to continue.
         /// </summary>
         public string StartCursor { get; }
 

@@ -16,6 +16,11 @@ namespace Octokit.GraphQL
         string Path { get; }
 
         /// <summary>
+        /// The HTML path to this resource.
+        /// </summary>
+        string ResourcePath { get; }
+
+        /// <summary>
         /// The URL to this resource.
         /// </summary>
         string Url { get; }
@@ -36,6 +41,8 @@ namespace Octokit.GraphQL.Internal
         }
 
         public string Path { get; }
+
+        public string ResourcePath { get; }
 
         public string Url { get; }
 

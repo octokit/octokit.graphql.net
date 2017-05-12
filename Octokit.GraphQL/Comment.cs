@@ -11,9 +11,9 @@ namespace Octokit.GraphQL
     public interface IComment : IQueryEntity
     {
         /// <summary>
-        /// The author of the comment.
+        /// The actor who authored the comment.
         /// </summary>
-        IAuthor Author { get; }
+        IActor Author { get; }
 
         /// <summary>
         /// The comment body as Markdown.
@@ -36,9 +36,9 @@ namespace Octokit.GraphQL
         bool CreatedViaEmail { get; }
 
         /// <summary>
-        /// The editor of the comment.
+        /// The actor who edited the comment.
         /// </summary>
-        IAuthor Editor { get; }
+        IActor Editor { get; }
 
         string Id { get; }
 
@@ -48,24 +48,14 @@ namespace Octokit.GraphQL
         string LastEditedAt { get; }
 
         /// <summary>
+        /// Identifies when the comment was published at.
+        /// </summary>
+        string PublishedAt { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         string UpdatedAt { get; }
-
-        /// <summary>
-        /// Check if the current viewer can delete this comment.
-        /// </summary>
-        bool ViewerCanDelete { get; }
-
-        /// <summary>
-        /// Check if the current viewer edit this comment.
-        /// </summary>
-        bool ViewerCanEdit { get; }
-
-        /// <summary>
-        /// Errors why the current viewer can not edit this comment.
-        /// </summary>
-        IQueryable<CommentCannotEditReason> ViewerCannotEditReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.
@@ -87,7 +77,7 @@ namespace Octokit.GraphQL.Internal
         {
         }
 
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         public string Body { get; }
 
@@ -97,19 +87,15 @@ namespace Octokit.GraphQL.Internal
 
         public bool CreatedViaEmail { get; }
 
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         public string Id { get; }
 
         public string LastEditedAt { get; }
 
+        public string PublishedAt { get; }
+
         public string UpdatedAt { get; }
-
-        public bool ViewerCanDelete { get; }
-
-        public bool ViewerCanEdit { get; }
-
-        public IQueryable<CommentCannotEditReason> ViewerCannotEditReasons => this.CreateProperty(x => x.ViewerCannotEditReasons);
 
         public bool ViewerDidAuthor { get; }
 

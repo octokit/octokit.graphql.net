@@ -15,14 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the number of issues currently closed in this milestone.
+        /// Identifies the actor who created the milestone.
         /// </summary>
-        public int ClosedIssueCount { get; }
-
-        /// <summary>
-        /// Identifies the creator of the milestone.
-        /// </summary>
-        public User CreatedBy => this.CreateProperty(x => x.CreatedBy, Octokit.GraphQL.User.Create);
+        public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the description of the milestone.
@@ -42,11 +37,6 @@ namespace Octokit.GraphQL
         public int Number { get; }
 
         /// <summary>
-        /// Identifies the number of issues currently open in this milestone.
-        /// </summary>
-        public int OpenIssueCount { get; }
-
-        /// <summary>
         /// The HTTP path for this milestone
         /// </summary>
         public string Path { get; }
@@ -55,6 +45,11 @@ namespace Octokit.GraphQL
         /// The repository associated with this milestone.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+
+        /// <summary>
+        /// The HTTP path for this milestone
+        /// </summary>
+        public string ResourcePath { get; }
 
         /// <summary>
         /// Identifies the state of the milestone.

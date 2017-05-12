@@ -20,11 +20,6 @@ namespace Octokit.GraphQL
         public string CreatedAt { get; }
 
         /// <summary>
-        /// The Ref associated with the repository's default branch.
-        /// </summary>
-        public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Ref.Create);
-
-        /// <summary>
         /// The description of the repository.
         /// </summary>
         public string Description { get; }
@@ -47,7 +42,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The repository's URL.
         /// </summary>
-        public string HomepageURL { get; }
+        public string HomepageUrl { get; }
 
         /// <summary>
         /// Identifies if the repository is a fork.
@@ -82,12 +77,17 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The repository's original mirror URL.
         /// </summary>
-        public string MirrorURL { get; }
+        public string MirrorUrl { get; }
 
         /// <summary>
         /// The name of the repository.
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// The repository's name with owner.
+        /// </summary>
+        public string NameWithOwner { get; }
 
         /// <summary>
         /// The User owner of the repository.
@@ -103,6 +103,11 @@ namespace Octokit.GraphQL
         /// Identifies when the repository was last pushed to.
         /// </summary>
         public string PushedAt { get; }
+
+        /// <summary>
+        /// The HTTP path for this repository
+        /// </summary>
+        public string ResourcePath { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

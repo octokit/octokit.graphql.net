@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A team or user who as the ability to dismiss a review on a protected branch.
+    /// A team or user who has the ability to dismiss a review on a protected branch.
     /// </summary>
     public class ReviewDismissalAllowance : QueryEntity
     {

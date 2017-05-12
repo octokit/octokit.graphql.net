@@ -27,6 +27,11 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
+        /// Whether the gist is public or not.
+        /// </summary>
+        public bool IsPublic { get; }
+
+        /// <summary>
         /// The gist name.
         /// </summary>
         public string Name { get; }
@@ -35,11 +40,6 @@ namespace Octokit.GraphQL
         /// The gist owner.
         /// </summary>
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
-
-        /// <summary>
-        /// Whether the gist is public or not.
-        /// </summary>
-        public bool Public { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

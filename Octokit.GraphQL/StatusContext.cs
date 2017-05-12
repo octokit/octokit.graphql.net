@@ -30,9 +30,9 @@ namespace Octokit.GraphQL
         public string CreatedAt { get; }
 
         /// <summary>
-        /// The author of this status context.
+        /// The actor who created this status context.
         /// </summary>
-        public IAuthor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// The description for this status context.
@@ -49,7 +49,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The URL for this status context.
         /// </summary>
-        public string TargetURL { get; }
+        public string TargetUrl { get; }
 
         internal static StatusContext Create(IQueryProvider provider, Expression expression)
         {

@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for Project.
+    /// A list of projects associated with the owner.
     /// </summary>
     public class ProjectConnection : QueryEntity
     {

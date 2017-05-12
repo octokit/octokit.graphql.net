@@ -19,6 +19,17 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// Look up a code of conduct by its key
+        /// </summary>
+        /// <param name="key">The code of conduct's key</param>
+        public CodeOfConduct CodeOfConduct(string key) => this.CreateMethodCall(x => x.CodeOfConduct(key), Octokit.GraphQL.CodeOfConduct.Create);
+
+        /// <summary>
+        /// Look up a code of conduct by its key
+        /// </summary>
+        public IQueryable<CodeOfConduct> CodesOfConduct => this.CreateProperty(x => x.CodesOfConduct);
+
+        /// <summary>
         /// Fetches an object given its ID.
         /// </summary>
         /// <param name="id">ID of the object.</param>
@@ -58,7 +69,7 @@ namespace Octokit.GraphQL
         /// Lookup resource by a URL.
         /// </summary>
         /// <param name="url">The URL.</param>
-        public IUniformResourceLocatable Resource(string url = null) => this.CreateMethodCall(x => x.Resource(url), Octokit.GraphQL.Internal.StubIUniformResourceLocatable.Create);
+        public IUniformResourceLocatable Resource(string url) => this.CreateMethodCall(x => x.Resource(url), Octokit.GraphQL.Internal.StubIUniformResourceLocatable.Create);
 
         /// <summary>
         /// Perform a search across resources.
@@ -70,6 +81,12 @@ namespace Octokit.GraphQL
         /// <param name="query">The search string to look for.</param>
         /// <param name="type">The types of search items to search within.</param>
         public SearchResultItemConnection Search(string query, SearchType type, int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octokit.GraphQL.SearchResultItemConnection.Create);
+
+        /// <summary>
+        /// Look up a topic by name.
+        /// </summary>
+        /// <param name="name">The topic's name.</param>
+        public Topic Topic(string name) => this.CreateMethodCall(x => x.Topic(name), Octokit.GraphQL.Topic.Create);
 
         /// <summary>
         /// Lookup a user by login.

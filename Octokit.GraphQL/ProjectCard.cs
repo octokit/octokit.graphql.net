@@ -25,9 +25,9 @@ namespace Octokit.GraphQL
         public string CreatedAt { get; }
 
         /// <summary>
-        /// The user who created this card
+        /// The actor who created this card
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
+        public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the primary key from the database.

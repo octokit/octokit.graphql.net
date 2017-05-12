@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// The author of the comment.
+        /// The actor who authored the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the comment body.
@@ -40,9 +40,9 @@ namespace Octokit.GraphQL
         public bool CreatedViaEmail { get; }
 
         /// <summary>
-        /// The editor of the comment.
+        /// The actor who edited the comment.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         public string Id { get; }
 
@@ -52,24 +52,29 @@ namespace Octokit.GraphQL
         public string LastEditedAt { get; }
 
         /// <summary>
+        /// Identifies when the comment was published at.
+        /// </summary>
+        public string PublishedAt { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public string UpdatedAt { get; }
 
         /// <summary>
-        /// Check if the current viewer can delete this comment.
+        /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
 
         /// <summary>
-        /// Check if the current viewer edit this comment.
+        /// Check if the current viewer can update this object.
         /// </summary>
-        public bool ViewerCanEdit { get; }
+        public bool ViewerCanUpdate { get; }
 
         /// <summary>
-        /// Errors why the current viewer can not edit this comment.
+        /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotEditReason> ViewerCannotEditReasons => this.CreateProperty(x => x.ViewerCannotEditReasons);
+        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
 
         /// <summary>
         /// Did the viewer author this comment.

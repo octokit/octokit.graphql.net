@@ -16,11 +16,6 @@ namespace Octokit.GraphQL
         string CreatedAt { get; }
 
         /// <summary>
-        /// The Ref associated with the repository's default branch.
-        /// </summary>
-        Ref DefaultBranchRef { get; }
-
-        /// <summary>
         /// The description of the repository.
         /// </summary>
         string Description { get; }
@@ -43,7 +38,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The repository's URL.
         /// </summary>
-        string HomepageURL { get; }
+        string HomepageUrl { get; }
 
         /// <summary>
         /// Identifies if the repository is a fork.
@@ -78,12 +73,17 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The repository's original mirror URL.
         /// </summary>
-        string MirrorURL { get; }
+        string MirrorUrl { get; }
 
         /// <summary>
         /// The name of the repository.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// The repository's name with owner.
+        /// </summary>
+        string NameWithOwner { get; }
 
         /// <summary>
         /// The User owner of the repository.
@@ -99,6 +99,11 @@ namespace Octokit.GraphQL
         /// Identifies when the repository was last pushed to.
         /// </summary>
         string PushedAt { get; }
+
+        /// <summary>
+        /// The HTTP path for this repository
+        /// </summary>
+        string ResourcePath { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.
@@ -127,8 +132,6 @@ namespace Octokit.GraphQL.Internal
 
         public string CreatedAt { get; }
 
-        public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Ref.Create);
-
         public string Description { get; }
 
         public string DescriptionHTML { get; }
@@ -137,7 +140,7 @@ namespace Octokit.GraphQL.Internal
 
         public bool HasWikiEnabled { get; }
 
-        public string HomepageURL { get; }
+        public string HomepageUrl { get; }
 
         public bool IsFork { get; }
 
@@ -151,15 +154,19 @@ namespace Octokit.GraphQL.Internal
 
         public RepositoryLockReason? LockReason { get; }
 
-        public string MirrorURL { get; }
+        public string MirrorUrl { get; }
 
         public string Name { get; }
+
+        public string NameWithOwner { get; }
 
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
 
         public string Path { get; }
 
         public string PushedAt { get; }
+
+        public string ResourcePath { get; }
 
         public string UpdatedAt { get; }
 

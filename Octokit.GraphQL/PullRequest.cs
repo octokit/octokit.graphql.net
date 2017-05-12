@@ -15,7 +15,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// A list of Users assigned to the Issue or Pull Request.
+        /// A list of Users assigned to this object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL
         public UserConnection Assignees(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octokit.GraphQL.UserConnection.Create);
 
         /// <summary>
-        /// The author of the issue or pull request.
+        /// The actor who authored the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the base Ref associated with the pull request.
@@ -54,6 +54,11 @@ namespace Octokit.GraphQL
         public string BodyText { get; }
 
         /// <summary>
+        /// true if the object is `closed` (definition of closed may depend on type)
+        /// </summary>
+        public bool Closed { get; }
+
+        /// <summary>
         /// A list of comments associated with the pull request.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -69,7 +74,7 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public CommitConnection Commits(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Commits(first, after, last, before), Octokit.GraphQL.CommitConnection.Create);
+        public PullRequestCommitConnection Commits(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Commits(first, after, last, before), Octokit.GraphQL.PullRequestCommitConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -87,9 +92,9 @@ namespace Octokit.GraphQL
         public int? DatabaseId { get; }
 
         /// <summary>
-        /// The editor of this pull request's body.
+        /// The actor who edited this pull request's body.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the head Ref associated with the pull request.
@@ -114,7 +119,7 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
-        /// A list of labels associated with the Issue or Pull Request.
+        /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -128,9 +133,9 @@ namespace Octokit.GraphQL
         public string LastEditedAt { get; }
 
         /// <summary>
-        /// Are reaction live updates enabled for this subject.
+        /// `true` if the object is locked
         /// </summary>
-        public bool LiveReactionUpdatesEnabled { get; }
+        public bool Locked { get; }
 
         /// <summary>
         /// The commit that was created when this pull request was merged.
@@ -138,14 +143,48 @@ namespace Octokit.GraphQL
         public Commit MergeCommit => this.CreateProperty(x => x.MergeCommit, Octokit.GraphQL.Commit.Create);
 
         /// <summary>
+        /// Whether or not the pull request can be merged based on the existence of merge conflicts.
+        /// </summary>
+        public MergeableState Mergeable { get; }
+
+        /// <summary>
+        /// Whether or not the pull request was merged.
+        /// </summary>
+        public bool Merged { get; }
+
+        /// <summary>
+        /// The date and time that the pull request was merged.
+        /// </summary>
+        public string MergedAt { get; }
+
+        /// <summary>
         /// Identifies the pull request number.
         /// </summary>
         public int Number { get; }
 
         /// <summary>
+        /// A list of Users that are participating in the Pull Request conversation.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public UserConnection Participants(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octokit.GraphQL.UserConnection.Create);
+
+        /// <summary>
         /// The HTTP path for this issue
         /// </summary>
         public string Path { get; }
+
+        /// <summary>
+        /// The commit that GitHub automatically generated to test if this pull request could be merged. This field will not return a value if the pull request is merged, or if the test merge commit is still being generated. See the `mergeable` field for more details on the mergeability of the pull request.
+        /// </summary>
+        public Commit PotentialMergeCommit => this.CreateProperty(x => x.PotentialMergeCommit, Octokit.GraphQL.Commit.Create);
+
+        /// <summary>
+        /// Identifies when the comment was published at.
+        /// </summary>
+        public string PublishedAt { get; }
 
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
@@ -164,14 +203,14 @@ namespace Octokit.GraphQL
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         /// <summary>
-        /// The websocket channel ID for reaction live updates.
-        /// </summary>
-        public string ReactionsWebsocket { get; }
-
-        /// <summary>
         /// The repository associated with this pull request.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+
+        /// <summary>
+        /// The HTTP path for this issue
+        /// </summary>
+        public string ResourcePath { get; }
 
         /// <summary>
         /// A list of review requests associated with the pull request.
@@ -198,14 +237,19 @@ namespace Octokit.GraphQL
         public PullRequestState State { get; }
 
         /// <summary>
-        /// A list of events associated with an Issue or PullRequest.
+        /// A list of reviewer suggestions based on commit history and past review comments.
+        /// </summary>
+        public IQueryable<SuggestedReviewer> SuggestedReviewers => this.CreateProperty(x => x.SuggestedReviewers);
+
+        /// <summary>
+        /// A list of events associated with a PullRequest.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="since">Allows filtering timeline events by a `since` timestamp.</param>
-        public IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.IssueTimelineConnection.Create);
+        public PullRequestTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.PullRequestTimelineConnection.Create);
 
         /// <summary>
         /// Identifies the pull request title.
@@ -223,14 +267,9 @@ namespace Octokit.GraphQL
         public string Url { get; }
 
         /// <summary>
-        /// Check if the current viewer can delete this issue.
+        /// The integration the pull request was authored via.
         /// </summary>
-        public bool ViewerCanDelete { get; }
-
-        /// <summary>
-        /// Check if the current viewer edit this comment.
-        /// </summary>
-        public bool ViewerCanEdit { get; }
+        public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 
         /// <summary>
         /// Can user react to this subject
@@ -238,9 +277,19 @@ namespace Octokit.GraphQL
         public bool ViewerCanReact { get; }
 
         /// <summary>
-        /// Errors why the current viewer can not edit this comment.
+        /// Check if the viewer is able to change their subscription status for the repository.
         /// </summary>
-        public IQueryable<CommentCannotEditReason> ViewerCannotEditReasons => this.CreateProperty(x => x.ViewerCannotEditReasons);
+        public bool ViewerCanSubscribe { get; }
+
+        /// <summary>
+        /// Check if the current viewer can update this object.
+        /// </summary>
+        public bool ViewerCanUpdate { get; }
+
+        /// <summary>
+        /// Reasons why the current viewer can not update this comment.
+        /// </summary>
+        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
 
         /// <summary>
         /// Did the viewer author this comment.
@@ -248,10 +297,9 @@ namespace Octokit.GraphQL
         public bool ViewerDidAuthor { get; }
 
         /// <summary>
-        /// The websocket channel ID for live updates.
+        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
         /// </summary>
-        /// <param name="channel">The channel to use.</param>
-        public string Websocket(PullRequestPubSubTopic channel) => null;
+        public SubscriptionState ViewerSubscription { get; }
 
         internal static PullRequest Create(IQueryProvider provider, Expression expression)
         {

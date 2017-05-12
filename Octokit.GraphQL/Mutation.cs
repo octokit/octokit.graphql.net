@@ -15,6 +15,11 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// Applies a suggested topic to the repository.
+        /// </summary>
+        public AcceptTopicSuggestionPayload AcceptTopicSuggestion(AcceptTopicSuggestionInput input) => this.CreateMethodCall(x => x.AcceptTopicSuggestion(input), Octokit.GraphQL.AcceptTopicSuggestionPayload.Create);
+
+        /// <summary>
         /// Adds a comment to an Issue or Pull Request.
         /// </summary>
         public AddCommentPayload AddComment(AddCommentInput input) => this.CreateMethodCall(x => x.AddComment(input), Octokit.GraphQL.AddCommentPayload.Create);
@@ -48,6 +53,11 @@ namespace Octokit.GraphQL
         /// Creates a new project.
         /// </summary>
         public CreateProjectPayload CreateProject(CreateProjectInput input) => this.CreateMethodCall(x => x.CreateProject(input), Octokit.GraphQL.CreateProjectPayload.Create);
+
+        /// <summary>
+        /// Rejects a suggested topic for the repository.
+        /// </summary>
+        public DeclineTopicSuggestionPayload DeclineTopicSuggestion(DeclineTopicSuggestionInput input) => this.CreateMethodCall(x => x.DeclineTopicSuggestion(input), Octokit.GraphQL.DeclineTopicSuggestionPayload.Create);
 
         /// <summary>
         /// Deletes a project.
@@ -133,6 +143,11 @@ namespace Octokit.GraphQL
         /// Updates viewers repository subscription state.
         /// </summary>
         public UpdateSubscriptionPayload UpdateSubscription(UpdateSubscriptionInput input) => this.CreateMethodCall(x => x.UpdateSubscription(input), Octokit.GraphQL.UpdateSubscriptionPayload.Create);
+
+        /// <summary>
+        /// Replaces the repository's topics with the given topics.
+        /// </summary>
+        public UpdateTopicsPayload UpdateTopics(UpdateTopicsInput input) => this.CreateMethodCall(x => x.UpdateTopics(input), Octokit.GraphQL.UpdateTopicsPayload.Create);
 
         internal static Mutation Create(IQueryProvider provider, Expression expression)
         {

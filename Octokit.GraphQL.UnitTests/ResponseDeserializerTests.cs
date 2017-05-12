@@ -165,7 +165,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void AvatarUrl()
         {
-            var expression = new Query().Viewer.Select(x => new { AvatarUrl = x.AvatarURL(null) });
+            var expression = new Query().Viewer.Select(x => new { AvatarUrl = x.AvatarUrl(null) });
             string data = @"{
   ""data"": {
     ""viewer"": {

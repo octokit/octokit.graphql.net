@@ -10,6 +10,26 @@ namespace Octokit.GraphQL
     /// </summary>
     public interface IGitObject : IQueryEntity
     {
+        /// <summary>
+        /// An abbreviated version of the Git object ID
+        /// </summary>
+        string AbbreviatedOid { get; }
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        string CommitPath { get; }
+
+        /// <summary>
+        /// The HTTP path for this Git object
+        /// </summary>
+        string CommitResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP url for this Git object
+        /// </summary>
+        string CommitUrl { get; }
+
         string Id { get; }
 
         /// <summary>
@@ -36,6 +56,14 @@ namespace Octokit.GraphQL.Internal
         public StubIGitObject(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
+
+        public string AbbreviatedOid { get; }
+
+        public string CommitPath { get; }
+
+        public string CommitResourcePath { get; }
+
+        public string CommitUrl { get; }
 
         public string Id { get; }
 

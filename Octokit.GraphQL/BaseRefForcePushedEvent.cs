@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor (user) associated with the event.
+        /// Identifies the actor who performed the 'base_ref_force_pushed' event.
         /// </summary>
-        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the after commit SHA for the 'base_ref_force_pushed' event.
@@ -37,24 +37,14 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
-        /// Identifies the issue associated with the event.
+        /// PullRequest referenced by event.
         /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
+        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
         /// Identifies the fully qualified ref name for the 'base_ref_force_pushed' event.
         /// </summary>
         public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Ref.Create);
-
-        /// <summary>
-        /// Identifies the repository associated with the event.
-        /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
-
-        /// <summary>
-        /// Identifies the event type associated with the event.
-        /// </summary>
-        public IssueEventType Type { get; }
 
         internal static BaseRefForcePushedEvent Create(IQueryProvider provider, Expression expression)
         {

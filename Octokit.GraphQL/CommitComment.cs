@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// The author of the comment.
+        /// The actor who authored the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the comment body.
@@ -50,9 +50,9 @@ namespace Octokit.GraphQL
         public int? DatabaseId { get; }
 
         /// <summary>
-        /// The editor of the comment.
+        /// The actor who edited the comment.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         public string Id { get; }
 
@@ -60,11 +60,6 @@ namespace Octokit.GraphQL
         /// The moment the editor made the last edit
         /// </summary>
         public string LastEditedAt { get; }
-
-        /// <summary>
-        /// Are reaction live updates enabled for this subject.
-        /// </summary>
-        public bool LiveReactionUpdatesEnabled { get; }
 
         /// <summary>
         /// Identifies the file path associated with the comment.
@@ -75,6 +70,11 @@ namespace Octokit.GraphQL
         /// Identifies the line position associated with the comment.
         /// </summary>
         public int? Position { get; }
+
+        /// <summary>
+        /// Identifies when the comment was published at.
+        /// </summary>
+        public string PublishedAt { get; }
 
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
@@ -93,11 +93,6 @@ namespace Octokit.GraphQL
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         /// <summary>
-        /// The websocket channel ID for reaction live updates.
-        /// </summary>
-        public string ReactionsWebsocket { get; }
-
-        /// <summary>
         /// Identifies the repository associated with the comment.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
@@ -108,19 +103,9 @@ namespace Octokit.GraphQL
         public string UpdatedAt { get; }
 
         /// <summary>
-        /// Identifies the user who created the comment.
-        /// </summary>
-        public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.User.Create);
-
-        /// <summary>
-        /// Check if the current viewer can delete this comment.
+        /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
-
-        /// <summary>
-        /// Check if the current viewer edit this comment.
-        /// </summary>
-        public bool ViewerCanEdit { get; }
 
         /// <summary>
         /// Can user react to this subject
@@ -128,9 +113,14 @@ namespace Octokit.GraphQL
         public bool ViewerCanReact { get; }
 
         /// <summary>
-        /// Errors why the current viewer can not edit this comment.
+        /// Check if the current viewer can update this object.
         /// </summary>
-        public IQueryable<CommentCannotEditReason> ViewerCannotEditReasons => this.CreateProperty(x => x.ViewerCannotEditReasons);
+        public bool ViewerCanUpdate { get; }
+
+        /// <summary>
+        /// Reasons why the current viewer can not update this comment.
+        /// </summary>
+        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
 
         /// <summary>
         /// Did the viewer author this comment.

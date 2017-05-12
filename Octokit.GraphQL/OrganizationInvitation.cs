@@ -22,14 +22,14 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
+        /// The user who was invited to the organization.
+        /// </summary>
+        public User Invitee => this.CreateProperty(x => x.Invitee, Octokit.GraphQL.User.Create);
+
+        /// <summary>
         /// The user who created the invitation.
         /// </summary>
         public User Inviter => this.CreateProperty(x => x.Inviter, Octokit.GraphQL.User.Create);
-
-        /// <summary>
-        /// The login of the user invited to the organization.
-        /// </summary>
-        public string Login { get; }
 
         /// <summary>
         /// The user's pending role in the organization (e.g. member, owner).

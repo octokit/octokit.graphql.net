@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a 'deployed' event on a given issue or pull request.
+    /// Represents a 'deployed' event on a given pull request.
     /// </summary>
     public class DeployedEvent : QueryEntity
     {
@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor (user) associated with the event.
+        /// Identifies the actor who performed the 'deployed' event.
         /// </summary>
-        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -32,24 +32,14 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
-        /// Identifies the issue associated with the event.
+        /// PullRequest referenced by event.
         /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
+        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
         /// The ref associated with the 'deployed' event.
         /// </summary>
         public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Ref.Create);
-
-        /// <summary>
-        /// Identifies the repository associated with the event.
-        /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
-
-        /// <summary>
-        /// Identifies the event type associated with the event.
-        /// </summary>
-        public IssueEventType Type { get; }
 
         internal static DeployedEvent Create(IQueryProvider provider, Expression expression)
         {

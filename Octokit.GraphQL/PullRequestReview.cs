@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// The author of the comment.
+        /// The actor who authored the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the pull request review body.
@@ -64,9 +64,9 @@ namespace Octokit.GraphQL
         public int? DatabaseId { get; }
 
         /// <summary>
-        /// The editor of the comment.
+        /// The actor who edited the comment.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         public string Id { get; }
 
@@ -81,6 +81,11 @@ namespace Octokit.GraphQL
         public string Path { get; }
 
         /// <summary>
+        /// Identifies when the comment was published at.
+        /// </summary>
+        public string PublishedAt { get; }
+
+        /// <summary>
         /// Identifies the pull request associated with this pull request review.
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
@@ -89,6 +94,11 @@ namespace Octokit.GraphQL
         /// The repository associated with this node.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+
+        /// <summary>
+        /// The HTTP URL permalink for this PullRequestReview.
+        /// </summary>
+        public string ResourcePath { get; }
 
         /// <summary>
         /// Identifies the current state of the pull request review.
@@ -111,19 +121,19 @@ namespace Octokit.GraphQL
         public string Url { get; }
 
         /// <summary>
-        /// Check if the current viewer can delete this comment.
+        /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
 
         /// <summary>
-        /// Check if the current viewer edit this comment.
+        /// Check if the current viewer can update this object.
         /// </summary>
-        public bool ViewerCanEdit { get; }
+        public bool ViewerCanUpdate { get; }
 
         /// <summary>
-        /// Errors why the current viewer can not edit this comment.
+        /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotEditReason> ViewerCannotEditReasons => this.CreateProperty(x => x.ViewerCannotEditReasons);
+        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
 
         /// <summary>
         /// Did the viewer author this comment.

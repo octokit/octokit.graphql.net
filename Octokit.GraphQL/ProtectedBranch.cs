@@ -15,31 +15,46 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Check if authorizing actors for pushing is turned on.
+        /// The actor who created this protected branch.
         /// </summary>
-        public bool AuthorizedActorsOnly { get; }
+        public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
-        /// Check if authorizing dismissers is turned on.
+        /// Will new commits pushed to this branch dismiss pull request review approvals.
         /// </summary>
-        public bool AuthorizedDismissalActorsOnly { get; }
+        public bool HasDismissableStaleReviews { get; }
 
         /// <summary>
-        /// Check to see what level deletion blocking is being enforced.
+        /// Are reviews required to update this branch.
         /// </summary>
-        public int BlockDeletionsEnforcementLevel { get; }
+        public bool HasRequiredReviews { get; }
 
         /// <summary>
-        /// Check to see what level force pushing is being enfored.
+        /// Are status checks required to update this branch.
         /// </summary>
-        public int BlockForcePushesEnforcementLevel { get; }
+        public bool HasRequiredStatusChecks { get; }
 
         /// <summary>
-        /// The creator of this protected branch.
+        /// Is pushing to this branch restricted.
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
+        public bool HasRestrictedPushes { get; }
+
+        /// <summary>
+        /// Is dismissal of pull request reviews restricted.
+        /// </summary>
+        public bool HasRestrictedReviewDismissals { get; }
+
+        /// <summary>
+        /// Are branches required to be up to date before merging.
+        /// </summary>
+        public bool HasStrictRequiredStatusChecks { get; }
 
         public string Id { get; }
+
+        /// <summary>
+        /// Can admins overwrite branch protection.
+        /// </summary>
+        public bool IsAdminEnforced { get; }
 
         /// <summary>
         /// Identifies the name of the protected branch.
@@ -47,9 +62,13 @@ namespace Octokit.GraphQL
         public string Name { get; }
 
         /// <summary>
-        /// Check to see what level reviews are being enforced.
+        /// A list push allowances for this protected branch.
         /// </summary>
-        public int PullRequestReviewsEnforcementLevel { get; }
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public PushAllowanceConnection PushAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.PushAllowances(first, after, last, before), Octokit.GraphQL.PushAllowanceConnection.Create);
 
         /// <summary>
         /// The repository associated with this protected branch.
@@ -57,9 +76,9 @@ namespace Octokit.GraphQL
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
-        /// Check to see what level merge statuses are being enforced.
+        /// List of required status check contexts that must pass for commits to be accepted to this branch.
         /// </summary>
-        public int RequiredStatusChecksEnforcementLevel { get; }
+        public IQueryable<string> RequiredStatusCheckContexts => this.CreateProperty(x => x.RequiredStatusCheckContexts);
 
         /// <summary>
         /// A list review dismissal allowances for this protected branch.
@@ -69,11 +88,6 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octokit.GraphQL.ReviewDismissalAllowanceConnection.Create);
-
-        /// <summary>
-        /// Check if required status checks is turned on.
-        /// </summary>
-        public bool StrictRequiredStatusChecksPolicy { get; }
 
         internal static ProtectedBranch Create(IQueryProvider provider, Expression expression)
         {

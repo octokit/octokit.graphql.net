@@ -18,11 +18,6 @@ namespace Octokit.GraphQL
         string Id { get; }
 
         /// <summary>
-        /// Are reaction live updates enabled for this subject.
-        /// </summary>
-        bool LiveReactionUpdatesEnabled { get; }
-
-        /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
         IQueryable<ReactionGroup> ReactionGroups { get; }
@@ -37,16 +32,6 @@ namespace Octokit.GraphQL
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
         ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null);
-
-        /// <summary>
-        /// The websocket channel ID for reaction live updates.
-        /// </summary>
-        string ReactionsWebsocket { get; }
-
-        /// <summary>
-        /// The repository associated with this reaction subject.
-        /// </summary>
-        Repository Repository { get; }
 
         /// <summary>
         /// Can user react to this subject
@@ -72,15 +57,9 @@ namespace Octokit.GraphQL.Internal
 
         public string Id { get; }
 
-        public bool LiveReactionUpdatesEnabled { get; }
-
         public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
-
-        public string ReactionsWebsocket { get; }
-
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         public bool ViewerCanReact { get; }
 

@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the user who triggered the deployment.
+        /// Identifies the actor who triggered the deployment.
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
+        public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the deployment associated with status.

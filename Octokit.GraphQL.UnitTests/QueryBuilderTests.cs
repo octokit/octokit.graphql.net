@@ -103,7 +103,7 @@ namespace Octokit.GraphQL.UnitTests
           name
           owner {
             login
-            avatarURL
+            avatarUrl
           }
           isFork
           isPrivate
@@ -129,7 +129,7 @@ namespace Octokit.GraphQL.UnitTests
                         Owner = x.Owner.Select(o => new
                         {
                             o.Login,
-                            AvatarURL = o.AvatarURL(null),
+                            AvatarUrl = o.AvatarUrl(null),
                         }),
                         x.IsFork,
                         x.IsPrivate,
@@ -155,8 +155,8 @@ namespace Octokit.GraphQL.UnitTests
           __typename
           id
           login
-          avatarURL
-          websiteURL
+          avatarUrl
+          websiteUrl
           name
         }
       }
@@ -173,8 +173,8 @@ namespace Octokit.GraphQL.UnitTests
                     {
                         u.Id,
                         u.Login,
-                        AvatarURL = u.AvatarURL(null),
-                        u.WebsiteURL,
+                        AvatarUrl = u.AvatarUrl(null),
+                        u.WebsiteUrl,
                         u.Name,
                     })
                 });

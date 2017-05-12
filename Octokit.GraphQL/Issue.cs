@@ -15,7 +15,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// A list of Users assigned to the Issue or Pull Request.
+        /// A list of Users assigned to this object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL
         public UserConnection Assignees(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octokit.GraphQL.UserConnection.Create);
 
         /// <summary>
-        /// The author of the issue or pull request.
+        /// The actor who authored the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the body of the issue.
@@ -42,6 +42,11 @@ namespace Octokit.GraphQL
         /// Identifies the body of the issue rendered to text.
         /// </summary>
         public string BodyText { get; }
+
+        /// <summary>
+        /// true if the object is `closed` (definition of closed may depend on type)
+        /// </summary>
+        public bool Closed { get; }
 
         /// <summary>
         /// A list of comments associated with the Issue.
@@ -68,14 +73,14 @@ namespace Octokit.GraphQL
         public int? DatabaseId { get; }
 
         /// <summary>
-        /// The editor of the comment.
+        /// The actor who edited the comment.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
+        public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         public string Id { get; }
 
         /// <summary>
-        /// A list of labels associated with the Issue or Pull Request.
+        /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -89,9 +94,9 @@ namespace Octokit.GraphQL
         public string LastEditedAt { get; }
 
         /// <summary>
-        /// Are reaction live updates enabled for this subject.
+        /// `true` if the object is locked
         /// </summary>
-        public bool LiveReactionUpdatesEnabled { get; }
+        public bool Locked { get; }
 
         /// <summary>
         /// Identifies the milestone associated with the issue.
@@ -104,7 +109,7 @@ namespace Octokit.GraphQL
         public int Number { get; }
 
         /// <summary>
-        /// A list of Users that are participating in the Issue's conversation.
+        /// A list of Users that are participating in the Issue conversation.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -116,6 +121,11 @@ namespace Octokit.GraphQL
         /// The HTTP path for this issue
         /// </summary>
         public string Path { get; }
+
+        /// <summary>
+        /// Identifies when the comment was published at.
+        /// </summary>
+        public string PublishedAt { get; }
 
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
@@ -134,14 +144,14 @@ namespace Octokit.GraphQL
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         /// <summary>
-        /// The websocket channel ID for reaction live updates.
-        /// </summary>
-        public string ReactionsWebsocket { get; }
-
-        /// <summary>
         /// Identifies the repository associated with the issue.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+
+        /// <summary>
+        /// The HTTP path for this issue
+        /// </summary>
+        public string ResourcePath { get; }
 
         /// <summary>
         /// Identifies the state of the issue.
@@ -149,7 +159,7 @@ namespace Octokit.GraphQL
         public IssueState State { get; }
 
         /// <summary>
-        /// A list of events associated with an Issue or PullRequest.
+        /// A list of events associated with an Issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -174,14 +184,9 @@ namespace Octokit.GraphQL
         public string Url { get; }
 
         /// <summary>
-        /// Check if the current viewer can delete this issue.
+        /// The integration the issue was authored via.
         /// </summary>
-        public bool ViewerCanDelete { get; }
-
-        /// <summary>
-        /// Check if the current viewer edit this comment.
-        /// </summary>
-        public bool ViewerCanEdit { get; }
+        public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 
         /// <summary>
         /// Can user react to this subject
@@ -189,9 +194,19 @@ namespace Octokit.GraphQL
         public bool ViewerCanReact { get; }
 
         /// <summary>
-        /// Errors why the current viewer can not edit this comment.
+        /// Check if the viewer is able to change their subscription status for the repository.
         /// </summary>
-        public IQueryable<CommentCannotEditReason> ViewerCannotEditReasons => this.CreateProperty(x => x.ViewerCannotEditReasons);
+        public bool ViewerCanSubscribe { get; }
+
+        /// <summary>
+        /// Check if the current viewer can update this object.
+        /// </summary>
+        public bool ViewerCanUpdate { get; }
+
+        /// <summary>
+        /// Reasons why the current viewer can not update this comment.
+        /// </summary>
+        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
 
         /// <summary>
         /// Did the viewer author this comment.
@@ -199,10 +214,9 @@ namespace Octokit.GraphQL
         public bool ViewerDidAuthor { get; }
 
         /// <summary>
-        /// The websocket channel ID for live updates.
+        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
         /// </summary>
-        /// <param name="channel">The channel to use.</param>
-        public string Websocket(IssuePubSubTopic channel) => null;
+        public SubscriptionState ViewerSubscription { get; }
 
         internal static Issue Create(IQueryProvider provider, Expression expression)
         {

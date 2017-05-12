@@ -18,7 +18,7 @@ namespace Octokit.GraphQL
         /// A URL pointing to the author's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        public string AvatarURL(int? size = null) => null;
+        public string AvatarUrl(int? size = null) => null;
 
         /// <summary>
         /// The timestamp of the Git action (authoring or committing).

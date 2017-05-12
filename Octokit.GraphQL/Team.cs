@@ -25,6 +25,11 @@ namespace Octokit.GraphQL
         public string EditTeamPath { get; }
 
         /// <summary>
+        /// The HTTP path for editing this team
+        /// </summary>
+        public string EditTeamResourcePath { get; }
+
+        /// <summary>
         /// The HTTP url for editing this team
         /// </summary>
         public string EditTeamUrl { get; }
@@ -56,9 +61,29 @@ namespace Octokit.GraphQL
         public TeamPrivacy Privacy { get; }
 
         /// <summary>
+        /// The HTML path to this resource.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// The slug corresponding to the team.
         /// </summary>
         public string Slug { get; }
+
+        /// <summary>
+        /// For team discussions
+        /// </summary>
+        public string TeamDiscussionsPath { get; }
+
+        /// <summary>
+        /// For team discussions
+        /// </summary>
+        public string TeamDiscussionsResourcePath { get; }
+
+        /// <summary>
+        /// For team discussions
+        /// </summary>
+        public string TeamDiscussionsUrl { get; }
 
         /// <summary>
         /// The HTTP path for this team
@@ -71,9 +96,19 @@ namespace Octokit.GraphQL
         public string TeamRepositoriesPath { get; }
 
         /// <summary>
+        /// The HTTP path for this team's repositories
+        /// </summary>
+        public string TeamRepositoriesResourcePath { get; }
+
+        /// <summary>
         /// The HTTP url for this team's repositories
         /// </summary>
         public string TeamRepositoriesUrl { get; }
+
+        /// <summary>
+        /// The HTTP path for this team
+        /// </summary>
+        public string TeamResourcePath { get; }
 
         /// <summary>
         /// The HTTP url for this team

@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor (user) associated with the event.
+        /// Identifies the actor who performed the 'review_dismissed' event.
         /// </summary>
-        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -25,11 +25,6 @@ namespace Octokit.GraphQL
         public string CreatedAt { get; }
 
         public string Id { get; }
-
-        /// <summary>
-        /// Identifies the issue associated with the event.
-        /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
 
         /// <summary>
         /// Identifies the message associated with the 'review_dismissed' event.
@@ -42,19 +37,14 @@ namespace Octokit.GraphQL
         public PullRequestReviewState PreviousReviewState { get; }
 
         /// <summary>
-        /// Identifies the repository associated with the event.
+        /// PullRequest referenced by event.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
         /// Identifies the review associated with the 'review_dismissed' event.
         /// </summary>
         public PullRequestReview Review => this.CreateProperty(x => x.Review, Octokit.GraphQL.PullRequestReview.Create);
-
-        /// <summary>
-        /// Identifies the event type associated with the event.
-        /// </summary>
-        public IssueEventType Type { get; }
 
         internal static ReviewDismissedEvent Create(IQueryProvider provider, Expression expression)
         {

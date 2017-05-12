@@ -15,9 +15,9 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor (user) associated with the event.
+        /// Identifies the actor who performed the 'demilestoned' event.
         /// </summary>
-        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -27,24 +27,14 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
-        /// Identifies the issue associated with the event.
-        /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
-
-        /// <summary>
         /// Identifies the milestone title associated with the 'demilestoned' event.
         /// </summary>
         public string MilestoneTitle { get; }
 
         /// <summary>
-        /// Identifies the repository associated with the event.
+        /// Object referenced by event.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
-
-        /// <summary>
-        /// Identifies the event type associated with the event.
-        /// </summary>
-        public IssueEventType Type { get; }
+        public MilestoneItem Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.MilestoneItem.Create);
 
         internal static DemilestonedEvent Create(IQueryProvider provider, Expression expression)
         {
