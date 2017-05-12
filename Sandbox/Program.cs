@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LinqToGraphQL;
-using LinqToGraphQL.Generation;
-using Octoqit;
+using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Generation;
+using Octokit.GraphQL;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -26,7 +26,7 @@ namespace Sandbox
 
             Directory.CreateDirectory("src");
 
-            foreach (var file in CodeGenerator.Generate(schema, "Octoqit"))
+            foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL"))
             {
                 Console.WriteLine("Writing " + file.FileName);
                 File.WriteAllText(Path.Combine("src", file.FileName), file.Content);
