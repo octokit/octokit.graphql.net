@@ -83,5 +83,22 @@ namespace Octokit.GraphQL.UnitTests
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
+
+        [Fact(Skip = "Not yet working")]
+        public void Search_User_Name_Via_Edges()
+        {
+            var expression = new Query()
+                .Search("foo", SearchType.User, 30)
+                .Edges.Select(x => x.Node)
+                .Select(x => x.User.Name);
+
+            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
+                ExpressionMethods.Select(
+                    ExpressionMethods.ChildrenOfType(data["data"]["search"]["edges"], "User"),
+                    x => x["name"].ToObject<string>());
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
     }
 }

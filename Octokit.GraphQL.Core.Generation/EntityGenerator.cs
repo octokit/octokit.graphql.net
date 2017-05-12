@@ -116,14 +116,6 @@ namespace Octokit.GraphQL.Core.Generation
                     GenerateListMethod(field, reduced) :
                     GenerateListField(field, reduced);
             }
-            else if (reduced.Kind == TypeKind.Union)
-            {
-                // HACK: Returning IQueryable<object> for unions for now until we decide how to handle them.
-                reduced = TypeModel.List(reduced);
-                result += method ?
-                    GenerateListMethod(field, reduced) :
-                    GenerateListField(field, reduced);
-            }
             else
             {
                 result += method ?

@@ -220,7 +220,31 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
-        public void Generates_Property_For_Union()
+        public void Generates_Property_For_Union_Field()
+        {
+            var expected = FormatMemberTemplate("public Bar Foo => this.CreateProperty(x => x.Foo, Test.Bar.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.Union("Bar")),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_List_Of_Unions_Field()
         {
             var expected = FormatMemberTemplate("public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
 
@@ -233,7 +257,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     new FieldModel
                     {
                         Name = "foo",
-                        Type = TypeModel.NonNull(TypeModel.Union("Bar")),
+                        Type = TypeModel.List(TypeModel.Union("Bar")),
                     },
                 }
             };
@@ -372,7 +396,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
-        public void Generates_Method_For_Scalar()
+        public void Generates_Method_For_Scalar_Field()
         {
             var expected = FormatMemberTemplate("public int? Foo(int? bar = null) => null;");
 
@@ -404,7 +428,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
-        public void Generates_Method_For_NonNull_Scalar()
+        public void Generates_Method_For_NonNull_Scalar_Field()
         {
             var expected = FormatMemberTemplate("public int Foo(int? bar = null) => null;");
 
@@ -418,6 +442,38 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     {
                         Name = "foo",
                         Type = TypeModel.NonNull(TypeModel.Int()),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_Union_Field()
+        {
+            var expected = FormatMemberTemplate("public Bar Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Bar.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Union("Bar"),
                         Args = new[]
                         {
                             new InputValueModel
