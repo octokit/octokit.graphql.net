@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 
-namespace LinqToGraphQL.Utilities
+namespace Octokit.GraphQL.Core.Utilities
 {
     /// <summary>
     /// Extension methods for Expression objects.

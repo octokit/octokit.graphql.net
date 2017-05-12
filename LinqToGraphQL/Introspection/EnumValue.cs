@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace LinqToGraphQL.Introspection
+namespace Octokit.GraphQL.Core.Introspection
 {
     public class EnumValue : QueryEntity
     {

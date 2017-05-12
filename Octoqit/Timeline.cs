@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents all of the events visible to a user from an Issue or PullRequest timeline.
@@ -22,12 +22,12 @@ namespace Octoqit
     }
 }
 
-namespace Octoqit.Internal
+namespace Octokit.GraphQL.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubITimeline : QueryEntity, ITimeline
     {
@@ -35,7 +35,7 @@ namespace Octoqit.Internal
         {
         }
 
-        public IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octoqit.IssueTimelineConnection.Create);
+        public IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.IssueTimelineConnection.Create);
 
         internal static StubITimeline Create(IQueryProvider provider, Expression expression)
         {

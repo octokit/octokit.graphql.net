@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a Git tree.
@@ -29,7 +29,7 @@ namespace Octoqit
         /// <summary>
         /// The Repository the Git object belongs to
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         internal static Tree Create(IQueryProvider provider, Expression expression)
         {

@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a subject that can be reacted on.
@@ -55,12 +55,12 @@ namespace Octoqit
     }
 }
 
-namespace Octoqit.Internal
+namespace Octokit.GraphQL.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubIReactable : QueryEntity, IReactable
     {
@@ -76,11 +76,11 @@ namespace Octoqit.Internal
 
         public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
-        public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octoqit.ReactionConnection.Create);
+        public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         public string ReactionsWebsocket { get; }
 
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         public bool ViewerCanReact { get; }
 

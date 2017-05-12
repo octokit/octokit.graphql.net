@@ -1,9 +1,9 @@
 ﻿using System;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Introspection;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Introspection;
 using Xunit;
 
-namespace LinqToGraphQL.Generation.UnitTests
+namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
     public class InterfaceGenerationTests
     {
@@ -11,8 +11,8 @@ namespace LinqToGraphQL.Generation.UnitTests
 {{
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     public interface IEntity : IQueryEntity
     {{
@@ -24,8 +24,8 @@ namespace Test.Internal
 {{
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubIEntity : QueryEntity, IEntity
     {{
@@ -533,8 +533,8 @@ namespace Test.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Testing if doc comments are generated.

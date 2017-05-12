@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     /// <summary>
     /// The possible PubSub channels for an issue.

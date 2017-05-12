@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-using LinqToGraphQL.Serializers;
+using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Serializers;
 using Xunit;
 
-namespace Octoqit.UnitTests
+namespace Octokit.GraphQL.UnitTests
 {
     public class QueryBuilderTests
     {

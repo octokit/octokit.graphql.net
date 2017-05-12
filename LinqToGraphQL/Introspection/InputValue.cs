@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using LinqToGraphQL.Builders;
+using Octokit.GraphQL.Core.Builders;
 
-namespace LinqToGraphQL.Introspection
+namespace Octokit.GraphQL.Core.Introspection
 {
     public class InputValue : QueryEntity
     {

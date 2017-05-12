@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToGraphQL", "LinqToGraphQL\LinqToGraphQL.csproj", "{42469D40-7485-4697-839E-493D89529EC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core", "LinqToGraphQL\Octokit.GraphQL.Core.csproj", "{42469D40-7485-4697-839E-493D89529EC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octoqit", "Octoqit\Octoqit.csproj", "{2FCBDD5E-C3AB-418D-8538-5EB79740D508}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL", "Octoqit\Octokit.GraphQL.csproj", "{2FCBDD5E-C3AB-418D-8538-5EB79740D508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToGraphQL.UnitTests", "LinqToGraphQL.UnitTests\LinqToGraphQL.UnitTests.csproj", "{016C72DC-1A99-4A3E-B2F1-0CABC5CBA946}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.UnitTests", "LinqToGraphQL.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj", "{016C72DC-1A99-4A3E-B2F1-0CABC5CBA946}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octoqit.UnitTests", "Octoqit.UnitTests\Octoqit.UnitTests.csproj", "{13F4EF54-4251-439F-A4CE-B811ADFD00ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.UnitTests", "Octoqit.UnitTests\Octokit.GraphQL.UnitTests.csproj", "{13F4EF54-4251-439F-A4CE-B811ADFD00ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToGraphQL.Generation", "LinqToGraphQL.Generation\LinqToGraphQL.Generation.csproj", "{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.Generation", "LinqToGraphQL.Generation\Octokit.GraphQL.Core.Generation.csproj", "{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToGraphQL.Generation.UnitTests", "LinqToGraphQL.Generation.UnitTests\LinqToGraphQL.Generation.UnitTests.csproj", "{A0E130E4-6282-4B4B-B44E-32992DB9993B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.Generation.UnitTests", "LinqToGraphQL.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj", "{A0E130E4-6282-4B4B-B44E-32992DB9993B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

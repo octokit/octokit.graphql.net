@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Types that can be an actor.
@@ -17,12 +17,12 @@ namespace Octoqit
         /// <summary>
         /// A user is an individual's account on GitHub that owns repositories and can make new content.
         /// </summary>
-        public User User => this.CreateProperty(x => x.User, Octoqit.User.Create);
+        public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// A team of users in an organization.
         /// </summary>
-        public Team Team => this.CreateProperty(x => x.Team, Octoqit.Team.Create);
+        public Team Team => this.CreateProperty(x => x.Team, Octokit.GraphQL.Team.Create);
 
         internal static ReviewDismissalAllowanceActor Create(IQueryProvider provider, Expression expression)
         {

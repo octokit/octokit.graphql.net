@@ -1,9 +1,9 @@
-﻿using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Generation.Utilities;
-using LinqToGraphQL.Introspection;
+﻿using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Generation.Utilities;
+using Octokit.GraphQL.Core.Introspection;
 using Xunit;
 
-namespace LinqToGraphQL.Generation.UnitTests.Utilities
+namespace Octokit.GraphQL.Core.Generation.UnitTests.Utilities
 {
     public class TypeUtilitiesTests
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using LinqToGraphQL.Syntax;
+using Octokit.GraphQL.Core.Syntax;
 
-namespace LinqToGraphQL.Serializers
+namespace Octokit.GraphQL.Core.Serializers
 {
     public class QuerySerializer
     {

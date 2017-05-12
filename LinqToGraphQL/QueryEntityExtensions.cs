@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace LinqToGraphQL
+namespace Octokit.GraphQL.Core
 {
     public static class QueryEntityExtensions
     {

@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A team or user who as the ability to dismiss a review on a protected branch.
@@ -24,7 +24,7 @@ namespace Octoqit
         /// <summary>
         /// Identifies the protected branch associated with the allowed user or team.
         /// </summary>
-        public ProtectedBranch ProtectedBranch => this.CreateProperty(x => x.ProtectedBranch, Octoqit.ProtectedBranch.Create);
+        public ProtectedBranch ProtectedBranch => this.CreateProperty(x => x.ProtectedBranch, Octokit.GraphQL.ProtectedBranch.Create);
 
         internal static ReviewDismissalAllowance Create(IQueryProvider provider, Expression expression)
         {

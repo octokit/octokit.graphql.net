@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinqToGraphQL.Generation.Models
+namespace Octokit.GraphQL.Core.Generation.Models
 {
     public class InputValueModel
     {

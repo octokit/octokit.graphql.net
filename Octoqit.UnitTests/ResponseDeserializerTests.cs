@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-using LinqToGraphQL.Deserializers;
+using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
 using Xunit;
 
-namespace Octoqit.UnitTests
+namespace Octokit.GraphQL.UnitTests
 {
     public class ResponseDeserializerTests
     {
@@ -33,7 +33,7 @@ namespace Octoqit.UnitTests
     ""repositoryOwner"": {
       ""repository"": {
         ""id"": ""1234"",
-        ""name"": ""LinqToGraphQL"",
+        ""name"": ""Octokit.GraphQL.Core"",
         ""owner"": {
           ""login"": ""grokys""
         },
@@ -48,7 +48,7 @@ namespace Octoqit.UnitTests
             var result = new ResponseDeserializer().Deserialize(query, data).Single();
 
             Assert.Equal("1234", result.Id);
-            Assert.Equal("LinqToGraphQL", result.Name);
+            Assert.Equal("Octokit.GraphQL.Core", result.Name);
             Assert.Equal("grokys", Enumerable.Single(result.Owner).Login);
             Assert.Equal(false, result.IsFork);
             Assert.Equal(false, result.IsPrivate);
@@ -83,7 +83,7 @@ namespace Octoqit.UnitTests
           {
             ""node"": {
               ""id"": ""1234"",
-              ""name"": ""LinqToGraphQL"",
+              ""name"": ""Octokit.GraphQL.Core"",
               ""owner"": {
                 ""login"": ""grokys""
               },
@@ -112,7 +112,7 @@ namespace Octoqit.UnitTests
 
             var item = result.ElementAt(0);
             Assert.Equal("1234", item.Id);
-            Assert.Equal("LinqToGraphQL", item.Name);
+            Assert.Equal("Octokit.GraphQL.Core", item.Name);
             Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
             Assert.False(item.IsFork);
             Assert.False(item.IsPrivate);

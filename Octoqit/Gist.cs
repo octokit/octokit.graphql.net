@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A Gist.
@@ -34,7 +34,7 @@ namespace Octoqit
         /// <summary>
         /// The gist owner.
         /// </summary>
-        public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octoqit.Internal.StubIRepositoryOwner.Create);
+        public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
 
         /// <summary>
         /// Whether the gist is public or not.

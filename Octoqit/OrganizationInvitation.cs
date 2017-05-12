@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// An Invitation for a user to an organization.
@@ -24,7 +24,7 @@ namespace Octoqit
         /// <summary>
         /// The user who created the invitation.
         /// </summary>
-        public User Inviter => this.CreateProperty(x => x.Inviter, Octoqit.User.Create);
+        public User Inviter => this.CreateProperty(x => x.Inviter, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// The login of the user invited to the organization.

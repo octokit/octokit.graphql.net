@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a comment on an Issue.
@@ -17,7 +17,7 @@ namespace Octoqit
         /// <summary>
         /// The author of the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         /// <summary>
         /// Identifies the comment body.
@@ -47,14 +47,14 @@ namespace Octoqit
         /// <summary>
         /// The editor of the comment.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         public string Id { get; }
 
         /// <summary>
         /// Identifies the issue associated with the comment.
         /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octoqit.Issue.Create);
+        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
 
         /// <summary>
         /// The moment the editor made the last edit
@@ -80,7 +80,7 @@ namespace Octoqit
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
-        public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octoqit.ReactionConnection.Create);
+        public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         /// <summary>
         /// The websocket channel ID for reaction live updates.
@@ -90,7 +90,7 @@ namespace Octoqit
         /// <summary>
         /// The repository associated with this node.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

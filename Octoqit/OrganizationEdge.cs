@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// An edge in a connection.
@@ -22,7 +22,7 @@ namespace Octoqit
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public Organization Node => this.CreateProperty(x => x.Node, Octoqit.Organization.Create);
+        public Organization Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Organization.Create);
 
         internal static OrganizationEdge Create(IQueryProvider provider, Expression expression)
         {

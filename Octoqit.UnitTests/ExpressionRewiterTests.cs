@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-using LinqToGraphQL.Utilities;
+using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Utilities;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Octoqit.UnitTests
+namespace Octokit.GraphQL.UnitTests
 {
     public class ExpressionRewiterTests
     {

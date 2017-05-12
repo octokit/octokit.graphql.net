@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinqToGraphQL.Utilities
+namespace Octokit.GraphQL.Core.Utilities
 {
     static class StringExtensions
     {

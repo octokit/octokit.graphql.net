@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using LinqToGraphQL.Syntax;
-using LinqToGraphQL.Utilities;
+using Octokit.GraphQL.Core.Syntax;
+using Octokit.GraphQL.Core.Utilities;
 using Newtonsoft.Json.Linq;
 
-namespace LinqToGraphQL.Builders
+namespace Octokit.GraphQL.Core.Builders
 {
     public class QueryBuilder : ExpressionVisitor
     {

@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a user that's made a reaction.
@@ -16,7 +16,7 @@ namespace Octoqit
 
         public string Cursor { get; }
 
-        public User Node => this.CreateProperty(x => x.Node, Octoqit.User.Create);
+        public User Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// The moment when the user made the reaction.

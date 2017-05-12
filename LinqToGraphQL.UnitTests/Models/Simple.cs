@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace LinqToGraphQL.UnitTests.Models
+namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     class Simple : QueryEntity
     {

@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// The results of a search.
@@ -17,27 +17,27 @@ namespace Octoqit
         /// <summary>
         /// An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project.
         /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octoqit.Issue.Create);
+        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
 
         /// <summary>
         /// A repository pull request.
         /// </summary>
-        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octoqit.PullRequest.Create);
+        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
         /// A repository contains the content for a project.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// A user is an individual's account on GitHub that owns repositories and can make new content.
         /// </summary>
-        public User User => this.CreateProperty(x => x.User, Octoqit.User.Create);
+        public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// An account on GitHub, with one or more owners, that has repositories, members and teams.
         /// </summary>
-        public Organization Organization => this.CreateProperty(x => x.Organization, Octoqit.Organization.Create);
+        public Organization Organization => this.CreateProperty(x => x.Organization, Octokit.GraphQL.Organization.Create);
 
         internal static SearchResultItem Create(IQueryProvider provider, Expression expression)
         {

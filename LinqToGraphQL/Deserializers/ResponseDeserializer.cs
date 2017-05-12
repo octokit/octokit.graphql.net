@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace LinqToGraphQL.Deserializers
+namespace Octokit.GraphQL.Core.Deserializers
 {
     public class ResponseDeserializer
     {

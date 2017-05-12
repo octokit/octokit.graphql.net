@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using LinqToGraphQL.Serializers;
-using LinqToGraphQL.Syntax;
+using Octokit.GraphQL.Core.Serializers;
+using Octokit.GraphQL.Core.Syntax;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace LinqToGraphQL
+namespace Octokit.GraphQL.Core
 {
     public class GraphQLQuery<TResult>
     {

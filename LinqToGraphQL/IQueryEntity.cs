@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
 
-namespace LinqToGraphQL
+namespace Octokit.GraphQL.Core
 {
     public interface IQueryEntity
     {

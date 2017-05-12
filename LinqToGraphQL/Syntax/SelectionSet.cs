@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using LinqToGraphQL.Utilities;
+using Octokit.GraphQL.Core.Utilities;
 
-namespace LinqToGraphQL.Syntax
+namespace Octokit.GraphQL.Core.Syntax
 {
     public class SelectionSet : ISelectionSet
     {

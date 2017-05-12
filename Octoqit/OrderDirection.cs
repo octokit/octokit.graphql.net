@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     /// <summary>
     /// Possible directions in which to order a list of items when provided an `orderBy` argument.

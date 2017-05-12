@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using LinqToGraphQL.Builders;
+using Octokit.GraphQL.Core.Builders;
 
-namespace LinqToGraphQL.UnitTests.Models
+namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     class NestedData : QueryEntity
     {

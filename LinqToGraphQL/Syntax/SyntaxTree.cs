@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace LinqToGraphQL.Syntax
+namespace Octokit.GraphQL.Core.Syntax
 {
     public class SyntaxTree
     {

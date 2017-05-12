@@ -1,9 +1,9 @@
 ﻿using System;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Introspection;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Introspection;
 using Xunit;
 
-namespace LinqToGraphQL.Generation.UnitTests
+namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
     public class EnumGenerationTests
     {

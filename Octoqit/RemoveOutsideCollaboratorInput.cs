@@ -1,4 +1,4 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
 

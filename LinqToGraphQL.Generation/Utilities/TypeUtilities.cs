@@ -1,8 +1,8 @@
 ﻿using System;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Introspection;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Introspection;
 
-namespace LinqToGraphQL.Generation.Utilities
+namespace Octokit.GraphQL.Core.Generation.Utilities
 {
     internal static class TypeUtilities
     {

@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a comment.
@@ -74,12 +74,12 @@ namespace Octoqit
     }
 }
 
-namespace Octoqit.Internal
+namespace Octokit.GraphQL.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubIComment : QueryEntity, IComment
     {
@@ -87,7 +87,7 @@ namespace Octoqit.Internal
         {
         }
 
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         public string Body { get; }
 
@@ -97,7 +97,7 @@ namespace Octoqit.Internal
 
         public bool CreatedViaEmail { get; }
 
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         public string Id { get; }
 

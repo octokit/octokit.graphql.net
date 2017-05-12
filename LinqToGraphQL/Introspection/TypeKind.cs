@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace LinqToGraphQL.Introspection
+namespace Octokit.GraphQL.Core.Introspection
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TypeKind

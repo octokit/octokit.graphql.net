@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using LinqToGraphQL.Builders;
+using Octokit.GraphQL.Core.Builders;
 
-namespace LinqToGraphQL.UnitTests.Models
+namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     class RootQuery : QueryEntity, IRootQuery
     {

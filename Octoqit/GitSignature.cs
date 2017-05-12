@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Information about a signature (GPG or S/MIME) on a Commit or Tag.
@@ -42,12 +42,12 @@ namespace Octoqit
     }
 }
 
-namespace Octoqit.Internal
+namespace Octokit.GraphQL.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubIGitSignature : QueryEntity, IGitSignature
     {
@@ -63,7 +63,7 @@ namespace Octoqit.Internal
 
         public string Signature { get; }
 
-        public User Signer => this.CreateProperty(x => x.Signer, Octoqit.User.Create);
+        public User Signer => this.CreateProperty(x => x.Signer, Octokit.GraphQL.User.Create);
 
         public GitSignatureState State { get; }
 

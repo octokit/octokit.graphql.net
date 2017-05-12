@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a object that belongs to a repository.
@@ -17,12 +17,12 @@ namespace Octoqit
     }
 }
 
-namespace Octoqit.Internal
+namespace Octokit.GraphQL.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubIRepositoryNode : QueryEntity, IRepositoryNode
     {
@@ -30,7 +30,7 @@ namespace Octoqit.Internal
         {
         }
 
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         internal static StubIRepositoryNode Create(IQueryProvider provider, Expression expression)
         {

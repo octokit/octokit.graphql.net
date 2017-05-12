@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// An edge in a connection.
@@ -22,7 +22,7 @@ namespace Octoqit
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public ReleaseAsset Node => this.CreateProperty(x => x.Node, Octoqit.ReleaseAsset.Create);
+        public ReleaseAsset Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.ReleaseAsset.Create);
 
         internal static ReleaseAssetEdge Create(IQueryProvider provider, Expression expression)
         {

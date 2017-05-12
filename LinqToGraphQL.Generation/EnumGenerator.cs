@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Generation.Utilities;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Generation.Utilities;
 
-namespace LinqToGraphQL.Generation
+namespace Octokit.GraphQL.Core.Generation
 {
     public static class EnumGenerator
     {

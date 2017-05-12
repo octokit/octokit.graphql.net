@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A user is an individual's account on GitHub that owns repositories and can make new content.
@@ -47,7 +47,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public RepositoryConnection ContributedRepositories(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ContributedRepositories(first, after, last, before), Octoqit.RepositoryConnection.Create);
+        public RepositoryConnection ContributedRepositories(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ContributedRepositories(first, after, last, before), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -71,7 +71,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public FollowerConnection Followers(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Followers(first, after, last, before), Octoqit.FollowerConnection.Create);
+        public FollowerConnection Followers(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Followers(first, after, last, before), Octokit.GraphQL.FollowerConnection.Create);
 
         /// <summary>
         /// A list of users the given user is following.
@@ -80,13 +80,13 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public FollowingConnection Following(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Following(first, after, last, before), Octoqit.FollowingConnection.Create);
+        public FollowingConnection Following(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Following(first, after, last, before), Octokit.GraphQL.FollowingConnection.Create);
 
         /// <summary>
         /// Find gist by repo name.
         /// </summary>
         /// <param name="name">The gist name to find.</param>
-        public Gist Gist(string name) => this.CreateMethodCall(x => x.Gist(name), Octoqit.Gist.Create);
+        public Gist Gist(string name) => this.CreateMethodCall(x => x.Gist(name), Octokit.GraphQL.Gist.Create);
 
         /// <summary>
         /// A list of the Gists the user has created.
@@ -96,7 +96,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="visibility">Allows filtering by gist visibility.</param>
-        public GistConnection Gists(int? first = null, string after = null, int? last = null, string before = null, GistVisibility? visibility = null) => this.CreateMethodCall(x => x.Gists(first, after, last, before, visibility), Octoqit.GistConnection.Create);
+        public GistConnection Gists(int? first = null, string after = null, int? last = null, string before = null, GistVisibility? visibility = null) => this.CreateMethodCall(x => x.Gists(first, after, last, before, visibility), Octokit.GraphQL.GistConnection.Create);
 
         public string Id { get; }
 
@@ -154,7 +154,7 @@ namespace Octoqit
         /// Find an organization by its login that the user belongs to.
         /// </summary>
         /// <param name="login">The login of the organization to find.</param>
-        public Organization Organization(string login) => this.CreateMethodCall(x => x.Organization(login), Octoqit.Organization.Create);
+        public Organization Organization(string login) => this.CreateMethodCall(x => x.Organization(login), Octokit.GraphQL.Organization.Create);
 
         /// <summary>
         /// A list of organizations the user belongs to.
@@ -163,7 +163,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public OrganizationConnection Organizations(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Organizations(first, after, last, before), Octoqit.OrganizationConnection.Create);
+        public OrganizationConnection Organizations(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Organizations(first, after, last, before), Octokit.GraphQL.OrganizationConnection.Create);
 
         /// <summary>
         /// The HTTP path for this user
@@ -177,7 +177,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public RepositoryConnection PinnedRepositories(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before), Octoqit.RepositoryConnection.Create);
+        public RepositoryConnection PinnedRepositories(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// A list of pull requests assocated with this user.
@@ -190,7 +190,7 @@ namespace Octoqit
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
         /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
-        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null, IQueryable<string> labels = null, string headRefName = null, string baseRefName = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName), Octoqit.PullRequestConnection.Create);
+        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null, IQueryable<string> labels = null, string headRefName = null, string baseRefName = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName), Octokit.GraphQL.PullRequestConnection.Create);
 
         /// <summary>
         /// A list of repositories that the user owns.
@@ -204,13 +204,13 @@ namespace Octoqit
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliation">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation, isLocked), Octoqit.RepositoryConnection.Create);
+        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, bool? isFork = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliation = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, isFork, orderBy, affiliation, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// Find Repository.
         /// </summary>
         /// <param name="name">Name of Repository to find.</param>
-        public Repository Repository(string name) => this.CreateMethodCall(x => x.Repository(name), Octoqit.Repository.Create);
+        public Repository Repository(string name) => this.CreateMethodCall(x => x.Repository(name), Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// Repositories the user has starred.
@@ -221,7 +221,7 @@ namespace Octoqit
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="ownedByViewer">Filters starred repositories to only return repositories owned by the viewer.</param>
         /// <param name="orderBy">Order for connection</param>
-        public StarredRepositoryConnection StarredRepositories(int? first = null, string after = null, int? last = null, string before = null, bool? ownedByViewer = null, StarOrder orderBy = null) => this.CreateMethodCall(x => x.StarredRepositories(first, after, last, before, ownedByViewer, orderBy), Octoqit.StarredRepositoryConnection.Create);
+        public StarredRepositoryConnection StarredRepositories(int? first = null, string after = null, int? last = null, string before = null, bool? ownedByViewer = null, StarOrder orderBy = null) => this.CreateMethodCall(x => x.StarredRepositories(first, after, last, before, ownedByViewer, orderBy), Octokit.GraphQL.StarredRepositoryConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.
@@ -250,7 +250,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public RepositoryConnection Watching(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Watching(first, after, last, before), Octoqit.RepositoryConnection.Create);
+        public RepositoryConnection Watching(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Watching(first, after, last, before), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// A URL pointing to the user's public website/blog.

@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A subset of repository info.
@@ -112,12 +112,12 @@ namespace Octoqit
     }
 }
 
-namespace Octoqit.Internal
+namespace Octokit.GraphQL.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubIRepositoryInfo : QueryEntity, IRepositoryInfo
     {
@@ -127,7 +127,7 @@ namespace Octoqit.Internal
 
         public string CreatedAt { get; }
 
-        public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octoqit.Ref.Create);
+        public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Ref.Create);
 
         public string Description { get; }
 
@@ -155,7 +155,7 @@ namespace Octoqit.Internal
 
         public string Name { get; }
 
-        public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octoqit.Internal.StubIRepositoryOwner.Create);
+        public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
 
         public string Path { get; }
 

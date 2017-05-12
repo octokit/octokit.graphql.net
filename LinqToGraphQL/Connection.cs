@@ -5,13 +5,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using LinqToGraphQL.Builders;
-using LinqToGraphQL.Deserializers;
-using LinqToGraphQL.Serializers;
+using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
+using Octokit.GraphQL.Core.Serializers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace LinqToGraphQL
+namespace Octokit.GraphQL.Core
 {
     public class Connection
     {
@@ -41,7 +41,7 @@ namespace LinqToGraphQL
         {
             var result = new HttpClient();
             var auth = new AuthenticationHeaderValue("bearer", token);
-            var userAgent = new ProductInfoHeaderValue("Octoqit", "0.1");
+            var userAgent = new ProductInfoHeaderValue("Octokit.GraphQL", "0.1");
             result.DefaultRequestHeaders.Authorization = auth;
             result.DefaultRequestHeaders.UserAgent.Add(userAgent);
             return result;

@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     /// <summary>
     /// A list of fields that reactions can be ordered by.

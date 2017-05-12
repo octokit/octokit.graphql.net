@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A release asset contains the content for a release asset.
@@ -24,7 +24,7 @@ namespace Octoqit
         /// <summary>
         /// release that the asset is associated with
         /// </summary>
-        public Release Release => this.CreateProperty(x => x.Release, Octoqit.Release.Create);
+        public Release Release => this.CreateProperty(x => x.Release, Octokit.GraphQL.Release.Create);
 
         /// <summary>
         /// Identifies the url of the release asset.

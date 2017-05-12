@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Text;
 
-namespace LinqToGraphQL.Utilities
+namespace Octokit.GraphQL.Core.Utilities
 {
     public class ExpressionTreeDebug : ExpressionVisitor
     {

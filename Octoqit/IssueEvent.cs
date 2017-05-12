@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents an issue event.
@@ -37,12 +37,12 @@ namespace Octoqit
     }
 }
 
-namespace Octoqit.Internal
+namespace Octokit.GraphQL.Internal
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     internal class StubIIssueEvent : QueryEntity, IIssueEvent
     {
@@ -50,13 +50,13 @@ namespace Octoqit.Internal
         {
         }
 
-        public User Actor => this.CreateProperty(x => x.Actor, Octoqit.User.Create);
+        public User Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.User.Create);
 
         public string CreatedAt { get; }
 
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octoqit.Issue.Create);
+        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Issue.Create);
 
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         public IssueEventType Type { get; }
 

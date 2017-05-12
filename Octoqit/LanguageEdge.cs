@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents the language of a repository.
@@ -16,7 +16,7 @@ namespace Octoqit
 
         public string Cursor { get; }
 
-        public Language Node => this.CreateProperty(x => x.Node, Octoqit.Language.Create);
+        public Language Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Language.Create);
 
         /// <summary>
         /// The number of bytes of code written in the language.

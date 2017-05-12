@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using LinqToGraphQL.Builders;
-using LinqToGraphQL.Deserializers;
-using LinqToGraphQL.UnitTests.Models;
+using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
+using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 
-namespace LinqToGraphQL.UnitTests
+namespace Octokit.GraphQL.Core.UnitTests
 {
     public class PartialEvaluationTests
     {

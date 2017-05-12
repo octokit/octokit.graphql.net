@@ -7,8 +7,8 @@
     <ProjectGuid>{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LinqToGraphQL.Generation</RootNamespace>
-    <AssemblyName>LinqToGraphQL.Generation</AssemblyName>
+    <RootNamespace>Octokit.GraphQL.Core.Generation</RootNamespace>
+    <AssemblyName>Octokit.GraphQL.Core.Generation</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -59,9 +59,9 @@
     <Compile Include="Utilities\TypeUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LinqToGraphQL\LinqToGraphQL.csproj">
+    <ProjectReference Include="..\LinqToGraphQL\Octokit.GraphQL.Core.csproj">
       <Project>{42469d40-7485-4697-839e-493d89529ec6}</Project>
-      <Name>LinqToGraphQL</Name>
+      <Name>Octokit.GraphQL.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

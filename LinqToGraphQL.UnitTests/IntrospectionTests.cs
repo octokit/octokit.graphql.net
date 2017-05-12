@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqToGraphQL.Builders;
-using LinqToGraphQL.Deserializers;
-using LinqToGraphQL.Introspection;
-using LinqToGraphQL.Serializers;
+using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
+using Octokit.GraphQL.Core.Introspection;
+using Octokit.GraphQL.Core.Serializers;
 using Xunit;
 
-namespace LinqToGraphQL.UnitTests
+namespace Octokit.GraphQL.Core.UnitTests
 {
     public class IntrospectionTests
     {

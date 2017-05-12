@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a comment on an Gist.
@@ -17,7 +17,7 @@ namespace Octoqit
         /// <summary>
         /// The author of the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         /// <summary>
         /// Identifies the comment body.
@@ -42,7 +42,7 @@ namespace Octoqit
         /// <summary>
         /// The editor of the comment.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         public string Id { get; }
 

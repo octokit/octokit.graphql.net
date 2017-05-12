@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a range of information from a Git blame.
@@ -22,7 +22,7 @@ namespace Octoqit
         /// <summary>
         /// Identifies the line author
         /// </summary>
-        public Commit Commit => this.CreateProperty(x => x.Commit, Octoqit.Commit.Create);
+        public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Commit.Create);
 
         /// <summary>
         /// The ending line for the range

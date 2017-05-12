@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A card in a project.
@@ -27,7 +27,7 @@ namespace Octoqit
         /// <summary>
         /// The user who created this card
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octoqit.User.Create);
+        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// Identifies the primary key from the database.
@@ -44,7 +44,7 @@ namespace Octoqit
         /// <summary>
         /// The column that contains this card.
         /// </summary>
-        public ProjectColumn ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octoqit.ProjectColumn.Create);
+        public ProjectColumn ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octokit.GraphQL.ProjectColumn.Create);
 
         /// <summary>
         /// The state of ProjectCard

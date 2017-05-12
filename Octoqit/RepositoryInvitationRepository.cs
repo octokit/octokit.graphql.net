@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A subset of repository info shared with potential collaborators.
@@ -22,7 +22,7 @@ namespace Octoqit
         /// <summary>
         /// The Ref associated with the repository's default branch.
         /// </summary>
-        public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octoqit.Ref.Create);
+        public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Ref.Create);
 
         /// <summary>
         /// The description of the repository.
@@ -92,7 +92,7 @@ namespace Octoqit
         /// <summary>
         /// The User owner of the repository.
         /// </summary>
-        public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octoqit.Internal.StubIRepositoryOwner.Create);
+        public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
 
         /// <summary>
         /// The HTTP path for this repository

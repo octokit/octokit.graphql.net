@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a starred repository.
@@ -16,7 +16,7 @@ namespace Octoqit
 
         public string Cursor { get; }
 
-        public Repository Node => this.CreateProperty(x => x.Node, Octoqit.Repository.Create);
+        public Repository Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// Identifies when the item was starred.

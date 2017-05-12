@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents an actor in a Git commit (ie. an author or committer).
@@ -38,7 +38,7 @@ namespace Octoqit
         /// <summary>
         /// The GitHub user corresponding to the email field. Null if no such user exists.
         /// </summary>
-        public User User => this.CreateProperty(x => x.User, Octoqit.User.Create);
+        public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.User.Create);
 
         internal static GitActor Create(IQueryProvider provider, Expression expression)
         {

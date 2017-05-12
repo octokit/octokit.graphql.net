@@ -54,17 +54,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LinqToGraphQL.Generation\LinqToGraphQL.Generation.csproj">
+    <ProjectReference Include="..\LinqToGraphQL.Generation\Octokit.GraphQL.Core.Generation.csproj">
       <Project>{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}</Project>
-      <Name>LinqToGraphQL.Generation</Name>
+      <Name>Octokit.GraphQL.Core.Generation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LinqToGraphQL\LinqToGraphQL.csproj">
+    <ProjectReference Include="..\LinqToGraphQL\Octokit.GraphQL.Core.csproj">
       <Project>{42469d40-7485-4697-839e-493d89529ec6}</Project>
-      <Name>LinqToGraphQL</Name>
+      <Name>Octokit.GraphQL.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Octoqit\Octoqit.csproj">
+    <ProjectReference Include="..\Octoqit\Octokit.GraphQL.csproj">
       <Project>{2fcbdd5e-c3ab-418d-8538-5eb79740d508}</Project>
-      <Name>Octoqit</Name>
+      <Name>Octokit.GraphQL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

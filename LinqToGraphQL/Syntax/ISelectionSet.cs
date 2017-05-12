@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace LinqToGraphQL.Syntax
+namespace Octokit.GraphQL.Core.Syntax
 {
     public interface ISelectionSet : ISyntaxNode
     {

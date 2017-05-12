@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// An emoji reaction to a particular piece of content.
@@ -34,7 +34,7 @@ namespace Octoqit
         /// <summary>
         /// Identifies the user who created this reaction.
         /// </summary>
-        public User User => this.CreateProperty(x => x.User, Octoqit.User.Create);
+        public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.User.Create);
 
         internal static Reaction Create(IQueryProvider provider, Expression expression)
         {

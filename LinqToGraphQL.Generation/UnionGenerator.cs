@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Generation.Utilities;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Generation.Utilities;
 
-namespace LinqToGraphQL.Generation
+namespace Octokit.GraphQL.Core.Generation
 {
     internal static class UnionGenerator
     {
@@ -17,8 +17,8 @@ namespace LinqToGraphQL.Generation
 {{
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     {GenerateUnionDocComments(type)}public class {className} : QueryEntity, IUnion
     {{

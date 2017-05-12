@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace LinqToGraphQL.Builders
+namespace Octokit.GraphQL.Core.Builders
 {
     public static class QueryEntityBuilders
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using LinqToGraphQL;
-using LinqToGraphQL.Builders;
-using LinqToGraphQL.Deserializers;
+using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
 using Xunit;
 
-namespace Octoqit.UnitTests
+namespace Octokit.GraphQL.UnitTests
 {
     public class PartialEvaluationTests
     {
@@ -27,7 +27,7 @@ namespace Octoqit.UnitTests
   ""data"": {
     ""repositoryOwner"": {
       ""repository"": {
-        ""name"": ""LinqToGraphQL"",
+        ""name"": ""Octokit.GraphQL.Core"",
         ""owner"": {
           ""login"": ""grokys""
         },
@@ -39,7 +39,7 @@ namespace Octoqit.UnitTests
             var query = new QueryBuilder().Build(expression);
             dynamic result = new ResponseDeserializer().Deserialize(query, data).Single();
 
-            Assert.Equal("LinqToGraphQL: grokys", Enumerable.Single(result.Owner).Thing);
+            Assert.Equal("Octokit.GraphQL.Core: grokys", Enumerable.Single(result.Owner).Thing);
         }
     }
 }

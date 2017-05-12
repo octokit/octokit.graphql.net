@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Generation.Utilities;
-using LinqToGraphQL.Introspection;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Generation.Utilities;
+using Octokit.GraphQL.Core.Introspection;
 
-namespace LinqToGraphQL.Generation
+namespace Octokit.GraphQL.Core.Generation
 {
     internal static class InputObjectGenerator
     {

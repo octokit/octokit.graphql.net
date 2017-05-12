@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using LinqToGraphQL.Builders;
+using Octokit.GraphQL.Core.Builders;
 
-namespace LinqToGraphQL.Introspection
+namespace Octokit.GraphQL.Core.Introspection
 {
     public class SchemaType : QueryEntity, IRootQuery
     {

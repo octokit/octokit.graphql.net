@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinqToGraphQL.Generation
+namespace Octokit.GraphQL.Core.Generation
 {
     public class GeneratedFile
     {

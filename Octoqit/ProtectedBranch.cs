@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A repository protected branch.
@@ -37,7 +37,7 @@ namespace Octoqit
         /// <summary>
         /// The creator of this protected branch.
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octoqit.User.Create);
+        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
 
         public string Id { get; }
 
@@ -54,7 +54,7 @@ namespace Octoqit
         /// <summary>
         /// The repository associated with this protected branch.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// Check to see what level merge statuses are being enforced.
@@ -68,7 +68,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octoqit.ReviewDismissalAllowanceConnection.Create);
+        public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octokit.GraphQL.ReviewDismissalAllowanceConnection.Create);
 
         /// <summary>
         /// Check if required status checks is turned on.

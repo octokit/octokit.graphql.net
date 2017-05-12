@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A review object for a given pull request.
@@ -17,7 +17,7 @@ namespace Octoqit
         /// <summary>
         /// The author of the comment.
         /// </summary>
-        public IAuthor Author => this.CreateProperty(x => x.Author, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         /// <summary>
         /// Identifies the pull request review body.
@@ -41,12 +41,12 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public PullRequestReviewCommentConnection Comments(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octoqit.PullRequestReviewCommentConnection.Create);
+        public PullRequestReviewCommentConnection Comments(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.PullRequestReviewCommentConnection.Create);
 
         /// <summary>
         /// Identifies the commit associated with this pull request review.
         /// </summary>
-        public Commit Commit => this.CreateProperty(x => x.Commit, Octoqit.Commit.Create);
+        public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Commit.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -66,7 +66,7 @@ namespace Octoqit
         /// <summary>
         /// The editor of the comment.
         /// </summary>
-        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octoqit.Internal.StubIAuthor.Create);
+        public IAuthor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIAuthor.Create);
 
         public string Id { get; }
 
@@ -83,12 +83,12 @@ namespace Octoqit
         /// <summary>
         /// Identifies the pull request associated with this pull request review.
         /// </summary>
-        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octoqit.PullRequest.Create);
+        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
         /// The repository associated with this node.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// Identifies the current state of the pull request review.

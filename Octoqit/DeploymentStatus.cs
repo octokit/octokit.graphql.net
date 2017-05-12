@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Describes the status of a given deployment attempt.
@@ -17,12 +17,12 @@ namespace Octoqit
         /// <summary>
         /// Identifies the user who triggered the deployment.
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octoqit.User.Create);
+        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// Identifies the deployment associated with status.
         /// </summary>
-        public Deployment Deployment => this.CreateProperty(x => x.Deployment, Octoqit.Deployment.Create);
+        public Deployment Deployment => this.CreateProperty(x => x.Deployment, Octokit.GraphQL.Deployment.Create);
 
         /// <summary>
         /// Identifies the description of the deployment.

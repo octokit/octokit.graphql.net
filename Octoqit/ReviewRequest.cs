@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// A request for a user to review a pull request.
@@ -24,12 +24,12 @@ namespace Octoqit
         /// <summary>
         /// Identifies the pull request associated with this review request.
         /// </summary>
-        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octoqit.PullRequest.Create);
+        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
         /// Identifies the author associated with this review request.
         /// </summary>
-        public User Reviewer => this.CreateProperty(x => x.Reviewer, Octoqit.User.Create);
+        public User Reviewer => this.CreateProperty(x => x.Reviewer, Octokit.GraphQL.User.Create);
 
         internal static ReviewRequest Create(IQueryProvider provider, Expression expression)
         {

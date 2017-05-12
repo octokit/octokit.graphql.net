@@ -1,9 +1,9 @@
 ﻿using System;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Introspection;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Introspection;
 using Xunit;
 
-namespace LinqToGraphQL.Generation.UnitTests
+namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
     public class EntityGenerationTests
     {
@@ -11,8 +11,8 @@ namespace LinqToGraphQL.Generation.UnitTests
 {{
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     public class Entity : QueryEntity{1}
     {{
@@ -595,8 +595,8 @@ namespace LinqToGraphQL.Generation.UnitTests
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Testing if doc comments are generated.
@@ -705,8 +705,8 @@ namespace LinqToGraphQL.Generation.UnitTests
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     public class Entity : QueryEntity, IRootQuery
     {

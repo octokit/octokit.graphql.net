@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Projects manage issues, pull requests and notes within a project owner.
@@ -36,7 +36,7 @@ namespace Octoqit
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public ProjectColumnConnection Columns(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Columns(first, after, last, before), Octoqit.ProjectColumnConnection.Create);
+        public ProjectColumnConnection Columns(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Columns(first, after, last, before), Octokit.GraphQL.ProjectColumnConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -46,7 +46,7 @@ namespace Octoqit
         /// <summary>
         /// The user that originally created the project.
         /// </summary>
-        public User Creator => this.CreateProperty(x => x.Creator, Octoqit.User.Create);
+        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// Identifies the primary key from the database.
@@ -68,7 +68,7 @@ namespace Octoqit
         /// <summary>
         /// The project's owner. Currently limited to repositories and organizations.
         /// </summary>
-        public IProjectOwner Owner => this.CreateProperty(x => x.Owner, Octoqit.Internal.StubIProjectOwner.Create);
+        public IProjectOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIProjectOwner.Create);
 
         /// <summary>
         /// The HTTP path for this project

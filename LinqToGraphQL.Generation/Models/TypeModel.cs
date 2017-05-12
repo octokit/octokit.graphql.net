@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using LinqToGraphQL.Introspection;
+using Octokit.GraphQL.Core.Introspection;
 
-namespace LinqToGraphQL.Generation.Models
+namespace Octokit.GraphQL.Core.Generation.Models
 {
     public class TypeModel
     {

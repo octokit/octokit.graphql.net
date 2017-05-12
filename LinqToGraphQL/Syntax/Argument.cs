@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinqToGraphQL.Syntax
+namespace Octokit.GraphQL.Core.Syntax
 {
     public class Argument : ISyntaxNode
     {

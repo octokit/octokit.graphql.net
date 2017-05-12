@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using LinqToGraphQL.Generation.Models;
-using LinqToGraphQL.Introspection;
+using Octokit.GraphQL.Core.Generation.Models;
+using Octokit.GraphQL.Core.Introspection;
 
-namespace LinqToGraphQL.Generation
+namespace Octokit.GraphQL.Core.Generation
 {
     public static class CodeGenerator
     {

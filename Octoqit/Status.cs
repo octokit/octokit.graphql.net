@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a commit status.
@@ -17,13 +17,13 @@ namespace Octoqit
         /// <summary>
         /// The commit this status is attached to.
         /// </summary>
-        public Commit Commit => this.CreateProperty(x => x.Commit, Octoqit.Commit.Create);
+        public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Commit.Create);
 
         /// <summary>
         /// Looks up an individual status context by context name.
         /// </summary>
         /// <param name="name">The context name.</param>
-        public StatusContext Context(string name) => this.CreateMethodCall(x => x.Context(name), Octoqit.StatusContext.Create);
+        public StatusContext Context(string name) => this.CreateMethodCall(x => x.Context(name), Octokit.GraphQL.StatusContext.Create);
 
         /// <summary>
         /// The individual status contexts for this commit.

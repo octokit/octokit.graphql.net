@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 
-namespace LinqToGraphQL.Utilities
+namespace Octokit.GraphQL.Core.Utilities
 {
     public static class ExpressionMethods
     {

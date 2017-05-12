@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a Milestone object on a given repository.
@@ -22,7 +22,7 @@ namespace Octoqit
         /// <summary>
         /// Identifies the creator of the milestone.
         /// </summary>
-        public User CreatedBy => this.CreateProperty(x => x.CreatedBy, Octoqit.User.Create);
+        public User CreatedBy => this.CreateProperty(x => x.CreatedBy, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// Identifies the description of the milestone.
@@ -54,7 +54,7 @@ namespace Octoqit
         /// <summary>
         /// The repository associated with this milestone.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// Identifies the state of the milestone.

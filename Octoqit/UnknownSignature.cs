@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents an unknown signature on a Commit or Tag.
@@ -37,7 +37,7 @@ namespace Octoqit
         /// <summary>
         /// GitHub user corresponding to the email signing this commit.
         /// </summary>
-        public User Signer => this.CreateProperty(x => x.Signer, Octoqit.User.Create);
+        public User Signer => this.CreateProperty(x => x.Signer, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// The state of this signature. `VALID` if signature is valid and verified by GitHub, otherwise represents reason why signature is considered invalid.

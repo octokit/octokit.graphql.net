@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinqToGraphQL
+namespace Octokit.GraphQL.Core
 {
     public interface IUnion
     {

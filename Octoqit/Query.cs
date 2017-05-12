@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// The query root of GitHub's GraphQL interface.
@@ -22,7 +22,7 @@ namespace Octoqit
         /// Fetches an object given its ID.
         /// </summary>
         /// <param name="id">ID of the object.</param>
-        public INode Node(string id) => this.CreateMethodCall(x => x.Node(id), Octoqit.Internal.StubINode.Create);
+        public INode Node(string id) => this.CreateMethodCall(x => x.Node(id), Octokit.GraphQL.Internal.StubINode.Create);
 
         /// <summary>
         /// Lookup nodes by a list of IDs.
@@ -34,31 +34,31 @@ namespace Octoqit
         /// Lookup a organization by login.
         /// </summary>
         /// <param name="login">The organization's login.</param>
-        public Organization Organization(string login) => this.CreateMethodCall(x => x.Organization(login), Octoqit.Organization.Create);
+        public Organization Organization(string login) => this.CreateMethodCall(x => x.Organization(login), Octokit.GraphQL.Organization.Create);
 
         /// <summary>
         /// Hack to workaround https://github.com/facebook/relay/issues/112 re-exposing the root query object
         /// </summary>
-        public Query Relay => this.CreateProperty(x => x.Relay, Octoqit.Query.Create);
+        public Query Relay => this.CreateProperty(x => x.Relay, Octokit.GraphQL.Query.Create);
 
         /// <summary>
         /// Lookup a given repository by the owner and repository name.
         /// </summary>
         /// <param name="owner">The login field of a user or organizationn</param>
         /// <param name="name">The name of the repository</param>
-        public Repository Repository(string owner, string name) => this.CreateMethodCall(x => x.Repository(owner, name), Octoqit.Repository.Create);
+        public Repository Repository(string owner, string name) => this.CreateMethodCall(x => x.Repository(owner, name), Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// Lookup a repository owner (ie. either a User or an Organization) by login.
         /// </summary>
         /// <param name="login">The username to lookup the owner by.</param>
-        public IRepositoryOwner RepositoryOwner(string login) => this.CreateMethodCall(x => x.RepositoryOwner(login), Octoqit.Internal.StubIRepositoryOwner.Create);
+        public IRepositoryOwner RepositoryOwner(string login) => this.CreateMethodCall(x => x.RepositoryOwner(login), Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
 
         /// <summary>
         /// Lookup resource by a URL.
         /// </summary>
         /// <param name="url">The URL.</param>
-        public IUniformResourceLocatable Resource(string url = null) => this.CreateMethodCall(x => x.Resource(url), Octoqit.Internal.StubIUniformResourceLocatable.Create);
+        public IUniformResourceLocatable Resource(string url = null) => this.CreateMethodCall(x => x.Resource(url), Octokit.GraphQL.Internal.StubIUniformResourceLocatable.Create);
 
         /// <summary>
         /// Perform a search across resources.
@@ -69,18 +69,18 @@ namespace Octoqit
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="query">The search string to look for.</param>
         /// <param name="type">The types of search items to search within.</param>
-        public SearchResultItemConnection Search(string query, SearchType type, int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octoqit.SearchResultItemConnection.Create);
+        public SearchResultItemConnection Search(string query, SearchType type, int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octokit.GraphQL.SearchResultItemConnection.Create);
 
         /// <summary>
         /// Lookup a user by login.
         /// </summary>
         /// <param name="login">The user's login.</param>
-        public User User(string login) => this.CreateMethodCall(x => x.User(login), Octoqit.User.Create);
+        public User User(string login) => this.CreateMethodCall(x => x.User(login), Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// The currently authenticated user.
         /// </summary>
-        public User Viewer => this.CreateProperty(x => x.Viewer, Octoqit.User.Create);
+        public User Viewer => this.CreateProperty(x => x.Viewer, Octokit.GraphQL.User.Create);
 
         internal static Query Create(IQueryProvider provider, Expression expression)
         {

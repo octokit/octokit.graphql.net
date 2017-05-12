@@ -1,9 +1,9 @@
-namespace Octoqit
+namespace Octokit.GraphQL
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using LinqToGraphQL;
-    using LinqToGraphQL.Builders;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// Represents a Git reference.
@@ -22,7 +22,7 @@ namespace Octoqit
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="states">A list of states to filter the pull requests by.</param>
-        public PullRequestConnection AssociatedPullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, states), Octoqit.PullRequestConnection.Create);
+        public PullRequestConnection AssociatedPullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, states), Octokit.GraphQL.PullRequestConnection.Create);
 
         public string Id { get; }
 
@@ -39,12 +39,12 @@ namespace Octoqit
         /// <summary>
         /// The repository the ref belongs to.
         /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octoqit.Repository.Create);
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
         /// The object the ref points to.
         /// </summary>
-        public IGitObject Target => this.CreateProperty(x => x.Target, Octoqit.Internal.StubIGitObject.Create);
+        public IGitObject Target => this.CreateProperty(x => x.Target, Octokit.GraphQL.Internal.StubIGitObject.Create);
 
         internal static Ref Create(IQueryProvider provider, Expression expression)
         {
