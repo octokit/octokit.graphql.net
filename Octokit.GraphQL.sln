@@ -11,11 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.UnitTests", "Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj", "{13F4EF54-4251-439F-A4CE-B811ADFD00ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generate", "Tools\Generate\Generate.csproj", "{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.Generation", "Octokit.GraphQL.Core.Generation\Octokit.GraphQL.Core.Generation.csproj", "{80BE1304-CFA7-4D2C-AFAF-6AAF0F7DFAAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.Generation.UnitTests", "Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj", "{A0E130E4-6282-4B4B-B44E-32992DB9993B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{516AB6AE-153D-4776-B861-DF653A0E54BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,5 +56,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3} = {516AB6AE-153D-4776-B861-DF653A0E54BF}
 	EndGlobalSection
 EndGlobal
