@@ -89,3 +89,44 @@ var query = new Query()
     });
 ```
 
+## Select
+
+All queries must end in `Select` statements that select primitive types. In the above `Viewer` example, we're selecting the `Login` field which is a string:
+
+```csharp
+var query = new Query().Viewer.Select(x => x.Login);
+```
+
+If we were to try to instead select the `Viewer` object itself, GraphQL will throw an exception:
+
+```csharp
+var query = new Query().Viewer.Select(x => x);
+```
+
+```
+Objects must have selections (field 'viewer' returns User but has no selections)
+```
+
+Because a `Viewer` is a GraphQL `Object` type, you cannot select it: you must select which fields you want returned.
+
+## More examples
+
+Get the pull request number for a repository branch:
+
+```csharp
+var query = new Query()
+    .Repository("github", "VisualStudio")
+    .PullRequests(first: 30, headRefName: "fixes/971-show-docs-when-in-github-repo")
+    .Nodes
+    .Select(x => x.Number);
+```
+
+## TODO
+
+There's a lot left to do:
+
+- Mutations
+- Work out a better way to handle paging
+- More documentation
+- API Deprecation support
+- Unions don't work properly
