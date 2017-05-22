@@ -80,5 +80,4 @@ Write-Host
 Write-Host
 
 VerifyEnvironmentVariable "account name" "OCTOKIT_GQL_GITHUBUSERNAME"
-VerifyEnvironmentVariable "account password" "OCTOKIT_GQL_GITHUBPASSWORD" $true
 VerifyEnvironmentVariable "OAuth token" "OCTOKIT_GQL_OAUTHTOKEN"
