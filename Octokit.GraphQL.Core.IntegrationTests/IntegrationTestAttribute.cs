@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Octokit.GraphQL.Core.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests
 {
     public class IntegrationTestDiscoverer : IXunitTestCaseDiscoverer
     {
@@ -24,7 +23,7 @@ namespace Octokit.GraphQL.Core.IntegrationTests
         }
     }
 
-    [XunitTestCaseDiscoverer("Octokit.GraphQL.Core.IntegrationTests.IntegrationTestDiscoverer", "Octokit.GraphQL.Core.IntegrationTests")]
+    [XunitTestCaseDiscoverer("Octokit.GraphQL.IntegrationTests.IntegrationTestDiscoverer", "Octokit.GraphQL.IntegrationTests")]
     public class IntegrationTestAttribute : FactAttribute
     {
     }

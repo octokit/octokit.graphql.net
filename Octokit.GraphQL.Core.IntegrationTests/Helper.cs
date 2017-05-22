@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 
-namespace Octokit.GraphQL.Core.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests
 {
     public static class Helper
     {
