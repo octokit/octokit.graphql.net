@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core", "Octokit.GraphQL.Core\Octokit.GraphQL.Core.csproj", "{42469D40-7485-4697-839E-493D89529EC6}"
 EndProject
