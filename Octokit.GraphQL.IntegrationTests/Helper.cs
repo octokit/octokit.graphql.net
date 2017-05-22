@@ -8,6 +8,14 @@ namespace Octokit.GraphQL.IntegrationTests
 
         public static string OAuthToken => Environment.GetEnvironmentVariable("OCTOKIT_GQL_OAUTHTOKEN");
 
-        public static bool HasCredentials => !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(OAuthToken);
+        public static bool HasCredentials => !String.IsNullOrWhiteSpace(Username) && !String.IsNullOrWhiteSpace(OAuthToken);
+
+        public const string GithubComGraphqlApi = "https://api.github.com/graphql";
+        public static readonly Uri GithubComApiUri = new Uri("https://api.github.com/");
+
+        public static DateTime ParseUtcLocal(string dateString)
+        {
+            return Convert.ToDateTime(DateTime.Parse(dateString).ToLocalTime());
+        }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using Octokit.GraphQL.Core;
 using Xunit;
@@ -9,15 +7,12 @@ namespace Octokit.GraphQL.IntegrationTests
 {
     public class ViewerTests
     {
-        private const string GithubComGraphqlApi = "https://api.github.com/graphql";
-
-        private static readonly Uri GithubComApiUri = new Uri("https://api.github.com/");
-
         [IntegrationTest]
         public void Viewer_By_OAuthToken_Matches_Username()
         {
-            var connection = new Core.Connection(GithubComGraphqlApi, Helper.OAuthToken);
-            var query = new Query().Viewer.Select(user => new{
+            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
+            var query = new Query().Viewer.Select(user => new
+            {
                 user.Login,
                 user.Email,
                 user.IsViewer
@@ -35,14 +30,14 @@ namespace Octokit.GraphQL.IntegrationTests
         public void Viewer_By_GraphyQL_Matches_Api()
         {
             var credentials = new Credentials(Helper.OAuthToken);
-            var gitHubClient = new GitHubClient(new ProductHeaderValue("OctokitTests"), GithubComApiUri)
+            var gitHubClient = new GitHubClient(new ProductHeaderValue("OctokitTests"), Helper.GithubComApiUri)
             {
                 Credentials = credentials
             };
 
             var apiUser = gitHubClient.User.Current().Result;
 
-            var connection = new Core.Connection(GithubComGraphqlApi, Helper.OAuthToken);
+            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
             var query = new Query().Viewer.Select(user => new
             {
                 AvatarUrl = user.AvatarUrl(null),
@@ -65,7 +60,7 @@ namespace Octokit.GraphQL.IntegrationTests
             Assert.Equal(apiUser.AvatarUrl, graphqlUser.AvatarUrl);
             Assert.Equal(apiUser.Bio, graphqlUser.Bio);
             Assert.Equal(apiUser.Company, graphqlUser.Company);
-            Assert.Equal(apiUser.CreatedAt, ParseUTCLocal(graphqlUser.CreatedAt));
+            Assert.Equal(apiUser.CreatedAt, Helper.ParseUtcLocal(graphqlUser.CreatedAt));
             Assert.Equal(apiUser.Email ?? string.Empty, graphqlUser.Email);
             Assert.Equal(apiUser.Hireable ?? false, graphqlUser.IsHireable);
             Assert.Equal(apiUser.Id, graphqlUser.DatabaseId);
@@ -85,11 +80,6 @@ namespace Octokit.GraphQL.IntegrationTests
             //PrivateGists
             //PublicGists
             //TotalPrivateRepos
-        }
-
-        private static DateTime ParseUTCLocal(string dateString)
-        {
-            return Convert.ToDateTime(DateTime.Parse(dateString).ToLocalTime());
         }
     }
 }
