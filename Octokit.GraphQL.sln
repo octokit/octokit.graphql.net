@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core", "Octokit.GraphQL.Core\Octokit.GraphQL.Core.csproj", "{42469D40-7485-4697-839E-493D89529EC6}"
 EndProject
@@ -18,6 +18,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.Generation.UnitTests", "Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj", "{A0E130E4-6282-4B4B-B44E-32992DB9993B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{516AB6AE-153D-4776-B861-DF653A0E54BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit.GraphQL.Core.IntegrationTests", "Octokit.GraphQL.Core.IntegrationTests\Octokit.GraphQL.Core.IntegrationTests.csproj", "{1775D44C-F584-404B-B60D-C7EEDD875C96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{369BC54B-D0C7-4F5B-BBAA-D84732192187}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\configure-integration-tests.ps1 = Scripts\configure-integration-tests.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +60,10 @@ Global
 		{A0E130E4-6282-4B4B-B44E-32992DB9993B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0E130E4-6282-4B4B-B44E-32992DB9993B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0E130E4-6282-4B4B-B44E-32992DB9993B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1775D44C-F584-404B-B60D-C7EEDD875C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1775D44C-F584-404B-B60D-C7EEDD875C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1775D44C-F584-404B-B60D-C7EEDD875C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1775D44C-F584-404B-B60D-C7EEDD875C96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
