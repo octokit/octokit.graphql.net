@@ -21,5 +21,26 @@ namespace Octokit.GraphQL.IntegrationTests
             Assert.Contains("go-octokit", repositoryNames);
             Assert.Contains("octokit.py", repositoryNames);
         }
+
+        [IntegrationTest]
+        public void Should_Query_Repositories_By_Owner_Alphabetically()
+        {
+            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
+
+            var query = new Query().RepositoryOwner("octokit").Repositories(first: 30, orderBy: new RepositoryOrder
+            {
+                Direction = OrderDirection.Asc,
+                Field = RepositoryOrderField.Name
+            }).Nodes.Select(repository => repository.Name);
+
+            var repositoryNames = connection.Run(query).Result.ToArray();
+
+            Assert.Equal(5, repositoryNames.Length);
+            Assert.Equal("go-octokit", repositoryNames[0]);
+            Assert.Equal("octokit.net", repositoryNames[1]);
+            Assert.Equal("octokit.objc", repositoryNames[2]);
+            Assert.Equal("octokit.py", repositoryNames[3]);
+            Assert.Equal("octokit.rb", repositoryNames[4]);
+        }
     }
 }
