@@ -178,12 +178,12 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void String_Parameter()
+        public void Boolean_Parameter()
         {
-            var expected = "{stringValue(value:\"hello\"){name}}";
+            var expected = "{boolValue(boolean:false){name}}";
 
             var expression = new RootQuery()
-                .StringValue("hello")
+                .BoolValue(false)
                 .Select(x => x.Name);
 
             var query = new QueryBuilder().Build(expression);
@@ -193,12 +193,12 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Boolean_Parameter()
+        public void String_Parameter()
         {
-            var expected = "{boolValue(boolean:false){name}}";
+            var expected = "{stringValue(value:\"hello\"){name}}";
 
             var expression = new RootQuery()
-                .BoolValue(false)
+                .StringValue("hello")
                 .Select(x => x.Name);
 
             var query = new QueryBuilder().Build(expression);
