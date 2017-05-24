@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Octokit.GraphQL.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests.Utilities
 {
     public static class Helper
     {
