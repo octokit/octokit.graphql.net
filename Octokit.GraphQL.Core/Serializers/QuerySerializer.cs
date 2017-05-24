@@ -138,6 +138,10 @@ namespace Octokit.GraphQL.Core.Serializers
             {
                 return ((bool)value) ? "true" : "false";
             }
+            else if (value.GetType().Name.EndsWith("Order"))
+            {
+                throw new NotImplementedException();
+            }
             else
             {
                 return value.ToString();
