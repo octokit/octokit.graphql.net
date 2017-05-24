@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
 using Octokit.GraphQL.Core;
+using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
 namespace Octokit.GraphQL.IntegrationTests
 {
-    public class ViewerTests
+    public class ViewerTests: IntegrationTestBase
     {
         [IntegrationTest]
         public void Viewer_By_OAuthToken_Matches_Username()
         {
-            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
             var query = new Query().Viewer.Select(user => new
             {
                 user.Login,
@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.IntegrationTests
                 user.IsViewer
             });
 
-            var graphqlUser = connection.Run(query).Result.FirstOrDefault();
+            var graphqlUser = Connection.Run(query).Result.FirstOrDefault();
 
             Assert.NotNull(graphqlUser);
             Assert.True(graphqlUser.IsViewer);
@@ -29,15 +29,10 @@ namespace Octokit.GraphQL.IntegrationTests
         [IntegrationTest]
         public void Viewer_By_GraphyQL_Matches_Api()
         {
-            var credentials = new Credentials(Helper.OAuthToken);
-            var gitHubClient = new GitHubClient(new ProductHeaderValue("OctokitTests"), Helper.GithubComApiUri)
-            {
-                Credentials = credentials
-            };
+            var gitHubClient = GetV3GitHubClient();
 
             var apiUser = gitHubClient.User.Current().Result;
 
-            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
             var query = new Query().Viewer.Select(user => new
             {
                 AvatarUrl = user.AvatarUrl(null),
@@ -53,7 +48,7 @@ namespace Octokit.GraphQL.IntegrationTests
                 user.Location,
             });
 
-            var graphqlUser = connection.Run(query).Result.FirstOrDefault();
+            var graphqlUser = Connection.Run(query).Result.FirstOrDefault();
 
             Assert.NotNull(graphqlUser);
 

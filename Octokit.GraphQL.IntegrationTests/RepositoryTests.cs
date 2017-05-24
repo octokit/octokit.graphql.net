@@ -1,18 +1,18 @@
 using System.Linq;
+using Octokit.GraphQL.Core;
+using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
 namespace Octokit.GraphQL.IntegrationTests
 {
-    public class RepositoryTests
+    public class RepositoryTests : IntegrationTestBase
     {
         [IntegrationTest]
         public void Should_Query_All_RepositoryOwner_Repositories()
         {
-            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
-
             var query = new Query().RepositoryOwner("octokit").Repositories(first: 30).Nodes.Select(repository => repository.Name);
 
-            var repositoryNames = connection.Run(query).Result.ToArray();
+            var repositoryNames = Connection.Run(query).Result.ToArray();
 
             Assert.Equal(5, repositoryNames.Length);
             Assert.Contains("octokit.net", repositoryNames);
@@ -23,17 +23,31 @@ namespace Octokit.GraphQL.IntegrationTests
         }
 
         [IntegrationTest]
+        public void Should_Query_Repository_ByName()
+        {
+            var query = new Query().Repository("octokit", "octokit.net").Select(r => new
+            {
+                r.Name,
+                r.DatabaseId,
+            });
+
+            var repository = Connection.Run(query).Result.FirstOrDefault();
+
+            Assert.NotNull(repository);
+            Assert.Equal(repository.Name, "octokit.net");
+            Assert.Equal(repository.DatabaseId, 7528679);
+        }
+
+        [IntegrationTest]
         public void Should_QueryRepositoryOwner_Repositories_OrderBy_Name_Ascending()
         {
-            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
-
             var query = new Query().RepositoryOwner("octokit").Repositories(first: 30, orderBy: new RepositoryOrder
             {
                 Direction = OrderDirection.Asc,
                 Field = RepositoryOrderField.Name
             }).Nodes.Select(repository => repository.Name);
 
-            var repositoryNames = connection.Run(query).Result.ToArray();
+            var repositoryNames = Connection.Run(query).Result.ToArray();
 
             Assert.Equal(5, repositoryNames.Length);
             Assert.Equal("go-octokit", repositoryNames[0]);
@@ -46,15 +60,13 @@ namespace Octokit.GraphQL.IntegrationTests
         [IntegrationTest]
         public void Should_QueryRepositoryOwner_Repositories_OrderBy_CreatedAt_Descending()
         {
-            var connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
-
             var query = new Query().RepositoryOwner("octokit").Repositories(first: 30, orderBy: new RepositoryOrder
             {
                 Direction = OrderDirection.Asc,
                 Field = RepositoryOrderField.CreatedAt
             }).Nodes.Select(repository => repository.Name);
 
-            var repositoryNames = connection.Run(query).Result.ToArray();
+            var repositoryNames = Connection.Run(query).Result.ToArray();
 
             Assert.Equal(5, repositoryNames.Length);
             Assert.Equal("octokit.rb", repositoryNames[0]);

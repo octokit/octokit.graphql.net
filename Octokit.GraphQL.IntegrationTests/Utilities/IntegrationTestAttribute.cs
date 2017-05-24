@@ -4,7 +4,7 @@ using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Octokit.GraphQL.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests.Utilities
 {
     public class IntegrationTestDiscoverer : IXunitTestCaseDiscoverer
     {
@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.IntegrationTests
         }
     }
 
-    [XunitTestCaseDiscoverer("Octokit.GraphQL.IntegrationTests.IntegrationTestDiscoverer", "Octokit.GraphQL.IntegrationTests")]
+    [XunitTestCaseDiscoverer("Octokit.GraphQL.IntegrationTests.Utilities.IntegrationTestDiscoverer", "Octokit.GraphQL.IntegrationTests")]
     public class IntegrationTestAttribute : FactAttribute
     {
     }
