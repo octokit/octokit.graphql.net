@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Octokit.GraphQL.Core.Syntax;
+using Octokit.GraphQL.Core.Utilities;
 
 namespace Octokit.GraphQL.Core.Serializers
 {
@@ -69,7 +71,8 @@ namespace Octokit.GraphQL.Core.Serializers
                 foreach (var arg in field.Arguments)
                 {
                     if (!first) builder.Append(comma);
-                    builder.Append(arg.Name).Append(colon).Append(SerializeValue(arg.Value));
+                    builder.Append(arg.Name).Append(colon);
+                    SerializeValue(builder, arg.Value);
                     first = false;
                 }
 
@@ -124,27 +127,57 @@ namespace Octokit.GraphQL.Core.Serializers
             CloseBrace(builder);
         }
 
-        private string SerializeValue(object value)
+        private void SerializeValue(StringBuilder builder, object value)
         {
             if (value is string)
             {
-                return '"' + ((string)value) + '"';
+                builder.Append('"' + ((string)value) + '"');
             }
             else if (value is Enum)
             {
-                return value.ToString().ToUpperInvariant();
+                builder.Append(value.ToString().PascalCaseToSnakeCase());
             }
             else if (value is bool)
             {
-                return ((bool)value) ? "true" : "false";
+                builder.Append((bool)value ? "true" : "false");
             }
-            else if (value.GetType().Name.EndsWith("Order"))
+            else if (value is int || value is float)
             {
-                throw new NotImplementedException();
+                builder.Append(value);
             }
             else
             {
-                return value.ToString();
+                var propertyInfos = value.GetType().GetRuntimeProperties()
+                    .Where(info => info.GetMethod.IsPublic);
+
+                using (var enumerator = propertyInfos.GetEnumerator())
+                {
+                    var i = 0;
+
+                    while (enumerator.MoveNext())
+                    {
+                        var publicProperty = enumerator.Current;
+
+                        if (i == 0)
+                        {
+                            OpenBrace(builder);
+                        }
+                        else
+                        {
+                            builder.Append(",");
+                        }
+
+                        builder.Append(publicProperty.Name.LowerFirstCharacter()).Append(colon);
+                        SerializeValue(builder, publicProperty.GetMethod.Invoke(value, null));
+                        i++;
+                    }
+
+                    if (i > 0)
+                    {
+                        CloseBrace(builder);
+                    }
+                }
+                
             }
         }
 

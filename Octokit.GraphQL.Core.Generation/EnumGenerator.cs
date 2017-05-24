@@ -80,7 +80,7 @@ namespace {rootNamespace}
         private static string GenerateEnumValue(EnumValueModel value)
         {
             return $@"        [EnumMember(Value = ""{value.Name}"")]
-        {value.Name.ToPascalCase()},";
+        {value.Name.SnakeCaseToPascalCase()},";
         }
     }
 }
