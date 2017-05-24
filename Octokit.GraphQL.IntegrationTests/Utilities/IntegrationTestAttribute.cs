@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.IntegrationTests.Utilities
         }
     }
 
-    [XunitTestCaseDiscoverer("Octokit.GraphQL.IntegrationTests.IntegrationTestDiscoverer", "Octokit.GraphQL.IntegrationTests")]
+    [XunitTestCaseDiscoverer("Octokit.GraphQL.IntegrationTests.Utilities.IntegrationTestDiscoverer", "Octokit.GraphQL.IntegrationTests")]
     public class IntegrationTestAttribute : FactAttribute
     {
     }
