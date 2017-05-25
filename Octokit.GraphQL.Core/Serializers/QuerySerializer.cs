@@ -192,7 +192,7 @@ namespace Octokit.GraphQL.Core.Serializers
                 for (var index = 0; index < properties.Length; index++)
                 {
                     var property = properties[index];
-
+                    
                     if (index == 0)
                     {
                         OpenBrace(builder);
