@@ -154,20 +154,18 @@ namespace Octokit.GraphQL.Core.Serializers
             {
                 builder.Append("[");
 
-                using (var valueEnumerator = ((IEnumerable) value).Cast<object>().GetEnumerator())
+                var i = 0;
+                var valueEnumerator = ((IEnumerable)value).GetEnumerator();
+                while (valueEnumerator.MoveNext())
                 {
-                    var i = 0;
-                    while (valueEnumerator.MoveNext())
+                    if (i != 0)
                     {
-                        if (i != 0)
-                        {
-                            builder.Append(",");
-                        }
-
-                        SerializeValue(builder, valueEnumerator.Current);
-
-                        i++;
+                        builder.Append(",");
                     }
+
+                    SerializeValue(builder, valueEnumerator.Current);
+
+                    i++;
                 }
 
                 builder.Append("]");
@@ -194,7 +192,7 @@ namespace Octokit.GraphQL.Core.Serializers
                 for (var index = 0; index < properties.Length; index++)
                 {
                     var property = properties[index];
-                    
+
                     if (index == 0)
                     {
                         OpenBrace(builder);
