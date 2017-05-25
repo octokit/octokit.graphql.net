@@ -178,12 +178,98 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Boolean_Paramter()
+        public void Boolean_Parameter()
         {
-            var expected = "{another(boolean:false){name}}";
+            var expected = "{boolValue(boolean:false){name}}";
 
             var expression = new RootQuery()
-                .Another(false)
+                .BoolValue(false)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void String_Parameter()
+        {
+            var expected = "{stringValue(value:\"hello\"){name}}";
+
+            var expression = new RootQuery()
+                .StringValue("hello")
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Integer_Parameter()
+        {
+            var expected = "{intValue(integer:123){name}}";
+
+            var expression = new RootQuery()
+                .IntValue(123)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Float_Parameter()
+        {
+            var expected = "{floatValue(flt:123.3){name}}";
+
+            var expression = new RootQuery()
+                .FloatValue(123.3f)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Object_Null_Parameter()
+        {
+            var expected = "{objectValue{name}}";
+
+            var expression = new RootQuery()
+                .ObjectValue(null)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        public class SampleObject
+        {
+            public string Value1 { get; set; }
+
+            public int Value2 { get; set; }
+        }
+
+        [Fact]
+        public void Object_Parameter()
+        {
+            var expected = "{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
+
+            var expression = new RootQuery()
+                .ObjectValue(new SampleObject()
+                {
+                    Value1 = "Hello World",
+                    Value2 = 42
+                })
                 .Select(x => x.Name);
 
             var query = new QueryBuilder().Build(expression);
