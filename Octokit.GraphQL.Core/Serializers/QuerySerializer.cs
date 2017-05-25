@@ -145,6 +145,9 @@ namespace Octokit.GraphQL.Core.Serializers
             {
                 builder.Append(value);
             }
+            else if (value is IQueryable)
+            {
+            }
             else
             {
                 var propertyInfos = value.GetType().GetRuntimeProperties()
@@ -177,7 +180,7 @@ namespace Octokit.GraphQL.Core.Serializers
                         CloseBrace(builder);
                     }
                 }
-                
+
             }
         }
 
