@@ -25,6 +25,11 @@ namespace Octokit.GraphQL
         public string CreatedAt { get; }
 
         /// <summary>
+        /// Identifies the primary key from the database.
+        /// </summary>
+        public int? DatabaseId { get; }
+
+        /// <summary>
         /// The deployment associated with the 'deployed' event.
         /// </summary>
         public Deployment Deployment => this.CreateProperty(x => x.Deployment, Octokit.GraphQL.Deployment.Create);
@@ -40,6 +45,11 @@ namespace Octokit.GraphQL
         /// The ref associated with the 'deployed' event.
         /// </summary>
         public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Ref.Create);
+
+        /// <summary>
+        /// The integration that created this object.
+        /// </summary>
+        public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 
         internal static DeployedEvent Create(IQueryProvider provider, Expression expression)
         {

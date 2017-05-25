@@ -130,6 +130,11 @@ namespace Octokit.GraphQL
         public bool IsHireable { get; }
 
         /// <summary>
+        /// Is the account billed through invoices?
+        /// </summary>
+        public bool IsInvoiced { get; }
+
+        /// <summary>
         /// Whether or not this user is a site administrator.
         /// </summary>
         public bool IsSiteAdmin { get; }
@@ -170,11 +175,6 @@ namespace Octokit.GraphQL
         public OrganizationConnection Organizations(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Organizations(first, after, last, before), Octokit.GraphQL.OrganizationConnection.Create);
 
         /// <summary>
-        /// The HTTP path for this user
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// A list of repositories this user has pinned to their profile
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -198,7 +198,8 @@ namespace Octokit.GraphQL
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
         /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
-        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null, IQueryable<string> labels = null, string headRefName = null, string baseRefName = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName), Octokit.GraphQL.PullRequestConnection.Create);
+        /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
+        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null, IQueryable<string> labels = null, string headRefName = null, string baseRefName = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.PullRequestConnection.Create);
 
         /// <summary>
         /// A list of repositories that the user owns.

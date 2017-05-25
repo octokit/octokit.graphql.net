@@ -33,11 +33,6 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The HTTP path listing owners projects
         /// </summary>
-        string ProjectsPath { get; }
-
-        /// <summary>
-        /// The HTTP path listing owners projects
-        /// </summary>
         string ProjectsResourcePath { get; }
 
         /// <summary>
@@ -70,8 +65,6 @@ namespace Octokit.GraphQL.Internal
         public Project Project(int number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Project.Create);
 
         public ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IQueryable<ProjectState> states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.ProjectConnection.Create);
-
-        public string ProjectsPath { get; }
 
         public string ProjectsResourcePath { get; }
 

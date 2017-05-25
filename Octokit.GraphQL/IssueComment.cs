@@ -98,7 +98,7 @@ namespace Octokit.GraphQL
         public string UpdatedAt { get; }
 
         /// <summary>
-        /// The integration this comment was authored via.
+        /// The integration that created this object.
         /// </summary>
         public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 

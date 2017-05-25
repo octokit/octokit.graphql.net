@@ -24,12 +24,22 @@ namespace Octokit.GraphQL
         /// </summary>
         public string CreatedAt { get; }
 
+        /// <summary>
+        /// Identifies the primary key from the database.
+        /// </summary>
+        public int? DatabaseId { get; }
+
         public string Id { get; }
 
         /// <summary>
         /// Identifies the message associated with the 'review_dismissed' event.
         /// </summary>
         public string Message { get; }
+
+        /// <summary>
+        /// The message associated with the event, rendered to HTML.
+        /// </summary>
+        public string MessageHtml { get; }
 
         /// <summary>
         /// Identifies the previous state of the review with the 'review_dismissed' event.
@@ -42,9 +52,24 @@ namespace Octokit.GraphQL
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
+        /// Identifies the commit which caused the review to become stale.
+        /// </summary>
+        public PullRequestCommit PullRequestCommit => this.CreateProperty(x => x.PullRequestCommit, Octokit.GraphQL.PullRequestCommit.Create);
+
+        /// <summary>
+        /// The HTTP path for this ReviewDismissedEvent.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// Identifies the review associated with the 'review_dismissed' event.
         /// </summary>
         public PullRequestReview Review => this.CreateProperty(x => x.Review, Octokit.GraphQL.PullRequestReview.Create);
+
+        /// <summary>
+        /// The HTTP url for this ReviewDismissedEvent.
+        /// </summary>
+        public string Url { get; }
 
         internal static ReviewDismissedEvent Create(IQueryProvider provider, Expression expression)
         {

@@ -26,6 +26,16 @@ namespace Octokit.GraphQL
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
+        /// <summary>
+        /// The HTTP path for this pull request commit
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP url for this pull request commit
+        /// </summary>
+        public string Url { get; }
+
         internal static PullRequestCommit Create(IQueryProvider provider, Expression expression)
         {
             return new PullRequestCommit(provider, expression);

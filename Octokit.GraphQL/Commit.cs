@@ -47,11 +47,6 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The HTTP path for this Git object
         /// </summary>
-        public string CommitPath { get; }
-
-        /// <summary>
-        /// The HTTP path for this Git object
-        /// </summary>
         public string CommitResourcePath { get; }
 
         /// <summary>
@@ -120,11 +115,6 @@ namespace Octokit.GraphQL
         public string Oid { get; }
 
         /// <summary>
-        /// The HTTP path for this commit
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// The Repository this commit belongs to
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
@@ -148,6 +138,16 @@ namespace Octokit.GraphQL
         /// Commit's root Tree
         /// </summary>
         public Tree Tree => this.CreateProperty(x => x.Tree, Octokit.GraphQL.Tree.Create);
+
+        /// <summary>
+        /// The HTTP path for the tree of this commit
+        /// </summary>
+        public string TreeResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP url for the tree of this commit
+        /// </summary>
+        public string TreeUrl { get; }
 
         /// <summary>
         /// The HTTP url for this commit
