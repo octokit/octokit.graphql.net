@@ -22,6 +22,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
 namespace Test.Internal
 {{
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -197,7 +198,7 @@ namespace Test.Internal
         }
 
         [Fact]
-        public void Generates_Method_For_Object_Field_With_Args()
+        public void Generates_Method_For_Object_Field_With_Int_Arg()
         {
             var expected = FormatMemberTemplate(
                 "Other Foo(int bar);",
@@ -231,7 +232,7 @@ namespace Test.Internal
         }
 
         [Fact]
-        public void Generates_Method_For_NonNull_Object_Field_With_Args()
+        public void Generates_Method_For_NonNull_Object_Field_With_Int_Arg()
         {
             var expected = FormatMemberTemplate(
                 "Other Foo(int bar);",
@@ -265,7 +266,7 @@ namespace Test.Internal
         }
 
         [Fact]
-        public void Generates_Method_For_List_Field_With_Args()
+        public void Generates_Method_For_List_Field_With_Nullable_Int_Arg()
         {
             var expected = FormatMemberTemplate(
                 "IQueryable<Other> Foo(int? bar = null);",
@@ -287,6 +288,74 @@ namespace Test.Internal
                             {
                                 Name = "bar",
                                 Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_Object_List_Arg()
+        {
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo(IEnumerable<Another> bar = null);",
+                "public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Object("Another")),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_Enum_List_Arg()
+        {
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo(IEnumerable<Another> bar = null);",
+                "public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Enum("Another")),
                             }
                         }
                     },
@@ -531,6 +600,7 @@ namespace Test.Internal
         {
             var expected = @"namespace Test
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
