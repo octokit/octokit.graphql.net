@@ -279,6 +279,43 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Object_Parameter_Hit_Cache()
+        {
+            var expected = "{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
+
+            var expression = new RootQuery()
+                .ObjectValue(new SampleObject()
+                {
+                    Value1 = "Hello World",
+                    Value2 = 42
+                })
+                .Select(x => x.Name);
+
+            var querySerializer = new QuerySerializer();
+            var queryBuilder = new QueryBuilder();
+
+            var query = queryBuilder.Build(expression);
+            var result = querySerializer.Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+
+            expected = "{objectValue(value:{value1:\"A different answer\",value2:14}){name}}";
+
+            expression = new RootQuery()
+                .ObjectValue(new SampleObject()
+                {
+                    Value1 = "A different answer",
+                    Value2 = 14
+                })
+                .Select(x => x.Name);
+
+            query = queryBuilder.Build(expression);
+            result = querySerializer.Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Union()
         {
             var expected = @"{

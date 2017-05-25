@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +11,8 @@ namespace Octokit.GraphQL.Core.Serializers
 {
     public class QuerySerializer
     {
+        private static readonly ConcurrentDictionary<Type, Tuple<string, MethodInfo>[]> typeCache = new ConcurrentDictionary<Type, Tuple<string, MethodInfo>[]>();
+
         private readonly int indentation;
         private readonly string comma = ",";
         private readonly string colon = ":";
@@ -147,37 +151,44 @@ namespace Octokit.GraphQL.Core.Serializers
             }
             else
             {
-                var propertyInfos = value.GetType().GetRuntimeProperties()
-                    .Where(info => info.GetMethod.IsPublic);
+                var objectType = value.GetType();
 
-                using (var enumerator = propertyInfos.GetEnumerator())
+                Tuple<string, MethodInfo>[] properties;
+                if (!typeCache.TryGetValue(objectType, out properties))
                 {
-                    var i = 0;
+                    properties = objectType.GetRuntimeProperties()
+                        .Where(info => info.GetMethod.IsPublic)
+                        .Select(info => new Tuple<string, MethodInfo>(info.Name.LowerFirstCharacter(), info.GetMethod))
+                        .ToArray();
 
-                    while (enumerator.MoveNext())
+                    typeCache.TryAdd(objectType, properties);
+                }
+                else
+                {
+                    //Cache Hit
+                }
+
+                for (var index = 0; index < properties.Length; index++)
+                {
+                    var property = properties[index];
+                    
+                    if (index == 0)
                     {
-                        var publicProperty = enumerator.Current;
-
-                        if (i == 0)
-                        {
-                            OpenBrace(builder);
-                        }
-                        else
-                        {
-                            builder.Append(",");
-                        }
-
-                        builder.Append(publicProperty.Name.LowerFirstCharacter()).Append(colon);
-                        SerializeValue(builder, publicProperty.GetMethod.Invoke(value, null));
-                        i++;
+                        OpenBrace(builder);
+                    }
+                    else
+                    {
+                        builder.Append(",");
                     }
 
-                    if (i > 0)
+                    builder.Append(property.Item1.LowerFirstCharacter()).Append(colon);
+                    SerializeValue(builder, property.Item2.Invoke(value, null));
+
+                    if (index + 1 == properties.Length)
                     {
                         CloseBrace(builder);
                     }
                 }
-                
             }
         }
 
