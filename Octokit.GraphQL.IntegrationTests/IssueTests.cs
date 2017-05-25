@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.IntegrationTests
         [IntegrationTest]
         public void Should_Query_Issues_By_State_And_Repository()
         {
-            var openState = new IssueState?[] { IssueState.Open }.AsQueryable();
+            var openState = new[] { IssueState.Open }.AsQueryable();
             var query = new Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => i.Title);
             var result = Enumerable.ToArray<string>(Connection.Run(query).Result);
         }
