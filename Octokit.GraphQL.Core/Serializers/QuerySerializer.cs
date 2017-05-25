@@ -152,17 +152,14 @@ namespace Octokit.GraphQL.Core.Serializers
             }
             else if (value is IEnumerable)
             {
-                var i = 0;
+                builder.Append("[");
 
                 using (var valueEnumerator = ((IEnumerable) value).Cast<object>().GetEnumerator())
                 {
+                    var i = 0;
                     while (valueEnumerator.MoveNext())
                     {
-                        if (i == 0)
-                        {
-                            builder.Append("[");
-                        }
-                        else
+                        if (i != 0)
                         {
                             builder.Append(",");
                         }
@@ -173,10 +170,7 @@ namespace Octokit.GraphQL.Core.Serializers
                     }
                 }
 
-                if (i > 0)
-                {
-                    builder.Append("]");
-                }
+                builder.Append("]");
             }
             else
             {
