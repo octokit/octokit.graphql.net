@@ -398,7 +398,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Object_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IQueryable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -430,7 +430,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Enum_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IQueryable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
