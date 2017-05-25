@@ -25,9 +25,29 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
             return this.CreateMethodCall(x => x.Nested(arg1, arg2), NestedQuery.Create);
         }
 
-        public IQueryable<Simple> Another(bool boolean)
+        public IQueryable<Simple> StringValue(string value)
         {
-            return this.CreateMethodCall(x => x.Another(boolean));
+            return this.CreateMethodCall(x => x.StringValue(value));
+        }
+
+        public IQueryable<Simple> BoolValue(bool boolean)
+        {
+            return this.CreateMethodCall(x => x.BoolValue(boolean));
+        }
+
+        public IQueryable<Simple> IntValue(int integer)
+        {
+            return this.CreateMethodCall(x => x.IntValue(integer));
+        }
+
+        public IQueryable<Simple> FloatValue(float flt)
+        {
+            return this.CreateMethodCall(x => x.FloatValue(flt));
+        }
+
+        public IQueryable<Simple> ObjectValue(object value)
+        {
+            return this.CreateMethodCall(x => x.ObjectValue(value));
         }
     }
 }
