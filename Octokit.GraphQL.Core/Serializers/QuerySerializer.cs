@@ -147,6 +147,7 @@ namespace Octokit.GraphQL.Core.Serializers
             }
             else if (value is IQueryable)
             {
+                throw new NotImplementedException();
             }
             else
             {
@@ -180,7 +181,6 @@ namespace Octokit.GraphQL.Core.Serializers
                         CloseBrace(builder);
                     }
                 }
-
             }
         }
 
