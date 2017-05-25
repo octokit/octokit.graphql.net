@@ -36,6 +36,18 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
             return GetCSharpType(ReduceType(type), true);
         }
 
+        public static string GetCSharpArgType(TypeModel type)
+        {
+            //TODO: Do this, but not dirty
+            switch (type.Kind)
+            {
+                case TypeKind.List:
+                    return $"IEnumerable<{GetCSharpType(type.OfType, false)}>";
+                default:
+                    return GetCSharpType(type);
+            }
+        }
+
         public static string GetClassName(TypeModel type)
         {
             return PascalCase(type.Name);
