@@ -128,8 +128,9 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="states">A list of states to filter the issues by.</param>
+        /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
         /// <param name="labels">A list of label names to filter the issues by.</param>
-        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null, IQueryable<IssueState?> states = null, IQueryable<string> labels = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, states, labels), Octokit.GraphQL.IssueConnection.Create);
+        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null, IQueryable<IssueState> states = null, IssueOrder orderBy = null, IQueryable<string> labels = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, states, orderBy, labels), Octokit.GraphQL.IssueConnection.Create);
 
         /// <summary>
         /// Returns a single label by name
@@ -223,11 +224,6 @@ namespace Octokit.GraphQL
         public Repository Parent => this.CreateProperty(x => x.Parent, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
-        /// The HTTP path for this repository
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// The primary language of the repository's code.
         /// </summary>
         public Language PrimaryLanguage => this.CreateProperty(x => x.PrimaryLanguage, Octokit.GraphQL.Language.Create);
@@ -249,11 +245,6 @@ namespace Octokit.GraphQL
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
         public ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IQueryable<ProjectState> states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.ProjectConnection.Create);
-
-        /// <summary>
-        /// The HTTP path listing repository's projects
-        /// </summary>
-        public string ProjectsPath { get; }
 
         /// <summary>
         /// The HTTP path listing repository's projects
@@ -291,7 +282,8 @@ namespace Octokit.GraphQL
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
         /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
-        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null, IQueryable<string> labels = null, string headRefName = null, string baseRefName = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName), Octokit.GraphQL.PullRequestConnection.Create);
+        /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
+        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null, IQueryable<string> labels = null, string headRefName = null, string baseRefName = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.PullRequestConnection.Create);
 
         /// <summary>
         /// Identifies when the repository was last pushed to.
@@ -339,7 +331,7 @@ namespace Octokit.GraphQL
         public string ResourcePath { get; }
 
         /// <summary>
-        /// A list of users who have starred this repository.
+        /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -379,7 +371,7 @@ namespace Octokit.GraphQL
         public bool ViewerCanUpdateTopics { get; }
 
         /// <summary>
-        /// Returns a boolean indicating whether the viewing user has starred this repository.
+        /// Returns a boolean indicating whether the viewing user has starred this starrable.
         /// </summary>
         public bool ViewerHasStarred { get; }
 

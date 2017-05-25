@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a 'unlocked' event on a given issue or pull request.
+    /// Represents an 'unlocked' event on a given issue or pull request.
     /// </summary>
     public class UnlockedEvent : QueryEntity
     {

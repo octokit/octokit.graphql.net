@@ -16,23 +16,12 @@ namespace Octokit.GraphQL
         /// <param name="size">The size of the resulting square image.</param>
         string AvatarUrl(int? size = null);
 
-        /// <summary>
-        /// Find gist by repo name.
-        /// </summary>
-        /// <param name="name">The gist name to find.</param>
-        Gist Gist(string name);
-
         string Id { get; }
 
         /// <summary>
         /// The username used to login.
         /// </summary>
         string Login { get; }
-
-        /// <summary>
-        /// The HTTP url for the owner.
-        /// </summary>
-        string Path { get; }
 
         /// <summary>
         /// A list of repositories that the user owns.
@@ -81,13 +70,9 @@ namespace Octokit.GraphQL.Internal
 
         public string AvatarUrl(int? size = null) => null;
 
-        public Gist Gist(string name) => this.CreateMethodCall(x => x.Gist(name), Octokit.GraphQL.Gist.Create);
-
         public string Id { get; }
 
         public string Login { get; }
-
-        public string Path { get; }
 
         public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null, bool? isFork = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, orderBy, affiliations, isLocked, isFork), Octokit.GraphQL.RepositoryConnection.Create);
 

@@ -118,11 +118,6 @@ namespace Octokit.GraphQL
         public UserConnection Participants(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octokit.GraphQL.UserConnection.Create);
 
         /// <summary>
-        /// The HTTP path for this issue
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
         public string PublishedAt { get; }
@@ -184,7 +179,7 @@ namespace Octokit.GraphQL
         public string Url { get; }
 
         /// <summary>
-        /// The integration the issue was authored via.
+        /// The integration that created this object.
         /// </summary>
         public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 

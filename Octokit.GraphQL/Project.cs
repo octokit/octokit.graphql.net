@@ -73,11 +73,6 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The HTTP path for this project
         /// </summary>
-        public string Path { get; }
-
-        /// <summary>
-        /// The HTTP path for this project
-        /// </summary>
         public string ResourcePath { get; }
 
         /// <summary>

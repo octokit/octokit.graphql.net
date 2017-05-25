@@ -18,11 +18,6 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The HTTP path for this Git object
         /// </summary>
-        string CommitPath { get; }
-
-        /// <summary>
-        /// The HTTP path for this Git object
-        /// </summary>
         string CommitResourcePath { get; }
 
         /// <summary>
@@ -58,8 +53,6 @@ namespace Octokit.GraphQL.Internal
         }
 
         public string AbbreviatedOid { get; }
-
-        public string CommitPath { get; }
 
         public string CommitResourcePath { get; }
 

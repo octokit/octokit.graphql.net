@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a 'unlabeled' event on a given issue or pull request.
+    /// Represents an 'unlabeled' event on a given issue or pull request.
     /// </summary>
     public class UnlabeledEvent : QueryEntity
     {

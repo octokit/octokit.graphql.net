@@ -22,11 +22,6 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The HTTP path for editing this team
         /// </summary>
-        public string EditTeamPath { get; }
-
-        /// <summary>
-        /// The HTTP path for editing this team
-        /// </summary>
         public string EditTeamResourcePath { get; }
 
         /// <summary>
@@ -51,9 +46,9 @@ namespace Octokit.GraphQL
         public string Name { get; }
 
         /// <summary>
-        /// The path to this resource.
+        /// The organization that owns this team.
         /// </summary>
-        public string Path { get; }
+        public Organization Organization => this.CreateProperty(x => x.Organization, Octokit.GraphQL.Organization.Create);
 
         /// <summary>
         /// The level of privacy the team has.
@@ -61,7 +56,7 @@ namespace Octokit.GraphQL
         public TeamPrivacy Privacy { get; }
 
         /// <summary>
-        /// The HTML path to this resource.
+        /// The HTTP path for this team
         /// </summary>
         public string ResourcePath { get; }
 
@@ -71,52 +66,7 @@ namespace Octokit.GraphQL
         public string Slug { get; }
 
         /// <summary>
-        /// For team discussions
-        /// </summary>
-        public string TeamDiscussionsPath { get; }
-
-        /// <summary>
-        /// For team discussions
-        /// </summary>
-        public string TeamDiscussionsResourcePath { get; }
-
-        /// <summary>
-        /// For team discussions
-        /// </summary>
-        public string TeamDiscussionsUrl { get; }
-
-        /// <summary>
-        /// The HTTP path for this team
-        /// </summary>
-        public string TeamPath { get; }
-
-        /// <summary>
-        /// The HTTP path for this team's repositories
-        /// </summary>
-        public string TeamRepositoriesPath { get; }
-
-        /// <summary>
-        /// The HTTP path for this team's repositories
-        /// </summary>
-        public string TeamRepositoriesResourcePath { get; }
-
-        /// <summary>
-        /// The HTTP url for this team's repositories
-        /// </summary>
-        public string TeamRepositoriesUrl { get; }
-
-        /// <summary>
-        /// The HTTP path for this team
-        /// </summary>
-        public string TeamResourcePath { get; }
-
-        /// <summary>
         /// The HTTP url for this team
-        /// </summary>
-        public string TeamUrl { get; }
-
-        /// <summary>
-        /// The URL to this resource.
         /// </summary>
         public string Url { get; }
 

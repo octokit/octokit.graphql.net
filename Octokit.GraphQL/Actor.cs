@@ -22,9 +22,14 @@ namespace Octokit.GraphQL
         string Login { get; }
 
         /// <summary>
-        /// The path to this actor.
+        /// The HTTP path for this actor.
         /// </summary>
-        string Path { get; }
+        string ResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP url for this actor.
+        /// </summary>
+        string Url { get; }
     }
 }
 
@@ -45,7 +50,9 @@ namespace Octokit.GraphQL.Internal
 
         public string Login { get; }
 
-        public string Path { get; }
+        public string ResourcePath { get; }
+
+        public string Url { get; }
 
         internal static StubIActor Create(IQueryProvider provider, Expression expression)
         {
