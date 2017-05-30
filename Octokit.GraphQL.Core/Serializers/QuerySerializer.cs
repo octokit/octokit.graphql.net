@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Octokit.GraphQL.Core.Syntax;
+using Octokit.GraphQL.Core.Utilities;
 
 namespace Octokit.GraphQL.Core.Serializers
 {
     public class QuerySerializer
     {
+        private static readonly ConcurrentDictionary<Type, Tuple<string, MethodInfo>[]> typeCache = new ConcurrentDictionary<Type, Tuple<string, MethodInfo>[]>();
+
         private readonly int indentation;
         private readonly string comma = ",";
         private readonly string colon = ":";
@@ -69,7 +75,8 @@ namespace Octokit.GraphQL.Core.Serializers
                 foreach (var arg in field.Arguments)
                 {
                     if (!first) builder.Append(comma);
-                    builder.Append(arg.Name).Append(colon).Append(SerializeValue(arg.Value));
+                    builder.Append(arg.Name).Append(colon);
+                    SerializeValue(builder, arg.Value);
                     first = false;
                 }
 
@@ -124,23 +131,64 @@ namespace Octokit.GraphQL.Core.Serializers
             CloseBrace(builder);
         }
 
-        private string SerializeValue(object value)
+        private void SerializeValue(StringBuilder builder, object value)
         {
             if (value is string)
             {
-                return '"' + ((string)value) + '"';
+                builder.Append('"' + ((string)value) + '"');
             }
             else if (value is Enum)
             {
-                return value.ToString().ToUpperInvariant();
+                builder.Append(value.ToString().PascalCaseToSnakeCase());
             }
             else if (value is bool)
             {
-                return ((bool)value) ? "true" : "false";
+                builder.Append((bool)value ? "true" : "false");
+            }
+            else if (value is int || value is float)
+            {
+                builder.Append(value);
             }
             else
             {
-                return value.ToString();
+                var objectType = value.GetType();
+
+                Tuple<string, MethodInfo>[] properties;
+                if (!typeCache.TryGetValue(objectType, out properties))
+                {
+                    properties = objectType.GetRuntimeProperties()
+                        .Where(info => info.GetMethod.IsPublic)
+                        .Select(info => new Tuple<string, MethodInfo>(info.Name.LowerFirstCharacter(), info.GetMethod))
+                        .ToArray();
+
+                    typeCache.TryAdd(objectType, properties);
+                }
+                else
+                {
+                    //Cache Hit
+                }
+
+                for (var index = 0; index < properties.Length; index++)
+                {
+                    var property = properties[index];
+                    
+                    if (index == 0)
+                    {
+                        OpenBrace(builder);
+                    }
+                    else
+                    {
+                        builder.Append(",");
+                    }
+
+                    builder.Append(property.Item1.LowerFirstCharacter()).Append(colon);
+                    SerializeValue(builder, property.Item2.Invoke(value, null));
+
+                    if (index + 1 == properties.Length)
+                    {
+                        CloseBrace(builder);
+                    }
+                }
             }
         }
 

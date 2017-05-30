@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Core.Syntax
         public static string GetIdentifier(MemberInfo member)
         {
             var attr = member?.GetCustomAttribute<GraphQLIdentifierAttribute>();
-            return attr != null ? attr.Identifier : member?.Name.ToCamelCase();
+            return attr != null ? attr.Identifier : member?.Name.LowerFirstCharacter();
         }
     }
 }
