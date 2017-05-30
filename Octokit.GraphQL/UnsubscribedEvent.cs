@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a 'unsubscribed' event on a given `Subscribable`.
+    /// Represents an 'unsubscribed' event on a given `Subscribable`.
     /// </summary>
     public class UnsubscribedEvent : QueryEntity
     {

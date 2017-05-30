@@ -172,11 +172,6 @@ namespace Octokit.GraphQL
         public UserConnection Participants(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octokit.GraphQL.UserConnection.Create);
 
         /// <summary>
-        /// The HTTP path for this issue
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// The commit that GitHub automatically generated to test if this pull request could be merged. This field will not return a value if the pull request is merged, or if the test merge commit is still being generated. See the `mergeable` field for more details on the mergeability of the pull request.
         /// </summary>
         public Commit PotentialMergeCommit => this.CreateProperty(x => x.PotentialMergeCommit, Octokit.GraphQL.Commit.Create);
@@ -267,7 +262,7 @@ namespace Octokit.GraphQL
         public string Url { get; }
 
         /// <summary>
-        /// The integration the pull request was authored via.
+        /// The integration that created this object.
         /// </summary>
         public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 

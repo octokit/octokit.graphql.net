@@ -91,11 +91,6 @@ namespace Octokit.GraphQL
         IRepositoryOwner Owner { get; }
 
         /// <summary>
-        /// The HTTP path for this repository
-        /// </summary>
-        string Path { get; }
-
-        /// <summary>
         /// Identifies when the repository was last pushed to.
         /// </summary>
         string PushedAt { get; }
@@ -161,8 +156,6 @@ namespace Octokit.GraphQL.Internal
         public string NameWithOwner { get; }
 
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
-
-        public string Path { get; }
 
         public string PushedAt { get; }
 

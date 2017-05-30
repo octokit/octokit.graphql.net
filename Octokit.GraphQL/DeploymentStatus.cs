@@ -44,7 +44,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the current state of the deployment.
         /// </summary>
-        public DeploymentState State { get; }
+        public DeploymentStatusState State { get; }
 
         internal static DeploymentStatus Create(IQueryProvider provider, Expression expression)
         {

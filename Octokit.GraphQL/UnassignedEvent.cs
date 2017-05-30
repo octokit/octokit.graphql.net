@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a 'unassigned' event on any assignable object.
+    /// Represents an 'unassigned' event on any assignable object.
     /// </summary>
     public class UnassignedEvent : QueryEntity
     {

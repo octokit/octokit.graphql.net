@@ -55,7 +55,7 @@ namespace Octokit.GraphQL
         public SubscribedEvent SubscribedEvent => this.CreateProperty(x => x.SubscribedEvent, Octokit.GraphQL.SubscribedEvent.Create);
 
         /// <summary>
-        /// Represents a 'unsubscribed' event on a given `Subscribable`.
+        /// Represents an 'unsubscribed' event on a given `Subscribable`.
         /// </summary>
         public UnsubscribedEvent UnsubscribedEvent => this.CreateProperty(x => x.UnsubscribedEvent, Octokit.GraphQL.UnsubscribedEvent.Create);
 
@@ -75,7 +75,7 @@ namespace Octokit.GraphQL
         public AssignedEvent AssignedEvent => this.CreateProperty(x => x.AssignedEvent, Octokit.GraphQL.AssignedEvent.Create);
 
         /// <summary>
-        /// Represents a 'unassigned' event on any assignable object.
+        /// Represents an 'unassigned' event on any assignable object.
         /// </summary>
         public UnassignedEvent UnassignedEvent => this.CreateProperty(x => x.UnassignedEvent, Octokit.GraphQL.UnassignedEvent.Create);
 
@@ -85,7 +85,7 @@ namespace Octokit.GraphQL
         public LabeledEvent LabeledEvent => this.CreateProperty(x => x.LabeledEvent, Octokit.GraphQL.LabeledEvent.Create);
 
         /// <summary>
-        /// Represents a 'unlabeled' event on a given issue or pull request.
+        /// Represents an 'unlabeled' event on a given issue or pull request.
         /// </summary>
         public UnlabeledEvent UnlabeledEvent => this.CreateProperty(x => x.UnlabeledEvent, Octokit.GraphQL.UnlabeledEvent.Create);
 
@@ -110,7 +110,7 @@ namespace Octokit.GraphQL
         public LockedEvent LockedEvent => this.CreateProperty(x => x.LockedEvent, Octokit.GraphQL.LockedEvent.Create);
 
         /// <summary>
-        /// Represents a 'unlocked' event on a given issue or pull request.
+        /// Represents an 'unlocked' event on a given issue or pull request.
         /// </summary>
         public UnlockedEvent UnlockedEvent => this.CreateProperty(x => x.UnlockedEvent, Octokit.GraphQL.UnlockedEvent.Create);
 

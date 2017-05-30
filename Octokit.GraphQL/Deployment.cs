@@ -29,12 +29,27 @@ namespace Octokit.GraphQL
         /// </summary>
         public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
+        /// <summary>
+        /// The environment to which this deployment was made.
+        /// </summary>
+        public string Environment { get; }
+
         public string Id { get; }
+
+        /// <summary>
+        /// The latest status of this deployment.
+        /// </summary>
+        public DeploymentStatus LatestStatus => this.CreateProperty(x => x.LatestStatus, Octokit.GraphQL.DeploymentStatus.Create);
 
         /// <summary>
         /// Identifies the repository associated with the deployment.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+
+        /// <summary>
+        /// The current state of the deployment.
+        /// </summary>
+        public DeploymentState? State { get; }
 
         /// <summary>
         /// A list of statuses associated with the deployment.

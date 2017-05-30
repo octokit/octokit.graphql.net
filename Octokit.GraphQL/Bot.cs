@@ -20,17 +20,17 @@ namespace Octokit.GraphQL
         /// <param name="size">The size of the resulting square image.</param>
         public string AvatarUrl(int? size = null) => null;
 
+        /// <summary>
+        /// Identifies the primary key from the database.
+        /// </summary>
+        public int? DatabaseId { get; }
+
         public string Id { get; }
 
         /// <summary>
         /// The username of the actor.
         /// </summary>
         public string Login { get; }
-
-        /// <summary>
-        /// The HTTP path for this bot
-        /// </summary>
-        public string Path { get; }
 
         /// <summary>
         /// The HTTP path for this bot

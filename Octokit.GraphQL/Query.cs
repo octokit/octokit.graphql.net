@@ -48,6 +48,11 @@ namespace Octokit.GraphQL
         public Organization Organization(string login) => this.CreateMethodCall(x => x.Organization(login), Octokit.GraphQL.Organization.Create);
 
         /// <summary>
+        /// The client's rate limit information.
+        /// </summary>
+        public RateLimit RateLimit => this.CreateProperty(x => x.RateLimit, Octokit.GraphQL.RateLimit.Create);
+
+        /// <summary>
         /// Hack to workaround https://github.com/facebook/relay/issues/112 re-exposing the root query object
         /// </summary>
         public Query Relay => this.CreateProperty(x => x.Relay, Octokit.GraphQL.Query.Create);

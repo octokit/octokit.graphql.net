@@ -25,13 +25,12 @@ namespace Octokit.GraphQL
         /// </summary>
         public int? DatabaseId { get; }
 
-        /// <summary>
-        /// Find gist by repo name.
-        /// </summary>
-        /// <param name="name">The gist name to find.</param>
-        public Gist Gist(string name) => this.CreateMethodCall(x => x.Gist(name), Octokit.GraphQL.Gist.Create);
-
         public string Id { get; }
+
+        /// <summary>
+        /// Is the account billed through invoices?
+        /// </summary>
+        public bool IsInvoiced { get; }
 
         /// <summary>
         /// The organization's login name.
@@ -55,11 +54,6 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The HTTP path creating a new team
         /// </summary>
-        public string NewTeamPath { get; }
-
-        /// <summary>
-        /// The HTTP path creating a new team
-        /// </summary>
         public string NewTeamResourcePath { get; }
 
         /// <summary>
@@ -71,11 +65,6 @@ namespace Octokit.GraphQL
         /// The billing email for the organization.
         /// </summary>
         public string OrganizationBillingEmail { get; }
-
-        /// <summary>
-        /// The HTTP path for this user
-        /// </summary>
-        public string Path { get; }
 
         /// <summary>
         /// Find project by number.
@@ -94,11 +83,6 @@ namespace Octokit.GraphQL
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
         public ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IQueryable<ProjectState> states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.ProjectConnection.Create);
-
-        /// <summary>
-        /// The HTTP path listing organization's projects
-        /// </summary>
-        public string ProjectsPath { get; }
 
         /// <summary>
         /// The HTTP path listing organization's projects
@@ -164,17 +148,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The HTTP path listing organization's teams
         /// </summary>
-        public string TeamsPath { get; }
-
-        /// <summary>
-        /// The HTTP path listing organization's teams
-        /// </summary>
         public string TeamsResourcePath { get; }
-
-        /// <summary>
-        /// The HTTP path for teams search
-        /// </summary>
-        public string TeamsSearchPath { get; }
 
         /// <summary>
         /// The HTTP path for teams search

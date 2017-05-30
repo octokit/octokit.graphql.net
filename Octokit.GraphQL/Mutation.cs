@@ -50,6 +50,11 @@ namespace Octokit.GraphQL
         public AddReactionPayload AddReaction(AddReactionInput input) => this.CreateMethodCall(x => x.AddReaction(input), Octokit.GraphQL.AddReactionPayload.Create);
 
         /// <summary>
+        /// Adds a star to a Starrable.
+        /// </summary>
+        public AddStarPayload AddStar(AddStarInput input) => this.CreateMethodCall(x => x.AddStar(input), Octokit.GraphQL.AddStarPayload.Create);
+
+        /// <summary>
         /// Creates a new project.
         /// </summary>
         public CreateProjectPayload CreateProject(CreateProjectInput input) => this.CreateMethodCall(x => x.CreateProject(input), Octokit.GraphQL.CreateProjectPayload.Create);
@@ -103,6 +108,11 @@ namespace Octokit.GraphQL
         /// Removes a reaction from a subject.
         /// </summary>
         public RemoveReactionPayload RemoveReaction(RemoveReactionInput input) => this.CreateMethodCall(x => x.RemoveReaction(input), Octokit.GraphQL.RemoveReactionPayload.Create);
+
+        /// <summary>
+        /// Removes a star from a Starrable.
+        /// </summary>
+        public RemoveStarPayload RemoveStar(RemoveStarInput input) => this.CreateMethodCall(x => x.RemoveStar(input), Octokit.GraphQL.RemoveStarPayload.Create);
 
         /// <summary>
         /// Set review requests on a pull request.
