@@ -27,11 +27,6 @@ namespace Octokit.GraphQL
         public string Name { get; }
 
         /// <summary>
-        /// The HTTP path for this issue
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// Identifies the date and time when the release was created.
         /// </summary>
         public string PublishedAt { get; }
@@ -44,7 +39,7 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="name">A list of names to filter the assets by.</param>
-        public ReleaseAssetConnection ReleaseAsset(int? first = null, string after = null, int? last = null, string before = null, string name = null) => this.CreateMethodCall(x => x.ReleaseAsset(first, after, last, before, name), Octokit.GraphQL.ReleaseAssetConnection.Create);
+        public ReleaseAssetConnection ReleaseAsset(string name, int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReleaseAsset(name, first, after, last, before), Octokit.GraphQL.ReleaseAssetConnection.Create);
 
         /// <summary>
         /// List of releases assets which are dependent on this release.

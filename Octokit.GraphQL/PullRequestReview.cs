@@ -76,11 +76,6 @@ namespace Octokit.GraphQL
         public string LastEditedAt { get; }
 
         /// <summary>
-        /// The HTTP URL permalink for this PullRequestReview.
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
         public string PublishedAt { get; }

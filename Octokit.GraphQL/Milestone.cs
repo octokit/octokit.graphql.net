@@ -37,11 +37,6 @@ namespace Octokit.GraphQL
         public int Number { get; }
 
         /// <summary>
-        /// The HTTP path for this milestone
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
         /// The repository associated with this milestone.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);

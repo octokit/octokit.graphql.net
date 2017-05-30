@@ -6,22 +6,34 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL
 {
     /// <summary>
-    /// The possible deployment states.
+    /// The possible states in which a deployment can be.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum DeploymentState
     {
         /// <summary>
-        /// The deployment is pending.
+        /// The pending deployment was not updated after 30 minutes.
         /// </summary>
-        [EnumMember(Value = "PENDING")]
-        Pending,
+        [EnumMember(Value = "ABANDONED")]
+        Abandoned,
 
         /// <summary>
-        /// The deployment was successful.
+        /// The deployment is currently active.
         /// </summary>
-        [EnumMember(Value = "SUCCESS")]
-        Success,
+        [EnumMember(Value = "ACTIVE")]
+        Active,
+
+        /// <summary>
+        /// An inactive transient deployment.
+        /// </summary>
+        [EnumMember(Value = "DESTROYED")]
+        Destroyed,
+
+        /// <summary>
+        /// The deployment experienced an error.
+        /// </summary>
+        [EnumMember(Value = "ERROR")]
+        Error,
 
         /// <summary>
         /// The deployment has failed.
@@ -36,9 +48,9 @@ namespace Octokit.GraphQL
         Inactive,
 
         /// <summary>
-        /// The deployment experienced an error.
+        /// The deployment is pending.
         /// </summary>
-        [EnumMember(Value = "ERROR")]
-        Error,
+        [EnumMember(Value = "PENDING")]
+        Pending,
     }
 }

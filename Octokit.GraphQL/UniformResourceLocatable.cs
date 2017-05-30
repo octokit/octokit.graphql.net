@@ -11,11 +11,6 @@ namespace Octokit.GraphQL
     public interface IUniformResourceLocatable : IQueryEntity
     {
         /// <summary>
-        /// The path to this resource.
-        /// </summary>
-        string Path { get; }
-
-        /// <summary>
         /// The HTML path to this resource.
         /// </summary>
         string ResourcePath { get; }
@@ -39,8 +34,6 @@ namespace Octokit.GraphQL.Internal
         public StubIUniformResourceLocatable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
-
-        public string Path { get; }
 
         public string ResourcePath { get; }
 
