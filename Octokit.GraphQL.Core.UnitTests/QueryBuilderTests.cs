@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Serializers;
 using Octokit.GraphQL.Core.UnitTests.Models;
@@ -93,7 +94,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Where(simple => simple.Name == "Something")
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var query = new QueryBuilder().Build(expression);
+            });
         }
 
         [Fact]
@@ -105,7 +109,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .GroupBy(simple => simple.Name);
 
-            var query = new QueryBuilder().Build(expression);
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var query = new QueryBuilder().Build(expression);
+            });
         }
 
         [Fact]
