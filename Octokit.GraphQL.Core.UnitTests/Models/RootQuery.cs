@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Octokit.GraphQL.Core.Builders;
 
@@ -48,6 +49,11 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public IQueryable<Simple> ObjectValue(object value)
         {
             return this.CreateMethodCall(x => x.ObjectValue(value));
+        }
+
+        public IQueryable<Simple> EnumerableValue(IEnumerable<object> value)
+        {
+            return this.CreateMethodCall(x => x.EnumerableValue(value));
         }
     }
 }
