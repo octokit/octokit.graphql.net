@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -30,7 +31,7 @@ namespace Octokit.GraphQL
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="states">A list of states to filter the issues by.</param>
         /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
-        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null, IQueryable<IssueState> states = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, states, orderBy), Octokit.GraphQL.IssueConnection.Create);
+        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<IssueState> states = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, states, orderBy), Octokit.GraphQL.IssueConnection.Create);
 
         /// <summary>
         /// Identifies the label name.
