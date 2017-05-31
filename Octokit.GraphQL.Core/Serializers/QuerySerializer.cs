@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,6 +149,26 @@ namespace Octokit.GraphQL.Core.Serializers
             else if (value is int || value is float)
             {
                 builder.Append(value);
+            }
+            else if (value is IEnumerable)
+            {
+                builder.Append("[");
+
+                var i = 0;
+                var valueEnumerator = ((IEnumerable)value).GetEnumerator();
+                while (valueEnumerator.MoveNext())
+                {
+                    if (i != 0)
+                    {
+                        builder.Append(",");
+                    }
+
+                    SerializeValue(builder, valueEnumerator.Current);
+
+                    i++;
+                }
+
+                builder.Append("]");
             }
             else
             {
