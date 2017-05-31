@@ -84,6 +84,31 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void SimpleQuery_Where_Error()
+        {
+            var expected = "{simple(arg1:\"foo\"){name}}";
+
+            var expression = new RootQuery()
+                .Simple("foo")
+                .Where(simple => simple.Name == "Something")
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+        }
+
+        [Fact]
+        public void SimpleQuery_GroupBy_Error()
+        {
+            var expected = "{simple(arg1:\"foo\"){name}}";
+
+            var expression = new RootQuery()
+                .Simple("foo")
+                .GroupBy(simple => simple.Name);
+
+            var query = new QueryBuilder().Build(expression);
+        }
+
+        [Fact]
         public void Data_Select_Single_Member()
         {
             var expected = "{data{id}}";

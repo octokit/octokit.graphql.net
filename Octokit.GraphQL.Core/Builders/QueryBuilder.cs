@@ -225,9 +225,18 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else
             {
-                return node.Update(
-                    Visit(node.Object),
-                    VisitMethodArguments(node.Method, node.Arguments));
+                if (node.Method.Name == "Where")
+                {
+                    throw new NotSupportedException();
+                }
+
+                if (node.Method.Name == "GroupBy")
+                {
+                    throw new NotSupportedException();
+                }
+
+                var methodCallExpression = node.Update(Visit(node.Object), VisitMethodArguments(node.Method, node.Arguments));
+                return methodCallExpression;
             }
         }
 
