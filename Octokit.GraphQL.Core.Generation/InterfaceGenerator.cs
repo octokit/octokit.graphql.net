@@ -195,7 +195,7 @@ namespace Octokit.GraphQL.Core.Generation
                 }
 
                 var argName = TypeUtilities.GetArgName(arg);
-                argBuilder.Append(TypeUtilities.GetCSharpType(arg.Type));
+                argBuilder.Append(TypeUtilities.GetCSharpArgType(arg.Type));
                 argBuilder.Append(' ');
                 argBuilder.Append(argName);
                 paramBuilder.Append(argName);
