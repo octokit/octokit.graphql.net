@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -51,7 +52,7 @@ namespace Octokit.GraphQL
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection ContributedRepositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.ContributedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
+        public RepositoryConnection ContributedRepositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.ContributedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -185,7 +186,7 @@ namespace Octokit.GraphQL
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection PinnedRepositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
+        public RepositoryConnection PinnedRepositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// A list of pull requests assocated with this user.
@@ -199,7 +200,7 @@ namespace Octokit.GraphQL
         /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
         /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
-        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestState> states = null, IQueryable<string> labels = null, string headRefName = null, string baseRefName = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.PullRequestConnection.Create);
+        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<PullRequestState> states = null, IEnumerable<string> labels = null, string headRefName = null, string baseRefName = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.PullRequestConnection.Create);
 
         /// <summary>
         /// A list of repositories that the user owns.
@@ -213,7 +214,7 @@ namespace Octokit.GraphQL
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
         /// <param name="isFork">If non-null, filters repositories according to whether they are forks of another repository</param>
-        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null, bool? isFork = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, orderBy, affiliations, isLocked, isFork), Octokit.GraphQL.RepositoryConnection.Create);
+        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation> affiliations = null, bool? isLocked = null, bool? isFork = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, orderBy, affiliations, isLocked, isFork), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// Find Repository.
@@ -268,7 +269,7 @@ namespace Octokit.GraphQL
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection Watching(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IQueryable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Watching(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
+        public RepositoryConnection Watching(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Watching(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// A URL pointing to the user's public website/blog.

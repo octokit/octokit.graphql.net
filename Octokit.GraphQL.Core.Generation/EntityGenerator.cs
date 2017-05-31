@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Core.Generation
 
             return $@"namespace {rootNamespace}
 {{
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -237,7 +238,7 @@ namespace Octokit.GraphQL.Core.Generation
                 }
 
                 var argName = TypeUtilities.GetArgName(arg);
-                argBuilder.Append(TypeUtilities.GetCSharpType(arg.Type));
+                argBuilder.Append(TypeUtilities.GetCSharpArgType(arg.Type));
                 argBuilder.Append(' ');
                 argBuilder.Append(argName);
                 paramBuilder.Append(argName);

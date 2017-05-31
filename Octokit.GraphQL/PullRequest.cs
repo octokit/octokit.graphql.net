@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -224,7 +225,7 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="states">A list of states to filter the reviews.</param>
-        public PullRequestReviewConnection Reviews(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestReviewState> states = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, states), Octokit.GraphQL.PullRequestReviewConnection.Create);
+        public PullRequestReviewConnection Reviews(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<PullRequestReviewState> states = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, states), Octokit.GraphQL.PullRequestReviewConnection.Create);
 
         /// <summary>
         /// Identifies the state of the pull request.
