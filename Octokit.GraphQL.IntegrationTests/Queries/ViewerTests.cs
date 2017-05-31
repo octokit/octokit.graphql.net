@@ -1,17 +1,16 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
-namespace Octokit.GraphQL.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests.Queries
 {
     public class ViewerTests: IntegrationTestBase
     {
         [IntegrationTest]
         public void Viewer_By_OAuthToken_Matches_Username()
         {
-            var query = new Query().Viewer.Select(user => new
+            var query = new GraphQL.Query().Viewer.Select(user => new
             {
                 user.Login,
                 user.Email,
@@ -33,7 +32,7 @@ namespace Octokit.GraphQL.IntegrationTests
 
             var apiUser = gitHubClient.User.Current().Result;
 
-            var query = new Query().Viewer.Select(user => new
+            var query = new GraphQL.Query().Viewer.Select(user => new
             {
                 AvatarUrl = user.AvatarUrl(null),
                 user.Bio,

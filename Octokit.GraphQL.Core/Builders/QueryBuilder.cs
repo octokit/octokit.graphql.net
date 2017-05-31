@@ -43,12 +43,17 @@ namespace Octokit.GraphQL.Core.Builders
             if (syntax.Root == null)
             {
                 var rootQuery = node.Value as IRootQuery;
+                var mutationQuery = node.Value as IMutationQuery;
                 var queryEntity = node.Value as IQueryEntity;
 
                 if (rootQuery != null)
                 {
                     root = syntax.AddRoot(OperationType.Query, null);
                     return RootDataParameter.AddIndexer("data");
+                }
+                else if (mutationQuery != null)
+                {
+                    throw new NotImplementedException();
                 }
                 else if (queryEntity != null)
                 {
@@ -351,12 +356,8 @@ namespace Octokit.GraphQL.Core.Builders
 
         private static bool IsSelect(MethodInfo method)
         {
-            return (method.DeclaringType == typeof(Queryable) &&
-                method.Name == nameof(Queryable.Select) &&
-                method.GetParameters().Length == 2) ||
-                (method.DeclaringType == typeof(QueryEntityExtensions) &&
-                method.Name == nameof(QueryEntityExtensions.Select) &&
-                method.GetParameters().Length == 2);
+            return (method.DeclaringType == typeof(Queryable) && method.Name == nameof(Queryable.Select) && method.GetParameters().Length == 2) ||
+                   (method.DeclaringType == typeof(QueryEntityExtensions) && method.Name == nameof(QueryEntityExtensions.Select) && method.GetParameters().Length == 2);
         }
 
         private static bool IsQueryEntity(Type type)

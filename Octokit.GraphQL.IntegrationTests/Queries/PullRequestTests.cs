@@ -2,14 +2,14 @@ using System.Linq;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
-namespace Octokit.GraphQL.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests.Queries
 {
     public class PullRequestTests : IntegrationTestBase
     {
         [IntegrationTest]
         public void Should_Query_Commits()
         {
-            var query = new Query().Repository("octokit", "octokit.net").PullRequest(1).Commits(3).Nodes
+            var query = new GraphQL.Query().Repository("octokit", "octokit.net").PullRequest(1).Commits(3).Nodes
                 .Select(pullRequestCommit => new
                 {
                     pullRequestCommit.Commit.Id,
