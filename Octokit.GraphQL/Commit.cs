@@ -154,6 +154,16 @@ namespace Octokit.GraphQL
         /// </summary>
         public string Url { get; }
 
+        /// <summary>
+        /// Check if the viewer is able to change their subscription status for the repository.
+        /// </summary>
+        public bool ViewerCanSubscribe { get; }
+
+        /// <summary>
+        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
+        /// </summary>
+        public SubscriptionState ViewerSubscription { get; }
+
         internal static Commit Create(IQueryProvider provider, Expression expression)
         {
             return new Commit(provider, expression);

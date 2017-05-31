@@ -11,6 +11,8 @@ namespace Octokit.GraphQL
 
         public string PullRequestId { get; set; }
 
+        public string CommitOID { get; set; }
+
         public string Body { get; set; }
 
         public PullRequestReviewEvent? Event { get; set; }
