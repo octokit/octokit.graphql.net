@@ -16,6 +16,15 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// A list of comments associated with the gist
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public GistCommentConnection Comments(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.GistCommentConnection.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public string CreatedAt { get; }
