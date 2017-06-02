@@ -301,6 +301,40 @@ namespace Test.Internal
         }
 
         [Fact]
+        public void Generates_Method_For_List_Field_With_Int_List_Arg()
+        {
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo(IEnumerable<int> bar = null);",
+                "public IQueryable<Other> Foo(IEnumerable<int> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Int()),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Method_For_List_Field_With_Object_List_Arg()
         {
             var expected = FormatMemberTemplate(
@@ -323,6 +357,40 @@ namespace Test.Internal
                             {
                                 Name = "bar",
                                 Type = TypeModel.List(TypeModel.Object("Another")),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_NonNull_Object_List_Arg()
+        {
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo(IEnumerable<Another> bar = null);",
+                "public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.NonNull(TypeModel.Object("Another"))),
                             }
                         }
                     },
