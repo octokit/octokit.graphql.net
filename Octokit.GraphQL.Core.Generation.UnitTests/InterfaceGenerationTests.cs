@@ -301,7 +301,41 @@ namespace Test.Internal
         }
 
         [Fact]
-        public void Generates_Method_For_List_Field_With_Int_List_Arg()
+        public void Generates_Method_For_List_Field_With_Nullable_Int_List_Arg()
+        {
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo(IEnumerable<int?> bar = null);",
+                "public IQueryable<Other> Foo(IEnumerable<int?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Int()),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_NotNull_Int_List_Arg()
         {
             var expected = FormatMemberTemplate(
                 "IQueryable<Other> Foo(IEnumerable<int> bar = null);",
@@ -322,7 +356,7 @@ namespace Test.Internal
                             new InputValueModel
                             {
                                 Name = "bar",
-                                Type = TypeModel.List(TypeModel.Int()),
+                                Type = TypeModel.List(TypeModel.NonNull(TypeModel.Int())),
                             }
                         }
                     },
@@ -403,7 +437,41 @@ namespace Test.Internal
         }
 
         [Fact]
-        public void Generates_Method_For_List_Field_With_Enum_List_Arg()
+        public void Generates_Method_For_List_Field_With_Nullable_Enum_List_Arg()
+        {
+            var expected = FormatMemberTemplate(
+                "IQueryable<Other> Foo(IEnumerable<Another?> bar = null);",
+                "public IQueryable<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Enum("Another")),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_NonNull_Enum_List_Arg()
         {
             var expected = FormatMemberTemplate(
                 "IQueryable<Other> Foo(IEnumerable<Another> bar = null);",
@@ -424,7 +492,7 @@ namespace Test.Internal
                             new InputValueModel
                             {
                                 Name = "bar",
-                                Type = TypeModel.List(TypeModel.Enum("Another")),
+                                Type = TypeModel.List(TypeModel.NonNull(TypeModel.Enum("Another"))),
                             }
                         }
                     },

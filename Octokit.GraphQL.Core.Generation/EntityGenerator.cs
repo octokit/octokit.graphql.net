@@ -173,14 +173,14 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             return $"        public {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             var implName = GetEntityImplementationName(type, rootNamespace);
             return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
@@ -188,7 +188,7 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var csharpType = TypeUtilities.GetCSharpType(type);
+            var csharpType = TypeUtilities.GetCSharpReturnType(type);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
@@ -198,7 +198,7 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateObjectMethod(FieldModel field, TypeModel type, string rootNamespace)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             var implName = GetEntityImplementationName(type, rootNamespace);
 
             GenerateArguments(field, out string arguments, out string parameters);
@@ -209,14 +209,14 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             return $"        public {typeName} {name} => this.CreateProperty(x => x.{name});";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
