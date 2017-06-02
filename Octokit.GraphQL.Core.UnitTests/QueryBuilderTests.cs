@@ -193,6 +193,33 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Enumerable_Parameter()
+        {
+            var expected = "{enumerableValue(value:[{value1:\"Hello World\",value2:42},{value1:\"Goodbye World\",value2:24}]){name}}";
+
+            var expression = new RootQuery()
+                .EnumerableValue(new[]
+                {
+                    new SampleObject()
+                    {
+                        Value1 = "Hello World",
+                        Value2 = 42
+                    },
+                    new SampleObject()
+                    {
+                        Value1 = "Goodbye World",
+                        Value2 = 24
+                    },
+                })
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void String_Parameter()
         {
             var expected = "{stringValue(value:\"hello\"){name}}";
