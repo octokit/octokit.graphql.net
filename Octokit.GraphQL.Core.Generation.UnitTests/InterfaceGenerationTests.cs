@@ -372,8 +372,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_NonNull_Object_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(IEnumerable<Another> bar = null);",
-                "public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryable<Other> Foo(IEnumerable<Another> bar);",
+                "public IQueryable<Other> Foo(IEnumerable<Another> bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -390,7 +390,7 @@ namespace Test.Internal
                             new InputValueModel
                             {
                                 Name = "bar",
-                                Type = TypeModel.List(TypeModel.NonNull(TypeModel.Object("Another"))),
+                                Type = TypeModel.NonNull(TypeModel.List(TypeModel.Object("Another"))),
                             }
                         }
                     },
