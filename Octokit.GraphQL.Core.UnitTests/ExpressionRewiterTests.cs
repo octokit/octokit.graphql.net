@@ -15,7 +15,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Single_Member()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name);
 
@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Multiple_Members()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo", 2)
                 .Select(x => new { x.Name, x.Description });
 
@@ -47,7 +47,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Data_Select_Single_Member()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .Select(x => x.Id);
 
@@ -61,7 +61,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void NestedQuery_Select_Multiple_Members()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Nested("foo")
                 .Simple("bar")
                 .Select(x => new { x.Name, x.Description });
@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Nested_Selects()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .Select(x => new
                 {
@@ -104,7 +104,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Inline_Fragment()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .OfType<NestedData>()
                 .Select(x => new
@@ -130,7 +130,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Union()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Union
                 .Select(x => x.Simple)
                 .Select(x => new

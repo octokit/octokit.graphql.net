@@ -1,6 +1,6 @@
 namespace Octokit.GraphQL.Core
 {
-    public interface IMutationQuery
+    public interface IMutation
     {
     }
 }

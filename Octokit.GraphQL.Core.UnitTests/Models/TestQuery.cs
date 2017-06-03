@@ -5,9 +5,9 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class RootQuery : QueryEntity, IRootQuery
+    class TestQuery : QueryEntity, IQuery
     {
-        public RootQuery()
+        public TestQuery()
             : base(new QueryProvider())
         {
         }
