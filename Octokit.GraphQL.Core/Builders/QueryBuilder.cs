@@ -53,7 +53,8 @@ namespace Octokit.GraphQL.Core.Builders
                 }
                 else if (mutationQuery != null)
                 {
-                    throw new NotImplementedException();
+                    root = syntax.AddRoot(OperationType.Mutation, null);
+                    return RootDataParameter.AddIndexer("data");
                 }
                 else if (queryEntity != null)
                 {

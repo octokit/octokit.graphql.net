@@ -42,9 +42,23 @@ namespace Octokit.GraphQL.Core.Serializers
         {
             StringBuilder builder = new StringBuilder();
 
-            if (operation.Type != OperationType.Query || operation.Name != null)
+            switch (operation.Type)
             {
-                builder.Append("query ").Append(operation.Name);
+                case OperationType.Query:
+                    builder.Append("query ");
+                    break;
+                case OperationType.Mutation:
+                    builder.Append("mutation ");
+                    break;
+                case OperationType.Subscription:
+                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (operation.Name != null)
+            {
+                builder.Append(operation.Name).Append(' ');
             }
 
             SerializeSelections(operation, builder);
