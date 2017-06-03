@@ -14,7 +14,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Select_Schema_QueryType_Kind()
         {
-            var expected = "{__schema{queryType{kind}}}";
+            var expected = "query{__schema{queryType{kind}}}";
 
             var expression = new IntrospectionQuery()
                 .Schema.QueryType
@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Select_Schema_Types()
         {
-            var expectedQuery = @"{
+            var expectedQuery = @"query {
   __schema {
     types {
       kind
@@ -123,7 +123,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList()
                 });
 
-            var expectedQuery = @"{
+            var expectedQuery = @"query {
   __schema {
     types {
       fields(includeDeprecated: true) {

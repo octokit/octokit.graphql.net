@@ -45,10 +45,10 @@ namespace Octokit.GraphQL.Core.Serializers
             switch (operation.Type)
             {
                 case OperationType.Query:
-                    builder.Append("query ");
+                    builder.Append("query");
                     break;
                 case OperationType.Mutation:
-                    builder.Append("mutation ");
+                    builder.Append("mutation");
                     break;
                 case OperationType.Subscription:
                     throw new NotImplementedException();
@@ -58,7 +58,7 @@ namespace Octokit.GraphQL.Core.Serializers
 
             if (operation.Name != null)
             {
-                builder.Append(operation.Name).Append(' ');
+                builder.Append(' ').Append(operation.Name);
             }
 
             SerializeSelections(operation, builder);

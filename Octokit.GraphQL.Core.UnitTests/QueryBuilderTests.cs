@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Single_Member()
         {
-            var expected = "{simple(arg1:\"foo\"){name}}";
+            var expected = "query{simple(arg1:\"foo\"){name}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -26,7 +26,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Multiple_Members()
         {
-            var expected = "{simple(arg1:\"foo\",arg2:2){name description}}";
+            var expected = "query{simple(arg1:\"foo\",arg2:2){name description}}";
 
             var expression = new RootQuery()
                 .Simple("foo", 2)
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Single_Member_Append_String()
         {
-            var expected = "{simple(arg1:\"foo\"){name}}";
+            var expected = "query{simple(arg1:\"foo\"){name}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -56,7 +56,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Append_Two_Members()
         {
-            var expected = "{simple(arg1:\"foo\"){name description}}";
+            var expected = "query{simple(arg1:\"foo\"){name description}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -71,7 +71,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Append_Two_Identical_Members()
         {
-            var expected = "{simple(arg1:\"foo\"){name}}";
+            var expected = "query{simple(arg1:\"foo\"){name}}";
 
             var expression = new RootQuery()
                 .Simple("foo")
@@ -86,7 +86,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Data_Select_Single_Member()
         {
-            var expected = "{data{id}}";
+            var expected = "query{data{id}}";
 
             var expression = new RootQuery()
                 .Data
@@ -101,7 +101,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void NestedQuery_Select_Multiple_Members()
         {
-            var expected = "{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
+            var expected = "query{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
 
             var expression = new RootQuery()
                 .Nested("foo")
@@ -117,7 +117,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Nested_Selects()
         {
-            var expected = "{data{id items{name}}}";
+            var expected = "query{data{id items{name}}}";
 
             var expression = new RootQuery()
                 .Data
@@ -136,7 +136,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Inline_Fragment()
         {
-            var expected = "{data{... on NestedData{__typename id items{name}}}}";
+            var expected = "query{data{... on NestedData{__typename id items{name}}}}";
 
             var expression = new RootQuery()
                 .Data
@@ -156,7 +156,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Field_Aliases()
         {
-            var expected = @"{
+            var expected = @"query {
     simple(arg1: ""foo"", arg2: 1) {
         foo: name
         bar: description
@@ -180,7 +180,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Boolean_Parameter()
         {
-            var expected = "{boolValue(boolean:false){name}}";
+            var expected = "query{boolValue(boolean:false){name}}";
 
             var expression = new RootQuery()
                 .BoolValue(false)
@@ -195,7 +195,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Enumerable_Parameter()
         {
-            var expected = "{enumerableValue(value:[{value1:\"Hello World\",value2:42},{value1:\"Goodbye World\",value2:24}]){name}}";
+            var expected = "query{enumerableValue(value:[{value1:\"Hello World\",value2:42},{value1:\"Goodbye World\",value2:24}]){name}}";
 
             var expression = new RootQuery()
                 .EnumerableValue(new[]
@@ -222,7 +222,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void String_Parameter()
         {
-            var expected = "{stringValue(value:\"hello\"){name}}";
+            var expected = "query{stringValue(value:\"hello\"){name}}";
 
             var expression = new RootQuery()
                 .StringValue("hello")
@@ -237,7 +237,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Integer_Parameter()
         {
-            var expected = "{intValue(integer:123){name}}";
+            var expected = "query{intValue(integer:123){name}}";
 
             var expression = new RootQuery()
                 .IntValue(123)
@@ -252,7 +252,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Float_Parameter()
         {
-            var expected = "{floatValue(flt:123.3){name}}";
+            var expected = "query{floatValue(flt:123.3){name}}";
 
             var expression = new RootQuery()
                 .FloatValue(123.3f)
@@ -267,7 +267,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Object_Null_Parameter()
         {
-            var expected = "{objectValue{name}}";
+            var expected = "query{objectValue{name}}";
 
             var expression = new RootQuery()
                 .ObjectValue(null)
@@ -289,7 +289,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Object_Parameter()
         {
-            var expected = "{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
+            var expected = "query{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
 
             var expression = new RootQuery()
                 .ObjectValue(new SampleObject()
@@ -308,7 +308,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Object_Parameter_Hit_Cache()
         {
-            var expected = "{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
+            var expected = "query{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
 
             var expression = new RootQuery()
                 .ObjectValue(new SampleObject()
@@ -326,7 +326,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, result);
 
-            expected = "{objectValue(value:{value1:\"A different answer\",value2:14}){name}}";
+            expected = "query{objectValue(value:{value1:\"A different answer\",value2:14}){name}}";
 
             expression = new RootQuery()
                 .ObjectValue(new SampleObject()
@@ -345,7 +345,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Union()
         {
-            var expected = @"{
+            var expected = @"query {
     union {
         ... on Simple {
             __typename
