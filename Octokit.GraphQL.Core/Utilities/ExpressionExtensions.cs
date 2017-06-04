@@ -50,7 +50,14 @@ namespace Octokit.GraphQL.Core.Utilities
             }
             else if (GetEnumerableResultType(type) != null && IsIQueryableOfJToken(expression.Type))
             {
-                var queryType = type.GetTypeInfo().GenericTypeArguments[0];
+                var genericTypeArguments = type.GetTypeInfo().GenericTypeArguments;
+
+                if (genericTypeArguments.Length == 0)
+                {
+                    throw new NotImplementedException();
+                }
+
+                var queryType = genericTypeArguments[0];
 
                 if (expression is MethodCallExpression methodCall)
                 {
