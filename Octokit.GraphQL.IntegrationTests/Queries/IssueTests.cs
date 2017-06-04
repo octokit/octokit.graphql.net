@@ -40,5 +40,31 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 Assert.Equal(IssueState.Closed, result.State);
             }
         }
+
+        [IntegrationTest]
+        public void Should_Query_Union_Issue_Or_PullRequest2()
+        {
+            var query = new Query().Repository("octokit", "octokit.net").Issue(1)
+                .Timeline(first: 30).Nodes
+                .Select(issueTimelineItem => new
+                {
+                    AssignedEventId = issueTimelineItem.AssignedEvent.Id,
+                    ClosedEventId = issueTimelineItem.ClosedEvent.Id,
+                    DemilestonedEventId = issueTimelineItem.DemilestonedEvent.Id,
+                    LabeledEventId = issueTimelineItem.LabeledEvent.Id,
+                    LockedEventId = issueTimelineItem.LockedEvent.Id,
+                    MilestonedEventId = issueTimelineItem.MilestonedEvent.Id,
+                    ReferencedEventId = issueTimelineItem.ReferencedEvent.Id,
+                    RenamedTitleEventId = issueTimelineItem.RenamedTitleEvent.Id,
+                    ReopenedEventId = issueTimelineItem.ReopenedEvent.Id,
+                    SubscribedEventId = issueTimelineItem.SubscribedEvent.Id,
+                    UnassignedEventId = issueTimelineItem.UnassignedEvent.Id,
+                    UnlabeledEventId = issueTimelineItem.UnlabeledEvent.Id,
+                    UnlockedEventId = issueTimelineItem.UnlockedEvent.Id,
+                    UnsubscribedEventId = issueTimelineItem.UnsubscribedEvent.Id,
+                });
+
+            var result = Connection.Run(query).Result.First();
+        }
     }
 }
