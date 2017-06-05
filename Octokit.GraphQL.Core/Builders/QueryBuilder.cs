@@ -67,12 +67,6 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
-            var bodyType = node.Parameters.FirstOrDefault()?.Type;
-            if (bodyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IUnion)))
-            {
-                throw new NotImplementedException();
-            }
-
             var parameters = RewriteParameters(node.Parameters);
             var body = Visit(node.Body);
             return Expression.Lambda(body, parameters);
