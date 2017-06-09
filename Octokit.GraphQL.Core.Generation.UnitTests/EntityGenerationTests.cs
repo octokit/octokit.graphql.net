@@ -9,6 +9,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     {
         const string MemberTemplate = @"namespace Test
 {{
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -364,7 +365,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
-        public void Generates_Method_For_List_Field_With_Args()
+        public void Generates_Method_For_List_Field_With_Int_Arg()
         {
             var expected = FormatMemberTemplate("public IQueryable<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
@@ -384,6 +385,102 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                             {
                                 Name = "bar",
                                 Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_Object_List_Arg()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Object("Another")),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_NonNull_Enum_List_Arg()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.NonNull(TypeModel.Enum("Another"))),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_Nullable_Enum_List_Arg()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Enum("Another")),
                             }
                         }
                     },
@@ -649,6 +746,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
             var expected = @"namespace Test
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;

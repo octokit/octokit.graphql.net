@@ -52,7 +52,7 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateField(InputValueModel field)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(field.Type);
+            var typeName = TypeUtilities.GetCSharpReturnType(field.Type);
             return $"        public {typeName} {name} {{ get; set; }}";
         }
 
@@ -102,20 +102,20 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            return $"        {TypeUtilities.GetCSharpType(type)} {name} {{ get; }}";
+            return $"        {TypeUtilities.GetCSharpReturnType(type)} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             return $"        {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var csharpType = TypeUtilities.GetCSharpType(type);
+            var csharpType = TypeUtilities.GetCSharpReturnType(type);
             var arguments = GenerateArguments(field);
 
             return $"        IQueryable<{csharpType}> {name}({arguments});";
@@ -124,7 +124,7 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateObjectMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             var arguments = GenerateArguments(field);
 
             return $"        {typeName} {name}({arguments});";
@@ -133,14 +133,14 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             return $"        IQueryable<{typeName}> {name} {{ get; }}";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             var arguments = GenerateArguments(field);
 
             return $"        IQueryable<{typeName}> {name}({arguments});";
@@ -161,7 +161,7 @@ namespace Octokit.GraphQL.Core.Generation
                 }
 
                 var argName = TypeUtilities.GetArgName(arg);
-                argBuilder.Append(TypeUtilities.GetCSharpType(arg.Type));
+                argBuilder.Append(TypeUtilities.GetCSharpReturnType(arg.Type));
                 argBuilder.Append(' ');
                 argBuilder.Append(argName);
                 paramBuilder.Append(argName);
