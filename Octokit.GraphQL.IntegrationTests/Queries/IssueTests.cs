@@ -1,16 +1,15 @@
-
 using System.Linq;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
-namespace Octokit.GraphQL.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests.Queries
 {
     public class IssueTests : IntegrationTestBase
     {
         [IntegrationTest]
         public void Should_Query_Issues_By_Repository()
         {
-            var query = new Query().Repository("octokit", "octokit.net").Issues(first: 3).Nodes.Select(i => new
+            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3).Nodes.Select(i => new
             {
                 i.Title,
                 RepositoryName = i.Repository.Name,
@@ -27,7 +26,7 @@ namespace Octokit.GraphQL.IntegrationTests
         public void Should_Query_Issues_By_State_And_Repository()
         {
             var openState = new[] { IssueState.Closed }.AsQueryable();
-            var query = new Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => new
+            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => new
             {
                 i.Title,
                 i.State,

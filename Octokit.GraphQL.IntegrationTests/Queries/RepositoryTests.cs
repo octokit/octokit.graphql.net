@@ -3,14 +3,14 @@ using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
-namespace Octokit.GraphQL.IntegrationTests
+namespace Octokit.GraphQL.IntegrationTests.Queries
 {
     public class RepositoryTests : IntegrationTestBase
     {
         [IntegrationTest]
         public void Should_Query_All_RepositoryOwner_Repositories()
         {
-            var query = new Query().RepositoryOwner("octokit").Repositories(first: 30).Nodes.Select(repository => repository.Name);
+            var query = new GraphQL.Query().RepositoryOwner("octokit").Repositories(first: 30).Nodes.Select(repository => repository.Name);
 
             var repositoryNames = Connection.Run(query).Result.ToArray();
 
@@ -25,7 +25,7 @@ namespace Octokit.GraphQL.IntegrationTests
         [IntegrationTest]
         public void Should_Query_Repository_ByName()
         {
-            var query = new Query().Repository("octokit", "octokit.net").Select(r => new
+            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Select(r => new
             {
                 r.Name,
                 r.DatabaseId,
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.IntegrationTests
         [IntegrationTest]
         public void Should_QueryRepositoryOwner_Repositories_OrderBy_Name_Ascending()
         {
-            var query = new Query().RepositoryOwner("octokit").Repositories(first: 30, orderBy: new RepositoryOrder
+            var query = new GraphQL.Query().RepositoryOwner("octokit").Repositories(first: 30, orderBy: new RepositoryOrder
             {
                 Direction = OrderDirection.Asc,
                 Field = RepositoryOrderField.Name
@@ -60,7 +60,7 @@ namespace Octokit.GraphQL.IntegrationTests
         [IntegrationTest]
         public void Should_QueryRepositoryOwner_Repositories_OrderBy_CreatedAt_Descending()
         {
-            var query = new Query().RepositoryOwner("octokit").Repositories(first: 30, orderBy: new RepositoryOrder
+            var query = new GraphQL.Query().RepositoryOwner("octokit").Repositories(first: 30, orderBy: new RepositoryOrder
             {
                 Direction = OrderDirection.Asc,
                 Field = RepositoryOrderField.CreatedAt

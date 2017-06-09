@@ -862,7 +862,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public class Entity : QueryEntity, IRootQuery
+    public class Entity : QueryEntity, IQuery
     {
         public Entity() : base(new QueryProvider())
         {

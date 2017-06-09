@@ -12,7 +12,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void RepositoryOwner_Repository_Query()
         {
-            var expected = @"{
+            var expected = @"query {
   repositoryOwner(login: ""foo"") {
     repository(name: ""bar"") {
       id
@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void RepositoryOwner_Repositories_Query()
         {
-            var expected = @"{
+            var expected = @"query {
   repositoryOwner(login: ""foo"") {
     repositories(first: 30) {
       edges {
@@ -94,7 +94,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void RepositoryOwner_Repositories_Query_Viewer()
         {
-            var expected = @"{
+            var expected = @"query {
   repositoryOwner(login: ""foo"") {
     repositories(first: 30) {
       edges {
@@ -146,7 +146,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void User_Email_Query()
         {
-            var expected = @"{
+            var expected = @"query {
   search(query: ""foo"", type: USER, first: 1) {
     userCount
     edges {
@@ -188,7 +188,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void Viewer_Login_Email()
         {
-            var expected = @"{
+            var expected = @"query {
   viewer {
     login
     email
@@ -206,7 +206,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void Repository_Details_With_Viewer()
         {
-            var expected = @"{
+            var expected = @"query {
   repositoryOwner(login: ""foo"") {
     repositories(first: 30) {
       edges {
@@ -241,7 +241,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void Search_User_Name()
         {
-            var expected = @"{
+            var expected = @"query {
   search(query: ""foo"", type: USER, first: 30) {
     nodes {
       ... on User {
@@ -266,7 +266,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void Search_User_Name_Login()
         {
-            var expected = @"{
+            var expected = @"query {
   search(query: ""foo"", type: USER, first: 30) {
     nodes {
       ... on User {

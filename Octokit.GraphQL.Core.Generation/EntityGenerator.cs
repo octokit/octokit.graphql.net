@@ -54,7 +54,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, true)}public class {className} : QueryEntity, IRootQuery
+    {GenerateDocComments(type, true)}public class {className} : QueryEntity, IQuery
     {{
         public {className}() : base(new QueryProvider())
         {{
