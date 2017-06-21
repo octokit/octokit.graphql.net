@@ -147,6 +147,9 @@ namespace Octokit.GraphQL.Core.Utilities
 
         private static Type GetEnumerableResultType(Type type)
         {
+            if (type == typeof(string))
+                return null;
+
             if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 return type.GetTypeInfo().GenericTypeArguments[0];
