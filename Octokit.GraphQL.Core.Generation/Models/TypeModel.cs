@@ -122,6 +122,15 @@ namespace Octokit.GraphQL.Core.Generation.Models
             };
         }
 
+        public static TypeModel GitTimeStamp()
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Scalar,
+                Name = "GitTimeStamp",
+            };
+        }
+
         public static TypeModel Union(string name)
         {
             return new TypeModel
