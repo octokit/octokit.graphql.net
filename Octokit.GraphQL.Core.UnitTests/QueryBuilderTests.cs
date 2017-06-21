@@ -369,5 +369,52 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Union_Select_Child_Property()
+        {
+            var expected = @"query {
+    union {
+        ... on Simple {
+            __typename
+            name
+        }
+    }
+}";
+
+            var expression = new TestQuery()
+                .Union
+                .Select(x => x.Simple.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Union_Select_Child_Property_To_Class()
+        {
+            var expected = @"query {
+    union {
+        ... on Simple {
+            __typename
+            name
+        }
+    }
+}";
+
+            var expression = new TestQuery()
+                .Union
+                .Select((Union x) => new
+                {
+                    x.Simple.Name,
+                });
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
     }
 }
