@@ -109,12 +109,13 @@ namespace Octokit.GraphQL.Core.Builders
 
                     if (arg is MemberExpression member)
                     {
-                        rewritten = VisitMember(member, alias);
-
-                        if (rewritten.Type.GetTypeInfo().IsAssignableFrom(typeof(IQueryable<JToken>).GetTypeInfo()))
+                        var memberExpression = member.Expression as MemberExpression;
+                        if (memberExpression != null && IsUnion(memberExpression.Member.DeclaringType))
                         {
                             throw new NotImplementedException();
                         }
+
+                        rewritten = VisitMember(member, alias);
                     }
                     else if (arg is MethodCallExpression call)
                     {
