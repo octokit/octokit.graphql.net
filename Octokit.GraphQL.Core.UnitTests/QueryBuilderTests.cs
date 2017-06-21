@@ -99,6 +99,21 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Data_Select_Multiple_Members()
+        {
+            var expected = "query{data{id name}}";
+
+            var expression = new TestQuery()
+                .Data
+                .Select(x => new{ x.Id, x.Name});
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void NestedQuery_Select_Multiple_Members()
         {
             var expected = "query{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
