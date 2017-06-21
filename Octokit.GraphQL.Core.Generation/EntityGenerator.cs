@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Core.Generation
 
             return $@"namespace {rootNamespace}
 {{
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -49,6 +50,7 @@ namespace Octokit.GraphQL.Core.Generation
 
             return $@"namespace {rootNamespace}
 {{
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
