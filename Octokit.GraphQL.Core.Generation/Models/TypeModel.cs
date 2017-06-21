@@ -113,6 +113,15 @@ namespace Octokit.GraphQL.Core.Generation.Models
             };
         }
 
+        public static TypeModel DateTime()
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Scalar,
+                Name = "DateTime",
+            };
+        }
+
         public static TypeModel Union(string name)
         {
             return new TypeModel
