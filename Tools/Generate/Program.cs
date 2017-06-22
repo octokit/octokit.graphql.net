@@ -24,12 +24,18 @@ namespace Generate
         {
             var url = "https://api.github.com/graphql";
             var connection = new Connection(url, token);
+            
 
             Console.WriteLine("Reading from " + url);
-            var schema = await SchemaReader.ReadSchema(connection);
-
+            var schema = await SchemaReader.ReadSchema(connection);            
+        
             foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL"))
             {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
                 Console.WriteLine("Writing " + file.FileName);
                 File.WriteAllText(Path.Combine(path, file.FileName), file.Content);
             }
