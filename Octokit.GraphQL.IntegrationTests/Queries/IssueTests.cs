@@ -44,7 +44,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public void Should_Query_Union_Issue_Or_PullRequest2()
         {
-            var query = new Query().Repository("octokit", "octokit.net").Issue(1)
+            var query = new Query().Repository("octokit", "octokit.net").Issue(23)
                 .Timeline(first: 30).Nodes
                 .Select(issueTimelineItem => new
                 {
@@ -64,7 +64,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     UnsubscribedEventId = issueTimelineItem.UnsubscribedEvent.Id,
                 });
 
-            var result = Connection.Run(query).Result.First();
+            Assert.NotNull(Connection.Run(query).Result.Last().ClosedEventId);
         }
     }
 }
