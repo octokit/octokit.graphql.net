@@ -14,6 +14,7 @@ namespace Octokit.GraphQL.Core.Generation
 
             return $@"namespace {rootNamespace}
 {{
+    using System;
     using System.Linq;
 
     {GenerateDocComments(type)}public class {className}
