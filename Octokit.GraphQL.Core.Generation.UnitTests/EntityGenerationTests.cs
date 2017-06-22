@@ -853,6 +853,51 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Multi_Line_Doc_Comments_For_Method()
+        {
+            var expected = FormatMemberTemplate(@"/// <summary>
+        /// Testing if doc comments are generated.
+        /// Testing if doc comments are generated.
+        /// Testing if doc comments are generated.
+        /// </summary>
+        /// <param name=""arg1"">The first argument.</param>
+        public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Description = "Testing if doc comments are generated.\r\nTesting if doc comments are generated.\r\nTesting if doc comments are generated.\r\n",
+                        Type = TypeModel.Object("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "arg1",
+                                Description = "The first argument.",
+                                Type = TypeModel.Int(),
+                            },
+                            new InputValueModel
+                            {
+                                Name = "arg2",
+                                Type = TypeModel.Int(),
+                            },
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Root_Query()
         {
             var expected = @"namespace Test
