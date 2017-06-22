@@ -170,6 +170,19 @@ namespace Octokit.GraphQL.Core.Utilities
                             parameter));
                 }
             }
+            else
+            {
+                // The target type is not an IEnumerable<>. Call ExpressionMethods.FirstOrDefault
+                // on the source with a cast to the correct type.
+                var parameter = Expression.Parameter(typeof(JToken));
+                var result =  Expression.Call(
+                    ExpressionMethods.FirstOrDefaultMethod.MakeGenericMethod(type),
+                    expression,
+                    Expression.Lambda(
+                        parameter.AddCast(type),
+                        parameter));
+                return result;
+            }
 
             throw new NotSupportedException(
                 $"Don't know how to cast '{expression}' ({expression.Type}) to '{type}'.");
