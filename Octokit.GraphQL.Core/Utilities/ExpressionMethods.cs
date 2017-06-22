@@ -15,9 +15,18 @@ namespace Octokit.GraphQL.Core.Utilities
         public static readonly MethodInfo SelectMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(Select));
         public static readonly MethodInfo SelectEntityMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(SelectEntity));
 
-        public static IQueryable<JToken> ChildrenOfType(IEnumerable<JToken> parentToken, string typeName)
+        public static IQueryable<JToken> ChildrenOfType(IEnumerable<JToken> source, string typeName)
         {
-            return parentToken.Where(x => (string)x["__typename"] == typeName).AsQueryable();
+            if (source is JToken token && token.Type != JTokenType.Array)
+            {
+                return Enumerable.Repeat(
+                    token,
+                    (string)token["__typename"] == typeName ? 1 : 0).AsQueryable();
+            }
+            else
+            {
+                return source.Where(x => (string)x["__typename"] == typeName).AsQueryable();
+            }
         }
 
         public static T FirstOrDefault<T>(IQueryable<JToken> tokens, Func<JToken, T> selector)
