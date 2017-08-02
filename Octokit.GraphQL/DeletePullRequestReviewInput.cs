@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Linq;
 
     /// <summary>

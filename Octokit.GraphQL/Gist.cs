@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -27,7 +28,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// The gist description.
@@ -54,7 +55,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies when the gist was last pushed to.
         /// </summary>
-        public string PushedAt { get; }
+        public DateTimeOffset? PushedAt { get; }
 
         /// <summary>
         /// A list of users who have starred this starrable.
@@ -69,7 +70,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// Returns a boolean indicating whether the viewing user has starred this starrable.

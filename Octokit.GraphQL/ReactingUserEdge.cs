@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -22,7 +23,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The moment when the user made the reaction.
         /// </summary>
-        public string ReactedAt { get; }
+        public DateTimeOffset? ReactedAt { get; }
 
         internal static ReactingUserEdge Create(IQueryProvider provider, Expression expression)
         {

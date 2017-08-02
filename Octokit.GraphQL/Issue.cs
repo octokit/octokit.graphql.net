@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -66,7 +67,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// Check if this comment was created via an email reply.
@@ -97,7 +98,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The moment the editor made the last edit
         /// </summary>
-        public string LastEditedAt { get; }
+        public DateTimeOffset? LastEditedAt { get; }
 
         /// <summary>
         /// `true` if the object is locked
@@ -126,7 +127,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
-        public string PublishedAt { get; }
+        public DateTimeOffset? PublishedAt { get; }
 
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
@@ -167,7 +168,7 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="since">Allows filtering timeline events by a `since` timestamp.</param>
-        public IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, string since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.IssueTimelineConnection.Create);
+        public IssueTimelineConnection Timeline(int? first = null, string after = null, int? last = null, string before = null, DateTimeOffset? since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.IssueTimelineConnection.Create);
 
         /// <summary>
         /// Identifies the issue title.
@@ -177,7 +178,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this issue

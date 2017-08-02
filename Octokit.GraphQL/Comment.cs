@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -34,7 +35,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        string CreatedAt { get; }
+        DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// Check if this comment was created via an email reply.
@@ -51,17 +52,17 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The moment the editor made the last edit
         /// </summary>
-        string LastEditedAt { get; }
+        DateTimeOffset? LastEditedAt { get; }
 
         /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
-        string PublishedAt { get; }
+        DateTimeOffset? PublishedAt { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        string UpdatedAt { get; }
+        DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// Did the viewer author this comment.
@@ -72,6 +73,7 @@ namespace Octokit.GraphQL
 
 namespace Octokit.GraphQL.Internal
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -92,7 +94,7 @@ namespace Octokit.GraphQL.Internal
 
         public string BodyHTML { get; }
 
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         public bool CreatedViaEmail { get; }
 
@@ -100,11 +102,11 @@ namespace Octokit.GraphQL.Internal
 
         public string Id { get; }
 
-        public string LastEditedAt { get; }
+        public DateTimeOffset? LastEditedAt { get; }
 
-        public string PublishedAt { get; }
+        public DateTimeOffset? PublishedAt { get; }
 
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         public bool ViewerDidAuthor { get; }
 

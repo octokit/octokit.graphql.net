@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -28,7 +29,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the due date of the milestone.
         /// </summary>
-        public string DueOn { get; }
+        public DateTimeOffset? DueOn { get; }
 
         public string Id { get; }
 

@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -22,7 +23,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies when the item was starred.
         /// </summary>
-        public string StarredAt { get; }
+        public DateTimeOffset? StarredAt { get; }
 
         internal static StargazerEdge Create(IQueryProvider provider, Expression expression)
         {

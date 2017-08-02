@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -58,7 +59,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The datetime when this commit was committed.
         /// </summary>
-        public string CommittedDate { get; }
+        public DateTimeOffset? CommittedDate { get; }
 
         /// <summary>
         /// Check if commited via GitHub web UI.

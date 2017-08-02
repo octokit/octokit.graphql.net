@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -28,7 +29,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifities the date and time when the project was closed.
         /// </summary>
-        public string ClosedAt { get; }
+        public DateTimeOffset? ClosedAt { get; }
 
         /// <summary>
         /// List of columns in the project
@@ -42,7 +43,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// The actor who originally created the project.
@@ -84,7 +85,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this project
