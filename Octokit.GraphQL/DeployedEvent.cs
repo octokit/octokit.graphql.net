@@ -16,7 +16,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor who performed the 'deployed' event.
+        /// Identifies the actor who performed the event.
         /// </summary>
         public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
@@ -46,11 +46,6 @@ namespace Octokit.GraphQL
         /// The ref associated with the 'deployed' event.
         /// </summary>
         public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Ref.Create);
-
-        /// <summary>
-        /// The integration that created this object.
-        /// </summary>
-        public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 
         internal static DeployedEvent Create(IQueryProvider provider, Expression expression)
         {

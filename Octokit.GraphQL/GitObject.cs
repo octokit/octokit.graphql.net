@@ -22,7 +22,7 @@ namespace Octokit.GraphQL
         string CommitResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url for this Git object
+        /// The HTTP URL for this Git object
         /// </summary>
         string CommitUrl { get; }
 

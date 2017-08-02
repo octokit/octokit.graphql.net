@@ -52,6 +52,11 @@ namespace Octokit.GraphQL
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
 
         /// <summary>
+        /// Identifies when the gist was last pushed to.
+        /// </summary>
+        public string PushedAt { get; }
+
+        /// <summary>
         /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

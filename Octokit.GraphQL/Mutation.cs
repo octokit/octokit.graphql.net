@@ -9,12 +9,8 @@ namespace Octokit.GraphQL
     /// <summary>
     /// The root query for implementing GraphQL mutations.
     /// </summary>
-    public class Mutation : QueryEntity, IMutation
+    public class Mutation : QueryEntity
     {
-        public Mutation() : base(new QueryProvider())
-        {
-        }
-
         public Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }

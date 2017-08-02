@@ -37,7 +37,7 @@ namespace Octokit.GraphQL
         string ProjectsResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url listing owners projects
+        /// The HTTP URL listing owners projects
         /// </summary>
         string ProjectsUrl { get; }
 
