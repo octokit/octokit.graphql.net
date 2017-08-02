@@ -6,7 +6,7 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL
 {
     /// <summary>
-    /// The possible reasons a given repsitory could be in a locked state.
+    /// The possible reasons a given repository could be in a locked state.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RepositoryLockReason

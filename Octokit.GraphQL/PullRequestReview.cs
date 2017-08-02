@@ -21,6 +21,11 @@ namespace Octokit.GraphQL
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        public CommentAuthorAssociation AuthorAssociation { get; }
+
+        /// <summary>
         /// Identifies the pull request review body.
         /// </summary>
         public string Body { get; }
@@ -92,7 +97,7 @@ namespace Octokit.GraphQL
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
-        /// The HTTP URL permalink for this PullRequestReview.
+        /// The HTTP path permalink for this PullRequestReview.
         /// </summary>
         public string ResourcePath { get; }
 

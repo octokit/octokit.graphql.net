@@ -28,7 +28,7 @@ namespace Octokit.GraphQL
         string ResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url for this actor.
+        /// The HTTP URL for this actor.
         /// </summary>
         string Url { get; }
     }

@@ -16,7 +16,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor who performed the 'label' event.
+        /// Identifies the actor who performed the event.
         /// </summary>
         public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
@@ -41,6 +41,16 @@ namespace Octokit.GraphQL
         /// Reference originated in a different repository.
         /// </summary>
         public bool IsCrossReference { get; }
+
+        /// <summary>
+        /// Reference originated in a different repository.
+        /// </summary>
+        public bool IsCrossRepository { get; }
+
+        /// <summary>
+        /// Checks if the commit message itself references the subject. Can be false in the case of a commit comment reference.
+        /// </summary>
+        public bool IsDirectReference { get; }
 
         /// <summary>
         /// Object referenced by event.

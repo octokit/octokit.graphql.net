@@ -45,6 +45,16 @@ namespace Octokit.GraphQL
         public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Ref.Create);
 
         /// <summary>
+        /// Deployments associated with the repository
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="environments">Environments to list deployments for</param>
+        public DeploymentConnection Deployments(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<string> environments = null) => this.CreateMethodCall(x => x.Deployments(first, after, last, before, environments), Octokit.GraphQL.DeploymentConnection.Create);
+
+        /// <summary>
         /// The description of the repository.
         /// </summary>
         public string Description { get; }
@@ -70,7 +80,7 @@ namespace Octokit.GraphQL
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection Forks(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Forks(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
+        public RepositoryConnection Forks(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.Forks(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.RepositoryConnection.Create);
 
         /// <summary>
         /// Indicates if the repository has issues feature enabled.
@@ -128,10 +138,10 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        /// <param name="states">A list of states to filter the issues by.</param>
+        /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
-        /// <param name="labels">A list of label names to filter the issues by.</param>
-        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<IssueState> states = null, IssueOrder orderBy = null, IEnumerable<string> labels = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, states, orderBy, labels), Octokit.GraphQL.IssueConnection.Create);
+        /// <param name="states">A list of states to filter the issues by.</param>
+        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<string> labels = null, IssueOrder orderBy = null, IEnumerable<IssueState> states = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, labels, orderBy, states), Octokit.GraphQL.IssueConnection.Create);
 
         /// <summary>
         /// Returns a single label by name
@@ -253,7 +263,7 @@ namespace Octokit.GraphQL
         public string ProjectsResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url listing repository's projects
+        /// The HTTP URL listing repository's projects
         /// </summary>
         public string ProjectsUrl { get; }
 
@@ -347,7 +357,7 @@ namespace Octokit.GraphQL
         public string UpdatedAt { get; }
 
         /// <summary>
-        /// The HTTP url for this repository
+        /// The HTTP URL for this repository
         /// </summary>
         public string Url { get; }
 

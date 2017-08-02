@@ -16,7 +16,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor who performed the 'review_dismissed' event.
+        /// Identifies the actor who performed the event.
         /// </summary>
         public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
@@ -68,7 +68,7 @@ namespace Octokit.GraphQL
         public PullRequestReview Review => this.CreateProperty(x => x.Review, Octokit.GraphQL.PullRequestReview.Create);
 
         /// <summary>
-        /// The HTTP url for this ReviewDismissedEvent.
+        /// The HTTP URL for this ReviewDismissedEvent.
         /// </summary>
         public string Url { get; }
 

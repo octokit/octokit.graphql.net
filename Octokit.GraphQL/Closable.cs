@@ -12,7 +12,7 @@ namespace Octokit.GraphQL
     public interface IClosable : IQueryEntity
     {
         /// <summary>
-        /// true if the object is `closed` (definition of closed may depend on type)
+        /// `true` if the object is closed (definition of closed may depend on type)
         /// </summary>
         bool Closed { get; }
     }

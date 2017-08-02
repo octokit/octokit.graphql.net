@@ -107,7 +107,7 @@ namespace Octokit.GraphQL
         string UpdatedAt { get; }
 
         /// <summary>
-        /// The HTTP url for this repository
+        /// The HTTP URL for this repository
         /// </summary>
         string Url { get; }
     }

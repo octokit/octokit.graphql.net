@@ -58,7 +58,7 @@ namespace Octokit.GraphQL
         public string Title { get; }
 
         /// <summary>
-        /// The HTTP url for this milestone
+        /// The HTTP URL for this milestone
         /// </summary>
         public string Url { get; }
 

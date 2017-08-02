@@ -1,6 +1,7 @@
 ﻿using System;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
+using Octokit.GraphQL.Core.Utilities;
 
 namespace Octokit.GraphQL.Core.Generation.Utilities
 {
@@ -21,7 +22,7 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
             }
             else if (type.Kind == TypeKind.Enum)
             {
-                return $"{type.Name}.{value}";
+                return $"{type.Name}.{value.SnakeCaseToPascalCase()}";
             }
             else if (type.Kind == TypeKind.NonNull)
             {

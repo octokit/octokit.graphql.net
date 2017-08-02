@@ -13,6 +13,8 @@ namespace Octokit.GraphQL
 
         public IQueryable<string> UserIds { get; set; }
 
+        public IQueryable<string> TeamIds { get; set; }
+
         public bool? Union { get; set; }
     }
 }
