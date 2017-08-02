@@ -34,5 +34,11 @@ namespace Octokit.GraphQL
         /// </summary>
         [EnumMember(Value = "NAME")]
         Name,
+
+        /// <summary>
+        /// Order repositories by number of stargazers
+        /// </summary>
+        [EnumMember(Value = "STARGAZERS")]
+        Stargazers,
     }
 }

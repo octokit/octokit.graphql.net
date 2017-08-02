@@ -16,7 +16,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor who performed the 'head_ref_force_pushed' event.
+        /// Identifies the actor who performed the event.
         /// </summary>
         public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 

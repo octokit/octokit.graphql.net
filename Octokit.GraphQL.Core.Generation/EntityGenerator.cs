@@ -44,7 +44,7 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        public static string GenerateRoot(TypeModel type, string rootNamespace)
+        public static string GenerateRoot(TypeModel type, string rootNamespace, string interfaceName)
         {
             var className = TypeUtilities.GetClassName(type);
 
@@ -57,7 +57,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, true)}public class {className} : QueryEntity, IQuery
+    {GenerateDocComments(type, true)}public class {className} : QueryEntity, {interfaceName}
     {{
         public {className}() : base(new QueryProvider())
         {{
@@ -149,10 +149,16 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(field.Description))
             {
-                var builder = new StringBuilder($@"        /// <summary>
-        /// {field.Description}
-        /// </summary>
-");
+                var builder = new StringBuilder($@"        /// <summary>");
+                builder.AppendLine();
+
+                foreach (var line in field.Description.Split('\r', '\n')
+                    .Where(l => !(string.IsNullOrEmpty(l) && string.IsNullOrWhiteSpace(l))))
+                {
+                    builder.AppendLine($"        /// {line}");
+                }
+
+                builder.AppendLine(@"        /// </summary>");
 
                 if (field.Args != null)
                 {

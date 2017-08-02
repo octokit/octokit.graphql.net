@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -39,7 +40,7 @@ namespace Octokit.GraphQL
         /// Lookup nodes by a list of IDs.
         /// </summary>
         /// <param name="ids">The list of node IDs.</param>
-        public IQueryable<INode> Nodes(IQueryable<string> ids) => this.CreateMethodCall(x => x.Nodes(ids));
+        public IQueryable<INode> Nodes(IEnumerable<string> ids) => this.CreateMethodCall(x => x.Nodes(ids));
 
         /// <summary>
         /// Lookup a organization by login.

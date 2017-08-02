@@ -33,7 +33,7 @@ namespace Octokit.GraphQL
         public string ResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url for this pull request commit
+        /// The HTTP URL for this pull request commit
         /// </summary>
         public string Url { get; }
 

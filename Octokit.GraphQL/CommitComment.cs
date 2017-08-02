@@ -21,6 +21,11 @@ namespace Octokit.GraphQL
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        public CommentAuthorAssociation AuthorAssociation { get; }
+
+        /// <summary>
         /// Identifies the comment body.
         /// </summary>
         public string Body { get; }
@@ -31,7 +36,7 @@ namespace Octokit.GraphQL
         public string BodyHTML { get; }
 
         /// <summary>
-        /// Identifies the commit associated with the comment.
+        /// Identifies the commit associated with the comment, if the commit exists.
         /// </summary>
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Commit.Create);
 

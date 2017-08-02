@@ -22,5 +22,11 @@ namespace Octokit.GraphQL
         /// </summary>
         [EnumMember(Value = "MARKASREAD")]
         Markasread,
+
+        /// <summary>
+        /// The channel ID for observing head ref updates.
+        /// </summary>
+        [EnumMember(Value = "HEAD_REF")]
+        HeadRef,
     }
 }

@@ -15,7 +15,7 @@ namespace Octokit.GraphQL
         {
         }
 
-        public Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
+        internal Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
 
