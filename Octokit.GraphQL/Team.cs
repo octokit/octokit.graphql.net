@@ -77,7 +77,7 @@ namespace Octokit.GraphQL
         /// <param name="query">The search string to look for.</param>
         /// <param name="membership">Filter by membership type</param>
         /// <param name="role">Filter by team member role</param>
-        public TeamMemberConnection Members(int? first = null, string after = null, int? last = null, string before = null, string query = null, TeamMembershipType? membership = TeamMembershipType.ALL, TeamMemberRole? role = null) => this.CreateMethodCall(x => x.Members(first, after, last, before, query, membership, role), Octokit.GraphQL.TeamMemberConnection.Create);
+        public TeamMemberConnection Members(int? first = null, string after = null, int? last = null, string before = null, string query = null, TeamMembershipType? membership = TeamMembershipType.All, TeamMemberRole? role = null) => this.CreateMethodCall(x => x.Members(first, after, last, before, query, membership, role), Octokit.GraphQL.TeamMemberConnection.Create);
 
         /// <summary>
         /// The HTTP path for the team' members
