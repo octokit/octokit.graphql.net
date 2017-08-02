@@ -632,6 +632,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [InlineData(TypeKind.Scalar, "Int", "int", "5", "5")]
         [InlineData(TypeKind.Scalar, "Boolean", "bool", "true", "true")]
         [InlineData(TypeKind.Scalar, "String", "string", "foo", "\"foo\"")]
+        [InlineData(TypeKind.Enum, "EnumType", "EnumType", "FOO", "EnumType.Foo")]
         public void NonNull_Arg_With_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType, string defaultValue, string csharpDefaultValue)
         {
             var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar = {csharpDefaultValue}) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
