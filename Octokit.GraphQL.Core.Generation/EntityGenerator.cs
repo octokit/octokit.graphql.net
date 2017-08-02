@@ -43,7 +43,7 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        public static string GenerateRoot(TypeModel type, string rootNamespace)
+        public static string GenerateRoot(TypeModel type, string rootNamespace, string interfaceName)
         {
             var className = TypeUtilities.GetClassName(type);
 
@@ -54,7 +54,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, true)}public class {className} : QueryEntity, IQuery
+    {GenerateDocComments(type, true)}public class {className} : QueryEntity, {interfaceName}
     {{
         public {className}() : base(new QueryProvider())
         {{
