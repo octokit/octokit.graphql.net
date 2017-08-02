@@ -79,8 +79,7 @@ namespace Octokit.GraphQL
 
         /// <summary>
         /// Returns the pull request associated with the comment, if this comment was made on a
-pull request.
-
+        /// pull request.
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 

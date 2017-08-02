@@ -17,10 +17,9 @@ namespace Octokit.GraphQL
 
         /// <summary>
         /// The project column this card is associated under. A card may only belong to one
-project column at a time. The column field will be null if the card is created
-in a pending state and has yet to be associated with a column. Once cards are
-associated with a column, they will not become pending in the future.
-
+        /// project column at a time. The column field will be null if the card is created
+        /// in a pending state and has yet to be associated with a column. Once cards are
+        /// associated with a column, they will not become pending in the future.
         /// </summary>
         public ProjectColumn Column => this.CreateProperty(x => x.Column, Octokit.GraphQL.ProjectColumn.Create);
 
