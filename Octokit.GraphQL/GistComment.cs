@@ -21,6 +21,11 @@ namespace Octokit.GraphQL
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Author's association with the gist.
+        /// </summary>
+        public CommentAuthorAssociation AuthorAssociation { get; }
+
+        /// <summary>
         /// Identifies the comment body.
         /// </summary>
         public string Body { get; }

@@ -17,6 +17,11 @@ namespace Octokit.GraphQL
         IActor Author { get; }
 
         /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        CommentAuthorAssociation AuthorAssociation { get; }
+
+        /// <summary>
         /// The comment body as Markdown.
         /// </summary>
         string Body { get; }
@@ -80,6 +85,8 @@ namespace Octokit.GraphQL.Internal
         }
 
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
+
+        public CommentAuthorAssociation AuthorAssociation { get; }
 
         public string Body { get; }
 

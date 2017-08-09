@@ -16,6 +16,14 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// The project column this card is associated under. A card may only belong to one
+        /// project column at a time. The column field will be null if the card is created
+        /// in a pending state and has yet to be associated with a column. Once cards are
+        /// associated with a column, they will not become pending in the future.
+        /// </summary>
+        public ProjectColumn Column => this.CreateProperty(x => x.Column, Octokit.GraphQL.ProjectColumn.Create);
+
+        /// <summary>
         /// The card content item
         /// </summary>
         public ProjectCardItem Content => this.CreateProperty(x => x.Content, Octokit.GraphQL.ProjectCardItem.Create);
@@ -43,9 +51,19 @@ namespace Octokit.GraphQL
         public string Note { get; }
 
         /// <summary>
+        /// The project that contains this card.
+        /// </summary>
+        public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Project.Create);
+
+        /// <summary>
         /// The column that contains this card.
         /// </summary>
         public ProjectColumn ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octokit.GraphQL.ProjectColumn.Create);
+
+        /// <summary>
+        /// The HTTP path for this card
+        /// </summary>
+        public string ResourcePath { get; }
 
         /// <summary>
         /// The state of ProjectCard
@@ -56,6 +74,11 @@ namespace Octokit.GraphQL
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public string UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL for this card
+        /// </summary>
+        public string Url { get; }
 
         internal static ProjectCard Create(IQueryProvider provider, Expression expression)
         {

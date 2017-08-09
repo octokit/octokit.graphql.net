@@ -20,6 +20,11 @@ namespace Octokit.GraphQL
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Commit.Create);
 
         /// <summary>
+        /// A thread of comments on a commit.
+        /// </summary>
+        public CommitCommentThread CommitCommentThread => this.CreateProperty(x => x.CommitCommentThread, Octokit.GraphQL.CommitCommentThread.Create);
+
+        /// <summary>
         /// A review object for a given pull request.
         /// </summary>
         public PullRequestReview PullRequestReview => this.CreateProperty(x => x.PullRequestReview, Octokit.GraphQL.PullRequestReview.Create);
