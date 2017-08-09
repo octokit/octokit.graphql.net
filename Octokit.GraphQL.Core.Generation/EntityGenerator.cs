@@ -146,10 +146,16 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(field.Description))
             {
-                var builder = new StringBuilder($@"        /// <summary>
-        /// {field.Description}
-        /// </summary>
-");
+                var builder = new StringBuilder($@"        /// <summary>");
+                builder.AppendLine();
+
+                foreach (var line in field.Description.Split('\r', '\n')
+                    .Where(l => !(string.IsNullOrEmpty(l) && string.IsNullOrWhiteSpace(l))))
+                {
+                    builder.AppendLine($"        /// {line}");
+                }
+
+                builder.AppendLine(@"        /// </summary>");
 
                 if (field.Args != null)
                 {
