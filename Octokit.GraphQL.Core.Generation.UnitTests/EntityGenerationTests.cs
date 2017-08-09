@@ -901,6 +901,55 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Mutation_Under_Query()
+        {
+            var expected = @"namespace Test
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
+
+    public class Mutation : QueryEntity, IMutation
+    {
+        public Mutation() : base(new QueryProvider())
+        {
+        }
+
+        internal Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
+        {
+        }
+
+        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);
+
+        internal static Mutation Create(IQueryProvider provider, Expression expression)
+        {
+            return new Mutation(provider, expression);
+        }
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "Mutation",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Object("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", "Query");
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Implements_Interfaces()
         {
             var expected = string.Format(
