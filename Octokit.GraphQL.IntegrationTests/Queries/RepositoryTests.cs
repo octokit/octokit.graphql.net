@@ -15,11 +15,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var repositoryNames = Connection.Run(query).Result.ToArray();
 
             Assert.Equal(5, repositoryNames.Length);
+            Assert.Contains("discussions", repositoryNames);
             Assert.Contains("octokit.net", repositoryNames);
             Assert.Contains("octokit.rb", repositoryNames);
             Assert.Contains("octokit.objc", repositoryNames);
             Assert.Contains("go-octokit", repositoryNames);
-            Assert.Contains("octokit.py", repositoryNames);
         }
 
         [IntegrationTest]
@@ -50,10 +50,10 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var repositoryNames = Connection.Run(query).Result.ToArray();
 
             Assert.Equal(5, repositoryNames.Length);
-            Assert.Equal("go-octokit", repositoryNames[0]);
-            Assert.Equal("octokit.net", repositoryNames[1]);
-            Assert.Equal("octokit.objc", repositoryNames[2]);
-            Assert.Equal("octokit.py", repositoryNames[3]);
+            Assert.Equal("discussions", repositoryNames[0]);
+            Assert.Equal("go-octokit", repositoryNames[1]);
+            Assert.Equal("octokit.net", repositoryNames[2]);
+            Assert.Equal("octokit.objc", repositoryNames[3]);
             Assert.Equal("octokit.rb", repositoryNames[4]);
         }
 
@@ -73,7 +73,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Equal("octokit.net", repositoryNames[1]);
             Assert.Equal("octokit.objc", repositoryNames[2]);
             Assert.Equal("go-octokit", repositoryNames[3]);
-            Assert.Equal("octokit.py", repositoryNames[4]);
+            Assert.Equal("discussions", repositoryNames[4]);
         }
     }
 }
