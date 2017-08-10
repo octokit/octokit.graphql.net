@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Single_Member()
         {
-            var query = new RootQuery()
+            var query = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name);
             var data = @"{
@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Select_Multiple_Members()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo", 2)
                 .Select(x => new { x.Name, x.Description });
 
@@ -58,7 +58,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Data_Select_Single_Member()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .Select(x => x.Id);
 
@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void NestedQuery_Select_Multiple_Members()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Nested("foo")
                 .Simple("bar")
                 .Select(x => new { x.Name, x.Description });
@@ -106,7 +106,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void NestedQuery_Select_Multiple_Members_As_Ctor_Parameters()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Nested("foo")
                 .Simple("bar")
                 .Select(x => new NamedClass(x.Name, x.Description));
@@ -134,7 +134,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void NestedQuery_Select_Multiple_Members_To_Named_Class()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Nested("foo")
                 .Simple("bar")
                 .Select(x => new NamedClass
@@ -166,7 +166,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Nested_Selects()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .Select(x => new
                 {
@@ -198,7 +198,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Field_Alias()
         {
-            var expression = new RootQuery().Data.Select(x => new { Foo = x.Id });
+            var expression = new TestQuery().Data.Select(x => new { Foo = x.Id });
 
             var data = @"{
     ""data"":{
@@ -219,7 +219,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Select_ToList()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .Select(x => new
                 {
@@ -251,7 +251,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Select_ToDictionary()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .Select(x => new
                 {
@@ -288,7 +288,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Fragment()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Data
                 .OfType<Simple>()
                 .Select(x => new
@@ -324,7 +324,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Union()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Union
                 .Select(x => x.Simple)
                 .Select(x => new

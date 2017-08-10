@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -29,6 +30,11 @@ namespace Octokit.GraphQL
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        public CommentAuthorAssociation AuthorAssociation { get; }
+
+        /// <summary>
         /// Identifies the base Ref associated with the pull request.
         /// </summary>
         public Ref BaseRef => this.CreateProperty(x => x.BaseRef, Octokit.GraphQL.Ref.Create);
@@ -54,7 +60,7 @@ namespace Octokit.GraphQL
         public string BodyText { get; }
 
         /// <summary>
-        /// true if the object is `closed` (definition of closed may depend on type)
+        /// `true` if the pull request is closed
         /// </summary>
         public bool Closed { get; }
 
@@ -119,6 +125,11 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
+        /// The head and base repositories are different.
+        /// </summary>
+        public bool IsCrossRepository { get; }
+
+        /// <summary>
         /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -133,7 +144,7 @@ namespace Octokit.GraphQL
         public string LastEditedAt { get; }
 
         /// <summary>
-        /// `true` if the object is locked
+        /// `true` if the pull request is locked
         /// </summary>
         public bool Locked { get; }
 
@@ -203,9 +214,19 @@ namespace Octokit.GraphQL
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
-        /// The HTTP path for this issue
+        /// The HTTP path for this pull request.
         /// </summary>
         public string ResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP path for reverting this pull request.
+        /// </summary>
+        public string RevertResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP URL for reverting this pull request.
+        /// </summary>
+        public string RevertUrl { get; }
 
         /// <summary>
         /// A list of review requests associated with the pull request.
@@ -224,7 +245,7 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="states">A list of states to filter the reviews.</param>
-        public PullRequestReviewConnection Reviews(int? first = null, string after = null, int? last = null, string before = null, IQueryable<PullRequestReviewState> states = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, states), Octokit.GraphQL.PullRequestReviewConnection.Create);
+        public PullRequestReviewConnection Reviews(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<PullRequestReviewState> states = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, states), Octokit.GraphQL.PullRequestReviewConnection.Create);
 
         /// <summary>
         /// Identifies the state of the pull request.
@@ -257,14 +278,9 @@ namespace Octokit.GraphQL
         public string UpdatedAt { get; }
 
         /// <summary>
-        /// The HTTP url for this issue
+        /// The HTTP URL for this pull request.
         /// </summary>
         public string Url { get; }
-
-        /// <summary>
-        /// The integration that created this object.
-        /// </summary>
-        public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 
         /// <summary>
         /// Can user react to this subject

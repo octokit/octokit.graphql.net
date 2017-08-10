@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -86,7 +87,7 @@ namespace Octokit.GraphQL
         public string UpdatedAt { get; }
 
         /// <summary>
-        /// The HTTP url for this project
+        /// The HTTP URL for this project
         /// </summary>
         public string Url { get; }
 

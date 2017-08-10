@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -15,7 +16,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor who performed the 'base_ref_force_pushed' event.
+        /// Identifies the actor who performed the event.
         /// </summary>
         public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 

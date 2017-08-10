@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -18,6 +19,11 @@ namespace Octokit.GraphQL
         /// The actor who authored the comment.
         /// </summary>
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
+
+        /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        public CommentAuthorAssociation AuthorAssociation { get; }
 
         /// <summary>
         /// Identifies the comment body.
@@ -72,6 +78,12 @@ namespace Octokit.GraphQL
         public string PublishedAt { get; }
 
         /// <summary>
+        /// Returns the pull request associated with the comment, if this comment was made on a
+        /// pull request.
+        /// </summary>
+        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
+
+        /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
         public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
@@ -96,11 +108,6 @@ namespace Octokit.GraphQL
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public string UpdatedAt { get; }
-
-        /// <summary>
-        /// The integration that created this object.
-        /// </summary>
-        public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 
         /// <summary>
         /// Check if the current viewer can delete this object.

@@ -1,6 +1,7 @@
 ﻿using System;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
+using Octokit.GraphQL.Core.Utilities;
 
 namespace Octokit.GraphQL.Core.Generation.Utilities
 {
@@ -21,7 +22,7 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
             }
             else if (type.Kind == TypeKind.Enum)
             {
-                return $"{type.Name}.{value}";
+                return $"{type.Name}.{value.SnakeCaseToPascalCase()}";
             }
             else if (type.Kind == TypeKind.NonNull)
             {
@@ -31,9 +32,14 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
             throw new NotImplementedException();
         }
 
-        public static string GetCSharpType(TypeModel type)
+        public static string GetCSharpReturnType(TypeModel type)
         {
-            return GetCSharpType(ReduceType(type), true);
+            return GetCSharpType(ReduceType(type), type.Kind != TypeKind.NonNull, true);
+        }
+
+        public static string GetCSharpArgType(TypeModel type)
+        {
+            return GetCSharpType(ReduceType(type), type.Kind != TypeKind.NonNull, false);
         }
 
         public static string GetClassName(TypeModel type)
@@ -101,12 +107,12 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
             return type;
         }
 
-        private static string GetCSharpType(TypeModel type, bool nullable)
+        private static string GetCSharpType(TypeModel type, bool nullableType, bool returnType)
         {
             switch (type.Kind)
             {
                 case TypeKind.Scalar:
-                    var question = nullable ? "?" : "";
+                    var question = nullableType ? "?" : "";
                     switch (type.Name)
                     {
                         case "Int": return "int" + question;
@@ -116,7 +122,7 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
                         default: return "string";
                     }
                 case TypeKind.Enum:
-                    return type.Name + (nullable ? "?" : "");
+                    return type.Name + (nullableType ? "?" : "");
                 case TypeKind.Interface:
                     return "I" + type.Name;
                 case TypeKind.Object:
@@ -124,9 +130,9 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
                 case TypeKind.Union:
                     return type.Name;
                 case TypeKind.NonNull:
-                    return GetCSharpType(type.OfType, false);
+                    return GetCSharpType(type.OfType, false, returnType);
                 case TypeKind.List:
-                    return $"IQueryable<{GetCSharpType(type.OfType, true)}>";
+                    return (returnType ? "IQueryable" : "IEnumerable") + $"<{GetCSharpType(type.OfType, type.Kind != TypeKind.NonNull, false)}>";
                 default:
                     throw new NotSupportedException();
             }

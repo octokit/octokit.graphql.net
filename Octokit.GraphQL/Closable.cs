@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -11,7 +12,7 @@ namespace Octokit.GraphQL
     public interface IClosable : IQueryEntity
     {
         /// <summary>
-        /// true if the object is `closed` (definition of closed may depend on type)
+        /// `true` if the object is closed (definition of closed may depend on type)
         /// </summary>
         bool Closed { get; }
     }
@@ -19,6 +20,7 @@ namespace Octokit.GraphQL
 
 namespace Octokit.GraphQL.Internal
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;

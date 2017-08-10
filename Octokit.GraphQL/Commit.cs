@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -50,7 +51,7 @@ namespace Octokit.GraphQL
         public string CommitResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url for this Git object
+        /// The HTTP URL for this Git object
         /// </summary>
         public string CommitUrl { get; }
 
@@ -145,12 +146,12 @@ namespace Octokit.GraphQL
         public string TreeResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url for the tree of this commit
+        /// The HTTP URL for the tree of this commit
         /// </summary>
         public string TreeUrl { get; }
 
         /// <summary>
-        /// The HTTP url for this commit
+        /// The HTTP URL for this commit
         /// </summary>
         public string Url { get; }
 

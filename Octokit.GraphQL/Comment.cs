@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -14,6 +15,11 @@ namespace Octokit.GraphQL
         /// The actor who authored the comment.
         /// </summary>
         IActor Author { get; }
+
+        /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        CommentAuthorAssociation AuthorAssociation { get; }
 
         /// <summary>
         /// The comment body as Markdown.
@@ -66,6 +72,7 @@ namespace Octokit.GraphQL
 
 namespace Octokit.GraphQL.Internal
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -78,6 +85,8 @@ namespace Octokit.GraphQL.Internal
         }
 
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
+
+        public CommentAuthorAssociation AuthorAssociation { get; }
 
         public string Body { get; }
 

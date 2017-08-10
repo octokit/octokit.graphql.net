@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -18,6 +19,11 @@ namespace Octokit.GraphQL
         /// The actor who authored the comment.
         /// </summary>
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
+
+        /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        public CommentAuthorAssociation AuthorAssociation { get; }
 
         /// <summary>
         /// The comment body of this review comment.
@@ -131,6 +137,11 @@ namespace Octokit.GraphQL
         /// The repository associated with this review comment.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+
+        /// <summary>
+        /// The HTTP path permalink for this review comment.
+        /// </summary>
+        public string ResourcePath { get; }
 
         /// <summary>
         /// Identifies when the comment was last updated.

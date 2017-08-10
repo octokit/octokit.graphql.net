@@ -1,28 +1,29 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for Integration.
+    /// The connection type for Deployment.
     /// </summary>
-    public class IntegrationConnection : QueryEntity
+    public class DeploymentConnection : QueryEntity
     {
-        public IntegrationConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeploymentConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<IntegrationEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryable<DeploymentEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Integration> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryable<Deployment> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -34,9 +35,9 @@ namespace Octokit.GraphQL
         /// </summary>
         public int TotalCount { get; }
 
-        internal static IntegrationConnection Create(IQueryProvider provider, Expression expression)
+        internal static DeploymentConnection Create(IQueryProvider provider, Expression expression)
         {
-            return new IntegrationConnection(provider, expression);
+            return new DeploymentConnection(provider, expression);
         }
     }
 }

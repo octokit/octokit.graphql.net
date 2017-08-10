@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -27,7 +28,7 @@ namespace Octokit.GraphQL
         public Release Release => this.CreateProperty(x => x.Release, Octokit.GraphQL.Release.Create);
 
         /// <summary>
-        /// Identifies the url of the release asset.
+        /// Identifies the URL of the release asset.
         /// </summary>
         public string Url { get; }
 

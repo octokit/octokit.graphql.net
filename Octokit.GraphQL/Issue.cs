@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -29,6 +30,11 @@ namespace Octokit.GraphQL
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Author's association with the subject of the comment.
+        /// </summary>
+        public CommentAuthorAssociation AuthorAssociation { get; }
+
+        /// <summary>
         /// Identifies the body of the issue.
         /// </summary>
         public string Body { get; }
@@ -44,7 +50,7 @@ namespace Octokit.GraphQL
         public string BodyText { get; }
 
         /// <summary>
-        /// true if the object is `closed` (definition of closed may depend on type)
+        /// `true` if the object is closed (definition of closed may depend on type)
         /// </summary>
         public bool Closed { get; }
 
@@ -174,14 +180,9 @@ namespace Octokit.GraphQL
         public string UpdatedAt { get; }
 
         /// <summary>
-        /// The HTTP url for this issue
+        /// The HTTP URL for this issue
         /// </summary>
         public string Url { get; }
-
-        /// <summary>
-        /// The integration that created this object.
-        /// </summary>
-        public Integration ViaIntegration => this.CreateProperty(x => x.ViaIntegration, Octokit.GraphQL.Integration.Create);
 
         /// <summary>
         /// Can user react to this subject

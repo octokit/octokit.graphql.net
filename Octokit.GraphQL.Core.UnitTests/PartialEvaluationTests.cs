@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_String()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name + " World!");
 
@@ -32,7 +32,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Number()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name + x.Number);
 
@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Append_Closure()
         {
             var world = " World!";
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name + world);
 
@@ -76,7 +76,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Call_Method()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => Greet(x.Name));
 
@@ -98,7 +98,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Method_Call()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name + Greet("World!"));
 
@@ -120,7 +120,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Two_Members()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name + x.Description);
 
@@ -142,7 +142,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Two_Identical_Members()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name + x.Name);
 
@@ -164,7 +164,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Cast_Value()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => (float)x.Number);
 
@@ -186,7 +186,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Select_String_Length()
         {
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Select(x => x.Name.Length);
 

@@ -34,9 +34,10 @@ namespace Octokit.GraphQL.Core
 
         public string GetPayload()
         {
+            var query = new QuerySerializer().Serialize(OperationDefinition);
             var payload = new
             {
-                Query = new QuerySerializer().Serialize(OperationDefinition),
+                Query = query,
             };
 
             return JsonConvert.SerializeObject(

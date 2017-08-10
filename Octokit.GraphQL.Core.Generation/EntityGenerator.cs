@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Core.Generation
 
             return $@"namespace {rootNamespace}
 {{
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -42,18 +43,19 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        public static string GenerateRoot(TypeModel type, string rootNamespace)
+        public static string GenerateRoot(TypeModel type, string rootNamespace, string interfaceName)
         {
             var className = TypeUtilities.GetClassName(type);
 
             return $@"namespace {rootNamespace}
 {{
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, true)}public class {className} : QueryEntity, IRootQuery
+    {GenerateDocComments(type, true)}public class {className} : QueryEntity, {interfaceName}
     {{
         public {className}() : base(new QueryProvider())
         {{
@@ -145,10 +147,16 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(field.Description))
             {
-                var builder = new StringBuilder($@"        /// <summary>
-        /// {field.Description}
-        /// </summary>
-");
+                var builder = new StringBuilder($@"        /// <summary>");
+                builder.AppendLine();
+
+                foreach (var line in field.Description.Split('\r', '\n')
+                    .Where(l => !(string.IsNullOrEmpty(l) && string.IsNullOrWhiteSpace(l))))
+                {
+                    builder.AppendLine($"        /// {line}");
+                }
+
+                builder.AppendLine(@"        /// </summary>");
 
                 if (field.Args != null)
                 {
@@ -172,14 +180,14 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             return $"        public {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             var implName = GetEntityImplementationName(type, rootNamespace);
             return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
@@ -187,7 +195,7 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var csharpType = TypeUtilities.GetCSharpType(type);
+            var csharpType = TypeUtilities.GetCSharpReturnType(type);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
@@ -197,7 +205,7 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateObjectMethod(FieldModel field, TypeModel type, string rootNamespace)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             var implName = GetEntityImplementationName(type, rootNamespace);
 
             GenerateArguments(field, out string arguments, out string parameters);
@@ -208,14 +216,14 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
             return $"        public {typeName} {name} => this.CreateProperty(x => x.{name});";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpType(type);
+            var typeName = TypeUtilities.GetCSharpReturnType(type);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
@@ -237,7 +245,7 @@ namespace Octokit.GraphQL.Core.Generation
                 }
 
                 var argName = TypeUtilities.GetArgName(arg);
-                argBuilder.Append(TypeUtilities.GetCSharpType(arg.Type));
+                argBuilder.Append(TypeUtilities.GetCSharpArgType(arg.Type));
                 argBuilder.Append(' ');
                 argBuilder.Append(argName);
                 paramBuilder.Append(argName);

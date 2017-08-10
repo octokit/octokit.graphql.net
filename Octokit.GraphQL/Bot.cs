@@ -1,12 +1,13 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A special type of user which takes actions on behalf of integrations.
+    /// A special type of user which takes actions on behalf of GitHub Apps.
     /// </summary>
     public class Bot : QueryEntity
     {
@@ -15,7 +16,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// A URL pointing to the integration's public avatar.
+        /// A URL pointing to the GitHub App's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
         public string AvatarUrl(int? size = null) => null;
@@ -38,7 +39,7 @@ namespace Octokit.GraphQL
         public string ResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url for this bot
+        /// The HTTP URL for this bot
         /// </summary>
         public string Url { get; }
 

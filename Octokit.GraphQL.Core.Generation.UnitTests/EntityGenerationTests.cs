@@ -9,6 +9,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     {
         const string MemberTemplate = @"namespace Test
 {{
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -364,7 +365,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
-        public void Generates_Method_For_List_Field_With_Args()
+        public void Generates_Method_For_List_Field_With_Int_Arg()
         {
             var expected = FormatMemberTemplate("public IQueryable<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
@@ -384,6 +385,102 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                             {
                                 Name = "bar",
                                 Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_Object_List_Arg()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Object("Another")),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_NonNull_Enum_List_Arg()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.NonNull(TypeModel.Enum("Another"))),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_List_Field_With_Nullable_Enum_List_Arg()
+        {
+            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.List(TypeModel.Enum("Another")),
                             }
                         }
                     },
@@ -535,6 +632,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [InlineData(TypeKind.Scalar, "Int", "int", "5", "5")]
         [InlineData(TypeKind.Scalar, "Boolean", "bool", "true", "true")]
         [InlineData(TypeKind.Scalar, "String", "string", "foo", "\"foo\"")]
+        [InlineData(TypeKind.Enum, "EnumType", "EnumType", "FOO", "EnumType.Foo")]
         public void NonNull_Arg_With_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType, string defaultValue, string csharpDefaultValue)
         {
             var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar = {csharpDefaultValue}) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
@@ -649,6 +747,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
             var expected = @"namespace Test
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -755,16 +854,62 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Multi_Line_Doc_Comments_For_Method()
+        {
+            var expected = FormatMemberTemplate(@"/// <summary>
+        /// Testing if doc comments are generated.
+        /// Testing if doc comments are generated.
+        /// Testing if doc comments are generated.
+        /// </summary>
+        /// <param name=""arg1"">The first argument.</param>
+        public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Description = "Testing if doc comments are generated.\r\nTesting if doc comments are generated.\r\nTesting if doc comments are generated.\r\n",
+                        Type = TypeModel.Object("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "arg1",
+                                Description = "The first argument.",
+                                Type = TypeModel.Int(),
+                            },
+                            new InputValueModel
+                            {
+                                Name = "arg2",
+                                Type = TypeModel.Int(),
+                            },
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Generates_Root_Query()
         {
             var expected = @"namespace Test
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public class Entity : QueryEntity, IRootQuery
+    public class Entity : QueryEntity, IQuery
     {
         public Entity() : base(new QueryProvider())
         {
@@ -798,6 +943,55 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
             };
 
             var result = CodeGenerator.Generate(model, "Test", model.Name);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Mutation_Under_Query()
+        {
+            var expected = @"namespace Test
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
+
+    public class Mutation : QueryEntity, IMutation
+    {
+        public Mutation() : base(new QueryProvider())
+        {
+        }
+
+        internal Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
+        {
+        }
+
+        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);
+
+        internal static Mutation Create(IQueryProvider provider, Expression expression)
+        {
+            return new Mutation(provider, expression);
+        }
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "Mutation",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Object("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", "Query");
 
             Assert.Equal(expected, result);
         }

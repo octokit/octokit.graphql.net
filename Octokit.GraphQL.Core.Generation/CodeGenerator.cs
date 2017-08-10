@@ -28,9 +28,15 @@ namespace Octokit.GraphQL.Core.Generation
             switch (type.Kind)
             {
                 case TypeKind.Object:
-                    if (type.Name == queryType)
+                    if (type.Name == queryType || type.Name == "Mutation")
                     {
-                        return EntityGenerator.GenerateRoot(type, rootNamespace);
+                        var interfaceName = "IQuery";
+                        if (type.Name == "Mutation")
+                        {
+                            interfaceName = "IMutation";
+                        }
+
+                        return EntityGenerator.GenerateRoot(type, rootNamespace, interfaceName);
                     }
                     else
                     {

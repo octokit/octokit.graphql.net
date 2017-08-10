@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -8,9 +9,9 @@ namespace Octokit.GraphQL
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class IntegrationEdge : QueryEntity
+    public class DeploymentEdge : QueryEntity
     {
-        public IntegrationEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeploymentEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
 
@@ -22,11 +23,11 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public Integration Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Integration.Create);
+        public Deployment Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Deployment.Create);
 
-        internal static IntegrationEdge Create(IQueryProvider provider, Expression expression)
+        internal static DeploymentEdge Create(IQueryProvider provider, Expression expression)
         {
-            return new IntegrationEdge(provider, expression);
+            return new DeploymentEdge(provider, expression);
         }
     }
 }

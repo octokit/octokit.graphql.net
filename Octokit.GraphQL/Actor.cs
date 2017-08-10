@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -27,7 +28,7 @@ namespace Octokit.GraphQL
         string ResourcePath { get; }
 
         /// <summary>
-        /// The HTTP url for this actor.
+        /// The HTTP URL for this actor.
         /// </summary>
         string Url { get; }
     }
@@ -35,6 +36,7 @@ namespace Octokit.GraphQL
 
 namespace Octokit.GraphQL.Internal
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;

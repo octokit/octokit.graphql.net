@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -27,7 +28,7 @@ namespace Octokit.GraphQL
         public Topic Topic => this.CreateProperty(x => x.Topic, Octokit.GraphQL.Topic.Create);
 
         /// <summary>
-        /// The HTTP url for this repository-topic.
+        /// The HTTP URL for this repository-topic.
         /// </summary>
         public string Url { get; }
 

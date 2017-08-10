@@ -5,7 +5,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class SchemaType : QueryEntity, IRootQuery
+    public class SchemaType : QueryEntity, IQuery
     {
         public SchemaType(IQueryProvider provider, Expression expression)
             : base(provider, expression)

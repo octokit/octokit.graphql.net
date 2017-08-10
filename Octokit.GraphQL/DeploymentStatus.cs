@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -30,14 +31,14 @@ namespace Octokit.GraphQL
         public string Description { get; }
 
         /// <summary>
-        /// Identifies the environment url of the deployment.
+        /// Identifies the environment URL of the deployment.
         /// </summary>
         public string EnvironmentUrl { get; }
 
         public string Id { get; }
 
         /// <summary>
-        /// Identifies the log url of the deployment.
+        /// Identifies the log URL of the deployment.
         /// </summary>
         public string LogUrl { get; }
 

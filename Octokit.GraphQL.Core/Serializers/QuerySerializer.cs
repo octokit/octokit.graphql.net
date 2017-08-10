@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +42,23 @@ namespace Octokit.GraphQL.Core.Serializers
         {
             StringBuilder builder = new StringBuilder();
 
-            if (operation.Type != OperationType.Query || operation.Name != null)
+            switch (operation.Type)
             {
-                builder.Append("query ").Append(operation.Name);
+                case OperationType.Query:
+                    builder.Append("query");
+                    break;
+                case OperationType.Mutation:
+                    builder.Append("mutation");
+                    break;
+                case OperationType.Subscription:
+                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (operation.Name != null)
+            {
+                builder.Append(' ').Append(operation.Name);
             }
 
             SerializeSelections(operation, builder);
@@ -148,6 +163,26 @@ namespace Octokit.GraphQL.Core.Serializers
             else if (value is int || value is float)
             {
                 builder.Append(value);
+            }
+            else if (value is IEnumerable)
+            {
+                builder.Append("[");
+
+                var i = 0;
+                var valueEnumerator = ((IEnumerable)value).GetEnumerator();
+                while (valueEnumerator.MoveNext())
+                {
+                    if (i != 0)
+                    {
+                        builder.Append(",");
+                    }
+
+                    SerializeValue(builder, valueEnumerator.Current);
+
+                    i++;
+                }
+
+                builder.Append("]");
             }
             else
             {

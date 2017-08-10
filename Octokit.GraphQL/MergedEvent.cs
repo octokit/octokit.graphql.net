@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -15,7 +16,7 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
-        /// Identifies the actor who performed the 'merge' event.
+        /// Identifies the actor who performed the event.
         /// </summary>
         public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Internal.StubIActor.Create);
 
@@ -45,6 +46,16 @@ namespace Octokit.GraphQL
         /// PullRequest referenced by event.
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
+
+        /// <summary>
+        /// The HTTP path for this merged event.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP URL for this merged event.
+        /// </summary>
+        public string Url { get; }
 
         internal static MergedEvent Create(IQueryProvider provider, Expression expression)
         {

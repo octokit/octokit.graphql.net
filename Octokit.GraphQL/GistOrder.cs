@@ -3,11 +3,11 @@ namespace Octokit.GraphQL
     using System.Linq;
 
     /// <summary>
-    /// Ways in which member connections can be ordered.
+    /// Ordering options for gist connections
     /// </summary>
-    public class MemberOrder
+    public class GistOrder
     {
-        public UserOrderField Field { get; set; }
+        public GistOrderField Field { get; set; }
 
         public OrderDirection Direction { get; set; }
     }
