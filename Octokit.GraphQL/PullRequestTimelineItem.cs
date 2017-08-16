@@ -75,6 +75,11 @@ namespace Octokit.GraphQL
         public ReferencedEvent ReferencedEvent => this.CreateProperty(x => x.ReferencedEvent, Octokit.GraphQL.ReferencedEvent.Create);
 
         /// <summary>
+        /// Represents a mention made by one issue or pull request to another.
+        /// </summary>
+        public CrossReferencedEvent CrossReferencedEvent => this.CreateProperty(x => x.CrossReferencedEvent, Octokit.GraphQL.CrossReferencedEvent.Create);
+
+        /// <summary>
         /// Represents an 'assigned' event on any assignable object.
         /// </summary>
         public AssignedEvent AssignedEvent => this.CreateProperty(x => x.AssignedEvent, Octokit.GraphQL.AssignedEvent.Create);

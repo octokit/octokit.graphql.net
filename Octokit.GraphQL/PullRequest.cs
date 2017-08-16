@@ -169,6 +169,11 @@ namespace Octokit.GraphQL
         public string MergedAt { get; }
 
         /// <summary>
+        /// Identifies the milestone associated with the pull request.
+        /// </summary>
+        public Milestone Milestone => this.CreateProperty(x => x.Milestone, Octokit.GraphQL.Milestone.Create);
+
+        /// <summary>
         /// Identifies the pull request number.
         /// </summary>
         public int Number { get; }

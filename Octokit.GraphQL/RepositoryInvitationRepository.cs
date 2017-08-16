@@ -71,6 +71,11 @@ namespace Octokit.GraphQL
         public string License { get; }
 
         /// <summary>
+        /// The license associated with the repository
+        /// </summary>
+        public License LicenseInfo => this.CreateProperty(x => x.LicenseInfo, Octokit.GraphQL.License.Create);
+
+        /// <summary>
         /// The reason the repository has been locked.
         /// </summary>
         public RepositoryLockReason? LockReason { get; }
@@ -104,6 +109,12 @@ namespace Octokit.GraphQL
         /// The HTTP path for this repository
         /// </summary>
         public string ResourcePath { get; }
+
+        /// <summary>
+        /// A description of the repository, rendered to HTML without any links in it.
+        /// </summary>
+        /// <param name="limit">How many characters to return.</param>
+        public string ShortDescriptionHTML(int? limit = 200) => null;
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

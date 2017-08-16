@@ -104,9 +104,19 @@ namespace Octokit.GraphQL
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
         /// <summary>
+        /// The HTTP path permalink for this commit comment.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public string UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL permalink for this commit comment.
+        /// </summary>
+        public string Url { get; }
 
         /// <summary>
         /// Check if the current viewer can delete this object.

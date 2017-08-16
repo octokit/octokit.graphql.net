@@ -15,6 +15,21 @@ namespace Octokit.GraphQL
         {
         }
 
+        /// <summary>
+        /// The asset's content-type
+        /// </summary>
+        public string ContentType { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public string CreatedAt { get; }
+
+        /// <summary>
+        /// The number of times this asset was downloaded
+        /// </summary>
+        public int DownloadCount { get; }
+
         public string Id { get; }
 
         /// <summary>
@@ -23,9 +38,24 @@ namespace Octokit.GraphQL
         public string Name { get; }
 
         /// <summary>
-        /// release that the asset is associated with
+        /// Release that the asset is associated with
         /// </summary>
         public Release Release => this.CreateProperty(x => x.Release, Octokit.GraphQL.Release.Create);
+
+        /// <summary>
+        /// The size (in bytes) of the asset
+        /// </summary>
+        public int Size { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public string UpdatedAt { get; }
+
+        /// <summary>
+        /// The user that performed the upload
+        /// </summary>
+        public User UploadedBy => this.CreateProperty(x => x.UploadedBy, Octokit.GraphQL.User.Create);
 
         /// <summary>
         /// Identifies the URL of the release asset.

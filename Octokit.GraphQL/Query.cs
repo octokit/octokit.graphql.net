@@ -31,6 +31,17 @@ namespace Octokit.GraphQL
         public IQueryable<CodeOfConduct> CodesOfConduct => this.CreateProperty(x => x.CodesOfConduct);
 
         /// <summary>
+        /// Look up an open source license by its key
+        /// </summary>
+        /// <param name="key">The license's downcased SPDX ID</param>
+        public License License(string key) => this.CreateMethodCall(x => x.License(key), Octokit.GraphQL.License.Create);
+
+        /// <summary>
+        /// Return a list of known open source licenses
+        /// </summary>
+        public IQueryable<License> Licenses => this.CreateProperty(x => x.Licenses);
+
+        /// <summary>
         /// Fetches an object given its ID.
         /// </summary>
         /// <param name="id">ID of the object.</param>
@@ -51,7 +62,8 @@ namespace Octokit.GraphQL
         /// <summary>
         /// The client's rate limit information.
         /// </summary>
-        public RateLimit RateLimit => this.CreateProperty(x => x.RateLimit, Octokit.GraphQL.RateLimit.Create);
+        /// <param name="dryRun">If true, calculate the cost for the query without evaluating it</param>
+        public RateLimit RateLimit(bool? dryRun = false) => this.CreateMethodCall(x => x.RateLimit(dryRun), Octokit.GraphQL.RateLimit.Create);
 
         /// <summary>
         /// Hack to workaround https://github.com/facebook/relay/issues/112 re-exposing the root query object
@@ -61,7 +73,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Lookup a given repository by the owner and repository name.
         /// </summary>
-        /// <param name="owner">The login field of a user or organizationn</param>
+        /// <param name="owner">The login field of a user or organization</param>
         /// <param name="name">The name of the repository</param>
         public Repository Repository(string owner, string name) => this.CreateMethodCall(x => x.Repository(owner, name), Octokit.GraphQL.Repository.Create);
 

@@ -26,6 +26,11 @@ namespace Octokit.GraphQL
         public int Limit { get; }
 
         /// <summary>
+        /// The maximum number of nodes this query may return
+        /// </summary>
+        public int NodeCount { get; }
+
+        /// <summary>
         /// The number of points remaining in the current rate limit window.
         /// </summary>
         public int Remaining { get; }

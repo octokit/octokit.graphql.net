@@ -42,6 +42,11 @@ namespace Octokit.GraphQL
         public string CombinedSlug { get; }
 
         /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public string CreatedAt { get; }
+
+        /// <summary>
         /// The description of the team.
         /// </summary>
         public string Description { get; }
@@ -159,6 +164,11 @@ namespace Octokit.GraphQL
         /// The HTTP URL for this team's teams
         /// </summary>
         public string TeamsUrl { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public string UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this team
