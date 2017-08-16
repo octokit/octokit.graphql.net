@@ -31,6 +31,11 @@ namespace Octokit.GraphQL
         public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Identifies the primary key from the database.
+        /// </summary>
+        public int? DatabaseId { get; }
+
+        /// <summary>
         /// The environment to which this deployment was made.
         /// </summary>
         public string Environment { get; }
@@ -41,6 +46,11 @@ namespace Octokit.GraphQL
         /// The latest status of this deployment.
         /// </summary>
         public DeploymentStatus LatestStatus => this.CreateProperty(x => x.LatestStatus, Octokit.GraphQL.DeploymentStatus.Create);
+
+        /// <summary>
+        /// Extra information that a deployment system might need.
+        /// </summary>
+        public string Payload { get; }
 
         /// <summary>
         /// Identifies the repository associated with the deployment.

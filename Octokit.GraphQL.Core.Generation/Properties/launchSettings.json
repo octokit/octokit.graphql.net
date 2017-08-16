@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Octokit.GraphQL.Core.Generation": {
+      "commandName": "Project"
+    }
+  }
+}

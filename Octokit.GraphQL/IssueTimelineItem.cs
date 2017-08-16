@@ -25,6 +25,11 @@ namespace Octokit.GraphQL
         public IssueComment IssueComment => this.CreateProperty(x => x.IssueComment, Octokit.GraphQL.IssueComment.Create);
 
         /// <summary>
+        /// Represents a mention made by one issue or pull request to another.
+        /// </summary>
+        public CrossReferencedEvent CrossReferencedEvent => this.CreateProperty(x => x.CrossReferencedEvent, Octokit.GraphQL.CrossReferencedEvent.Create);
+
+        /// <summary>
         /// Represents a 'closed' event on any `Closable`.
         /// </summary>
         public ClosedEvent ClosedEvent => this.CreateProperty(x => x.ClosedEvent, Octokit.GraphQL.ClosedEvent.Create);

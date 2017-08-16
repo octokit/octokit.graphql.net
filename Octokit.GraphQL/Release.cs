@@ -16,11 +16,31 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// The author of the release
+        /// </summary>
+        public User Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.User.Create);
+
+        /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public string CreatedAt { get; }
+
+        /// <summary>
         /// Identifies the description of the release.
         /// </summary>
         public string Description { get; }
 
         public string Id { get; }
+
+        /// <summary>
+        /// Whether or not the release is a draft
+        /// </summary>
+        public bool IsDraft { get; }
+
+        /// <summary>
+        /// Whether or not the release is a prerelease
+        /// </summary>
+        public bool IsPrerelease { get; }
 
         /// <summary>
         /// Identifies the title of the release.
@@ -51,6 +71,11 @@ namespace Octokit.GraphQL
         /// The Git tag the release points to
         /// </summary>
         public Ref Tag => this.CreateProperty(x => x.Tag, Octokit.GraphQL.Ref.Create);
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public string UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this issue
