@@ -8,11 +8,31 @@ namespace Octokit.GraphQL.Core.Utilities
 {
     public static class ExpressionMethods
     {
+        public static readonly MethodInfo ChildrenOfTypeMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(ChildrenOfType));
+        public static readonly MethodInfo FirstOrDefaultMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(FirstOrDefault));
         public static readonly MethodInfo JTokenIndexer = typeof(JToken).GetTypeInfo().GetDeclaredMethod("get_Item");
         public static readonly MethodInfo JTokenToObject = GetMethod(typeof(JToken), nameof(JToken.ToObject), new Type[0]);
         public static readonly MethodInfo SelectMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(Select));
         public static readonly MethodInfo SelectEntityMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(SelectEntity));
-        public static readonly MethodInfo ChildrenOfTypeMethod = typeof(ExpressionMethods).GetTypeInfo().GetDeclaredMethod(nameof(ChildrenOfType));
+
+        public static IQueryable<JToken> ChildrenOfType(IEnumerable<JToken> source, string typeName)
+        {
+            if (source is JToken token && token.Type != JTokenType.Array)
+            {
+                return Enumerable.Repeat(
+                    token,
+                    (string)token["__typename"] == typeName ? 1 : 0).AsQueryable();
+            }
+            else
+            {
+                return source.Where(x => (string)x["__typename"] == typeName).AsQueryable();
+            }
+        }
+
+        public static T FirstOrDefault<T>(IQueryable<JToken> tokens, Func<JToken, T> selector)
+        {
+            return tokens.Select(selector).FirstOrDefault();
+        }
 
         public static IQueryable<T> Select<T>(IQueryable<JToken> tokens, Func<JToken, T> selector)
         {
@@ -38,11 +58,6 @@ namespace Octokit.GraphQL.Core.Utilities
         public static IQueryable<T> SelectMany<T>(JToken token, Func<JToken, IQueryable<T>> selector)
         {
             return selector(token);
-        }
-
-        public static IQueryable<JToken> ChildrenOfType(IEnumerable<JToken> parentToken, string typeName)
-        {
-            return parentToken.Where(x => (string)x["__typename"] == typeName).AsQueryable();
         }
 
         static MethodInfo GetMethod(Type type, string name, params Type[] parameters)

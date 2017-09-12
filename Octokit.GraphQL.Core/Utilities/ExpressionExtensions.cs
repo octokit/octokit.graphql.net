@@ -38,59 +38,29 @@ namespace Octokit.GraphQL.Core.Utilities
 
         public static Expression AddCast(this Expression expression, Type type)
         {
-            if (type.GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
+            var sourceType = expression.Type.GetTypeInfo();
+            var targetType = type.GetTypeInfo();
+
+            if (targetType.IsAssignableFrom(sourceType))
             {
+                // If the sourceType is assignable to the target type, return the source expression.
                 return expression;
             }
-            else if (typeof(JToken).GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
+            else if (typeof(JToken).GetTypeInfo().IsAssignableFrom(sourceType))
             {
+                // If the source type is a JToken use JToken.ToObject to convert to the target type.
                 return Expression.Call(
                     expression,
                     ExpressionMethods.JTokenToObject.MakeGenericMethod(type));
             }
-            else if (GetEnumerableResultType(type) != null && IsIQueryableOfJToken(expression.Type))
+            else if (IsIQueryableOfJToken(sourceType))
             {
-                var queryType = type.GetTypeInfo().GenericTypeArguments[0];
-
-                if (expression is MethodCallExpression methodCall)
-                {
-                    if (IsSelect(methodCall.Method))
-                    {
-                        var instance = methodCall.Arguments[0];
-                        var lambda = methodCall.Arguments[1].GetLambda();
-                        return Expression.Call(
-                            ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
-                            instance,
-                            Expression.Lambda(
-                                lambda.Body.AddCast(queryType),
-                                lambda.Parameters));
-                    }
-                    else if (IsSelectEntity(methodCall.Method))
-                    {
-                        var instance = methodCall.Arguments[0];
-                        var lambda = methodCall.Arguments[1].GetLambda();
-                        return Expression.Call(
-                            ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
-                            instance,
-                            Expression.Lambda(
-                                lambda.Body.AddCast(queryType),
-                                lambda.Parameters));
-                    }
-                }
-                else
-                {
-                    var parameter = Expression.Parameter(typeof(JToken));
-                    return Expression.Call(
-                        ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
-                        expression,
-                        Expression.Lambda(
-                            parameter.AddCast(queryType),
-                            parameter));
-                }
+                // If the source type is an IQueryable<JToken> then add a select statement to cast.
+                return AddSelectCast(expression, type);
             }
 
             throw new NotSupportedException(
-                $"Don't know how to cast '{expression}' to '{type}'.");
+                $"Don't know how to cast '{expression}' ({expression.Type}) to '{type}'.");
         }
 
         /// <summary>
@@ -138,8 +108,91 @@ namespace Octokit.GraphQL.Core.Utilities
             }
         }
 
-        private static Type GetEnumerableResultType(Type type)
+        private static Expression AddSelectCast(Expression expression, Type type)
         {
+            var targetItemTypeType = GetEnumerableItemType(type);
+
+            if (targetItemTypeType != null)
+            {
+                // The target type is an IEnumerable<>. 
+                var genericTypeArguments = type.GetTypeInfo().GenericTypeArguments;
+                var queryType = genericTypeArguments[0];
+
+                if (expression is MethodCallExpression methodCall)
+                {
+                    if (IsSelect(methodCall.Method))
+                    {
+                        // The source expression is an ExpressionMethods.Select call. Create a new
+                        // ExpressionMethods.Select call with a modified selector lambda which adds
+                        // the required cast.
+                        // TODO: Is this needed? There are no covering tests.
+                        var instance = methodCall.Arguments[0];
+                        var lambda = methodCall.Arguments[1].GetLambda();
+                        return Expression.Call(
+                            ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
+                            instance,
+                            Expression.Lambda(
+                                lambda.Body.AddCast(queryType),
+                                lambda.Parameters));
+                    }
+                    else if (IsSelectEntity(methodCall.Method))
+                    {
+                        // The source expression is an ExpressionMethods.SelectEntity call. Create a new
+                        // ExpressionMethods.SelectEntity call with a modified selector lambda which adds
+                        // the required cast. For example the following expression:
+                        //
+                        //     ExpressionMethods.SelectEntity(list, x => x["a"])
+                        //
+                        // Would be rewritten as
+                        //
+                        //      ExpressionMethods.SelectEntity(list, x => x["a"].ToObject<TargetType>())
+                        //
+                        var instance = methodCall.Arguments[0];
+                        var lambda = methodCall.Arguments[1].GetLambda();
+                        return Expression.Call(
+                            ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
+                            instance,
+                            Expression.Lambda(
+                                lambda.Body.AddCast(queryType),
+                                lambda.Parameters));
+                    }
+                }
+                else
+                {
+                    // The source expression is not a Select call; add a new select call on the
+                    // IEnumerable<> to cast each element.
+                    var parameter = Expression.Parameter(typeof(JToken));
+                    return Expression.Call(
+                        ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
+                        expression,
+                        Expression.Lambda(
+                            parameter.AddCast(queryType),
+                            parameter));
+                }
+            }
+            else
+            {
+                // The target type is not an IEnumerable<>. Call ExpressionMethods.FirstOrDefault
+                // on the source with a cast to the correct type.
+                var parameter = Expression.Parameter(typeof(JToken));
+                var result =  Expression.Call(
+                    ExpressionMethods.FirstOrDefaultMethod.MakeGenericMethod(type),
+                    expression,
+                    Expression.Lambda(
+                        parameter.AddCast(type),
+                        parameter));
+                return result;
+            }
+
+            throw new NotSupportedException(
+                $"Don't know how to cast '{expression}' ({expression.Type}) to '{type}'.");
+        }
+
+        private static Type GetEnumerableItemType(Type type)
+        {
+            if (type == typeof(string))
+                return null;
+
             if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 return type.GetTypeInfo().GenericTypeArguments[0];
@@ -158,7 +211,12 @@ namespace Octokit.GraphQL.Core.Utilities
 
         private static bool IsIQueryableOfJToken(Type type)
         {
-            return typeof(IQueryable<JToken>).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return IsIQueryableOfJToken(type.GetTypeInfo());
+        }
+
+        private static bool IsIQueryableOfJToken(TypeInfo type)
+        {
+            return typeof(IQueryable<JToken>).GetTypeInfo().IsAssignableFrom(type);
         }
 
         private static bool IsSelect(MethodInfo method)
