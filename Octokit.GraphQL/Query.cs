@@ -67,14 +67,10 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="categorySlug">Select only listings with the given category.</param>
-        /// <param name="viewerCanAdmin">Select listings to which user has admin access. If omitted, listings visible to the
-viewer are returned.
-</param>
+        /// <param name="viewerCanAdmin">Select listings to which user has admin access. If omitted, listings visible to the viewer are returned.</param>
         /// <param name="adminId">Select listings that can be administered by the specified user.</param>
         /// <param name="organizationId">Select listings for products owned by the specified organization.</param>
-        /// <param name="allStates">Select listings visible to the viewer even if they are not approved. If omitted or
-false, only approved listings will be returned.
-</param>
+        /// <param name="allStates">Select listings visible to the viewer even if they are not approved. If omitted or false, only approved listings will be returned.</param>
         /// <param name="slugs">Select the listings with these slugs, if they are visible to the viewer.</param>
         /// <param name="primaryCategoryOnly">Select only listings where the primary category matches the given category slug.</param>
         /// <param name="withFreeTrialsOnly">Select only listings that offer a free trial.</param>
