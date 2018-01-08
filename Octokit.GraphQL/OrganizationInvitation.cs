@@ -23,6 +23,11 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
+        /// The type of invitation that was sent (e.g. email, user).
+        /// </summary>
+        public OrganizationInvitationType InvitationType { get; }
+
+        /// <summary>
         /// The user who was invited to the organization.
         /// </summary>
         public User Invitee => this.CreateProperty(x => x.Invitee, Octokit.GraphQL.User.Create);

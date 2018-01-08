@@ -16,5 +16,7 @@ namespace Octokit.GraphQL
         public string Body { get; set; }
 
         public ProjectState? State { get; set; }
+
+        public bool? Public { get; set; }
     }
 }

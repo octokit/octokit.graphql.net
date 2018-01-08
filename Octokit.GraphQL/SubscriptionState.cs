@@ -28,5 +28,11 @@ namespace Octokit.GraphQL
         /// </summary>
         [EnumMember(Value = "IGNORED")]
         Ignored,
+
+        /// <summary>
+        /// Subscriptions are currently unavailable
+        /// </summary>
+        [EnumMember(Value = "UNAVAILABLE")]
+        Unavailable,
     }
 }

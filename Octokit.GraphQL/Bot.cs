@@ -22,6 +22,11 @@ namespace Octokit.GraphQL
         public string AvatarUrl(int? size = null) => null;
 
         /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public string CreatedAt { get; }
+
+        /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
         public int? DatabaseId { get; }
@@ -37,6 +42,11 @@ namespace Octokit.GraphQL
         /// The HTTP path for this bot
         /// </summary>
         public string ResourcePath { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public string UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this bot

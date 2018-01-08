@@ -16,9 +16,28 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// A list of users that can be assigned to issues in this repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public UserConnection AssignableUsers(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.AssignableUsers(first, after, last, before), Octokit.GraphQL.UserConnection.Create);
+
+        /// <summary>
         /// Returns the code of conduct for this repository
         /// </summary>
         public CodeOfConduct CodeOfConduct => this.CreateProperty(x => x.CodeOfConduct, Octokit.GraphQL.CodeOfConduct.Create);
+
+        /// <summary>
+        /// A list of collaborators associated with the repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="affiliation">Collaborators affiliation level with a repository.</param>
+        public RepositoryCollaboratorConnection Collaborators(int? first = null, string after = null, int? last = null, string before = null, CollaboratorAffiliation? affiliation = null) => this.CreateMethodCall(x => x.Collaborators(first, after, last, before, affiliation), Octokit.GraphQL.RepositoryCollaboratorConnection.Create);
 
         /// <summary>
         /// A list of commit comments associated with the repository.
@@ -43,6 +62,15 @@ namespace Octokit.GraphQL
         /// The Ref associated with the repository's default branch.
         /// </summary>
         public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Ref.Create);
+
+        /// <summary>
+        /// A list of protected branches that are on this repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public DeployKeyConnection DeployKeys(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.DeployKeys(first, after, last, before), Octokit.GraphQL.DeployKeyConnection.Create);
 
         /// <summary>
         /// Deployments associated with the repository
@@ -70,7 +98,12 @@ namespace Octokit.GraphQL
         public int? DiskUsage { get; }
 
         /// <summary>
-        /// A list of forked repositories.
+        /// Returns how many forks there are of this repository in the whole network.
+        /// </summary>
+        public int ForkCount { get; }
+
+        /// <summary>
+        /// A list of direct forked repositories.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -98,6 +131,11 @@ namespace Octokit.GraphQL
         public string HomepageUrl { get; }
 
         public string Id { get; }
+
+        /// <summary>
+        /// Indicates if the repository is unmaintained.
+        /// </summary>
+        public bool IsArchived { get; }
 
         /// <summary>
         /// Identifies if the repository is a fork.
@@ -320,8 +358,15 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="refPrefix">A ref name prefix like `refs/heads/`, `refs/tags/`, etc.</param>
-        /// <param name="direction">The ordering direction.</param>
-        public RefConnection Refs(string refPrefix, int? first = null, string after = null, int? last = null, string before = null, OrderDirection? direction = null) => this.CreateMethodCall(x => x.Refs(refPrefix, first, after, last, before, direction), Octokit.GraphQL.RefConnection.Create);
+        /// <param name="direction">DEPRECATED: use orderBy. The ordering direction.</param>
+        /// <param name="orderBy">Ordering options for refs returned from the connection.</param>
+        public RefConnection Refs(string refPrefix, int? first = null, string after = null, int? last = null, string before = null, OrderDirection? direction = null, RefOrder orderBy = null) => this.CreateMethodCall(x => x.Refs(refPrefix, first, after, last, before, direction, orderBy), Octokit.GraphQL.RefConnection.Create);
+
+        /// <summary>
+        /// Lookup a single release given various criteria.
+        /// </summary>
+        /// <param name="tagName">The name of the Tag the Release was created from</param>
+        public Release Release(string tagName) => this.CreateMethodCall(x => x.Release(tagName), Octokit.GraphQL.Release.Create);
 
         /// <summary>
         /// List of releases which are dependent on this repository.
@@ -330,7 +375,8 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public ReleaseConnection Releases(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Releases(first, after, last, before), Octokit.GraphQL.ReleaseConnection.Create);
+        /// <param name="orderBy">Order for connection</param>
+        public ReleaseConnection Releases(int? first = null, string after = null, int? last = null, string before = null, ReleaseOrder orderBy = null) => this.CreateMethodCall(x => x.Releases(first, after, last, before, orderBy), Octokit.GraphQL.ReleaseConnection.Create);
 
         /// <summary>
         /// A list of applied repository-topic associations for this repository.
@@ -351,6 +397,11 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="limit">How many characters to return.</param>
         public string ShortDescriptionHTML(int? limit = 200) => null;
+
+        /// <summary>
+        /// The SSH URL to clone this repository
+        /// </summary>
+        public string SshUrl { get; }
 
         /// <summary>
         /// A list of users who have starred this starrable.
@@ -398,7 +449,7 @@ namespace Octokit.GraphQL
         public bool ViewerHasStarred { get; }
 
         /// <summary>
-        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
+        /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
         public SubscriptionState ViewerSubscription { get; }
 

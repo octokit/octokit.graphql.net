@@ -26,12 +26,22 @@ namespace Octokit.GraphQL
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// The organization's public profile description.
+        /// </summary>
+        public string Description { get; }
+
+        /// <summary>
+        /// The organization's public email.
+        /// </summary>
+        public string Email { get; }
+
         public string Id { get; }
 
         /// <summary>
-        /// Is the account billed through invoices?
+        /// The organization's public profile location.
         /// </summary>
-        public bool IsInvoiced { get; }
+        public string Location { get; }
 
         /// <summary>
         /// The organization's login name.
@@ -196,9 +206,14 @@ namespace Octokit.GraphQL
         public bool ViewerCanCreateTeams { get; }
 
         /// <summary>
-        /// Viewer is a member of this organization.
+        /// Viewer is an active member of this organization.
         /// </summary>
         public bool ViewerIsAMember { get; }
+
+        /// <summary>
+        /// The organization's public profile URL.
+        /// </summary>
+        public string WebsiteUrl { get; }
 
         internal static Organization Create(IQueryProvider provider, Expression expression)
         {

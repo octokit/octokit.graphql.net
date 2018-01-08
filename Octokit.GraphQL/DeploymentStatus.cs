@@ -16,6 +16,11 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public string CreatedAt { get; }
+
+        /// <summary>
         /// Identifies the actor who triggered the deployment.
         /// </summary>
         public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
@@ -46,6 +51,11 @@ namespace Octokit.GraphQL
         /// Identifies the current state of the deployment.
         /// </summary>
         public DeploymentStatusState State { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public string UpdatedAt { get; }
 
         internal static DeploymentStatus Create(IQueryProvider provider, Expression expression)
         {

@@ -42,6 +42,50 @@ namespace Octokit.GraphQL
         public IQueryable<License> Licenses => this.CreateProperty(x => x.Licenses);
 
         /// <summary>
+        /// Get alphabetically sorted list of Marketplace categories
+        /// </summary>
+        /// <param name="excludeEmpty">Exclude categories with no listings.</param>
+        public IQueryable<MarketplaceCategory> MarketplaceCategories(bool? excludeEmpty = null) => this.CreateMethodCall(x => x.MarketplaceCategories(excludeEmpty));
+
+        /// <summary>
+        /// Look up a Marketplace category by its slug.
+        /// </summary>
+        /// <param name="slug">The URL slug of the category.</param>
+        public MarketplaceCategory MarketplaceCategory(string slug) => this.CreateMethodCall(x => x.MarketplaceCategory(slug), Octokit.GraphQL.MarketplaceCategory.Create);
+
+        /// <summary>
+        /// Look up a single Marketplace listing
+        /// </summary>
+        /// <param name="slug">Select the listing that matches this slug. It's the short name of the listing used in its URL.</param>
+        public MarketplaceListing MarketplaceListing(string slug) => this.CreateMethodCall(x => x.MarketplaceListing(slug), Octokit.GraphQL.MarketplaceListing.Create);
+
+        /// <summary>
+        /// Look up Marketplace listings
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="categorySlug">Select only listings with the given category.</param>
+        /// <param name="viewerCanAdmin">Select listings to which user has admin access. If omitted, listings visible to the
+viewer are returned.
+</param>
+        /// <param name="adminId">Select listings that can be administered by the specified user.</param>
+        /// <param name="organizationId">Select listings for products owned by the specified organization.</param>
+        /// <param name="allStates">Select listings visible to the viewer even if they are not approved. If omitted or
+false, only approved listings will be returned.
+</param>
+        /// <param name="slugs">Select the listings with these slugs, if they are visible to the viewer.</param>
+        /// <param name="primaryCategoryOnly">Select only listings where the primary category matches the given category slug.</param>
+        /// <param name="withFreeTrialsOnly">Select only listings that offer a free trial.</param>
+        public MarketplaceListingConnection MarketplaceListings(int? first = null, string after = null, int? last = null, string before = null, string categorySlug = null, bool? viewerCanAdmin = null, string adminId = null, string organizationId = null, bool? allStates = null, IEnumerable<string> slugs = null, bool? primaryCategoryOnly = false, bool? withFreeTrialsOnly = false) => this.CreateMethodCall(x => x.MarketplaceListings(first, after, last, before, categorySlug, viewerCanAdmin, adminId, organizationId, allStates, slugs, primaryCategoryOnly, withFreeTrialsOnly), Octokit.GraphQL.MarketplaceListingConnection.Create);
+
+        /// <summary>
+        /// Return information about the GitHub instance
+        /// </summary>
+        public GitHubMetadata Meta => this.CreateProperty(x => x.Meta, Octokit.GraphQL.GitHubMetadata.Create);
+
+        /// <summary>
         /// Fetches an object given its ID.
         /// </summary>
         /// <param name="id">ID of the object.</param>

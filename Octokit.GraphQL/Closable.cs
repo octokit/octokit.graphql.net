@@ -15,6 +15,11 @@ namespace Octokit.GraphQL
         /// `true` if the object is closed (definition of closed may depend on type)
         /// </summary>
         bool Closed { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was closed.
+        /// </summary>
+        string ClosedAt { get; }
     }
 }
 
@@ -33,6 +38,8 @@ namespace Octokit.GraphQL.Internal
         }
 
         public bool Closed { get; }
+
+        public string ClosedAt { get; }
 
         internal static StubIClosable Create(IQueryProvider provider, Expression expression)
         {
