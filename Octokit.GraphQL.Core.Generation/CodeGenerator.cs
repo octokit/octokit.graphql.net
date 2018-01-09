@@ -40,13 +40,16 @@ namespace Octokit.GraphQL.Core.Generation
                 case TypeKind.Object:
                     if (type.Name == queryType || type.Name == "Mutation")
                     {
+                        var ns = rootNamespace;
                         var interfaceName = "IQuery";
+
                         if (type.Name != queryType)
                         {
                             interfaceName = "I" + type.Name;
+                            ns = entityNamespace;
                         }
 
-                        return EntityGenerator.GenerateRoot(type, rootNamespace, entityNamespace, interfaceName, queryType);
+                        return EntityGenerator.GenerateRoot(type, ns, entityNamespace, interfaceName, queryType);
                     }
                     else
                     {
