@@ -8,11 +8,11 @@ namespace Octokit.GraphQL.Core.Generation
 {
     internal static class InputObjectGenerator
     {
-        public static string Generate(TypeModel type, string rootNamespace)
+        public static string Generate(TypeModel type, string entityNamespace)
         {
             var className = TypeUtilities.GetClassName(type);
 
-            return $@"namespace {rootNamespace}
+            return $@"namespace {entityNamespace}
 {{
     using System.Linq;
 
@@ -176,15 +176,6 @@ namespace Octokit.GraphQL.Core.Generation
             }
 
             return argBuilder.ToString();
-        }
-
-        private static string GenerateStub(TypeModel type, string rootNamespace)
-        {
-            var stubType = type.Clone();
-            stubType.Name = "Stub" + TypeUtilities.GetInterfaceName(type);
-            stubType.Kind = TypeKind.Object;
-            stubType.Interfaces = new[] { type };
-            return EntityGenerator.Generate(stubType, rootNamespace + ".Internal", "internal ", false);
         }
     }
 }

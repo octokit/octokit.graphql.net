@@ -3,6 +3,7 @@ using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Serializers;
+using Octokit.GraphQL.Model;
 using Xunit;
 
 namespace Octokit.GraphQL.UnitTests

@@ -3,6 +3,7 @@ namespace Octokit.GraphQL
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using Octokit.GraphQL.Model;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
@@ -23,7 +24,7 @@ namespace Octokit.GraphQL
         /// Look up a code of conduct by its key
         /// </summary>
         /// <param name="key">The code of conduct's key</param>
-        public CodeOfConduct CodeOfConduct(string key) => this.CreateMethodCall(x => x.CodeOfConduct(key), Octokit.GraphQL.CodeOfConduct.Create);
+        public CodeOfConduct CodeOfConduct(string key) => this.CreateMethodCall(x => x.CodeOfConduct(key), Octokit.GraphQL.Model.CodeOfConduct.Create);
 
         /// <summary>
         /// Look up a code of conduct by its key
@@ -34,7 +35,7 @@ namespace Octokit.GraphQL
         /// Look up an open source license by its key
         /// </summary>
         /// <param name="key">The license's downcased SPDX ID</param>
-        public License License(string key) => this.CreateMethodCall(x => x.License(key), Octokit.GraphQL.License.Create);
+        public License License(string key) => this.CreateMethodCall(x => x.License(key), Octokit.GraphQL.Model.License.Create);
 
         /// <summary>
         /// Return a list of known open source licenses
@@ -51,13 +52,13 @@ namespace Octokit.GraphQL
         /// Look up a Marketplace category by its slug.
         /// </summary>
         /// <param name="slug">The URL slug of the category.</param>
-        public MarketplaceCategory MarketplaceCategory(string slug) => this.CreateMethodCall(x => x.MarketplaceCategory(slug), Octokit.GraphQL.MarketplaceCategory.Create);
+        public MarketplaceCategory MarketplaceCategory(string slug) => this.CreateMethodCall(x => x.MarketplaceCategory(slug), Octokit.GraphQL.Model.MarketplaceCategory.Create);
 
         /// <summary>
         /// Look up a single Marketplace listing
         /// </summary>
         /// <param name="slug">Select the listing that matches this slug. It's the short name of the listing used in its URL.</param>
-        public MarketplaceListing MarketplaceListing(string slug) => this.CreateMethodCall(x => x.MarketplaceListing(slug), Octokit.GraphQL.MarketplaceListing.Create);
+        public MarketplaceListing MarketplaceListing(string slug) => this.CreateMethodCall(x => x.MarketplaceListing(slug), Octokit.GraphQL.Model.MarketplaceListing.Create);
 
         /// <summary>
         /// Look up Marketplace listings
@@ -74,18 +75,18 @@ namespace Octokit.GraphQL
         /// <param name="slugs">Select the listings with these slugs, if they are visible to the viewer.</param>
         /// <param name="primaryCategoryOnly">Select only listings where the primary category matches the given category slug.</param>
         /// <param name="withFreeTrialsOnly">Select only listings that offer a free trial.</param>
-        public MarketplaceListingConnection MarketplaceListings(int? first = null, string after = null, int? last = null, string before = null, string categorySlug = null, bool? viewerCanAdmin = null, string adminId = null, string organizationId = null, bool? allStates = null, IEnumerable<string> slugs = null, bool? primaryCategoryOnly = false, bool? withFreeTrialsOnly = false) => this.CreateMethodCall(x => x.MarketplaceListings(first, after, last, before, categorySlug, viewerCanAdmin, adminId, organizationId, allStates, slugs, primaryCategoryOnly, withFreeTrialsOnly), Octokit.GraphQL.MarketplaceListingConnection.Create);
+        public MarketplaceListingConnection MarketplaceListings(int? first = null, string after = null, int? last = null, string before = null, string categorySlug = null, bool? viewerCanAdmin = null, string adminId = null, string organizationId = null, bool? allStates = null, IEnumerable<string> slugs = null, bool? primaryCategoryOnly = false, bool? withFreeTrialsOnly = false) => this.CreateMethodCall(x => x.MarketplaceListings(first, after, last, before, categorySlug, viewerCanAdmin, adminId, organizationId, allStates, slugs, primaryCategoryOnly, withFreeTrialsOnly), Octokit.GraphQL.Model.MarketplaceListingConnection.Create);
 
         /// <summary>
         /// Return information about the GitHub instance
         /// </summary>
-        public GitHubMetadata Meta => this.CreateProperty(x => x.Meta, Octokit.GraphQL.GitHubMetadata.Create);
+        public GitHubMetadata Meta => this.CreateProperty(x => x.Meta, Octokit.GraphQL.Model.GitHubMetadata.Create);
 
         /// <summary>
         /// Fetches an object given its ID.
         /// </summary>
         /// <param name="id">ID of the object.</param>
-        public INode Node(string id) => this.CreateMethodCall(x => x.Node(id), Octokit.GraphQL.Internal.StubINode.Create);
+        public INode Node(string id) => this.CreateMethodCall(x => x.Node(id), Octokit.GraphQL.Model.Internal.StubINode.Create);
 
         /// <summary>
         /// Lookup nodes by a list of IDs.
@@ -97,13 +98,13 @@ namespace Octokit.GraphQL
         /// Lookup a organization by login.
         /// </summary>
         /// <param name="login">The organization's login.</param>
-        public Organization Organization(string login) => this.CreateMethodCall(x => x.Organization(login), Octokit.GraphQL.Organization.Create);
+        public Organization Organization(string login) => this.CreateMethodCall(x => x.Organization(login), Octokit.GraphQL.Model.Organization.Create);
 
         /// <summary>
         /// The client's rate limit information.
         /// </summary>
         /// <param name="dryRun">If true, calculate the cost for the query without evaluating it</param>
-        public RateLimit RateLimit(bool? dryRun = false) => this.CreateMethodCall(x => x.RateLimit(dryRun), Octokit.GraphQL.RateLimit.Create);
+        public RateLimit RateLimit(bool? dryRun = false) => this.CreateMethodCall(x => x.RateLimit(dryRun), Octokit.GraphQL.Model.RateLimit.Create);
 
         /// <summary>
         /// Hack to workaround https://github.com/facebook/relay/issues/112 re-exposing the root query object
@@ -115,19 +116,19 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="owner">The login field of a user or organization</param>
         /// <param name="name">The name of the repository</param>
-        public Repository Repository(string owner, string name) => this.CreateMethodCall(x => x.Repository(owner, name), Octokit.GraphQL.Repository.Create);
+        public Repository Repository(string owner, string name) => this.CreateMethodCall(x => x.Repository(owner, name), Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
         /// Lookup a repository owner (ie. either a User or an Organization) by login.
         /// </summary>
         /// <param name="login">The username to lookup the owner by.</param>
-        public IRepositoryOwner RepositoryOwner(string login) => this.CreateMethodCall(x => x.RepositoryOwner(login), Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
+        public IRepositoryOwner RepositoryOwner(string login) => this.CreateMethodCall(x => x.RepositoryOwner(login), Octokit.GraphQL.Model.Internal.StubIRepositoryOwner.Create);
 
         /// <summary>
         /// Lookup resource by a URL.
         /// </summary>
         /// <param name="url">The URL.</param>
-        public IUniformResourceLocatable Resource(string url) => this.CreateMethodCall(x => x.Resource(url), Octokit.GraphQL.Internal.StubIUniformResourceLocatable.Create);
+        public IUniformResourceLocatable Resource(string url) => this.CreateMethodCall(x => x.Resource(url), Octokit.GraphQL.Model.Internal.StubIUniformResourceLocatable.Create);
 
         /// <summary>
         /// Perform a search across resources.
@@ -138,24 +139,24 @@ namespace Octokit.GraphQL
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="query">The search string to look for.</param>
         /// <param name="type">The types of search items to search within.</param>
-        public SearchResultItemConnection Search(string query, SearchType type, int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octokit.GraphQL.SearchResultItemConnection.Create);
+        public SearchResultItemConnection Search(string query, SearchType type, int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octokit.GraphQL.Model.SearchResultItemConnection.Create);
 
         /// <summary>
         /// Look up a topic by name.
         /// </summary>
         /// <param name="name">The topic's name.</param>
-        public Topic Topic(string name) => this.CreateMethodCall(x => x.Topic(name), Octokit.GraphQL.Topic.Create);
+        public Topic Topic(string name) => this.CreateMethodCall(x => x.Topic(name), Octokit.GraphQL.Model.Topic.Create);
 
         /// <summary>
         /// Lookup a user by login.
         /// </summary>
         /// <param name="login">The user's login.</param>
-        public User User(string login) => this.CreateMethodCall(x => x.User(login), Octokit.GraphQL.User.Create);
+        public User User(string login) => this.CreateMethodCall(x => x.User(login), Octokit.GraphQL.Model.User.Create);
 
         /// <summary>
         /// The currently authenticated user.
         /// </summary>
-        public User Viewer => this.CreateProperty(x => x.Viewer, Octokit.GraphQL.User.Create);
+        public User Viewer => this.CreateProperty(x => x.Viewer, Octokit.GraphQL.Model.User.Create);
 
         internal static Query Create(IQueryProvider provider, Expression expression)
         {

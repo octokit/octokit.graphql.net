@@ -22,13 +22,24 @@ namespace Generate
 
         private static async Task GenerateEntities(string token, string path)
         {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            var modelPath = Path.Combine(path, "Model");
+            if (!Directory.Exists(modelPath))
+            {
+                Directory.CreateDirectory(modelPath);
+            }
+
             var url = "https://api.github.com/graphql";
             var connection = new Connection(url, token);
 
             Console.WriteLine("Reading from " + url);
             var schema = await SchemaReader.ReadSchema(connection);
 
-            foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL"))
+            foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL", "Octokit.GraphQL.Model"))
             {
                 Console.WriteLine("Writing " + file.FileName);
                 File.WriteAllText(Path.Combine(path, file.FileName), file.Content);
