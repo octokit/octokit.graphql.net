@@ -134,7 +134,12 @@ namespace Octokit.GraphQL
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         /// <summary>
-        /// The repository associated with this review comment.
+        /// The comment this is a reply to.
+        /// </summary>
+        public PullRequestReviewComment ReplyTo => this.CreateProperty(x => x.ReplyTo, Octokit.GraphQL.PullRequestReviewComment.Create);
+
+        /// <summary>
+        /// The repository associated with this node.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 

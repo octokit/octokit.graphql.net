@@ -21,6 +21,11 @@ namespace Octokit.GraphQL
         public string AbbreviatedOid { get; }
 
         /// <summary>
+        /// The number of additions in this commit.
+        /// </summary>
+        public int Additions { get; }
+
+        /// <summary>
         /// Authorship details of the commit.
         /// </summary>
         public GitActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.GitActor.Create);
@@ -31,10 +36,20 @@ namespace Octokit.GraphQL
         public bool AuthoredByCommitter { get; }
 
         /// <summary>
+        /// The datetime when this commit was authored.
+        /// </summary>
+        public string AuthoredDate { get; }
+
+        /// <summary>
         /// Fetches `git blame` information.
         /// </summary>
         /// <param name="path">The file whose Git blame information you want.</param>
         public Blame Blame(string path) => this.CreateMethodCall(x => x.Blame(path), Octokit.GraphQL.Blame.Create);
+
+        /// <summary>
+        /// The number of changed files in this commit.
+        /// </summary>
+        public int ChangedFiles { get; }
 
         /// <summary>
         /// Comments made on the commit.
@@ -69,6 +84,11 @@ namespace Octokit.GraphQL
         /// Committership details of the commit.
         /// </summary>
         public GitActor Committer => this.CreateProperty(x => x.Committer, Octokit.GraphQL.GitActor.Create);
+
+        /// <summary>
+        /// The number of deletions in this commit.
+        /// </summary>
+        public int Deletions { get; }
 
         /// <summary>
         /// The linear commit history starting from (and including) this commit, in the same order as `git log`.
@@ -116,6 +136,20 @@ namespace Octokit.GraphQL
         public string Oid { get; }
 
         /// <summary>
+        /// The parents of a commit.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public CommitConnection Parents(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Parents(first, after, last, before), Octokit.GraphQL.CommitConnection.Create);
+
+        /// <summary>
+        /// The datetime when this commit was pushed.
+        /// </summary>
+        public string PushedDate { get; }
+
+        /// <summary>
         /// The Repository this commit belongs to
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
@@ -134,6 +168,11 @@ namespace Octokit.GraphQL
         /// Status information for this commit
         /// </summary>
         public Status Status => this.CreateProperty(x => x.Status, Octokit.GraphQL.Status.Create);
+
+        /// <summary>
+        /// Returns a URL to download a tarball archive for a repository.                      Note: For private repositories, these links are temporary and expire after five minutes.
+        /// </summary>
+        public string TarballUrl { get; }
 
         /// <summary>
         /// Commit's root Tree
@@ -161,9 +200,14 @@ namespace Octokit.GraphQL
         public bool ViewerCanSubscribe { get; }
 
         /// <summary>
-        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
+        /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
         public SubscriptionState ViewerSubscription { get; }
+
+        /// <summary>
+        /// Returns a URL to download a zipball archive for a repository.                      Note: For private repositories, these links are temporary and expire after five minutes.
+        /// </summary>
+        public string ZipballUrl { get; }
 
         internal static Commit Create(IQueryProvider provider, Expression expression)
         {

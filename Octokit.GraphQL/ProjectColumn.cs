@@ -47,9 +47,19 @@ namespace Octokit.GraphQL
         public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Project.Create);
 
         /// <summary>
+        /// The HTTP path for this project column
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public string UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL for this project column
+        /// </summary>
+        public string Url { get; }
 
         internal static ProjectColumn Create(IQueryProvider provider, Expression expression)
         {

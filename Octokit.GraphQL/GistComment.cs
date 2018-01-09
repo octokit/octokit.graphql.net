@@ -50,6 +50,11 @@ namespace Octokit.GraphQL
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Internal.StubIActor.Create);
 
+        /// <summary>
+        /// The associated gist.
+        /// </summary>
+        public Gist Gist => this.CreateProperty(x => x.Gist, Octokit.GraphQL.Gist.Create);
+
         public string Id { get; }
 
         /// <summary>

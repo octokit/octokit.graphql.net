@@ -27,6 +27,11 @@ namespace Octokit.GraphQL
         string DescriptionHTML { get; }
 
         /// <summary>
+        /// Returns how many forks there are of this repository in the whole network.
+        /// </summary>
+        int ForkCount { get; }
+
+        /// <summary>
         /// Indicates if the repository has issues feature enabled.
         /// </summary>
         bool HasIssuesEnabled { get; }
@@ -40,6 +45,11 @@ namespace Octokit.GraphQL
         /// The repository's URL.
         /// </summary>
         string HomepageUrl { get; }
+
+        /// <summary>
+        /// Indicates if the repository is unmaintained.
+        /// </summary>
+        bool IsArchived { get; }
 
         /// <summary>
         /// Identifies if the repository is a fork.
@@ -144,11 +154,15 @@ namespace Octokit.GraphQL.Internal
 
         public string DescriptionHTML { get; }
 
+        public int ForkCount { get; }
+
         public bool HasIssuesEnabled { get; }
 
         public bool HasWikiEnabled { get; }
 
         public string HomepageUrl { get; }
+
+        public bool IsArchived { get; }
 
         public bool IsFork { get; }
 

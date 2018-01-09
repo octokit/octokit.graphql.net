@@ -26,7 +26,12 @@ namespace Octokit.GraphQL
         public string BodyHTML { get; }
 
         /// <summary>
-        /// Identifities the date and time when the project was closed.
+        /// `true` if the object is closed (definition of closed may depend on type)
+        /// </summary>
+        public bool Closed { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was closed.
         /// </summary>
         public string ClosedAt { get; }
 
@@ -70,6 +75,15 @@ namespace Octokit.GraphQL
         /// The project's owner. Currently limited to repositories and organizations.
         /// </summary>
         public IProjectOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIProjectOwner.Create);
+
+        /// <summary>
+        /// List of pending cards in this project
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public ProjectCardConnection PendingCards(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.PendingCards(first, after, last, before), Octokit.GraphQL.ProjectCardConnection.Create);
 
         /// <summary>
         /// The HTTP path for this project

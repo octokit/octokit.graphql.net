@@ -39,6 +39,11 @@ namespace Octokit.GraphQL
         /// </summary>
         public Organization Organization => this.CreateProperty(x => x.Organization, Octokit.GraphQL.Organization.Create);
 
+        /// <summary>
+        /// A listing in the GitHub integration marketplace.
+        /// </summary>
+        public MarketplaceListing MarketplaceListing => this.CreateProperty(x => x.MarketplaceListing, Octokit.GraphQL.MarketplaceListing.Create);
+
         internal static SearchResultItem Create(IQueryProvider provider, Expression expression)
         {
             return new SearchResultItem(provider, expression);

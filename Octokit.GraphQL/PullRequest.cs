@@ -16,6 +16,11 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// The number of additions in this pull request.
+        /// </summary>
+        public int Additions { get; }
+
+        /// <summary>
         /// A list of Users assigned to this object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -60,9 +65,19 @@ namespace Octokit.GraphQL
         public string BodyText { get; }
 
         /// <summary>
+        /// The number of changed files in this pull request.
+        /// </summary>
+        public int ChangedFiles { get; }
+
+        /// <summary>
         /// `true` if the pull request is closed
         /// </summary>
         public bool Closed { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was closed.
+        /// </summary>
+        public string ClosedAt { get; }
 
         /// <summary>
         /// A list of comments associated with the pull request.
@@ -96,6 +111,11 @@ namespace Octokit.GraphQL
         /// Identifies the primary key from the database.
         /// </summary>
         public int? DatabaseId { get; }
+
+        /// <summary>
+        /// The number of deletions in this pull request.
+        /// </summary>
+        public int Deletions { get; }
 
         /// <summary>
         /// The actor who edited this pull request's body.
@@ -193,6 +213,15 @@ namespace Octokit.GraphQL
         public Commit PotentialMergeCommit => this.CreateProperty(x => x.PotentialMergeCommit, Octokit.GraphQL.Commit.Create);
 
         /// <summary>
+        /// List of project cards associated with this pull request.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public ProjectCardConnection ProjectCards(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ProjectCards(first, after, last, before), Octokit.GraphQL.ProjectCardConnection.Create);
+
+        /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
         public string PublishedAt { get; }
@@ -214,7 +243,7 @@ namespace Octokit.GraphQL
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         /// <summary>
-        /// The repository associated with this pull request.
+        /// The repository associated with this node.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
@@ -250,7 +279,8 @@ namespace Octokit.GraphQL
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="states">A list of states to filter the reviews.</param>
-        public PullRequestReviewConnection Reviews(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<PullRequestReviewState> states = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, states), Octokit.GraphQL.PullRequestReviewConnection.Create);
+        /// <param name="author">Filter by author of the review.</param>
+        public PullRequestReviewConnection Reviews(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<PullRequestReviewState> states = null, string author = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, states, author), Octokit.GraphQL.PullRequestReviewConnection.Create);
 
         /// <summary>
         /// Identifies the state of the pull request.
@@ -263,7 +293,7 @@ namespace Octokit.GraphQL
         public IQueryable<SuggestedReviewer> SuggestedReviewers => this.CreateProperty(x => x.SuggestedReviewers);
 
         /// <summary>
-        /// A list of events associated with a PullRequest.
+        /// A list of events, comments, commits, etc. associated with the pull request.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -313,7 +343,7 @@ namespace Octokit.GraphQL
         public bool ViewerDidAuthor { get; }
 
         /// <summary>
-        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
+        /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
         public SubscriptionState ViewerSubscription { get; }
 

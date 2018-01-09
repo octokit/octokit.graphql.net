@@ -23,7 +23,8 @@ namespace Octokit.GraphQL
         public string Name { get; }
 
         /// <summary>
-        /// A list of related topics sorted with the most relevant first.
+        /// A list of related topics, including aliases of this topic, sorted with the most relevant
+        /// first.
         /// </summary>
         public IQueryable<Topic> RelatedTopics => this.CreateProperty(x => x.RelatedTopics);
 

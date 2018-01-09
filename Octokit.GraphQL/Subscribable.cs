@@ -19,7 +19,7 @@ namespace Octokit.GraphQL
         bool ViewerCanSubscribe { get; }
 
         /// <summary>
-        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
+        /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
         SubscriptionState ViewerSubscription { get; }
     }

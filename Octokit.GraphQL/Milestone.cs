@@ -16,6 +16,21 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// `true` if the object is closed (definition of closed may depend on type)
+        /// </summary>
+        public bool Closed { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was closed.
+        /// </summary>
+        public string ClosedAt { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public string CreatedAt { get; }
+
+        /// <summary>
         /// Identifies the actor who created the milestone.
         /// </summary>
         public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Internal.StubIActor.Create);
@@ -31,6 +46,18 @@ namespace Octokit.GraphQL
         public string DueOn { get; }
 
         public string Id { get; }
+
+        /// <summary>
+        /// A list of issues associated with the milestone.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="labels">A list of label names to filter the pull requests by.</param>
+        /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
+        /// <param name="states">A list of states to filter the issues by.</param>
+        public IssueConnection Issues(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<string> labels = null, IssueOrder orderBy = null, IEnumerable<IssueState> states = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, labels, orderBy, states), Octokit.GraphQL.IssueConnection.Create);
 
         /// <summary>
         /// Identifies the number of the milestone.
@@ -56,6 +83,11 @@ namespace Octokit.GraphQL
         /// Identifies the title of the milestone.
         /// </summary>
         public string Title { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public string UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this milestone
