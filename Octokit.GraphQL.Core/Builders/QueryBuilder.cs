@@ -231,23 +231,15 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else
             {
-                if (node.Method.Name == "Where")
+                try
                 {
-                    throw new NotSupportedException("Where() is not supported");
+                    var methodCallExpression = node.Update(Visit(node.Object), VisitMethodArguments(node.Method, node.Arguments));
+                    return methodCallExpression;
                 }
-
-                if (node.Method.Name == "GroupBy")
+                catch (NotSupportedException ex)
                 {
-                    throw new NotSupportedException("GroupBy() is not supported");
+                    throw new NotSupportedException($"{node.Method.Name}() is not supported", ex);
                 }
-
-                if (node.Method.Name == "SkipWhile")
-                {
-                    throw new NotSupportedException("SkipWhile() is not supported");
-                }
-
-                var methodCallExpression = node.Update(Visit(node.Object), VisitMethodArguments(node.Method, node.Arguments));
-                return methodCallExpression;
             }
         }
 
