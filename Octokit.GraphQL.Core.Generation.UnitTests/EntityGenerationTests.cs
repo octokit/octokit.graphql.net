@@ -817,6 +817,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         /// Testing if doc comments are generated.
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
+        /// <param name=""arg2"">The second argument. With a windows newline. Ending with a space.</param>
         public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
@@ -841,6 +842,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                             new InputValueModel
                             {
                                 Name = "arg2",
+                                Description = "The second argument.\r\nWith a windows newline. Ending with a space. ",
                                 Type = TypeModel.Int(),
                             },
                         }
@@ -862,6 +864,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         /// Testing if doc comments are generated.
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
+        /// <param name=""arg2"">The second argument. With a linux newline. Ending with a newline.</param>
         public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
@@ -886,6 +889,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                             new InputValueModel
                             {
                                 Name = "arg2",
+                                Description = "The second argument.\nWith a linux newline. Ending with a newline.\n",
                                 Type = TypeModel.Int(),
                             },
                         }

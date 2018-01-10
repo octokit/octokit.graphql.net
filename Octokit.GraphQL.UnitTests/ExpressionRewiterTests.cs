@@ -6,6 +6,7 @@ using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Utilities;
 using Newtonsoft.Json.Linq;
+using Octokit.GraphQL.Model;
 using Xunit;
 
 namespace Octokit.GraphQL.UnitTests

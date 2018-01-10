@@ -9,11 +9,11 @@ namespace Octokit.GraphQL.Core.Generation
     {
         public static string Generate(
             TypeModel type,
-            string rootNamespace)
+            string entityNamespace)
         {
             var className = TypeUtilities.GetClassName(type);
 
-            return $@"namespace {rootNamespace}
+            return $@"namespace {entityNamespace}
 {{
     using System.Linq;
     using System.Linq.Expressions;
@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Core.Generation
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}{GeneratePossibleTypes(type, rootNamespace)}
+        }}{GeneratePossibleTypes(type, entityNamespace)}
 
         internal static {className} Create(IQueryProvider provider, Expression expression)
         {{
@@ -34,7 +34,7 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        private static string GeneratePossibleTypes(TypeModel type, string rootNamespace)
+        private static string GeneratePossibleTypes(TypeModel type, string entityNamespace)
         {
             var builder = new StringBuilder();
 
@@ -52,7 +52,7 @@ namespace Octokit.GraphQL.Core.Generation
                     }
 
                     builder.AppendLine();
-                    builder.Append(GenerateField(field, rootNamespace));
+                    builder.Append(GenerateField(field, entityNamespace));
 
                     first = false;
                 }
@@ -61,11 +61,11 @@ namespace Octokit.GraphQL.Core.Generation
             return builder.ToString();
         }
 
-        private static string GenerateField(TypeModel possibleType, string rootNamespace)
+        private static string GenerateField(TypeModel possibleType, string entityNamespace)
         {
             var comments = GenerateDocComments(possibleType);
             var typeName = TypeUtilities.GetClassName(possibleType);
-            var implName = rootNamespace + '.' + typeName;
+            var implName = entityNamespace + '.' + typeName;
             var name = possibleType.Name;
             return comments + $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
