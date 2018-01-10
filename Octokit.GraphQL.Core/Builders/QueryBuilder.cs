@@ -233,12 +233,12 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 if (node.Method.Name == "Where")
                 {
-                    throw new NotSupportedException();
+                    throw new NotSupportedException("Where() is not supported");
                 }
 
                 if (node.Method.Name == "GroupBy")
                 {
-                    throw new NotSupportedException();
+                    throw new NotSupportedException("GroupBy() is not supported");
                 }
 
                 var methodCallExpression = node.Update(Visit(node.Object), VisitMethodArguments(node.Method, node.Arguments));
