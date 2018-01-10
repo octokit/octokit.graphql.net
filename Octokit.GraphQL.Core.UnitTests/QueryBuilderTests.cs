@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Serializers;
 using Octokit.GraphQL.Core.UnitTests.Models;
@@ -81,6 +82,86 @@ namespace Octokit.GraphQL.Core.UnitTests
             var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
             Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void SimpleQuery_Where_Error()
+        {
+            var expected = "{simple(arg1:\"foo\"){name}}";
+
+            var expression = new TestQuery()
+                .Simple("foo")
+                .Where(simple => simple.Name == "Something")
+                .Select(x => x.Name);
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                var query = new QueryBuilder().Build(expression);
+            });
+
+            Assert.Equal(notSupportedException.Message, "Where() is not supported");
+        }
+
+        [Fact]
+        public void SimpleQuery_GroupBy_Error()
+        {
+            var expected = "{simple(arg1:\"foo\"){name}}";
+
+            var expression = new TestQuery()
+                .Simple("foo")
+                .GroupBy(simple => simple.Name);
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                var query = new QueryBuilder().Build(expression);
+            });
+
+            Assert.Equal(notSupportedException.Message, "GroupBy() is not supported");
+        }
+
+        [Fact]
+        public void SimpleQuery_SkipWhile_Error()
+        {
+            var expected = "{simple(arg1:\"foo\"){name}}";
+
+            var expression = new TestQuery()
+                .Simple("foo")
+                .SkipWhile(simple => true);
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                var query = new QueryBuilder().Build(expression);
+            });
+
+            Assert.Equal(notSupportedException.Message, "SkipWhile() is not supported");
+        }
+
+        [Fact]
+        public void SimpleQuery_ToArray_Error()
+        {
+            var expression = new TestQuery()
+                .Simple("foo");
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                expression.ToArray();
+            });
+
+            Assert.Equal(notSupportedException.Message, "QueryProvider cannot be executed");
+        }
+
+        [Fact]
+        public void SimpleQuery_ToList_Error()
+        {
+            var expression = new TestQuery()
+                .Simple("foo");
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                expression.ToList();
+            });
+
+            Assert.Equal(notSupportedException.Message, "QueryProvider cannot be executed");
         }
 
         [Fact]
