@@ -89,7 +89,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             var expected = "{simple(arg1:\"foo\"){name}}";
 
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .Where(simple => simple.Name == "Something")
                 .Select(x => x.Name);
@@ -105,7 +105,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             var expected = "{simple(arg1:\"foo\"){name}}";
 
-            var expression = new RootQuery()
+            var expression = new TestQuery()
                 .Simple("foo")
                 .GroupBy(simple => simple.Name);
 
