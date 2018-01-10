@@ -14,7 +14,6 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var repositoryNames = Connection.Run(query).Result.ToArray();
 
-            Assert.Equal(5, repositoryNames.Length);
             Assert.Contains("discussions", repositoryNames);
             Assert.Contains("octokit.net", repositoryNames);
             Assert.Contains("octokit.rb", repositoryNames);
@@ -49,12 +48,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var repositoryNames = Connection.Run(query).Result.ToArray();
 
-            Assert.Equal(5, repositoryNames.Length);
-            Assert.Equal("discussions", repositoryNames[0]);
-            Assert.Equal("go-octokit", repositoryNames[1]);
-            Assert.Equal("octokit.net", repositoryNames[2]);
-            Assert.Equal("octokit.objc", repositoryNames[3]);
-            Assert.Equal("octokit.rb", repositoryNames[4]);
+            Assert.Contains("discussions", repositoryNames);
+            Assert.Contains("go-octokit", repositoryNames);
+            Assert.Contains("octokit.net", repositoryNames);
+            Assert.Contains("octokit.objc", repositoryNames);
+            Assert.Contains("octokit.rb", repositoryNames);
         }
 
         [IntegrationTest]
@@ -68,12 +66,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var repositoryNames = Connection.Run(query).Result.ToArray();
 
-            Assert.Equal(5, repositoryNames.Length);
-            Assert.Equal("octokit.rb", repositoryNames[0]);
-            Assert.Equal("octokit.net", repositoryNames[1]);
-            Assert.Equal("octokit.objc", repositoryNames[2]);
-            Assert.Equal("go-octokit", repositoryNames[3]);
-            Assert.Equal("discussions", repositoryNames[4]);
+            Assert.Contains("octokit.rb", repositoryNames);
+            Assert.Contains("octokit.net", repositoryNames);
+            Assert.Contains("octokit.objc", repositoryNames);
+            Assert.Contains("go-octokit", repositoryNames);
+            Assert.Contains("discussions", repositoryNames);
         }
 
         [IntegrationTest]
