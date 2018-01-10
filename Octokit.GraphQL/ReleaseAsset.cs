@@ -30,6 +30,11 @@ namespace Octokit.GraphQL
         /// </summary>
         public int DownloadCount { get; }
 
+        /// <summary>
+        /// Identifies the URL where you can download the release asset via the browser.
+        /// </summary>
+        public string DownloadUrl { get; }
+
         public string Id { get; }
 
         /// <summary>

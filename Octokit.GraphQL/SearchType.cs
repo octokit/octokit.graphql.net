@@ -24,7 +24,7 @@ namespace Octokit.GraphQL
         Repository,
 
         /// <summary>
-        /// Returns results matching users on GitHub.
+        /// Returns results matching users and organizations on GitHub.
         /// </summary>
         [EnumMember(Value = "USER")]
         User,

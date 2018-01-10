@@ -31,6 +31,11 @@ namespace Octokit.GraphQL
         public string DescriptionHTML { get; }
 
         /// <summary>
+        /// Returns how many forks there are of this repository in the whole network.
+        /// </summary>
+        public int ForkCount { get; }
+
+        /// <summary>
         /// Indicates if the repository has issues feature enabled.
         /// </summary>
         public bool HasIssuesEnabled { get; }
@@ -44,6 +49,11 @@ namespace Octokit.GraphQL
         /// The repository's URL.
         /// </summary>
         public string HomepageUrl { get; }
+
+        /// <summary>
+        /// Indicates if the repository is unmaintained.
+        /// </summary>
+        public bool IsArchived { get; }
 
         /// <summary>
         /// Identifies if the repository is a fork.
@@ -96,7 +106,7 @@ namespace Octokit.GraphQL
         public string NameWithOwner { get; }
 
         /// <summary>
-        /// The User owner of the repository.
+        /// The owner of the repository associated with this invitation repository.
         /// </summary>
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Internal.StubIRepositoryOwner.Create);
 

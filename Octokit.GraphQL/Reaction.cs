@@ -33,6 +33,11 @@ namespace Octokit.GraphQL
         public string Id { get; }
 
         /// <summary>
+        /// The reactable piece of content
+        /// </summary>
+        public IReactable Reactable => this.CreateProperty(x => x.Reactable, Octokit.GraphQL.Internal.StubIReactable.Create);
+
+        /// <summary>
         /// Identifies the user who created this reaction.
         /// </summary>
         public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.User.Create);

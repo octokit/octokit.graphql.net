@@ -27,6 +27,11 @@ namespace Octokit.GraphQL
         /// </summary>
         public PageInfo PageInfo => this.CreateProperty(x => x.PageInfo, Octokit.GraphQL.PageInfo.Create);
 
+        /// <summary>
+        /// Identifies the total count of items in the connection.
+        /// </summary>
+        public int TotalCount { get; }
+
         internal static CommitHistoryConnection Create(IQueryProvider provider, Expression expression)
         {
             return new CommitHistoryConnection(provider, expression);

@@ -25,6 +25,11 @@ namespace Octokit.GraphQL
         /// </summary>
         public SearchResultItem Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.SearchResultItem.Create);
 
+        /// <summary>
+        /// Text matches on the result found.
+        /// </summary>
+        public IQueryable<TextMatch> TextMatches => this.CreateProperty(x => x.TextMatches);
+
         internal static SearchResultItemEdge Create(IQueryProvider provider, Expression expression)
         {
             return new SearchResultItemEdge(provider, expression);

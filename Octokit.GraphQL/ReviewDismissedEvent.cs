@@ -58,7 +58,7 @@ namespace Octokit.GraphQL
         public PullRequestCommit PullRequestCommit => this.CreateProperty(x => x.PullRequestCommit, Octokit.GraphQL.PullRequestCommit.Create);
 
         /// <summary>
-        /// The HTTP path for this ReviewDismissedEvent.
+        /// The HTTP path for this review dismissed event.
         /// </summary>
         public string ResourcePath { get; }
 
@@ -68,7 +68,7 @@ namespace Octokit.GraphQL
         public PullRequestReview Review => this.CreateProperty(x => x.Review, Octokit.GraphQL.PullRequestReview.Create);
 
         /// <summary>
-        /// The HTTP URL for this ReviewDismissedEvent.
+        /// The HTTP URL for this review dismissed event.
         /// </summary>
         public string Url { get; }
 

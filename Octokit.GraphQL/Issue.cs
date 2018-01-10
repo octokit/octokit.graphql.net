@@ -55,6 +55,11 @@ namespace Octokit.GraphQL
         public bool Closed { get; }
 
         /// <summary>
+        /// Identifies the date and time when the object was closed.
+        /// </summary>
+        public string ClosedAt { get; }
+
+        /// <summary>
         /// A list of comments associated with the Issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -124,6 +129,15 @@ namespace Octokit.GraphQL
         public UserConnection Participants(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octokit.GraphQL.UserConnection.Create);
 
         /// <summary>
+        /// List of project cards associated with this issue.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public ProjectCardConnection ProjectCards(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ProjectCards(first, after, last, before), Octokit.GraphQL.ProjectCardConnection.Create);
+
+        /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
         public string PublishedAt { get; }
@@ -145,7 +159,7 @@ namespace Octokit.GraphQL
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.ReactionConnection.Create);
 
         /// <summary>
-        /// Identifies the repository associated with the issue.
+        /// The repository associated with this node.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
 
@@ -160,7 +174,7 @@ namespace Octokit.GraphQL
         public IssueState State { get; }
 
         /// <summary>
-        /// A list of events associated with an Issue.
+        /// A list of events, comments, commits, etc. associated with the issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -210,7 +224,7 @@ namespace Octokit.GraphQL
         public bool ViewerDidAuthor { get; }
 
         /// <summary>
-        /// Identifies if the viewer is watching, not watching, or ignoring the repository.
+        /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
         public SubscriptionState ViewerSubscription { get; }
 

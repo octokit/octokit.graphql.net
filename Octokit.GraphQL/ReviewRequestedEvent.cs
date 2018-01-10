@@ -33,6 +33,11 @@ namespace Octokit.GraphQL
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
         /// <summary>
+        /// Identifies the reviewer whose review was requested.
+        /// </summary>
+        public RequestedReviewer RequestedReviewer => this.CreateProperty(x => x.RequestedReviewer, Octokit.GraphQL.RequestedReviewer.Create);
+
+        /// <summary>
         /// Identifies the user whose review was requested.
         /// </summary>
         public User Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.User.Create);

@@ -31,6 +31,11 @@ namespace Octokit.GraphQL
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.PullRequest.Create);
 
+        /// <summary>
+        /// Identifies the repository associated with this thread.
+        /// </summary>
+        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Repository.Create);
+
         internal static PullRequestReviewThread Create(IQueryProvider provider, Expression expression)
         {
             return new PullRequestReviewThread(provider, expression);
