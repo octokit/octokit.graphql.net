@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Linq;
 
     /// <summary>

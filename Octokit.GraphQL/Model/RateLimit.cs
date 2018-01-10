@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -38,7 +39,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The time at which the current rate limit window resets in UTC epoch seconds.
         /// </summary>
-        public string ResetAt { get; }
+        public DateTimeOffset? ResetAt { get; }
 
         internal static RateLimit Create(IQueryProvider provider, Expression expression)
         {

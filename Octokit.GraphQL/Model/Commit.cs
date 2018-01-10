@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -38,7 +39,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The datetime when this commit was authored.
         /// </summary>
-        public string AuthoredDate { get; }
+        public DateTimeOffset? AuthoredDate { get; }
 
         /// <summary>
         /// Fetches `git blame` information.
@@ -73,7 +74,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The datetime when this commit was committed.
         /// </summary>
-        public string CommittedDate { get; }
+        public DateTimeOffset? CommittedDate { get; }
 
         /// <summary>
         /// Check if commited via GitHub web UI.
@@ -147,7 +148,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The datetime when this commit was pushed.
         /// </summary>
-        public string PushedDate { get; }
+        public DateTimeOffset? PushedDate { get; }
 
         /// <summary>
         /// The Repository this commit belongs to

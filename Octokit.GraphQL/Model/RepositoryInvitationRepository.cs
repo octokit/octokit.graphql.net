@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -18,7 +19,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// The description of the repository.
@@ -113,7 +114,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the repository was last pushed to.
         /// </summary>
-        public string PushedAt { get; }
+        public DateTimeOffset? PushedAt { get; }
 
         /// <summary>
         /// The HTTP path for this repository
@@ -129,7 +130,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this repository

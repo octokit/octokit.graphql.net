@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -20,12 +21,13 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was closed.
         /// </summary>
-        string ClosedAt { get; }
+        DateTimeOffset? ClosedAt { get; }
     }
 }
 
 namespace Octokit.GraphQL.Model.Internal
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -40,7 +42,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool Closed { get; }
 
-        public string ClosedAt { get; }
+        public DateTimeOffset? ClosedAt { get; }
 
         internal static StubIClosable Create(IQueryProvider provider, Expression expression)
         {

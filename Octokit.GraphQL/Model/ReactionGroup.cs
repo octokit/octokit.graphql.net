@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -23,7 +24,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the reaction was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// The subject that was reacted to.

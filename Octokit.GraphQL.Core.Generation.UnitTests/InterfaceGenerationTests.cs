@@ -848,6 +848,32 @@ namespace Test.Internal
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public void Generates_Property_For_Custom_Scalar_DateTime()
+        {
+            var expected = FormatMemberTemplate(
+                "DateTimeOffset? Foo { get; }",
+                "public DateTimeOffset? Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.DateTime()
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
         private string FormatMemberTemplate(string interfaceMembers, string stubMembers)
         {
             if (stubMembers != null)
