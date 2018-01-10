@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Core.Generation
 {
     public static class EnumGenerator
     {
-        public static string Generate(TypeModel type, string rootNamespace)
+        public static string Generate(TypeModel type, string entityNamespace)
         {
             var enumName = TypeUtilities.GetClassName(type);
 
@@ -18,7 +18,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace {rootNamespace}
+namespace {entityNamespace}
 {{
     {GenerateDocComments(type)}[JsonConverter(typeof(StringEnumConverter))]
     public enum {enumName}
