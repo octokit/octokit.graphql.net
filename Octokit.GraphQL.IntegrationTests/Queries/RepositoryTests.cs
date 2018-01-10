@@ -1,6 +1,7 @@
 using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
+using Octokit.GraphQL.Model;
 using Xunit;
 
 namespace Octokit.GraphQL.IntegrationTests.Queries

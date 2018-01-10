@@ -13,13 +13,12 @@ namespace Octokit.GraphQL.Core.Generation
         public static string Generate(
             TypeModel type,
             string rootNamespace,
+            string queryType,
             string modifiers = "public ",
             bool generateDocComments = true,
             string entityNamespace = null)
         {
             var className = TypeUtilities.GetClassName(type);
-
-            entityNamespace = entityNamespace ?? rootNamespace;
 
             return $@"namespace {rootNamespace}
 {{
@@ -33,7 +32,7 @@ namespace Octokit.GraphQL.Core.Generation
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}{GenerateFields(type, generateDocComments, entityNamespace)}
+        }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType)}
 
         internal static {className} Create(IQueryProvider provider, Expression expression)
         {{
@@ -43,15 +42,18 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        public static string GenerateRoot(TypeModel type, string rootNamespace, string interfaceName)
+        public static string GenerateRoot(TypeModel type, string rootNamespace, string entityNamespace, string interfaceName, string queryType)
         {
             var className = TypeUtilities.GetClassName(type);
+
+            var includeEntities = rootNamespace == entityNamespace ? string.Empty: $@"
+    using {entityNamespace};";
 
             return $@"namespace {rootNamespace}
 {{
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
+    using System.Linq.Expressions;{includeEntities}
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
@@ -63,7 +65,7 @@ namespace Octokit.GraphQL.Core.Generation
 
         internal {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}{GenerateFields(type, true, rootNamespace)}
+        }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType)}
 
         internal static {className} Create(IQueryProvider provider, Expression expression)
         {{
@@ -73,7 +75,7 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        private static string GenerateFields(TypeModel type, bool generateDocComments, string rootNamespace)
+        private static string GenerateFields(TypeModel type, bool generateDocComments, string rootNamespace, string entityNamespace, string queryType)
         {
             var builder = new StringBuilder();
 
@@ -91,7 +93,7 @@ namespace Octokit.GraphQL.Core.Generation
                     }
 
                     builder.AppendLine();
-                    builder.Append(GenerateField(field, generateDocComments, rootNamespace));
+                    builder.Append(GenerateField(field, generateDocComments, rootNamespace, entityNamespace, queryType));
 
                     first = false;
                 }
@@ -100,7 +102,7 @@ namespace Octokit.GraphQL.Core.Generation
             return builder.ToString();
         }
 
-        private static string GenerateField(FieldModel field, bool generateDocComments, string rootNamespace)
+        private static string GenerateField(FieldModel field, bool generateDocComments, string rootNamespace, string entityNamespace, string queryType)
         {
             var method = field.Args?.Count > 0;
             var result = GenerateDocComments(field, generateDocComments);
@@ -121,8 +123,8 @@ namespace Octokit.GraphQL.Core.Generation
             else
             {
                 result += method ?
-                    GenerateObjectMethod(field, reduced, rootNamespace) :
-                    GenerateObjectField(field, reduced, rootNamespace);
+                    GenerateObjectMethod(field, reduced, entityNamespace) :
+                    GenerateObjectField(field, reduced, rootNamespace, entityNamespace, queryType);
             }
 
             return result;
@@ -185,11 +187,11 @@ namespace Octokit.GraphQL.Core.Generation
             return $"        public {typeName} {name} {{ get; }}";
         }
 
-        private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace)
+        private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace, string entityNamespace, string queryType)
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            var implName = GetEntityImplementationName(type, rootNamespace);
+            var implName = GetEntityImplementationName(type,(typeName != queryType) ? entityNamespace : rootNamespace);
             return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
 
@@ -203,11 +205,11 @@ namespace Octokit.GraphQL.Core.Generation
             return $"        public {csharpType} {name}({arguments}) => null;";
         }
 
-        private static string GenerateObjectMethod(FieldModel field, TypeModel type, string rootNamespace)
+        private static string GenerateObjectMethod(FieldModel field, TypeModel type, string entityNamespace)
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            var implName = GetEntityImplementationName(type, rootNamespace);
+            var implName = GetEntityImplementationName(type, entityNamespace);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
@@ -284,14 +286,14 @@ namespace Octokit.GraphQL.Core.Generation
             return builder.ToString();
         }
 
-        private static object GetEntityImplementationName(TypeModel type, string rootNamespace)
+        private static object GetEntityImplementationName(TypeModel type, string entityNamespace)
         {
             switch (type.Kind)
             {
                 case TypeKind.Interface:
-                    return rootNamespace + ".Internal.Stub" + TypeUtilities.GetInterfaceName(type);
+                    return entityNamespace + ".Internal.Stub" + TypeUtilities.GetInterfaceName(type);
                 default:
-                    return rootNamespace + "." + TypeUtilities.GetClassName(type);
+                    return entityNamespace + "." + TypeUtilities.GetClassName(type);
             }
         }
     }
