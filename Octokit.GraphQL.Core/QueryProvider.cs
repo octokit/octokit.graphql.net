@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.Core
 
         public TResult Execute<TResult>(Expression expression)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("QueryProvider cannot be executed");
         }
     }
 }
