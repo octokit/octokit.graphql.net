@@ -122,7 +122,7 @@ namespace Octokit.GraphQL.Core.Generation
                     {
                         if (!string.IsNullOrWhiteSpace(arg.Description))
                         {
-                            var description = arg.Description.Replace("\n", " ").Trim();
+                            var description = string.Join(" ", arg.Description.Split(new[]{ '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)).Trim();
                             builder.AppendLine($"        /// <param name=\"{arg.Name}\">{description}</param>");
                         }
                     }
