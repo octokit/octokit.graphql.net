@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -15,7 +16,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        string CreatedAt { get; }
+        DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// The description of the repository.
@@ -110,7 +111,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the repository was last pushed to.
         /// </summary>
-        string PushedAt { get; }
+        DateTimeOffset? PushedAt { get; }
 
         /// <summary>
         /// The HTTP path for this repository
@@ -126,7 +127,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        string UpdatedAt { get; }
+        DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this repository
@@ -137,6 +138,7 @@ namespace Octokit.GraphQL.Model
 
 namespace Octokit.GraphQL.Model.Internal
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -149,7 +151,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         public string Description { get; }
 
@@ -187,13 +189,13 @@ namespace Octokit.GraphQL.Model.Internal
 
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Model.Internal.StubIRepositoryOwner.Create);
 
-        public string PushedAt { get; }
+        public DateTimeOffset? PushedAt { get; }
 
         public string ResourcePath { get; }
 
         public string ShortDescriptionHTML(int? limit = 200) => null;
 
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         public string Url { get; }
 

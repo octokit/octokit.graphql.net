@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was closed.
         /// </summary>
-        string ClosedAt { get; }
+        DateTimeOffset? ClosedAt { get; }
     }
 }
 
@@ -42,7 +42,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool Closed { get; }
 
-        public string ClosedAt { get; }
+        public DateTimeOffset? ClosedAt { get; }
 
         internal static StubIClosable Create(IQueryProvider provider, Expression expression)
         {
