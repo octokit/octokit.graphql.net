@@ -137,6 +137,34 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void SimpleQuery_ToArray_Error()
+        {
+            var expression = new TestQuery()
+                .Simple("foo");
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                expression.ToArray();
+            });
+
+            Assert.Equal(notSupportedException.Message, "QueryProvider cannot be executed");
+        }
+
+        [Fact]
+        public void SimpleQuery_ToList_Error()
+        {
+            var expression = new TestQuery()
+                .Simple("foo");
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                expression.ToList();
+            });
+
+            Assert.Equal(notSupportedException.Message, "QueryProvider cannot be executed");
+        }
+
+        [Fact]
         public void Data_Select_Single_Member()
         {
             var expected = "query{data{id}}";
