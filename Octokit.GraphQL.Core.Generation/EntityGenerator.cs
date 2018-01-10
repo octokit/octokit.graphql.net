@@ -32,7 +32,7 @@ namespace Octokit.GraphQL.Core.Generation
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}{GenerateFields(type, generateDocComments, entityNamespace, rootNamespace, queryType)}
+        }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType)}
 
         internal static {className} Create(IQueryProvider provider, Expression expression)
         {{
@@ -65,7 +65,7 @@ namespace Octokit.GraphQL.Core.Generation
 
         internal {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
-        }}{GenerateFields(type, true, entityNamespace, rootNamespace, queryType)}
+        }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType)}
 
         internal static {className} Create(IQueryProvider provider, Expression expression)
         {{
@@ -75,7 +75,7 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        private static string GenerateFields(TypeModel type, bool generateDocComments, string entityNamespace, string rootNamespace, string queryType)
+        private static string GenerateFields(TypeModel type, bool generateDocComments, string rootNamespace, string entityNamespace, string queryType)
         {
             var builder = new StringBuilder();
 
@@ -93,7 +93,7 @@ namespace Octokit.GraphQL.Core.Generation
                     }
 
                     builder.AppendLine();
-                    builder.Append(GenerateField(field, generateDocComments, entityNamespace, rootNamespace, queryType));
+                    builder.Append(GenerateField(field, generateDocComments, rootNamespace, entityNamespace, queryType));
 
                     first = false;
                 }
@@ -102,7 +102,7 @@ namespace Octokit.GraphQL.Core.Generation
             return builder.ToString();
         }
 
-        private static string GenerateField(FieldModel field, bool generateDocComments, string entityNamespace, string rootNamespace, string queryType)
+        private static string GenerateField(FieldModel field, bool generateDocComments, string rootNamespace, string entityNamespace, string queryType)
         {
             var method = field.Args?.Count > 0;
             var result = GenerateDocComments(field, generateDocComments);
@@ -124,7 +124,7 @@ namespace Octokit.GraphQL.Core.Generation
             {
                 result += method ?
                     GenerateObjectMethod(field, reduced, entityNamespace) :
-                    GenerateObjectField(field, reduced, entityNamespace, rootNamespace, queryType);
+                    GenerateObjectField(field, reduced, rootNamespace, entityNamespace, queryType);
             }
 
             return result;
@@ -187,7 +187,7 @@ namespace Octokit.GraphQL.Core.Generation
             return $"        public {typeName} {name} {{ get; }}";
         }
 
-        private static string GenerateObjectField(FieldModel field, TypeModel type, string entityNamespace, string rootNamespace, string queryType)
+        private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace, string entityNamespace, string queryType)
         {
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
