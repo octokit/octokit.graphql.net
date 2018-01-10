@@ -241,6 +241,11 @@ namespace Octokit.GraphQL.Core.Builders
                     throw new NotSupportedException("GroupBy() is not supported");
                 }
 
+                if (node.Method.Name == "SkipWhile")
+                {
+                    throw new NotSupportedException("SkipWhile() is not supported");
+                }
+
                 var methodCallExpression = node.Update(Visit(node.Object), VisitMethodArguments(node.Method, node.Arguments));
                 return methodCallExpression;
             }

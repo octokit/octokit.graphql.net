@@ -94,10 +94,12 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Where(simple => simple.Name == "Something")
                 .Select(x => x.Name);
 
-            Assert.Throws<NotSupportedException>(() =>
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
             {
                 var query = new QueryBuilder().Build(expression);
             });
+
+            Assert.Equal(notSupportedException.Message, "Where() is not supported");
         }
 
         [Fact]
@@ -109,10 +111,29 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .GroupBy(simple => simple.Name);
 
-            Assert.Throws<NotSupportedException>(() =>
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
             {
                 var query = new QueryBuilder().Build(expression);
             });
+
+            Assert.Equal(notSupportedException.Message, "GroupBy() is not supported");
+        }
+
+        [Fact]
+        public void SimpleQuery_SkipWhile_Error()
+        {
+            var expected = "{simple(arg1:\"foo\"){name}}";
+
+            var expression = new TestQuery()
+                .Simple("foo")
+                .SkipWhile(simple => true);
+
+            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
+            {
+                var query = new QueryBuilder().Build(expression);
+            });
+
+            Assert.Equal(notSupportedException.Message, "SkipWhile() is not supported");
         }
 
         [Fact]
