@@ -12,10 +12,5 @@ namespace Octokit.GraphQL.IntegrationTests.Utilities
 
         public const string GithubComGraphqlApi = "https://api.github.com/graphql";
         public static readonly Uri GithubComApiUri = new Uri("https://api.github.com/");
-
-        public static DateTimeOffset ParseUtcLocal(string dateString)
-        {
-            return DateTimeOffset.Parse(dateString).ToLocalTime();
-        }
     }
 }
