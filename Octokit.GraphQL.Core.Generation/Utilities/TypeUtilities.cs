@@ -119,6 +119,8 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
                         case "Float": return "double" + question;
                         case "String": return "string";
                         case "Boolean": return "bool" + question;
+                        case "GitTimeStamp": return "DateTimeOffset" + question;
+                        case "DateTime": return "DateTimeOffset" + question;
                         default: return "string";
                     }
                 case TypeKind.Enum:

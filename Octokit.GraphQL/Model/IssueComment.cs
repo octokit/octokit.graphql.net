@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -43,7 +44,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// Check if this comment was created via an email reply.
@@ -70,12 +71,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The moment the editor made the last edit
         /// </summary>
-        public string LastEditedAt { get; }
+        public DateTimeOffset? LastEditedAt { get; }
 
         /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
-        public string PublishedAt { get; }
+        public DateTimeOffset? PublishedAt { get; }
 
         /// <summary>
         /// Returns the pull request associated with the comment, if this comment was made on a
@@ -112,7 +113,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this issue comment

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
@@ -15,6 +16,9 @@ namespace Octokit.GraphQL.IntegrationTests
 
             var queryBuilder = new QueryBuilder();
             var queryString = queryBuilder.Build(query);;
+
+            var vars1 = new Dictionary<string, object>() { { "a", 1 }, { "b", true }, { "c", "foor" } };
+            var vars2 = new Dictionary<string, object>() { { "a", 2 }, { "b", false }, { "c", "bar" } };
 
             //var results = Connection.Run(query).Result.ToArray();
         }

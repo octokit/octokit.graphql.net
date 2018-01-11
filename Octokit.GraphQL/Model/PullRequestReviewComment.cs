@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -48,7 +49,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the comment was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// Check if this comment was created via an email reply.
@@ -68,7 +69,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the comment was created in a draft state.
         /// </summary>
-        public string DraftedAt { get; }
+        public DateTimeOffset? DraftedAt { get; }
 
         /// <summary>
         /// The actor who edited the comment.
@@ -80,7 +81,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The moment the editor made the last edit
         /// </summary>
-        public string LastEditedAt { get; }
+        public DateTimeOffset? LastEditedAt { get; }
 
         /// <summary>
         /// Identifies the original commit associated with the comment.
@@ -105,7 +106,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
-        public string PublishedAt { get; }
+        public DateTimeOffset? PublishedAt { get; }
 
         /// <summary>
         /// The pull request associated with this review comment.
@@ -151,7 +152,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the comment was last updated.
         /// </summary>
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL permalink for this review comment.

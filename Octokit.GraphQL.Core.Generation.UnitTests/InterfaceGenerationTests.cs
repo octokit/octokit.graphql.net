@@ -9,6 +9,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     {
         const string MemberTemplate = @"namespace Test
 {{
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -24,6 +25,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
 namespace Test.Internal
 {{
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -738,6 +740,7 @@ namespace Test.Internal
         {
             var expected = @"namespace Test
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -839,6 +842,32 @@ namespace Test.Internal
                                 Type = TypeModel.Int(),
                             },
                         }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Custom_Scalar_DateTime()
+        {
+            var expected = FormatMemberTemplate(
+                "DateTimeOffset? Foo { get; }",
+                "public DateTimeOffset? Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Interface,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.DateTime()
                     },
                 }
             };

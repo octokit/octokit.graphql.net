@@ -9,6 +9,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     {
         const string MemberTemplate = @"namespace Test
 {{
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -747,6 +748,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
             var expected = @"namespace Test
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -907,6 +909,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
             var expected = @"namespace Test
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -956,6 +959,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
             var expected = @"namespace Test
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;

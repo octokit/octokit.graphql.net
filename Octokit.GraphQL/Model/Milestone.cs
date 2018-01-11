@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -23,12 +24,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was closed.
         /// </summary>
-        public string ClosedAt { get; }
+        public DateTimeOffset? ClosedAt { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public string CreatedAt { get; }
+        public DateTimeOffset? CreatedAt { get; }
 
         /// <summary>
         /// Identifies the actor who created the milestone.
@@ -43,7 +44,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the due date of the milestone.
         /// </summary>
-        public string DueOn { get; }
+        public DateTimeOffset? DueOn { get; }
 
         public string Id { get; }
 
@@ -87,7 +88,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        public string UpdatedAt { get; }
+        public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this milestone
