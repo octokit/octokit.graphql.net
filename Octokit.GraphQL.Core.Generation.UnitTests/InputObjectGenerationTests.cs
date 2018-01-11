@@ -9,6 +9,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     {
         const string MemberTemplate = @"namespace Test
 {{
+    using System;
     using System.Linq;
 
     public class InputObject
