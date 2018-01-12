@@ -8,13 +8,13 @@ namespace Octokit.GraphQL.IntegrationTests
 
         protected IntegrationTestBase()
         {
-            Connection = new Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
+            Connection = new Connection(new ProductHeaderValue("OctokitTests"), Helper.OAuthToken);
         }
 
         protected static GitHubClient GetV3GitHubClient()
         {
             var credentials = new Credentials(Helper.OAuthToken);
-            var gitHubClient = new GitHubClient(new ProductHeaderValue("OctokitTests"), Helper.GithubComApiUri)
+            var gitHubClient = new GitHubClient(new Octokit.ProductHeaderValue("OctokitTests"))
             {
                 Credentials = credentials
             };

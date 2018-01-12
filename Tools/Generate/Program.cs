@@ -33,10 +33,10 @@ namespace Generate
                 Directory.CreateDirectory(modelPath);
             }
 
-            var url = "https://api.github.com/graphql";
-            var connection = new Connection(url, token);
+            var header = new ProductHeaderValue("Octokit.GraphQL", "0.1");
+            var connection = new Connection(header, token);
 
-            Console.WriteLine("Reading from " + url);
+            Console.WriteLine("Reading from " + connection.Uri);
             var schema = await SchemaReader.ReadSchema(connection);
 
             foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL", "Octokit.GraphQL.Model"))

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -6,40 +7,64 @@ using System.Threading.Tasks;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Core.Serializers;
+using Octokit.GraphQL.Internal;
 
 namespace Octokit.GraphQL
 {
     public class Connection
     {
+        /// <summary>
+        /// The address of the GitHub GraphQL API.
+        /// </summary>
+        public static readonly Uri GithubApiUri = new Uri("https://api.github.com/graphql");
+
         private static readonly QueryBuilder builder = new QueryBuilder();
         private static readonly QuerySerializer serializer = new QuerySerializer();
         private static readonly ResponseDeserializer deserializer = new ResponseDeserializer();
-        private string uri;
-        private string token;
+        private readonly ICredentialStore credentialStore;
+        private readonly HttpClient httpClient;
 
-        public Connection(string uri, string token)
+        public Connection(ProductHeaderValue productInformation, string token)
+            : this(productInformation, GithubApiUri, token)
         {
-            this.uri = uri;
-            this.token = token;
         }
+
+        public Connection(ProductHeaderValue productInformation, Uri uri, string token)
+            : this(productInformation, uri, new InMemoryCredentialStore(token))
+        {
+        }
+
+        public Connection(ProductHeaderValue productInformation, ICredentialStore credentialStore)
+            : this(productInformation, GithubApiUri, credentialStore)
+        {
+        }
+
+        public Connection(ProductHeaderValue productInformation, Uri uri, ICredentialStore credentialStore)
+        {
+            Uri = uri;
+            this.credentialStore = credentialStore;
+            httpClient = CreateHttpClient(productInformation);
+        }
+
+        public Uri Uri { get; }
 
         public async Task<IEnumerable<T>> Run<T>(IQueryable<T> queryable)
         {
             var query = builder.Build(queryable);
-            var httpClient = CreateHttpClient();
             var payload = query.GetPayload();
-            var content = new StringContent(payload);
-            var response = await httpClient.PostAsync(uri, content);
+            var token = await credentialStore.GetCredentials();
+            var request = new HttpRequestMessage(HttpMethod.Post, Uri);
+            request.Content = new StringContent(payload);
+            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+            var response = await httpClient.SendAsync(request);
             var data = await response.Content.ReadAsStringAsync();
             return deserializer.Deserialize(query, data);
         }
 
-        private HttpClient CreateHttpClient()
+        private HttpClient CreateHttpClient(ProductHeaderValue header)
         {
             var result = new HttpClient();
-            var auth = new AuthenticationHeaderValue("bearer", token);
-            var userAgent = new ProductInfoHeaderValue("Octokit.GraphQL", "0.1");
-            result.DefaultRequestHeaders.Authorization = auth;
+            var userAgent = new ProductInfoHeaderValue(header.Name, header.Version);
             result.DefaultRequestHeaders.UserAgent.Add(userAgent);
             return result;
         }
