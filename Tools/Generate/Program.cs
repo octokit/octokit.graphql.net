@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Octokit.GraphQL.Core;
+using Octokit.GraphQL;
 using Octokit.GraphQL.Core.Generation;
 using System.IO;
 

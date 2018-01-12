@@ -4,11 +4,11 @@ namespace Octokit.GraphQL.IntegrationTests
 {
     public abstract class IntegrationTestBase
     {
-        protected Core.Connection Connection;
+        protected Connection Connection;
 
         protected IntegrationTestBase()
         {
-            Connection = new Core.Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
+            Connection = new Connection(Helper.GithubComGraphqlApi, Helper.OAuthToken);
         }
 
         protected static GitHubClient GetV3GitHubClient()
