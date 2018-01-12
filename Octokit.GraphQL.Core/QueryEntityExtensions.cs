@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Octokit.GraphQL.Core;
 
-namespace Octokit.GraphQL.Core
+namespace Octokit.GraphQL
 {
     public static class QueryEntityExtensions
     {
