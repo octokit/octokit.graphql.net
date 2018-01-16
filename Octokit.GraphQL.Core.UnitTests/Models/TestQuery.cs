@@ -55,5 +55,10 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
             return this.CreateMethodCall(x => x.EnumerableValue(value));
         }
+
+        public IQueryable<Simple> InputObject(InputObject input)
+        {
+            return this.CreateMethodCall(x => x.InputObject(input));
+        }
     }
 }

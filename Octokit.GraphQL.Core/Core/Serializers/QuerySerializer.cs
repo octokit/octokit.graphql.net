@@ -148,7 +148,11 @@ namespace Octokit.GraphQL.Core.Serializers
 
         private void SerializeValue(StringBuilder builder, object value)
         {
-            if (value is string)
+            if (value == null)
+            {
+                builder.Append("null");
+            }
+            else if (value is string)
             {
                 builder.Append('"' + ((string)value) + '"');
             }

@@ -375,6 +375,46 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public void InputObject_Parameter()
+        {
+            var expected = "query{inputObject(input:{stringValue:\"foo\"}){name}}";
+
+            var input = new InputObject
+            {
+                StringValue = "foo",
+            };
+
+            var expression = new TestQuery()
+                .InputObject(input)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void InputObject_Parameter_With_Null_Field()
+        {
+            var expected = "query{inputObject(input:{stringValue:null}){name}}";
+
+            var input = new InputObject
+            {
+                StringValue = null,
+            };
+
+            var expression = new TestQuery()
+                .InputObject(input)
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
         public class SampleObject
         {
             public string Value1 { get; set; }
