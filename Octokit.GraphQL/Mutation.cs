@@ -1,9 +1,10 @@
-namespace Octokit.GraphQL.Model
+namespace Octokit.GraphQL
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using Octokit.GraphQL.Model;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
