@@ -79,6 +79,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The license associated with the repository
         /// </summary>
+        [Obsolete(@"Use Repository.licenseInfo instead.")]
         public string License { get; }
 
         /// <summary>
@@ -130,6 +131,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>

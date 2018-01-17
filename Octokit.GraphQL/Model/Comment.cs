@@ -107,6 +107,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public DateTimeOffset? PublishedAt { get; }
 
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         public bool ViewerDidAuthor { get; }

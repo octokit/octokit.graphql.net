@@ -25,6 +25,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         /// <summary>
