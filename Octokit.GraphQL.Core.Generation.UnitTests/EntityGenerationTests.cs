@@ -54,6 +54,109 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Property_For_Deprecated_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public int? Foo {{ get; }}");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true,
+                        DeprecationReason = "Old and unused"
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+            
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithEmptyReason_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo {{ get; }}");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true,
+                        DeprecationReason = string.Empty
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithWhitespaceReason_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo {{ get; }}");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true,
+                        DeprecationReason = " "
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithoutReason_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo {{ get; }}");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+            
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
         public void Generates_Property_For_NonNull_Scalar_Field()
         {
             var expected = FormatMemberTemplate("public int FooBar { get; }");
@@ -92,6 +195,57 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     {
                         Name = "foo",
                         Type = TypeModel.Object("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_Object_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Object("Other"),
+                        IsDeprecated = true,
+                        DeprecationReason = "Old and unused"
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithoutReason_Object_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Object("Other"),
+                        IsDeprecated = true
                     },
                 }
             };
@@ -150,6 +304,57 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Property_For_Deprecated_Interface_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IOther Foo => this.CreateProperty(x => x.Foo, Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        IsDeprecated = true,
+                        DeprecationReason = "Old and unused"
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithoutReason_Interface_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public IOther Foo => this.CreateProperty(x => x.Foo, Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        IsDeprecated = true,
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
         public void Generates_Property_For_List_Field()
         {
             var expected = FormatMemberTemplate("public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
@@ -164,6 +369,57 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     {
                         Name = "foo",
                         Type = TypeModel.List(TypeModel.Object("Other")),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_List_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        IsDeprecated = true,
+                        DeprecationReason = "Old and unused"
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithoutReason_List_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Object("Other")),
+                        IsDeprecated = true,
                     },
                 }
             };
@@ -246,6 +502,57 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Property_For_Deprecated_Union_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public Bar Foo => this.CreateProperty(x => x.Foo, Test.Bar.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.Union("Bar")),
+                        IsDeprecated = true,
+                        DeprecationReason = "Old and unused"
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithoutReason_Union_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public Bar Foo => this.CreateProperty(x => x.Foo, Test.Bar.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.Union("Bar")),
+                        IsDeprecated = true
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
         public void Generates_Property_For_List_Of_Unions_Field()
         {
             var expected = FormatMemberTemplate("public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
@@ -260,6 +567,57 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     {
                         Name = "foo",
                         Type = TypeModel.List(TypeModel.Union("Bar")),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_List_Of_Unions_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Union("Bar")),
+                        IsDeprecated = true,
+                        DeprecationReason = "Old and unused"
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithoutReason_List_Of_Unions_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Union("Bar")),
+                        IsDeprecated = true,
                     },
                 }
             };
@@ -508,6 +866,73 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     {
                         Name = "foo",
                         Type = TypeModel.Int(),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_Deprecated_WithoutReason_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public int? Foo(int? bar = null) => null;");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true,
+                        DeprecationReason = "Old and unused",
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.Int(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_Deprecated_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo(int? bar = null) => null;");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true,
                         Args = new[]
                         {
                             new InputValueModel

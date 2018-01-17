@@ -175,6 +175,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool IsPrivate { get; }
 
+        [Obsolete(@"Use Repository.licenseInfo instead.")]
         public string License { get; }
 
         public License LicenseInfo => this.CreateProperty(x => x.LicenseInfo, Octokit.GraphQL.Model.License.Create);
@@ -195,6 +196,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string ShortDescriptionHTML(int? limit = 200) => null;
 
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         public string Url { get; }

@@ -41,6 +41,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the user whose review request was removed.
         /// </summary>
+        [Obsolete(@"Use ReviewRequestRemovedEvent.requestedReviewer instead.")]
         public User Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.User.Create);
 
         internal static ReviewRequestRemovedEvent Create(IQueryProvider provider, Expression expression)
