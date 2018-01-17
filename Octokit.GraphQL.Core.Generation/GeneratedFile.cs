@@ -2,7 +2,7 @@
 
 namespace Octokit.GraphQL.Core.Generation
 {
-    public struct GeneratedFile
+    public class GeneratedFile: IEquatable<GeneratedFile>
     {
         public GeneratedFile(string path, string content)
         {
@@ -12,5 +12,12 @@ namespace Octokit.GraphQL.Core.Generation
 
         public string Path;
         public string Content;
+
+        public bool Equals(GeneratedFile other)
+        {
+            return other != null
+                && Path.Equals(other.Path)
+                && Content.Equals(other.Content);
+        }
     }
 }
