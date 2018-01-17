@@ -17,6 +17,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Reason that the conversation was locked.
+        /// </summary>
+        public LockReason? ActiveLockReason { get; }
+
+        /// <summary>
         /// The number of additions in this pull request.
         /// </summary>
         public int Additions { get; }

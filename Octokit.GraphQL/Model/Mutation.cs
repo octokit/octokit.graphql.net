@@ -96,6 +96,11 @@ namespace Octokit.GraphQL.Model
         public DismissPullRequestReviewPayload DismissPullRequestReview(DismissPullRequestReviewInput input) => this.CreateMethodCall(x => x.DismissPullRequestReview(input), Octokit.GraphQL.Model.DismissPullRequestReviewPayload.Create);
 
         /// <summary>
+        /// Lock a lockable object
+        /// </summary>
+        public LockLockablePayload LockLockable(LockLockableInput input) => this.CreateMethodCall(x => x.LockLockable(input), Octokit.GraphQL.Model.LockLockablePayload.Create);
+
+        /// <summary>
         /// Moves a project card to another place.
         /// </summary>
         public MoveProjectCardPayload MoveProjectCard(MoveProjectCardInput input) => this.CreateMethodCall(x => x.MoveProjectCard(input), Octokit.GraphQL.Model.MoveProjectCardPayload.Create);

@@ -17,6 +17,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Reason that the conversation was locked.
+        /// </summary>
+        public LockReason? ActiveLockReason { get; }
+
+        /// <summary>
         /// A list of Users assigned to this object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
