@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
             
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -218,7 +218,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -242,7 +242,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -266,7 +266,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -298,7 +298,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -330,7 +330,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -362,7 +362,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -394,7 +394,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -426,7 +426,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -458,7 +458,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -490,7 +490,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -522,7 +522,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -554,7 +554,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -586,7 +586,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Theory]
@@ -626,7 +626,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Theory]
@@ -667,7 +667,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Theory]
@@ -707,7 +707,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -740,7 +740,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -781,7 +781,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -809,7 +809,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -854,7 +854,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -901,7 +901,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -951,7 +951,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", model.Name);
 
-            Assert.Equal(new Tuple<string, string>(@"Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Entity.cs", expected), result);
         }
 
         [Fact]
@@ -1001,7 +1001,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", "Query");
 
-            Assert.Equal(new Tuple<string, string>(@"Mutation.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Mutation.cs", expected), result);
         }
 
         [Fact]
@@ -1025,7 +1025,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
         }
 
         private string FormatMemberTemplate(string members, string interfaces = null)

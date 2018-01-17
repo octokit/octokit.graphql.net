@@ -2,15 +2,15 @@
 
 namespace Octokit.GraphQL.Core.Generation
 {
-    public class GeneratedFile
+    public struct GeneratedFile
     {
-        public GeneratedFile(string fileName, string content)
+        public GeneratedFile(string path, string content)
         {
-            FileName = fileName;
+            Path = path;
             Content = content;
         }
 
-        public string FileName { get; }
-        public string Content { get; }
+        public string Path;
+        public string Content;
     }
 }
