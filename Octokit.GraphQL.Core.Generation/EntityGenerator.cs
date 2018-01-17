@@ -184,27 +184,39 @@ namespace Octokit.GraphQL.Core.Generation
 
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                    ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                    : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"        public {typeName} {name} {{ get; }}";
+            return $"{obsoleteAttribute}        public {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace, string entityNamespace, string queryType)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
             var implName = GetEntityImplementationName(type,(typeName != queryType) ? entityNamespace : rootNamespace);
-            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
+            return $"{obsoleteAttribute}        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var csharpType = TypeUtilities.GetCSharpReturnType(type);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public {csharpType} {name}({arguments}) => null;";
+            return $"{obsoleteAttribute}        public {csharpType} {name}({arguments}) => null;";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type, string entityNamespace)
@@ -220,9 +232,13 @@ namespace Octokit.GraphQL.Core.Generation
 
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name});";
+            return $"{obsoleteAttribute}        public {typeName} {name} => this.CreateProperty(x => x.{name});";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)

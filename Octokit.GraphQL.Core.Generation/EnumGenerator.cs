@@ -79,7 +79,11 @@ namespace {entityNamespace}
 
         private static string GenerateEnumValue(EnumValueModel value)
         {
-            return $@"        [EnumMember(Value = ""{value.Name}"")]
+            var obsoleteAttribute = value.IsDeprecated
+                    ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(value.DeprecationReason)}{Environment.NewLine}"
+                    : string.Empty;
+            
+            return $@"{obsoleteAttribute}        [EnumMember(Value = ""{value.Name}"")]
         {value.Name.SnakeCaseToPascalCase()},";
         }
     }

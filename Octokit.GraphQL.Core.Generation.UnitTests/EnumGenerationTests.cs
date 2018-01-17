@@ -29,8 +29,13 @@ namespace Test
                 @"[EnumMember(Value = ""VALUE"")]
         Value,
 
+        [Obsolete(@""Old and unused"")]
         [EnumMember(Value = ""VALUE_2"")]
-        Value2,");
+        Value2,
+
+        [Obsolete]
+        [EnumMember(Value = ""VALUE_3"")]
+        Value3,");
 
             var model = new TypeModel
             {
@@ -39,7 +44,8 @@ namespace Test
                 EnumValues = new[]
                 {
                     new EnumValueModel { Name = "VALUE" },
-                    new EnumValueModel { Name = "VALUE_2" },
+                    new EnumValueModel { Name = "VALUE_2", IsDeprecated = true, DeprecationReason = "Old and unused"},
+                    new EnumValueModel { Name = "VALUE_3", IsDeprecated = true},
                 }
             };
 
