@@ -4,7 +4,7 @@
     {
         public static string GenerateObsoleteAttribute(string reason)
         {
-            if (string.IsNullOrEmpty(reason))
+            if (string.IsNullOrWhiteSpace(reason))
             {
                 return "[Obsolete]";
             }

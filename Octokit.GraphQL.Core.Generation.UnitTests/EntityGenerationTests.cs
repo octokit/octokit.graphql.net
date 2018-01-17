@@ -80,6 +80,58 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Property_For_Deprecated_WithEmptyReason_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo {{ get; }}");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true,
+                        DeprecationReason = string.Empty
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_Deprecated_WithWhitespaceReason_Scalar_Field()
+        {
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo {{ get; }}");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        IsDeprecated = true,
+                        DeprecationReason = " "
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
         public void Generates_Property_For_Deprecated_WithoutReason_Scalar_Field()
         {
             var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo {{ get; }}");
