@@ -37,7 +37,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\InputObject.cs", expected), result);
         }
 
         private string FormatMemberTemplate(string members)

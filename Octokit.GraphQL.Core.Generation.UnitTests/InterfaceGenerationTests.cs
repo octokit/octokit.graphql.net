@@ -68,7 +68,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -172,7 +172,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -232,7 +232,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -266,7 +266,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -300,7 +300,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -334,7 +334,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -368,7 +368,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -402,7 +402,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -436,7 +436,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -470,7 +470,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -504,7 +504,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -538,7 +538,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -572,7 +572,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Theory]
@@ -614,7 +614,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Theory]
@@ -656,7 +656,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Theory]
@@ -698,7 +698,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -732,7 +732,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -773,7 +773,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -803,7 +803,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -848,7 +848,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         [Fact]
@@ -874,7 +874,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\Entity.cs", expected), result);
         }
 
         private string FormatMemberTemplate(string interfaceMembers, string stubMembers)

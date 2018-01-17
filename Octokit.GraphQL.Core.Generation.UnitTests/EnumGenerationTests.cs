@@ -45,7 +45,7 @@ namespace Test
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\TestEnum.cs", expected), result);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Test
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\TestEnum.cs", expected), result);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace Test
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new Tuple<string, string>(@"Model\TestEnum.cs", expected), result);
         }
     }
 }

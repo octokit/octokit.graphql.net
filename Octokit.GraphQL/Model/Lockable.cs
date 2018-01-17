@@ -14,6 +14,11 @@ namespace Octokit.GraphQL.Model
     public interface ILockable : IQueryEntity
     {
         /// <summary>
+        /// Reason that the conversation was locked.
+        /// </summary>
+        LockReason? ActiveLockReason { get; }
+
+        /// <summary>
         /// `true` if the object is locked
         /// </summary>
         bool Locked { get; }
@@ -34,6 +39,8 @@ namespace Octokit.GraphQL.Model.Internal
         public StubILockable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
+
+        public LockReason? ActiveLockReason { get; }
 
         public bool Locked { get; }
 
