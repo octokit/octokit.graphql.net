@@ -50,8 +50,8 @@ namespace Generate
 
             foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL", "Octokit.GraphQL.Model"))
             {
-                Console.WriteLine("Writing " + file.FileName);
-                File.WriteAllText(Path.Combine(path, file.FileName), file.Content);
+                Console.WriteLine("Writing " + file.Path);
+                File.WriteAllText(Path.Combine(path, file.Path), file.Content);
             }
         }
     }

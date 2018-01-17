@@ -14,17 +14,12 @@ namespace Octokit.GraphQL.Core.Generation
             {
                 if (!type.Name.StartsWith("__") && type.Kind != TypeKind.Scalar)
                 {
-                    var fileData = Generate(type, rootNamespace, schema.QueryType,  entityNamespace);
-
-                    if (fileData != null)
-                    {
-                        yield return new GeneratedFile(fileData.Item1, fileData.Item2);
-                    }
+                    yield return Generate(type, rootNamespace, schema.QueryType,  entityNamespace);
                 }
             }
         }
 
-        public static Tuple<string, string> Generate(TypeModel type, string rootNamespace, string queryType, string entityNamespace = null)
+        public static GeneratedFile Generate(TypeModel type, string rootNamespace, string queryType, string entityNamespace = null)
         {
             entityNamespace = entityNamespace ?? rootNamespace;
 
@@ -74,7 +69,7 @@ namespace Octokit.GraphQL.Core.Generation
                 fileName = Path.Combine("Model", fileName);
             }
 
-            return new Tuple<string, string>(fileName, result);
+            return new GeneratedFile(fileName, result);
         }
     }
 }
