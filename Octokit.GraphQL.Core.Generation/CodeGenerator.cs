@@ -14,63 +14,67 @@ namespace Octokit.GraphQL.Core.Generation
             {
                 if (!type.Name.StartsWith("__") && type.Kind != TypeKind.Scalar)
                 {
-                    var content = Generate(type, rootNamespace, schema.QueryType, entityNamespace);
+                    var fileData = Generate(type, rootNamespace, schema.QueryType,  entityNamespace);
 
-                    if (content != null)
+                    if (fileData != null)
                     {
-                        var fileName = type.Name + ".cs";
-
-                        if (type.Name != schema.QueryType)
-                        {
-                            fileName = Path.Combine("Model", fileName);
-                        }
-
-                        yield return new GeneratedFile(fileName, content);
+                        yield return new GeneratedFile(fileData.Item1, fileData.Item2);
                     }
                 }
             }
         }
 
-        public static string Generate(TypeModel type, string rootNamespace, string queryType, string entityNamespace = null)
+        public static Tuple<string, string> Generate(TypeModel type, string rootNamespace, string queryType, string entityNamespace = null)
         {
             entityNamespace = entityNamespace ?? rootNamespace;
 
+            var inModelFolder = true;
+
+            string result = null;
             switch (type.Kind)
             {
                 case TypeKind.Object:
                     if (type.Name == queryType || type.Name == "Mutation")
                     {
-                        var ns = rootNamespace;
                         var interfaceName = "IQuery";
-
                         if (type.Name != queryType)
                         {
                             interfaceName = "I" + type.Name;
-                            ns = entityNamespace;
                         }
 
-                        return EntityGenerator.GenerateRoot(type, ns, entityNamespace, interfaceName, queryType);
+                        result = EntityGenerator.GenerateRoot(type, rootNamespace, entityNamespace, interfaceName, queryType);
+                        inModelFolder = false;
                     }
                     else
                     {
-                        return EntityGenerator.Generate(type, entityNamespace, queryType, entityNamespace: entityNamespace);
+                        result = EntityGenerator.Generate(type, entityNamespace, queryType, entityNamespace: entityNamespace);
                     }
+                    break;
 
                 case TypeKind.Interface:
-                    return InterfaceGenerator.Generate(type, entityNamespace, queryType);
+                    result = InterfaceGenerator.Generate(type, entityNamespace, queryType);
+                    break;
 
                 case TypeKind.Enum:
-                    return EnumGenerator.Generate(type, entityNamespace);
+                    result = EnumGenerator.Generate(type, entityNamespace);
+                    break;
 
                 case TypeKind.InputObject:
-                    return InputObjectGenerator.Generate(type, entityNamespace);
+                    result = InputObjectGenerator.Generate(type, entityNamespace);
+                    break;
 
                 case TypeKind.Union:
-                    return UnionGenerator.Generate(type, entityNamespace);
-
-                default:
-                    return null;
+                    result = UnionGenerator.Generate(type, entityNamespace);
+                    break;
             }
+
+            var fileName = type.Name + ".cs";
+            if (inModelFolder)
+            {
+                fileName = Path.Combine("Model", fileName);
+            }
+
+            return new Tuple<string, string>(fileName, result);
         }
     }
 }
