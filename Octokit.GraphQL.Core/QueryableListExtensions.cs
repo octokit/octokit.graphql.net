@@ -9,7 +9,7 @@ namespace Octokit.GraphQL
     public static class QueryableListExtensions
     {
         public static IQueryableList<TResult> OfType<TResult>(this IQueryableList source)
-            where TResult : IQueryEntity
+            where TResult : IQueryableValue
         {
             return new QueryableList<TResult>(
                 source.Provider,
@@ -22,7 +22,7 @@ namespace Octokit.GraphQL
         public static IQueryableList<TResult> Select<TValue, TResult>(
             this IQueryableList<TValue> source,
             Expression<Func<TValue, TResult>> selector)
-                where TValue : IQueryEntity
+                where TValue : IQueryableValue
         {
             return new QueryableList<TResult>(
                 source.Provider,

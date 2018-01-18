@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class EnumValue : QueryEntity
+    public class EnumValue : QueryableValue
     {
         public EnumValue(IQueryProvider provider, Expression expression)
             : base(provider, expression)

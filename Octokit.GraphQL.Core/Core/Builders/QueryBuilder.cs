@@ -71,7 +71,7 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 var query = node.Value as IQuery;
                 var mutation = node.Value as IMutation;
-                var queryEntity = node.Value as IQueryEntity;
+                var queryEntity = node.Value as IQueryableValue;
 
                 if (query != null)
                 {
@@ -239,6 +239,16 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression VisitMethodCall(MethodCallExpression node, MemberInfo alias)
         {
+            if (node.Method.DeclaringType == typeof(QueryableValueExtensions))
+            {
+                var rewrittenName = "Rewritten" + node.Method.Name;
+                var rewrittenArgs = RewriteArgumentTypes(node.Arguments).ToArray();
+                var rewrittenMethod = typeof(QueryableValueExtensions).GetRuntimeMethod(
+                    rewrittenName,
+                    rewrittenArgs);
+                throw new NotImplementedException();
+
+            }
             if (IsSelect(node.Method))
             {
                 return VisitSelect(node.Arguments[0], node.Arguments[1]);
@@ -272,7 +282,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression VisitQueryMethod(MethodCallExpression node, MemberInfo alias)
         {
-            var queryEntity = (node.Object as ConstantExpression)?.Value as IQueryEntity;
+            var queryEntity = (node.Object as ConstantExpression)?.Value as IQueryableValue;
             var instance = Visit(queryEntity?.Expression ?? node.Object);
             var field = syntax.AddField(node.Method, alias);
 
@@ -328,6 +338,21 @@ namespace Octokit.GraphQL.Core.Builders
                     ExpressionMethods.SelectMethod.MakeGenericMethod(select.ReturnType),
                     instance,
                     select);
+            }
+        }
+
+        private IEnumerable<Type> RewriteArgumentTypes(IEnumerable<Expression> arguments)
+        {
+            foreach (var arg in arguments)
+            {
+                if (typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(arg.Type.GetTypeInfo()))
+                {
+                    yield return typeof(JToken);
+                }
+                else
+                {
+                    yield return arg.Type;
+                }
             }
         }
 
@@ -398,7 +423,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private static bool IsQueryEntity(Type type)
         {
-            return typeof(IQueryEntity).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
         private static bool IsQueryEntityMember(Expression expression)

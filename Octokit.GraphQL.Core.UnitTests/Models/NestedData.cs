@@ -5,7 +5,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class NestedData : QueryEntity
+    class NestedData : QueryableValue, IQueryableValue<NestedData>
     {
         public NestedData(IQueryProvider provider)
             : base(provider)

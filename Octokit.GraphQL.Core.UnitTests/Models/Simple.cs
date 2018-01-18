@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class Simple : QueryEntity
+    class Simple : QueryableValue
     {
         public Simple(IQueryProvider provider)
             : base(provider)

@@ -5,7 +5,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class Union : QueryEntity, IUnion
+    class Union : QueryableValue, IUnion
     {
         public Union(IQueryProvider provider, Expression expression)
             : base(provider, expression)

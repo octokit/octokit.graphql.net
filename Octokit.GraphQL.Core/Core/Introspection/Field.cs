@@ -4,7 +4,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class Field : QueryEntity
+    public class Field : QueryableValue
     {
         public Field(IQueryProvider provider)
             : base(provider)

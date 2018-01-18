@@ -11,7 +11,7 @@ namespace Octokit.GraphQL
         public static IQueryableValue<TResult> Select<TValue, TResult>(
             this IQueryableValue<TValue> source,
             Expression<Func<TValue, TResult>> selector)
-                where TValue : IQueryEntity
+                where TValue : IQueryableValue
         {
             return new QueryableValue<TResult>(
                 source.Provider,
@@ -31,6 +31,13 @@ namespace Octokit.GraphQL
         public static TValue SingleOrDefault<TValue>(this IQueryableValue<TValue> source)
         {
             throw new NotImplementedException();
+        }
+
+        public static TResult RewrittenSelect<TResult>(
+            JToken source,
+            Func<JToken, TResult> selector)
+        {
+            return selector(source);
         }
 
         private static MethodInfo GetMethodInfoOf<T>(Expression<Func<T>> expression)
