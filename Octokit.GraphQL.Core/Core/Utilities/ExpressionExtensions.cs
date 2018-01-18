@@ -53,6 +53,16 @@ namespace Octokit.GraphQL.Core.Utilities
                     expression,
                     ExpressionMethods.JTokenToObject.MakeGenericMethod(type));
             }
+            else if (IsIQueryableValueOfJToken(sourceType))
+            {
+                // If the source type is an IQueryableValue<JToken> then add a select statement to cast.
+                return AddSelectCast(expression, type);
+            }
+            else if (IsIQueryableListOfJToken(sourceType))
+            {
+                // If the source type is an IQueryableList<JToken> then add a select statement to cast.
+                return AddSelectCast(expression, type);
+            }
             else if (IsIQueryableOfJToken(sourceType))
             {
                 // If the source type is an IQueryable<JToken> then add a select statement to cast.
@@ -147,14 +157,15 @@ namespace Octokit.GraphQL.Core.Utilities
                         //
                         //      ExpressionMethods.SelectEntity(list, x => x["a"].ToObject<TargetType>())
                         //
-                        var instance = methodCall.Arguments[0];
-                        var lambda = methodCall.Arguments[1].GetLambda();
-                        return Expression.Call(
-                            ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
-                            instance,
-                            Expression.Lambda(
-                                lambda.Body.AddCast(queryType),
-                                lambda.Parameters));
+                        //var instance = methodCall.Arguments[0];
+                        //var lambda = methodCall.Arguments[1].GetLambda();
+                        //return Expression.Call(
+                        //    ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
+                        //    instance,
+                        //    Expression.Lambda(
+                        //        lambda.Body.AddCast(queryType),
+                        //        lambda.Parameters));
+                        throw new NotImplementedException();
                     }
                 }
                 else
@@ -217,6 +228,16 @@ namespace Octokit.GraphQL.Core.Utilities
         private static bool IsIQueryableOfJToken(TypeInfo type)
         {
             return typeof(IQueryable<JToken>).GetTypeInfo().IsAssignableFrom(type);
+        }
+
+        private static bool IsIQueryableValueOfJToken(TypeInfo type)
+        {
+            return typeof(IQueryableValue<JToken>).GetTypeInfo().IsAssignableFrom(type);
+        }
+
+        private static bool IsIQueryableListOfJToken(TypeInfo type)
+        {
+            return typeof(IQueryableList<JToken>).GetTypeInfo().IsAssignableFrom(type);
         }
 
         private static bool IsSelect(MethodInfo method)

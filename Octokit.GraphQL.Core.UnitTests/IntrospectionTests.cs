@@ -90,7 +90,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expectedQuery, queryResult);
 
-            var responseResult = new ResponseDeserializer().Deserialize(query, data).Single();
+            var responseResult = new ResponseDeserializer().Deserialize(query, data);
 
             var type = responseResult.Types[0];
             Assert.Equal(TypeKind.Scalar, type.Kind);

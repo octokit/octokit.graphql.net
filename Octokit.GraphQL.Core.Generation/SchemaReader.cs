@@ -131,7 +131,7 @@ namespace Octokit.GraphQL.Core.Generation
                     }).ToList()
                 });
 
-            return (await connection.Run(query)).Single();
+            return await connection.Run(query);
         }
     }
 }

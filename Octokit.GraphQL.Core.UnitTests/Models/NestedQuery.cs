@@ -12,7 +12,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public IQueryable<Simple> Simple(string arg1)
+        public IQueryableValue<Simple> Simple(string arg1)
         {
             return this.CreateMethodCall(x => x.Simple(arg1));
         }

@@ -20,6 +20,33 @@ namespace Octokit.GraphQL.Core.Builders
 
         public GraphQLQuery<TResult> Build<TResult>(IQueryable<TResult> query)
         {
+            throw new NotImplementedException();
+            //root = null;
+            //syntax = new SyntaxTree();
+            //lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+
+            //var rewritten = Visit(query.Expression);
+            //var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
+            //    rewritten.AddCast(typeof(IQueryable<TResult>)),
+            //    RootDataParameter);
+            //return new GraphQLQuery<TResult>(root, expression);
+        }
+
+        public GraphQLQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
+        {
+            root = null;
+            syntax = new SyntaxTree();
+            lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+
+            var rewritten = Visit(query.Expression);
+            var expression = Expression.Lambda<Func<JObject, TResult>>(
+                rewritten.AddCast(typeof(TResult)),
+                RootDataParameter);
+            return new GraphQLQuery<TResult>(root, expression);
+        }
+
+        public GraphQLQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
+        {
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
@@ -28,7 +55,7 @@ namespace Octokit.GraphQL.Core.Builders
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
                 rewritten.AddCast(typeof(IQueryable<TResult>)),
                 RootDataParameter);
-            return new GraphQLQuery<TResult>(root, expression);
+            return new GraphQLQuery<IEnumerable<TResult>>(root, expression);
         }
 
         protected override Expression VisitBinary(BinaryExpression node)
@@ -355,7 +382,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private static bool IsOfType(MethodInfo method)
         {
-            return method.DeclaringType == typeof(Queryable) &&
+            return (method.DeclaringType == typeof(Queryable) || method.DeclaringType == typeof(QueryableListExtensions)) &&
                 method.Name == nameof(Queryable.OfType) &&
                 method.GetParameters().Length == 1 &&
                 method.GetGenericArguments().Length == 1;
@@ -364,7 +391,9 @@ namespace Octokit.GraphQL.Core.Builders
         private static bool IsSelect(MethodInfo method)
         {
             return (method.DeclaringType == typeof(Queryable) && method.Name == nameof(Queryable.Select) && method.GetParameters().Length == 2) ||
-                   (method.DeclaringType == typeof(QueryEntityExtensions) && method.Name == nameof(QueryEntityExtensions.Select) && method.GetParameters().Length == 2);
+                   ////(method.DeclaringType == typeof(QueryEntityExtensions) && method.Name == nameof(QueryEntityExtensions.Select) && method.GetParameters().Length == 2) ||
+                   (method.DeclaringType == typeof(QueryableListExtensions) && method.Name == nameof(QueryableListExtensions.Select) && method.GetParameters().Length == 2) ||
+                   (method.DeclaringType == typeof(QueryableValueExtensions) && method.Name == nameof(QueryableValueExtensions.Select) && method.GetParameters().Length == 2);
         }
 
         private static bool IsQueryEntity(Type type)

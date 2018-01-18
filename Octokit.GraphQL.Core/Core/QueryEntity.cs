@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Core
             this.expression = expression;
         }
 
-        Expression IQueryEntity.Expression => expression;
-        IQueryProvider IQueryEntity.Provider => provider;
+        public Expression Expression => expression;
+        public IQueryProvider Provider => provider;
     }
 }

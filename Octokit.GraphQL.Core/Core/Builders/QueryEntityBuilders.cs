@@ -55,6 +55,30 @@ namespace Octokit.GraphQL.Core.Builders
                     arguments));
         }
 
+        public static IQueryableValue<TValue> CreateMethodCall<TObject, TValue>(
+            this TObject o,
+            Expression<Func<TObject, IQueryableValue<TValue>>> selector)
+                where TObject : IQueryEntity
+                where TValue : IQueryEntity
+        {
+            var methodCall = (MethodCallExpression)selector.Body;
+            var arguments = new List<ConstantExpression>();
+
+            foreach (MemberExpression arg in methodCall.Arguments)
+            {
+                var expression = (ConstantExpression)arg.Expression;
+                var value = ((FieldInfo)arg.Member).GetValue(expression.Value);
+                arguments.Add(Expression.Constant(value, arg.Type));
+            }
+
+            return new QueryableValue<TValue>(
+                o.Provider,
+                Expression.Call(
+                    Expression.Constant(o),
+                    methodCall.Method,
+                    arguments));
+        }
+
         public static IQueryable<TValue> CreateProperty<TObject, TValue>(
             this TObject o,
             Expression<Func<TObject, IQueryable<TValue>>> selector)
@@ -74,6 +98,32 @@ namespace Octokit.GraphQL.Core.Builders
                 where TObject : IQueryEntity
         {
             return create(
+                o.Provider,
+                Expression.Property(
+                    Expression.Constant(o),
+                    (PropertyInfo)((MemberExpression)selector.Body).Member));
+        }
+
+        public static IQueryableList<TValue> CreateProperty<TObject, TValue>(
+            this TObject o,
+            Expression<Func<TObject, IQueryableList<TValue>>> selector)
+                where TObject : IQueryEntity
+                where TValue : IQueryEntity
+        {
+            return new QueryableList<TValue>(
+                o.Provider,
+                Expression.Property(
+                    Expression.Constant(o),
+                    (PropertyInfo)((MemberExpression)selector.Body).Member));
+        }
+
+        public static IQueryableValue<TValue> CreateProperty<TObject, TValue>(
+            this TObject o,
+            Expression<Func<TObject, IQueryableValue<TValue>>> selector)
+                where TObject : IQueryEntity
+                where TValue : IQueryEntity
+        {
+            return new QueryableValue<TValue>(
                 o.Provider,
                 Expression.Property(
                     Expression.Constant(o),

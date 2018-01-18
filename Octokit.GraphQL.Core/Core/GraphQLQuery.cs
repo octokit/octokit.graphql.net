@@ -13,8 +13,7 @@ namespace Octokit.GraphQL.Core
     {
         public GraphQLQuery(
             OperationDefinition operationDefinition,
-            Expression<Func<JObject,
-                IEnumerable<TResult>>> expression)
+            Expression<Func<JObject, TResult>> expression)
         {
             OperationDefinition = operationDefinition;
             Expression = expression;
@@ -23,9 +22,9 @@ namespace Octokit.GraphQL.Core
 
         public OperationDefinition OperationDefinition { get; }
 
-        public Expression<Func<JObject, IEnumerable<TResult>>> Expression { get; }
+        public Expression<Func<JObject, TResult>> Expression { get; }
 
-        public Func<JObject, IEnumerable<TResult>> CompiledExpression { get; }
+        public Func<JObject, TResult> CompiledExpression { get; }
 
         public override string ToString()
         {

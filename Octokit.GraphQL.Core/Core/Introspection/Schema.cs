@@ -5,7 +5,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class Schema : QueryEntity
+    public class Schema : QueryEntity, IQueryableValue<Schema>
     {
         public Schema(IQueryProvider provider, Expression expression)
             : base(provider, expression)
@@ -16,6 +16,7 @@ namespace Octokit.GraphQL.Core.Introspection
         public SchemaType QueryType => this.CreateProperty(x => x.QueryType, SchemaType.Create);
         public SchemaType MutationType => this.CreateProperty(x => x.MutationType, SchemaType.Create);
         public IQueryable<Directive> Directives => this.CreateProperty(x => x.Directives);
+        public Schema Value { get; }
 
         internal static Schema Create(IQueryProvider provider, Expression expression)
         {

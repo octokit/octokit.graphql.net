@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
@@ -12,11 +11,11 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public IQueryable<NestedData> Data => this.CreateProperty(x => Data);
+        public IQueryableList<NestedData> Data => this.CreateProperty(x => Data);
 
-        public IQueryable<Union> Union => this.CreateProperty(x => Union);
+        public IQueryableValue<Union> Union => this.CreateProperty(x => Union);
 
-        public IQueryable<Simple> Simple(string arg1, int? arg2 = null)
+        public IQueryableValue<Simple> Simple(string arg1, int? arg2 = null)
         {
             return this.CreateMethodCall(x => x.Simple(arg1, arg2));
         }
@@ -26,37 +25,37 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
             return this.CreateMethodCall(x => x.Nested(arg1, arg2), NestedQuery.Create);
         }
 
-        public IQueryable<Simple> StringValue(string value)
+        public IQueryableValue<Simple> StringValue(string value)
         {
             return this.CreateMethodCall(x => x.StringValue(value));
         }
 
-        public IQueryable<Simple> BoolValue(bool boolean)
+        public IQueryableValue<Simple> BoolValue(bool boolean)
         {
             return this.CreateMethodCall(x => x.BoolValue(boolean));
         }
 
-        public IQueryable<Simple> IntValue(int integer)
+        public IQueryableValue<Simple> IntValue(int integer)
         {
             return this.CreateMethodCall(x => x.IntValue(integer));
         }
 
-        public IQueryable<Simple> FloatValue(float flt)
+        public IQueryableValue<Simple> FloatValue(float flt)
         {
             return this.CreateMethodCall(x => x.FloatValue(flt));
         }
 
-        public IQueryable<Simple> ObjectValue(object value)
+        public IQueryableValue<Simple> ObjectValue(object value)
         {
             return this.CreateMethodCall(x => x.ObjectValue(value));
         }
 
-        public IQueryable<Simple> EnumerableValue(IEnumerable<object> value)
+        public IQueryableValue<Simple> EnumerableValue(IEnumerable<object> value)
         {
             return this.CreateMethodCall(x => x.EnumerableValue(value));
         }
 
-        public IQueryable<Simple> InputObject(InputObject input)
+        public IQueryableValue<Simple> InputObject(InputObject input)
         {
             return this.CreateMethodCall(x => x.InputObject(input));
         }
