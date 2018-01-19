@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Octokit.GraphQL.Core.Syntax;
 using Newtonsoft.Json.Linq;
+using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Utilities
 {
@@ -64,6 +65,11 @@ namespace Octokit.GraphQL.Core.Utilities
                 return AddSelectCast(expression, type);
             }
             else if (IsIQueryableOfJToken(sourceType))
+            {
+                // If the source type is an IQueryable<JToken> then add a select statement to cast.
+                return AddSelectCast(expression, type);
+            }
+            else if (IsIEnumerableOfJToken(sourceType))
             {
                 // If the source type is an IQueryable<JToken> then add a select statement to cast.
                 return AddSelectCast(expression, type);
@@ -139,7 +145,7 @@ namespace Octokit.GraphQL.Core.Utilities
                         var instance = methodCall.Arguments[0];
                         var lambda = methodCall.Arguments[1].GetLambda();
                         return Expression.Call(
-                            ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
+                            methodCall.Method.GetGenericMethodDefinition().MakeGenericMethod(queryType),
                             instance,
                             Expression.Lambda(
                                 lambda.Body.AddCast(queryType),
@@ -220,6 +226,11 @@ namespace Octokit.GraphQL.Core.Utilities
             return null;
         }
 
+        private static bool IsIEnumerableOfJToken(TypeInfo type)
+        {
+            return typeof(IEnumerable<JToken>).GetTypeInfo().IsAssignableFrom(type);
+        }
+
         private static bool IsIQueryableOfJToken(Type type)
         {
             return IsIQueryableOfJToken(type.GetTypeInfo());
@@ -242,9 +253,7 @@ namespace Octokit.GraphQL.Core.Utilities
 
         private static bool IsSelect(MethodInfo method)
         {
-            return (method.DeclaringType == typeof(ExpressionMethods) &&
-                method.Name == nameof(ExpressionMethods.Select) &&
-                method.GetParameters().Length == 2);
+            return method.GetGenericMethodDefinition() == Rewritten.List.SelectMethod;
         }
 
         private static bool IsSelectEntity(MethodInfo method)

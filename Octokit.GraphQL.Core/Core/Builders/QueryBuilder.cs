@@ -53,7 +53,7 @@ namespace Octokit.GraphQL.Core.Builders
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
-                rewritten.AddCast(typeof(IQueryable<TResult>)),
+                rewritten.AddCast(typeof(IEnumerable<TResult>)),
                 RootDataParameter);
             return new GraphQLQuery<IEnumerable<TResult>>(root, expression);
         }
@@ -190,7 +190,7 @@ namespace Octokit.GraphQL.Core.Builders
                 var source = Visit(node.Expression);
                 var fragment = syntax.AddInlineFragment(((PropertyInfo)node.Member).PropertyType, true);
                 return Expression.Call(
-                    ExpressionMethods.ChildrenOfTypeMethod,
+                    Rewritten.Value.OfTypeMethod,
                     source,
                     Expression.Constant(fragment.TypeCondition.Name));
             }
@@ -239,7 +239,15 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression VisitMethodCall(MethodCallExpression node, MemberInfo alias)
         {
-            if (IsSelect(node.Method))
+            if (node.Method.DeclaringType == typeof(QueryableValueExtensions))
+            {
+                return RewriteValueExtension(node);
+            }
+            if (node.Method.DeclaringType == typeof(QueryableListExtensions))
+            {
+                return RewriteListExtension(node);
+            }
+            else if (IsSelect(node.Method))
             {
                 return VisitSelect(node.Arguments[0], node.Arguments[1]);
             }
@@ -267,6 +275,70 @@ namespace Octokit.GraphQL.Core.Builders
                 {
                     throw new NotSupportedException($"{node.Method.Name}() is not supported", ex);
                 }
+            }
+        }
+
+        private Expression RewriteValueExtension(MethodCallExpression expression)
+        {
+            if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SelectMethod)
+            {
+                var source = expression.Arguments[0];
+                var selectExpression = expression.Arguments[1];
+                var lambda = selectExpression.GetLambda();
+                var instance = Visit(source);
+                var select = (LambdaExpression)Visit(lambda);
+
+                return Expression.Call(
+                    Rewritten.Value.SelectMethod.MakeGenericMethod(select.ReturnType),
+                    instance,
+                    select);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private Expression RewriteListExtension(MethodCallExpression expression)
+        {
+            if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.SelectMethod)
+            {
+                var source = expression.Arguments[0];
+                var selectExpression = expression.Arguments[1];
+                var lambda = selectExpression.GetLambda();
+                var instance = Visit(source);
+                var select = (LambdaExpression)Visit(lambda);
+
+                return Expression.Call(
+                    Rewritten.List.SelectMethod.MakeGenericMethod(select.ReturnType),
+                    instance,
+                    select);
+            }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToListMethod)
+            {
+                var source = expression.Arguments[0];
+                var resultType = GetQueryableListResultType(source.Type);
+                var instance = Visit(source);
+
+                return Expression.Call(
+                    Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
+                    instance);
+            }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.OfTypeMethod)
+            {
+                var source = expression.Arguments[0];
+                var resultType = GetQueryableListResultType(source.Type);
+                var instance = Visit(source);
+                var fragment = syntax.AddInlineFragment(expression.Method.GetGenericArguments()[0], true);
+
+                return Expression.Call(
+                    Rewritten.List.OfTypeMethod,
+                    instance,
+                    Expression.Constant(fragment.TypeCondition.Name));
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -306,28 +378,26 @@ namespace Octokit.GraphQL.Core.Builders
             var lambda = selectExpression.GetLambda();
             var instance = Visit(source);
             var select = (LambdaExpression)Visit(lambda);
-            var isQueryable = GetQueryableResultType(instance.Type) != null;
+            var sourceIsValue = typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(source.Type.GetTypeInfo());
+            var sourceIsList = typeof(IQueryableList).GetTypeInfo().IsAssignableFrom(source.Type.GetTypeInfo());
 
-            if (!isQueryable)
+            if (sourceIsValue)
             {
-                if (select.ReturnType == typeof(IQueryable<JToken>))
-                {
-                    return Expression.Invoke(select, instance);
-                }
-                else
-                {
-                    return Expression.Call(
-                        QueryableValueExtensions.RewrittenSelectMethod.MakeGenericMethod(select.ReturnType),
-                        instance,
-                        select);
-                }
+                return Expression.Call(
+                    Rewritten.Value.SelectMethod.MakeGenericMethod(select.ReturnType),
+                    instance,
+                    select);
+            }
+            else if (sourceIsList)
+            {
+                return Expression.Call(
+                    Rewritten.List.SelectMethod.MakeGenericMethod(select.ReturnType),
+                    instance,
+                    select);
             }
             else
             {
-                return Expression.Call(
-                    ExpressionMethods.SelectMethod.MakeGenericMethod(select.ReturnType),
-                    instance,
-                    select);
+                throw new NotSupportedException("Shouldn't get here");
             }
         }
 
@@ -383,6 +453,20 @@ namespace Octokit.GraphQL.Core.Builders
         {
             return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>) ?
                 type.GetTypeInfo().GenericTypeArguments[0] : null;
+        }
+
+        private static Type GetQueryableListResultType(Type type)
+        {
+            var ti = type.GetTypeInfo();
+
+            if (ti.GetGenericTypeDefinition() == typeof(IQueryableList<>))
+            {
+                return ti.GenericTypeArguments[0];
+            }
+            else
+            {
+                throw new NotSupportedException("Not an IQueryableList<>.");
+            }
         }
 
         private ISelectionSet GetSelectionSet(ParameterExpression parameter)

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Octokit.GraphQL.Core.Utilities;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.UnitTests
@@ -20,7 +19,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => x.Name);
 
             Expression<Func<JObject, string>> expected = data =>
-                QueryableValueExtensions.RewrittenSelect(data["data"]["simple"], x => x["name"]).ToObject<string>();
+                Rewritten.Value.Select(data["data"]["simple"], x => x["name"]).ToObject<string>();
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
@@ -34,7 +33,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["simple"], x => new
+                Rewritten.Value.Select(data["data"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),
@@ -51,8 +50,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Data
                 .Select(x => x.Id);
 
-            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["data"], x => x["id"].ToObject<string>());
+            Expression<Func<JObject, string>> expected = data =>
+                Rewritten.Value.Select(data["data"]["data"], x => x["id"].ToObject<string>());
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
@@ -67,7 +66,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["nested"]["simple"], x => new
+                Rewritten.Value.Select(data["data"]["nested"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),
@@ -85,16 +84,16 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.Items.Select(i => i.Name).ToList(),
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.SelectEntity(
+                Rewritten.List.Select(
                     data["data"]["data"],
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["items"], i => i["name"]))
                     });
 
             var query = new QueryBuilder().Build(expression);
@@ -110,16 +109,16 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.Items.Select(i => i.Name).ToList(),
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.Select(
-                    ExpressionMethods.ChildrenOfType(data["data"]["data"], "NestedData"),
+                Rewritten.List.Select(
+                    Rewritten.List.OfType(data["data"]["data"], "NestedData"),
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["items"], i => i["name"]))
                     });
 
             var query = new QueryBuilder().Build(expression);
@@ -140,8 +139,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.Select(
-                    ((Func<JToken, IQueryable<JToken>>)(x => ExpressionMethods.ChildrenOfType(x, "Simple")))((data["data"]["union"])),
+                Rewritten.Value.Select(
+                    Rewritten.Value.Select(data["data"]["union"], x => Rewritten.Value.OfType(x, "Simple")),
                     x => new
                     {
                         Name = x["name"].ToObject<string>(),

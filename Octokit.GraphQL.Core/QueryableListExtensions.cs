@@ -8,6 +8,10 @@ namespace Octokit.GraphQL
 {
     public static class QueryableListExtensions
     {
+        public static readonly MethodInfo OfTypeMethod = typeof(QueryableListExtensions).GetTypeInfo().GetDeclaredMethod(nameof(OfType));
+        public static readonly MethodInfo SelectMethod = typeof(QueryableListExtensions).GetTypeInfo().GetDeclaredMethod(nameof(Select));
+        public static readonly MethodInfo ToListMethod = typeof(QueryableListExtensions).GetTypeInfo().GetDeclaredMethod(nameof(ToList));
+
         public static IQueryableList<TResult> OfType<TResult>(this IQueryableList source)
             where TResult : IQueryableValue
         {
