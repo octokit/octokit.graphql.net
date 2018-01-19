@@ -239,16 +239,6 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression VisitMethodCall(MethodCallExpression node, MemberInfo alias)
         {
-            if (node.Method.DeclaringType == typeof(QueryableValueExtensions))
-            {
-                var rewrittenName = "Rewritten" + node.Method.Name;
-                var rewrittenArgs = RewriteArgumentTypes(node.Arguments).ToArray();
-                var rewrittenMethod = typeof(QueryableValueExtensions).GetRuntimeMethod(
-                    rewrittenName,
-                    rewrittenArgs);
-                throw new NotImplementedException();
-
-            }
             if (IsSelect(node.Method))
             {
                 return VisitSelect(node.Arguments[0], node.Arguments[1]);
@@ -327,7 +317,7 @@ namespace Octokit.GraphQL.Core.Builders
                 else
                 {
                     return Expression.Call(
-                        ExpressionMethods.SelectEntityMethod.MakeGenericMethod(select.ReturnType),
+                        QueryableValueExtensions.RewrittenSelectMethod.MakeGenericMethod(select.ReturnType),
                         instance,
                         select);
                 }

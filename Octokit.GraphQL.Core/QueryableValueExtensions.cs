@@ -8,6 +8,8 @@ namespace Octokit.GraphQL
 {
     public static class QueryableValueExtensions
     {
+        public static readonly MethodInfo RewrittenSelectMethod = typeof(QueryableValueExtensions).GetTypeInfo().GetDeclaredMethod(nameof(RewrittenSelect));
+
         public static IQueryableValue<TResult> Select<TValue, TResult>(
             this IQueryableValue<TValue> source,
             Expression<Func<TValue, TResult>> selector)

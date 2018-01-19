@@ -19,8 +19,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name);
 
-            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["simple"], x => x["name"].ToObject<string>());
+            Expression<Func<JObject, string>> expected = data =>
+                QueryableValueExtensions.RewrittenSelect(data["data"]["simple"], x => x["name"]).ToObject<string>();
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
