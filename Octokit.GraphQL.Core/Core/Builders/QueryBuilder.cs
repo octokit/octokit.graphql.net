@@ -317,17 +317,27 @@ namespace Octokit.GraphQL.Core.Builders
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToListMethod)
             {
                 var source = expression.Arguments[0];
-                var resultType = GetQueryableListResultType(source.Type);
                 var instance = Visit(source);
+                var inputType = GetEnumerableItemType(instance.Type);
+                var resultType = GetQueryableListItemType(source.Type);
 
-                return Expression.Call(
-                    Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
-                    instance);
+                if (inputType == resultType)
+                {
+                    return Expression.Call(
+                        LinqMethods.ToListMethod.MakeGenericMethod(resultType),
+                        instance);
+                }
+                else
+                {
+                    return Expression.Call(
+                        Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
+                        instance);
+                }
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.OfTypeMethod)
             {
                 var source = expression.Arguments[0];
-                var resultType = GetQueryableListResultType(source.Type);
+                var resultType = GetQueryableListItemType(source.Type);
                 var instance = Visit(source);
                 var fragment = syntax.AddInlineFragment(expression.Method.GetGenericArguments()[0], true);
 
@@ -449,13 +459,21 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private static Type GetQueryableResultType(Type type)
+        private static Type GetEnumerableItemType(Type type)
         {
-            return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>) ?
-                type.GetTypeInfo().GenericTypeArguments[0] : null;
+            var ti = type.GetTypeInfo();
+
+            if (ti.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
+                return ti.GenericTypeArguments[0];
+            }
+            else
+            {
+                throw new NotSupportedException("Not an IEnumerable<>.");
+            }
         }
 
-        private static Type GetQueryableListResultType(Type type)
+        private static Type GetQueryableListItemType(Type type)
         {
             var ti = type.GetTypeInfo();
 

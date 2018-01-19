@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public string Description { get; set; }
         public int Number { get; set; }
 
-        internal Simple Create(IQueryProvider provider, Expression expression)
+        internal static Simple Create(IQueryProvider provider, Expression expression)
         {
             return new Simple(provider, expression);
         }
