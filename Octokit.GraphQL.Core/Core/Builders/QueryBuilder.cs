@@ -96,7 +96,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             var parameters = RewriteParameters(node.Parameters);
             var body = Visit(node.Body);
-            return Expression.Lambda(body, parameters);
+            return Expression.Lambda(body, node.ToString(), parameters);
         }
 
         protected override Expression VisitMember(MemberExpression node)
@@ -314,6 +314,29 @@ namespace Octokit.GraphQL.Core.Builders
                     instance,
                     select);
             }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToDictionaryMethod)
+            {
+                var instance = Visit(expression.Arguments[0]);
+                var keySelect = expression.Arguments[1].GetLambda();
+                var valueSelect = expression.Arguments[2].GetLambda();
+                var inputType = GetEnumerableItemType(instance.Type);
+
+                if (inputType == typeof(JToken))
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    return Expression.Call(
+                        LinqMethods.ToDictionaryMethod.MakeGenericMethod(
+                            inputType,
+                            keySelect.ReturnType,
+                            valueSelect.ReturnType),
+                        instance,
+                        keySelect,
+                        valueSelect);
+                }
+            }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToListMethod)
             {
                 var source = expression.Arguments[0];
@@ -321,24 +344,24 @@ namespace Octokit.GraphQL.Core.Builders
                 var inputType = GetEnumerableItemType(instance.Type);
                 var resultType = GetQueryableListItemType(source.Type);
 
-                if (inputType == resultType)
+                if (inputType == typeof(JToken))
                 {
                     return Expression.Call(
-                        LinqMethods.ToListMethod.MakeGenericMethod(resultType),
+                        Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
                         instance);
                 }
                 else
                 {
                     return Expression.Call(
-                        Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
+                        LinqMethods.ToListMethod.MakeGenericMethod(resultType),
                         instance);
                 }
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.OfTypeMethod)
             {
                 var source = expression.Arguments[0];
-                var resultType = GetQueryableListItemType(source.Type);
                 var instance = Visit(source);
+                var resultType = GetQueryableListItemType(source.Type);
                 var fragment = syntax.AddInlineFragment(expression.Method.GetGenericArguments()[0], true);
 
                 return Expression.Call(

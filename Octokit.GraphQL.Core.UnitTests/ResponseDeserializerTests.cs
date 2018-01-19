@@ -335,16 +335,11 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""union"": [
-            { 
+        ""union"": { 
                 ""__typename"": ""Simple"",
                 ""name"": ""foo"",
                 ""description"": ""bar"" 
-            },
-            { 
-                ""__typename"": ""Another"",
             }
-        ]
     }
 }";
 

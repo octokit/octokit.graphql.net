@@ -28,6 +28,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             public static readonly MethodInfo OfTypeMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(OfType));
             public static readonly MethodInfo SelectMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(Select));
+            public static readonly MethodInfo ToDictionaryMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToDictionary));
             public static readonly MethodInfo ToListMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToList));
 
             public static IEnumerable<JToken> OfType(IEnumerable<JToken> source, string typeName)
@@ -40,6 +41,14 @@ namespace Octokit.GraphQL.Core.Builders
                 Func<JToken, TResult> selector)
             {
                 return source.Select(selector);
+            }
+
+            public static IDictionary<TKey, TElement> ToDictionary<TKey, TElement>(
+                IEnumerable<JToken> source,
+                Func<JToken, TKey> keySelector,
+                Func<JToken, TElement> elementSelector)
+            {
+                return source.ToDictionary(keySelector, elementSelector);
             }
 
             public static IList<TResult> ToList<TResult>(IEnumerable<JToken> source)
