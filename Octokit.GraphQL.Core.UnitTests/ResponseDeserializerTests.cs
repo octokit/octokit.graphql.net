@@ -176,13 +176,13 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""data"": [{
             ""id"": ""foo"",
             ""items"": [
                 { ""name"": ""item1"" },
                 { ""name"": ""item2"" }
             ]
-        }
+        }]
     }
 }";
 
@@ -202,9 +202,9 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""data"": [{
             ""foo"": ""123"",
-        }
+        }]
     }
 }";
 
@@ -229,13 +229,13 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""data"": [{
             ""id"": ""foo"",
             ""items"": [
                 { ""name"": ""item1"" },
                 { ""name"": ""item2"" }
             ]
-        }
+        }]
     }
 }";
 
@@ -265,13 +265,13 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""data"": [{
             ""id"": ""foo"",
             ""items"": [
                 { ""name"": ""item1"", ""description"": ""foo"" },
                 { ""name"": ""item2"", ""description"": ""bar"" }
             ]
-        }
+        }]
     }
 }";
 

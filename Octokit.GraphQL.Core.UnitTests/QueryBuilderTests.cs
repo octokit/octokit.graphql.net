@@ -220,7 +220,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.Items.Select(i => i.Name).ToList(),
                 });
 
             var query = new QueryBuilder().Build(expression);
@@ -240,7 +240,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.Items.Select(i => i.Name).ToList(),
                 });
 
             var query = new QueryBuilder().Build(expression);
