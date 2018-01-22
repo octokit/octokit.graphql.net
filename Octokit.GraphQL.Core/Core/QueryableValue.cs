@@ -31,7 +31,5 @@ namespace Octokit.GraphQL.Core
             : base(provider, expression)
         {
         }
-
-        public T Value { get; }
     }
 }

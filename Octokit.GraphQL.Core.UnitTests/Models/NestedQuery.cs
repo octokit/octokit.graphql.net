@@ -12,9 +12,9 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public IQueryableValue<Simple> Simple(string arg1)
+        public Simple Simple(string arg1)
         {
-            return this.CreateMethodCall(x => x.Simple(arg1));
+            return this.CreateMethodCall(x => x.Simple(arg1), Models.Simple.Create);
         }
 
         internal static NestedQuery Create(IQueryProvider provider, Expression expression)

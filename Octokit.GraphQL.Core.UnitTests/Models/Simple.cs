@@ -4,13 +4,8 @@ using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class Simple : QueryableValue
+    class Simple : QueryableValue<Simple>
     {
-        public Simple(IQueryProvider provider)
-            : base(provider)
-        {
-        }
-
         public Simple(IQueryProvider provider, Expression expression)
             : base(provider, expression)
         {
