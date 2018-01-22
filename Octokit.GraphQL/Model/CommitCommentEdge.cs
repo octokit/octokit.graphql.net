@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommitCommentEdge : QueryableValue<CommitCommentEdge>
     {
-        public CommitCommentEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public CommitCommentEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public CommitComment Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.CommitComment.Create);
 
-        internal static CommitCommentEdge Create(IQueryProvider provider, Expression expression)
+        internal static CommitCommentEdge Create(Expression expression)
         {
-            return new CommitCommentEdge(provider, expression);
+            return new CommitCommentEdge(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Repository : QueryableValue<Repository>
     {
-        public Repository(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Repository(Expression expression) : base(expression)
         {
         }
 
@@ -466,9 +465,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         public UserConnection Watchers(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Watchers(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
-        internal static Repository Create(IQueryProvider provider, Expression expression)
+        internal static Repository Create(Expression expression)
         {
-            return new Repository(provider, expression);
+            return new Repository(expression);
         }
     }
 }

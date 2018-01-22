@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Deployment : QueryableValue<Deployment>
     {
-        public Deployment(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Deployment(Expression expression) : base(expression)
         {
         }
 
@@ -73,9 +72,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         public DeploymentStatusConnection Statuses(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Statuses(first, after, last, before), Octokit.GraphQL.Model.DeploymentStatusConnection.Create);
 
-        internal static Deployment Create(IQueryProvider provider, Expression expression)
+        internal static Deployment Create(Expression expression)
         {
-            return new Deployment(provider, expression);
+            return new Deployment(expression);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReferencedSubject : QueryableValue<ReferencedSubject>, IUnion
     {
-        public ReferencedSubject(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReferencedSubject(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static ReferencedSubject Create(IQueryProvider provider, Expression expression)
+        internal static ReferencedSubject Create(Expression expression)
         {
-            return new ReferencedSubject(provider, expression);
+            return new ReferencedSubject(expression);
         }
     }
 }

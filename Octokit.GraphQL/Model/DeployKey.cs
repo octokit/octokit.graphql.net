@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeployKey : QueryableValue<DeployKey>
     {
-        public DeployKey(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeployKey(Expression expression) : base(expression)
         {
         }
 
@@ -43,9 +42,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool Verified { get; }
 
-        internal static DeployKey Create(IQueryProvider provider, Expression expression)
+        internal static DeployKey Create(Expression expression)
         {
-            return new DeployKey(provider, expression);
+            return new DeployKey(expression);
         }
     }
 }

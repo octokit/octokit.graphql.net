@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TeamMemberEdge : QueryableValue<TeamMemberEdge>
     {
-        public TeamMemberEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public TeamMemberEdge(Expression expression) : base(expression)
         {
         }
 
@@ -35,9 +34,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public TeamMemberRole Role { get; }
 
-        internal static TeamMemberEdge Create(IQueryProvider provider, Expression expression)
+        internal static TeamMemberEdge Create(Expression expression)
         {
-            return new TeamMemberEdge(provider, expression);
+            return new TeamMemberEdge(expression);
         }
     }
 }

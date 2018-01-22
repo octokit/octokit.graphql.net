@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProtectedBranch : QueryableValue<ProtectedBranch>
     {
-        public ProtectedBranch(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ProtectedBranch(Expression expression) : base(expression)
         {
         }
 
@@ -91,9 +90,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octokit.GraphQL.Model.ReviewDismissalAllowanceConnection.Create);
 
-        internal static ProtectedBranch Create(IQueryProvider provider, Expression expression)
+        internal static ProtectedBranch Create(Expression expression)
         {
-            return new ProtectedBranch(provider, expression);
+            return new ProtectedBranch(expression);
         }
     }
 }

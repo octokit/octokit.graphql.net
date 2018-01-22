@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueTimelineItem : QueryableValue<IssueTimelineItem>, IUnion
     {
-        public IssueTimelineItem(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public IssueTimelineItem(Expression expression) : base(expression)
         {
         }
 
@@ -99,9 +99,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public UnlockedEvent UnlockedEvent => this.CreateProperty(x => x.UnlockedEvent, Octokit.GraphQL.Model.UnlockedEvent.Create);
 
-        internal static IssueTimelineItem Create(IQueryProvider provider, Expression expression)
+        internal static IssueTimelineItem Create(Expression expression)
         {
-            return new IssueTimelineItem(provider, expression);
+            return new IssueTimelineItem(expression);
         }
     }
 }

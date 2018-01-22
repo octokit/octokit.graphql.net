@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateProjectPayload : QueryableValue<UpdateProjectPayload>
     {
-        public UpdateProjectPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public UpdateProjectPayload(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Model.Project.Create);
 
-        internal static UpdateProjectPayload Create(IQueryProvider provider, Expression expression)
+        internal static UpdateProjectPayload Create(Expression expression)
         {
-            return new UpdateProjectPayload(provider, expression);
+            return new UpdateProjectPayload(expression);
         }
     }
 }

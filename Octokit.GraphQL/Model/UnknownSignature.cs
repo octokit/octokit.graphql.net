@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnknownSignature : QueryableValue<UnknownSignature>
     {
-        public UnknownSignature(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public UnknownSignature(Expression expression) : base(expression)
         {
         }
 
@@ -46,9 +45,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public GitSignatureState State { get; }
 
-        internal static UnknownSignature Create(IQueryProvider provider, Expression expression)
+        internal static UnknownSignature Create(Expression expression)
         {
-            return new UnknownSignature(provider, expression);
+            return new UnknownSignature(expression);
         }
     }
 }

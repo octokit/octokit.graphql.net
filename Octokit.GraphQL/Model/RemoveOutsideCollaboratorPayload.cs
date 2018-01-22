@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveOutsideCollaboratorPayload : QueryableValue<RemoveOutsideCollaboratorPayload>
     {
-        public RemoveOutsideCollaboratorPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RemoveOutsideCollaboratorPayload(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public User RemovedUser => this.CreateProperty(x => x.RemovedUser, Octokit.GraphQL.Model.User.Create);
 
-        internal static RemoveOutsideCollaboratorPayload Create(IQueryProvider provider, Expression expression)
+        internal static RemoveOutsideCollaboratorPayload Create(Expression expression)
         {
-            return new RemoveOutsideCollaboratorPayload(provider, expression);
+            return new RemoveOutsideCollaboratorPayload(expression);
         }
     }
 }

@@ -24,22 +24,21 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     internal class StubIDeletable : QueryableValue<StubIDeletable>, IDeletable
     {
-        public StubIDeletable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIDeletable(Expression expression) : base(expression)
         {
         }
 
         public bool ViewerCanDelete { get; }
 
-        internal static StubIDeletable Create(IQueryProvider provider, Expression expression)
+        internal static StubIDeletable Create(Expression expression)
         {
-            return new StubIDeletable(provider, expression);
+            return new StubIDeletable(expression);
         }
     }
 }

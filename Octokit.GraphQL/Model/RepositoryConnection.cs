@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RepositoryConnection : QueryableValue<RepositoryConnection>
     {
-        public RepositoryConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RepositoryConnection(Expression expression) : base(expression)
         {
         }
 
@@ -41,9 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalDiskUsage { get; }
 
-        internal static RepositoryConnection Create(IQueryProvider provider, Expression expression)
+        internal static RepositoryConnection Create(Expression expression)
         {
-            return new RepositoryConnection(provider, expression);
+            return new RepositoryConnection(expression);
         }
     }
 }

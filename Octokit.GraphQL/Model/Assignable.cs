@@ -28,22 +28,21 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     internal class StubIAssignable : QueryableValue<StubIAssignable>, IAssignable
     {
-        public StubIAssignable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIAssignable(Expression expression) : base(expression)
         {
         }
 
         public UserConnection Assignees(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
-        internal static StubIAssignable Create(IQueryProvider provider, Expression expression)
+        internal static StubIAssignable Create(Expression expression)
         {
-            return new StubIAssignable(provider, expression);
+            return new StubIAssignable(expression);
         }
     }
 }

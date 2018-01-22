@@ -36,14 +36,13 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     internal class StubIStarrable : QueryableValue<StubIStarrable>, IStarrable
     {
-        public StubIStarrable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIStarrable(Expression expression) : base(expression)
         {
         }
 
@@ -53,9 +52,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool ViewerHasStarred { get; }
 
-        internal static StubIStarrable Create(IQueryProvider provider, Expression expression)
+        internal static StubIStarrable Create(Expression expression)
         {
-            return new StubIStarrable(provider, expression);
+            return new StubIStarrable(expression);
         }
     }
 }

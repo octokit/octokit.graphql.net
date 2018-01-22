@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MilestoneEdge : QueryableValue<MilestoneEdge>
     {
-        public MilestoneEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MilestoneEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Milestone Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Milestone.Create);
 
-        internal static MilestoneEdge Create(IQueryProvider provider, Expression expression)
+        internal static MilestoneEdge Create(Expression expression)
         {
-            return new MilestoneEdge(provider, expression);
+            return new MilestoneEdge(expression);
         }
     }
 }

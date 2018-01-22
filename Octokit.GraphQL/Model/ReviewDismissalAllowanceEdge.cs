@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewDismissalAllowanceEdge : QueryableValue<ReviewDismissalAllowanceEdge>
     {
-        public ReviewDismissalAllowanceEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReviewDismissalAllowanceEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ReviewDismissalAllowance Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.ReviewDismissalAllowance.Create);
 
-        internal static ReviewDismissalAllowanceEdge Create(IQueryProvider provider, Expression expression)
+        internal static ReviewDismissalAllowanceEdge Create(Expression expression)
         {
-            return new ReviewDismissalAllowanceEdge(provider, expression);
+            return new ReviewDismissalAllowanceEdge(expression);
         }
     }
 }

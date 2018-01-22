@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestReview : QueryableValue<PullRequestReview>
     {
-        public PullRequestReview(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestReview(Expression expression) : base(expression)
         {
         }
 
@@ -144,9 +143,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool ViewerDidAuthor { get; }
 
-        internal static PullRequestReview Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestReview Create(Expression expression)
         {
-            return new PullRequestReview(provider, expression);
+            return new PullRequestReview(expression);
         }
     }
 }

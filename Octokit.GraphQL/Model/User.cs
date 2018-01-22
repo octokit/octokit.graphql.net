@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class User : QueryableValue<User>
     {
-        public User(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public User(Expression expression) : base(expression)
         {
         }
 
@@ -337,9 +336,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string WebsiteUrl { get; }
 
-        internal static User Create(IQueryProvider provider, Expression expression)
+        internal static User Create(Expression expression)
         {
-            return new User(provider, expression);
+            return new User(expression);
         }
     }
 }

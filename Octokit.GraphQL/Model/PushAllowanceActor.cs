@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PushAllowanceActor : QueryableValue<PushAllowanceActor>, IUnion
     {
-        public PushAllowanceActor(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PushAllowanceActor(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Team Team => this.CreateProperty(x => x.Team, Octokit.GraphQL.Model.Team.Create);
 
-        internal static PushAllowanceActor Create(IQueryProvider provider, Expression expression)
+        internal static PushAllowanceActor Create(Expression expression)
         {
-            return new PushAllowanceActor(provider, expression);
+            return new PushAllowanceActor(expression);
         }
     }
 }

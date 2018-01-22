@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddStarPayload : QueryableValue<AddStarPayload>
     {
-        public AddStarPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public AddStarPayload(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IStarrable Starrable => this.CreateProperty(x => x.Starrable, Octokit.GraphQL.Model.Internal.StubIStarrable.Create);
 
-        internal static AddStarPayload Create(IQueryProvider provider, Expression expression)
+        internal static AddStarPayload Create(Expression expression)
         {
-            return new AddStarPayload(provider, expression);
+            return new AddStarPayload(expression);
         }
     }
 }

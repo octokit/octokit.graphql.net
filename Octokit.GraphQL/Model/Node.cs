@@ -24,22 +24,21 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     internal class StubINode : QueryableValue<StubINode>, INode
     {
-        public StubINode(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubINode(Expression expression) : base(expression)
         {
         }
 
         public string Id { get; }
 
-        internal static StubINode Create(IQueryProvider provider, Expression expression)
+        internal static StubINode Create(Expression expression)
         {
-            return new StubINode(provider, expression);
+            return new StubINode(expression);
         }
     }
 }

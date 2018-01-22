@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestCommitConnection : QueryableValue<PullRequestCommitConnection>
     {
-        public PullRequestCommitConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestCommitConnection(Expression expression) : base(expression)
         {
         }
 
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static PullRequestCommitConnection Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestCommitConnection Create(Expression expression)
         {
-            return new PullRequestCommitConnection(provider, expression);
+            return new PullRequestCommitConnection(expression);
         }
     }
 }

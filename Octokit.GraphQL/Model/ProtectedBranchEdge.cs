@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProtectedBranchEdge : QueryableValue<ProtectedBranchEdge>
     {
-        public ProtectedBranchEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ProtectedBranchEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ProtectedBranch Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.ProtectedBranch.Create);
 
-        internal static ProtectedBranchEdge Create(IQueryProvider provider, Expression expression)
+        internal static ProtectedBranchEdge Create(Expression expression)
         {
-            return new ProtectedBranchEdge(provider, expression);
+            return new ProtectedBranchEdge(expression);
         }
     }
 }

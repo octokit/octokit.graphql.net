@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewRequestEdge : QueryableValue<ReviewRequestEdge>
     {
-        public ReviewRequestEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReviewRequestEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ReviewRequest Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.ReviewRequest.Create);
 
-        internal static ReviewRequestEdge Create(IQueryProvider provider, Expression expression)
+        internal static ReviewRequestEdge Create(Expression expression)
         {
-            return new ReviewRequestEdge(provider, expression);
+            return new ReviewRequestEdge(expression);
         }
     }
 }

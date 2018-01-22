@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProjectCardItem : QueryableValue<ProjectCardItem>, IUnion
     {
-        public ProjectCardItem(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ProjectCardItem(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static ProjectCardItem Create(IQueryProvider provider, Expression expression)
+        internal static ProjectCardItem Create(Expression expression)
         {
-            return new ProjectCardItem(provider, expression);
+            return new ProjectCardItem(expression);
         }
     }
 }

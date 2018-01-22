@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Tree : QueryableValue<Tree>
     {
-        public Tree(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Tree(Expression expression) : base(expression)
         {
         }
 
@@ -48,9 +47,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
-        internal static Tree Create(IQueryProvider provider, Expression expression)
+        internal static Tree Create(Expression expression)
         {
-            return new Tree(provider, expression);
+            return new Tree(expression);
         }
     }
 }

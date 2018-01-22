@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LanguageConnection : QueryableValue<LanguageConnection>
     {
-        public LanguageConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public LanguageConnection(Expression expression) : base(expression)
         {
         }
 
@@ -41,9 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalSize { get; }
 
-        internal static LanguageConnection Create(IQueryProvider provider, Expression expression)
+        internal static LanguageConnection Create(Expression expression)
         {
-            return new LanguageConnection(provider, expression);
+            return new LanguageConnection(expression);
         }
     }
 }

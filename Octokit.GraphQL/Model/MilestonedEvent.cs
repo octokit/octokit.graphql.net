@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MilestonedEvent : QueryableValue<MilestonedEvent>
     {
-        public MilestonedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MilestonedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -38,9 +37,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public MilestoneItem Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.MilestoneItem.Create);
 
-        internal static MilestonedEvent Create(IQueryProvider provider, Expression expression)
+        internal static MilestonedEvent Create(Expression expression)
         {
-            return new MilestonedEvent(provider, expression);
+            return new MilestonedEvent(expression);
         }
     }
 }

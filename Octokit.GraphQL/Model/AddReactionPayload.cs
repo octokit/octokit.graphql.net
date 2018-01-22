@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddReactionPayload : QueryableValue<AddReactionPayload>
     {
-        public AddReactionPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public AddReactionPayload(Expression expression) : base(expression)
         {
         }
 
@@ -31,9 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IReactable Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.Internal.StubIReactable.Create);
 
-        internal static AddReactionPayload Create(IQueryProvider provider, Expression expression)
+        internal static AddReactionPayload Create(Expression expression)
         {
-            return new AddReactionPayload(provider, expression);
+            return new AddReactionPayload(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReopenedEvent : QueryableValue<ReopenedEvent>
     {
-        public ReopenedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReopenedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -33,9 +32,9 @@ namespace Octokit.GraphQL.Model
 
         public string Id { get; }
 
-        internal static ReopenedEvent Create(IQueryProvider provider, Expression expression)
+        internal static ReopenedEvent Create(Expression expression)
         {
-            return new ReopenedEvent(provider, expression);
+            return new ReopenedEvent(expression);
         }
     }
 }

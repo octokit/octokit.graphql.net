@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Topic : QueryableValue<Topic>
     {
-        public Topic(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Topic(Expression expression) : base(expression)
         {
         }
 
@@ -29,9 +28,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IQueryableList<Topic> RelatedTopics => this.CreateProperty(x => x.RelatedTopics);
 
-        internal static Topic Create(IQueryProvider provider, Expression expression)
+        internal static Topic Create(Expression expression)
         {
-            return new Topic(provider, expression);
+            return new Topic(expression);
         }
     }
 }

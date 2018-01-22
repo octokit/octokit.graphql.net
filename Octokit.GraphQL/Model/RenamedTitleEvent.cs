@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RenamedTitleEvent : QueryableValue<RenamedTitleEvent>
     {
-        public RenamedTitleEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RenamedTitleEvent(Expression expression) : base(expression)
         {
         }
 
@@ -43,9 +42,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RenamedTitleSubject Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.RenamedTitleSubject.Create);
 
-        internal static RenamedTitleEvent Create(IQueryProvider provider, Expression expression)
+        internal static RenamedTitleEvent Create(Expression expression)
         {
-            return new RenamedTitleEvent(provider, expression);
+            return new RenamedTitleEvent(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MovedColumnsInProjectEvent : QueryableValue<MovedColumnsInProjectEvent>
     {
-        public MovedColumnsInProjectEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MovedColumnsInProjectEvent(Expression expression) : base(expression)
         {
         }
 
@@ -34,9 +33,9 @@ namespace Octokit.GraphQL.Model
 
         public string Id { get; }
 
-        internal static MovedColumnsInProjectEvent Create(IQueryProvider provider, Expression expression)
+        internal static MovedColumnsInProjectEvent Create(Expression expression)
         {
-            return new MovedColumnsInProjectEvent(provider, expression);
+            return new MovedColumnsInProjectEvent(expression);
         }
     }
 }

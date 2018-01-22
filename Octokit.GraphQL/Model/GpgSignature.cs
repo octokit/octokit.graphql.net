@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class GpgSignature : QueryableValue<GpgSignature>
     {
-        public GpgSignature(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public GpgSignature(Expression expression) : base(expression)
         {
         }
 
@@ -51,9 +50,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public GitSignatureState State { get; }
 
-        internal static GpgSignature Create(IQueryProvider provider, Expression expression)
+        internal static GpgSignature Create(Expression expression)
         {
-            return new GpgSignature(provider, expression);
+            return new GpgSignature(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MoveProjectColumnPayload : QueryableValue<MoveProjectColumnPayload>
     {
-        public MoveProjectColumnPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MoveProjectColumnPayload(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ProjectColumnEdge ColumnEdge => this.CreateProperty(x => x.ColumnEdge, Octokit.GraphQL.Model.ProjectColumnEdge.Create);
 
-        internal static MoveProjectColumnPayload Create(IQueryProvider provider, Expression expression)
+        internal static MoveProjectColumnPayload Create(Expression expression)
         {
-            return new MoveProjectColumnPayload(provider, expression);
+            return new MoveProjectColumnPayload(expression);
         }
     }
 }

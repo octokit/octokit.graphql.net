@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewDismissalAllowanceActor : QueryableValue<ReviewDismissalAllowanceActor>, IUnion
     {
-        public ReviewDismissalAllowanceActor(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReviewDismissalAllowanceActor(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Team Team => this.CreateProperty(x => x.Team, Octokit.GraphQL.Model.Team.Create);
 
-        internal static ReviewDismissalAllowanceActor Create(IQueryProvider provider, Expression expression)
+        internal static ReviewDismissalAllowanceActor Create(Expression expression)
         {
-            return new ReviewDismissalAllowanceActor(provider, expression);
+            return new ReviewDismissalAllowanceActor(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdatePullRequestReviewCommentPayload : QueryableValue<UpdatePullRequestReviewCommentPayload>
     {
-        public UpdatePullRequestReviewCommentPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public UpdatePullRequestReviewCommentPayload(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequestReviewComment PullRequestReviewComment => this.CreateProperty(x => x.PullRequestReviewComment, Octokit.GraphQL.Model.PullRequestReviewComment.Create);
 
-        internal static UpdatePullRequestReviewCommentPayload Create(IQueryProvider provider, Expression expression)
+        internal static UpdatePullRequestReviewCommentPayload Create(Expression expression)
         {
-            return new UpdatePullRequestReviewCommentPayload(provider, expression);
+            return new UpdatePullRequestReviewCommentPayload(expression);
         }
     }
 }

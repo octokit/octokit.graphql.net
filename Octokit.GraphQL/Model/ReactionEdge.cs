@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReactionEdge : QueryableValue<ReactionEdge>
     {
-        public ReactionEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReactionEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Reaction Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Reaction.Create);
 
-        internal static ReactionEdge Create(IQueryProvider provider, Expression expression)
+        internal static ReactionEdge Create(Expression expression)
         {
-            return new ReactionEdge(provider, expression);
+            return new ReactionEdge(expression);
         }
     }
 }

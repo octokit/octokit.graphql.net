@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class HeadRefRestoredEvent : QueryableValue<HeadRefRestoredEvent>
     {
-        public HeadRefRestoredEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public HeadRefRestoredEvent(Expression expression) : base(expression)
         {
         }
 
@@ -33,9 +32,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static HeadRefRestoredEvent Create(IQueryProvider provider, Expression expression)
+        internal static HeadRefRestoredEvent Create(Expression expression)
         {
-            return new HeadRefRestoredEvent(provider, expression);
+            return new HeadRefRestoredEvent(expression);
         }
     }
 }

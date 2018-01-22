@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewRequestRemovedEvent : QueryableValue<ReviewRequestRemovedEvent>
     {
-        public ReviewRequestRemovedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReviewRequestRemovedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -44,9 +43,9 @@ namespace Octokit.GraphQL.Model
         [Obsolete(@"Use ReviewRequestRemovedEvent.requestedReviewer instead.")]
         public User Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.User.Create);
 
-        internal static ReviewRequestRemovedEvent Create(IQueryProvider provider, Expression expression)
+        internal static ReviewRequestRemovedEvent Create(Expression expression)
         {
-            return new ReviewRequestRemovedEvent(provider, expression);
+            return new ReviewRequestRemovedEvent(expression);
         }
     }
 }

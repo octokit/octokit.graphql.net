@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueCommentEdge : QueryableValue<IssueCommentEdge>
     {
-        public IssueCommentEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public IssueCommentEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IssueComment Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.IssueComment.Create);
 
-        internal static IssueCommentEdge Create(IQueryProvider provider, Expression expression)
+        internal static IssueCommentEdge Create(Expression expression)
         {
-            return new IssueCommentEdge(provider, expression);
+            return new IssueCommentEdge(expression);
         }
     }
 }

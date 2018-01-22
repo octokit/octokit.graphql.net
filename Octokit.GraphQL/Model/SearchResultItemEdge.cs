@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SearchResultItemEdge : QueryableValue<SearchResultItemEdge>
     {
-        public SearchResultItemEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public SearchResultItemEdge(Expression expression) : base(expression)
         {
         }
 
@@ -31,9 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IQueryableList<TextMatch> TextMatches => this.CreateProperty(x => x.TextMatches);
 
-        internal static SearchResultItemEdge Create(IQueryProvider provider, Expression expression)
+        internal static SearchResultItemEdge Create(Expression expression)
         {
-            return new SearchResultItemEdge(provider, expression);
+            return new SearchResultItemEdge(expression);
         }
     }
 }

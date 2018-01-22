@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TextMatch : QueryableValue<TextMatch>
     {
-        public TextMatch(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public TextMatch(Expression expression) : base(expression)
         {
         }
 
@@ -31,9 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Property { get; }
 
-        internal static TextMatch Create(IQueryProvider provider, Expression expression)
+        internal static TextMatch Create(Expression expression)
         {
-            return new TextMatch(provider, expression);
+            return new TextMatch(expression);
         }
     }
 }

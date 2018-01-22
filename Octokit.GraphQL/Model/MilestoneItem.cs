@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MilestoneItem : QueryableValue<MilestoneItem>, IUnion
     {
-        public MilestoneItem(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MilestoneItem(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static MilestoneItem Create(IQueryProvider provider, Expression expression)
+        internal static MilestoneItem Create(Expression expression)
         {
-            return new MilestoneItem(provider, expression);
+            return new MilestoneItem(expression);
         }
     }
 }

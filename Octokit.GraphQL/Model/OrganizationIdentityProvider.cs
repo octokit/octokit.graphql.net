@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class OrganizationIdentityProvider : QueryableValue<OrganizationIdentityProvider>
     {
-        public OrganizationIdentityProvider(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public OrganizationIdentityProvider(Expression expression) : base(expression)
         {
         }
 
@@ -57,9 +56,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string SsoUrl { get; }
 
-        internal static OrganizationIdentityProvider Create(IQueryProvider provider, Expression expression)
+        internal static OrganizationIdentityProvider Create(Expression expression)
         {
-            return new OrganizationIdentityProvider(provider, expression);
+            return new OrganizationIdentityProvider(expression);
         }
     }
 }

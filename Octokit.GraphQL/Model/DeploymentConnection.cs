@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeploymentConnection : QueryableValue<DeploymentConnection>
     {
-        public DeploymentConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeploymentConnection(Expression expression) : base(expression)
         {
         }
 
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static DeploymentConnection Create(IQueryProvider provider, Expression expression)
+        internal static DeploymentConnection Create(Expression expression)
         {
-            return new DeploymentConnection(provider, expression);
+            return new DeploymentConnection(expression);
         }
     }
 }

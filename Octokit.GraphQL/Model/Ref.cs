@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Ref : QueryableValue<Ref>
     {
-        public Ref(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Ref(Expression expression) : base(expression)
         {
         }
 
@@ -52,9 +51,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IGitObject Target => this.CreateProperty(x => x.Target, Octokit.GraphQL.Model.Internal.StubIGitObject.Create);
 
-        internal static Ref Create(IQueryProvider provider, Expression expression)
+        internal static Ref Create(Expression expression)
         {
-            return new Ref(provider, expression);
+            return new Ref(expression);
         }
     }
 }

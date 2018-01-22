@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddCommentPayload : QueryableValue<AddCommentPayload>
     {
-        public AddCommentPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public AddCommentPayload(Expression expression) : base(expression)
         {
         }
 
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IssueTimelineItemEdge TimelineEdge => this.CreateProperty(x => x.TimelineEdge, Octokit.GraphQL.Model.IssueTimelineItemEdge.Create);
 
-        internal static AddCommentPayload Create(IQueryProvider provider, Expression expression)
+        internal static AddCommentPayload Create(Expression expression)
         {
-            return new AddCommentPayload(provider, expression);
+            return new AddCommentPayload(expression);
         }
     }
 }

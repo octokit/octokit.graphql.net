@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemovedFromProjectEvent : QueryableValue<RemovedFromProjectEvent>
     {
-        public RemovedFromProjectEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RemovedFromProjectEvent(Expression expression) : base(expression)
         {
         }
 
@@ -34,9 +33,9 @@ namespace Octokit.GraphQL.Model
 
         public string Id { get; }
 
-        internal static RemovedFromProjectEvent Create(IQueryProvider provider, Expression expression)
+        internal static RemovedFromProjectEvent Create(Expression expression)
         {
-            return new RemovedFromProjectEvent(provider, expression);
+            return new RemovedFromProjectEvent(expression);
         }
     }
 }

@@ -47,14 +47,13 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     internal class StubIReactable : QueryableValue<StubIReactable>, IReactable
     {
-        public StubIReactable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIReactable(Expression expression) : base(expression)
         {
         }
 
@@ -69,9 +68,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool ViewerCanReact { get; }
 
-        internal static StubIReactable Create(IQueryProvider provider, Expression expression)
+        internal static StubIReactable Create(Expression expression)
         {
-            return new StubIReactable(provider, expression);
+            return new StubIReactable(expression);
         }
     }
 }

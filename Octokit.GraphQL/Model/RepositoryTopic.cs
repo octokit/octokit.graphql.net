@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RepositoryTopic : QueryableValue<RepositoryTopic>
     {
-        public RepositoryTopic(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RepositoryTopic(Expression expression) : base(expression)
         {
         }
 
@@ -33,9 +32,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static RepositoryTopic Create(IQueryProvider provider, Expression expression)
+        internal static RepositoryTopic Create(Expression expression)
         {
-            return new RepositoryTopic(provider, expression);
+            return new RepositoryTopic(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class OrganizationEdge : QueryableValue<OrganizationEdge>
     {
-        public OrganizationEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public OrganizationEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Organization Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Organization.Create);
 
-        internal static OrganizationEdge Create(IQueryProvider provider, Expression expression)
+        internal static OrganizationEdge Create(Expression expression)
         {
-            return new OrganizationEdge(provider, expression);
+            return new OrganizationEdge(expression);
         }
     }
 }

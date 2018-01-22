@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ExternalIdentitySamlAttributes : QueryableValue<ExternalIdentitySamlAttributes>
     {
-        public ExternalIdentitySamlAttributes(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ExternalIdentitySamlAttributes(Expression expression) : base(expression)
         {
         }
 
@@ -21,9 +20,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string NameId { get; }
 
-        internal static ExternalIdentitySamlAttributes Create(IQueryProvider provider, Expression expression)
+        internal static ExternalIdentitySamlAttributes Create(Expression expression)
         {
-            return new ExternalIdentitySamlAttributes(provider, expression);
+            return new ExternalIdentitySamlAttributes(expression);
         }
     }
 }

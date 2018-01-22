@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestCommitEdge : QueryableValue<PullRequestCommitEdge>
     {
-        public PullRequestCommitEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestCommitEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequestCommit Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.PullRequestCommit.Create);
 
-        internal static PullRequestCommitEdge Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestCommitEdge Create(Expression expression)
         {
-            return new PullRequestCommitEdge(provider, expression);
+            return new PullRequestCommitEdge(expression);
         }
     }
 }

@@ -24,22 +24,21 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     internal class StubIUpdatable : QueryableValue<StubIUpdatable>, IUpdatable
     {
-        public StubIUpdatable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIUpdatable(Expression expression) : base(expression)
         {
         }
 
         public bool ViewerCanUpdate { get; }
 
-        internal static StubIUpdatable Create(IQueryProvider provider, Expression expression)
+        internal static StubIUpdatable Create(Expression expression)
         {
-            return new StubIUpdatable(provider, expression);
+            return new StubIUpdatable(expression);
         }
     }
 }

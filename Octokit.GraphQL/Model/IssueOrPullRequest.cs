@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueOrPullRequest : QueryableValue<IssueOrPullRequest>, IUnion
     {
-        public IssueOrPullRequest(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public IssueOrPullRequest(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static IssueOrPullRequest Create(IQueryProvider provider, Expression expression)
+        internal static IssueOrPullRequest Create(Expression expression)
         {
-            return new IssueOrPullRequest(provider, expression);
+            return new IssueOrPullRequest(expression);
         }
     }
 }

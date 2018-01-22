@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeploymentStatusEdge : QueryableValue<DeploymentStatusEdge>
     {
-        public DeploymentStatusEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeploymentStatusEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DeploymentStatus Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.DeploymentStatus.Create);
 
-        internal static DeploymentStatusEdge Create(IQueryProvider provider, Expression expression)
+        internal static DeploymentStatusEdge Create(Expression expression)
         {
-            return new DeploymentStatusEdge(provider, expression);
+            return new DeploymentStatusEdge(expression);
         }
     }
 }

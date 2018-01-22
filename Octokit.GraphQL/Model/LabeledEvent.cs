@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LabeledEvent : QueryableValue<LabeledEvent>
     {
-        public LabeledEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public LabeledEvent(Expression expression) : base(expression)
         {
         }
 
@@ -38,9 +37,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ILabelable Labelable => this.CreateProperty(x => x.Labelable, Octokit.GraphQL.Model.Internal.StubILabelable.Create);
 
-        internal static LabeledEvent Create(IQueryProvider provider, Expression expression)
+        internal static LabeledEvent Create(Expression expression)
         {
-            return new LabeledEvent(provider, expression);
+            return new LabeledEvent(expression);
         }
     }
 }

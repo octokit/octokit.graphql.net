@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Status : QueryableValue<Status>
     {
-        public Status(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Status(Expression expression) : base(expression)
         {
         }
 
@@ -39,9 +38,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public StatusState State { get; }
 
-        internal static Status Create(IQueryProvider provider, Expression expression)
+        internal static Status Create(Expression expression)
         {
-            return new Status(provider, expression);
+            return new Status(expression);
         }
     }
 }

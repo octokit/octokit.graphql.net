@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Tag : QueryableValue<Tag>
     {
-        public Tag(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Tag(Expression expression) : base(expression)
         {
         }
 
@@ -63,9 +62,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IGitObject Target => this.CreateProperty(x => x.Target, Octokit.GraphQL.Model.Internal.StubIGitObject.Create);
 
-        internal static Tag Create(IQueryProvider provider, Expression expression)
+        internal static Tag Create(Expression expression)
         {
-            return new Tag(provider, expression);
+            return new Tag(expression);
         }
     }
 }

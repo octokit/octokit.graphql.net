@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CrossReferencedEvent : QueryableValue<CrossReferencedEvent>
     {
-        public CrossReferencedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public CrossReferencedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -63,9 +62,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool WillCloseTarget { get; }
 
-        internal static CrossReferencedEvent Create(IQueryProvider provider, Expression expression)
+        internal static CrossReferencedEvent Create(Expression expression)
         {
-            return new CrossReferencedEvent(provider, expression);
+            return new CrossReferencedEvent(expression);
         }
     }
 }

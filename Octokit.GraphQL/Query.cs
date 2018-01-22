@@ -2,7 +2,6 @@ namespace Octokit.GraphQL
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Model;
     using Octokit.GraphQL.Core;
@@ -13,11 +12,11 @@ namespace Octokit.GraphQL
     /// </summary>
     public class Query : QueryableValue<Query>, IQuery
     {
-        public Query() : base(new QueryProvider())
+        public Query() : base(null)
         {
         }
 
-        internal Query(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Query(Expression expression) : base(expression)
         {
         }
 
@@ -159,9 +158,9 @@ namespace Octokit.GraphQL
         /// </summary>
         public User Viewer => this.CreateProperty(x => x.Viewer, Octokit.GraphQL.Model.User.Create);
 
-        internal static Query Create(IQueryProvider provider, Expression expression)
+        internal static Query Create(Expression expression)
         {
-            return new Query(provider, expression);
+            return new Query(expression);
         }
     }
 }

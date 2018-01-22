@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SmimeSignature : QueryableValue<SmimeSignature>
     {
-        public SmimeSignature(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public SmimeSignature(Expression expression) : base(expression)
         {
         }
 
@@ -46,9 +45,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public GitSignatureState State { get; }
 
-        internal static SmimeSignature Create(IQueryProvider provider, Expression expression)
+        internal static SmimeSignature Create(Expression expression)
         {
-            return new SmimeSignature(provider, expression);
+            return new SmimeSignature(expression);
         }
     }
 }

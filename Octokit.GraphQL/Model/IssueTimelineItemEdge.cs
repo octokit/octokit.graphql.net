@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueTimelineItemEdge : QueryableValue<IssueTimelineItemEdge>
     {
-        public IssueTimelineItemEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public IssueTimelineItemEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IssueTimelineItem Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.IssueTimelineItem.Create);
 
-        internal static IssueTimelineItemEdge Create(IQueryProvider provider, Expression expression)
+        internal static IssueTimelineItemEdge Create(Expression expression)
         {
-            return new IssueTimelineItemEdge(provider, expression);
+            return new IssueTimelineItemEdge(expression);
         }
     }
 }

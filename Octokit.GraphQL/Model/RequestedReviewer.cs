@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RequestedReviewer : QueryableValue<RequestedReviewer>, IUnion
     {
-        public RequestedReviewer(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RequestedReviewer(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Team Team => this.CreateProperty(x => x.Team, Octokit.GraphQL.Model.Team.Create);
 
-        internal static RequestedReviewer Create(IQueryProvider provider, Expression expression)
+        internal static RequestedReviewer Create(Expression expression)
         {
-            return new RequestedReviewer(provider, expression);
+            return new RequestedReviewer(expression);
         }
     }
 }

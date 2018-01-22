@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LockLockablePayload : QueryableValue<LockLockablePayload>
     {
-        public LockLockablePayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public LockLockablePayload(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ILockable LockedRecord => this.CreateProperty(x => x.LockedRecord, Octokit.GraphQL.Model.Internal.StubILockable.Create);
 
-        internal static LockLockablePayload Create(IQueryProvider provider, Expression expression)
+        internal static LockLockablePayload Create(Expression expression)
         {
-            return new LockLockablePayload(provider, expression);
+            return new LockLockablePayload(expression);
         }
     }
 }

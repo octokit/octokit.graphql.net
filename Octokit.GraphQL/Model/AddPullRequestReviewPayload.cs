@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddPullRequestReviewPayload : QueryableValue<AddPullRequestReviewPayload>
     {
-        public AddPullRequestReviewPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public AddPullRequestReviewPayload(Expression expression) : base(expression)
         {
         }
 
@@ -31,9 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequestReviewEdge ReviewEdge => this.CreateProperty(x => x.ReviewEdge, Octokit.GraphQL.Model.PullRequestReviewEdge.Create);
 
-        internal static AddPullRequestReviewPayload Create(IQueryProvider provider, Expression expression)
+        internal static AddPullRequestReviewPayload Create(Expression expression)
         {
-            return new AddPullRequestReviewPayload(provider, expression);
+            return new AddPullRequestReviewPayload(expression);
         }
     }
 }

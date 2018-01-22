@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReleaseEdge : QueryableValue<ReleaseEdge>
     {
-        public ReleaseEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReleaseEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Release Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Release.Create);
 
-        internal static ReleaseEdge Create(IQueryProvider provider, Expression expression)
+        internal static ReleaseEdge Create(Expression expression)
         {
-            return new ReleaseEdge(provider, expression);
+            return new ReleaseEdge(expression);
         }
     }
 }

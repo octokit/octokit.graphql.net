@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Issue : QueryableValue<Issue>
     {
-        public Issue(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Issue(Expression expression) : base(expression)
         {
         }
 
@@ -236,9 +235,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public SubscriptionState ViewerSubscription { get; }
 
-        internal static Issue Create(IQueryProvider provider, Expression expression)
+        internal static Issue Create(Expression expression)
         {
-            return new Issue(provider, expression);
+            return new Issue(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeleteProjectCardPayload : QueryableValue<DeleteProjectCardPayload>
     {
-        public DeleteProjectCardPayload(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeleteProjectCardPayload(Expression expression) : base(expression)
         {
         }
 
@@ -31,9 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DeletedCardId { get; }
 
-        internal static DeleteProjectCardPayload Create(IQueryProvider provider, Expression expression)
+        internal static DeleteProjectCardPayload Create(Expression expression)
         {
-            return new DeleteProjectCardPayload(provider, expression);
+            return new DeleteProjectCardPayload(expression);
         }
     }
 }

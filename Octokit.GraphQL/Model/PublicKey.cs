@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -12,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PublicKey : QueryableValue<PublicKey>
     {
-        public PublicKey(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PublicKey(Expression expression) : base(expression)
         {
         }
 
@@ -23,9 +22,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Key { get; }
 
-        internal static PublicKey Create(IQueryProvider provider, Expression expression)
+        internal static PublicKey Create(Expression expression)
         {
-            return new PublicKey(provider, expression);
+            return new PublicKey(expression);
         }
     }
 }
