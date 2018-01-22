@@ -26,19 +26,22 @@ namespace Octokit.GraphQL.UnitTests
                     Owner = x.Owner.Select(o => new
                     {
                         o.Login
-                    }),
+                    }).Single(),
                     x.IsFork,
                     x.IsPrivate,
                 });
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                ExpressionMethods.SelectEntity(
+                Rewritten.List.Select(
                     data["data"]["repositoryOwner"]["repository"],
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
                         Name = x["name"].ToObject<string>(),
-                        Owner = ExpressionMethods.SelectEntity(x["owner"], o => new { Login = o["login"].ToObject<string>() }),
+                        Owner = Rewritten.Value.Single(
+                            Rewritten.Value.Select(
+                                x["owner"],
+                                o => new { Login = o["login"].ToObject<string>() })),
                         IsFork = x["isFork"].ToObject<string>(),
                         IsPrivate = x["isPrivate"].ToObject<string>(),
                     });
@@ -62,21 +65,24 @@ namespace Octokit.GraphQL.UnitTests
                     Owner = x.Owner.Select(o => new
                     {
                         o.Login
-                    }),
+                    }).Single(),
                     x.IsFork,
                     x.IsPrivate,
                 });
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                ExpressionMethods.Select(
-                    ExpressionMethods.SelectEntity(
+                Rewritten.List.Select(
+                    Rewritten.List.Select(
                         data["data"]["repositoryOwner"]["repositories"]["edges"],
                         x => x["node"]),
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
                         Name = x["name"].ToObject<string>(),
-                        Owner = ExpressionMethods.SelectEntity(x["owner"], o => new { Login = o["login"].ToObject<string>() }),
+                        Owner = Rewritten.Value.Single(
+                            Rewritten.Value.Select(
+                                x["owner"],
+                                o => new { Login = o["login"].ToObject<string>() })),
                         IsFork = x["isFork"].ToObject<string>(),
                         IsPrivate = x["isPrivate"].ToObject<string>(),
                     });
