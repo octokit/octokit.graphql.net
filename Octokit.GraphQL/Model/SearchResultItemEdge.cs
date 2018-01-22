@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class SearchResultItemEdge : QueryEntity
+    public class SearchResultItemEdge : QueryableValue<SearchResultItemEdge>
     {
         public SearchResultItemEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Text matches on the result found.
         /// </summary>
-        public IQueryable<TextMatch> TextMatches => this.CreateProperty(x => x.TextMatches);
+        public IQueryableList<TextMatch> TextMatches => this.CreateProperty(x => x.TextMatches);
 
         internal static SearchResultItemEdge Create(IQueryProvider provider, Expression expression)
         {

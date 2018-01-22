@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a commit status.
     /// </summary>
-    public class Status : QueryEntity
+    public class Status : QueryableValue<Status>
     {
         public Status(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The individual status contexts for this commit.
         /// </summary>
-        public IQueryable<StatusContext> Contexts => this.CreateProperty(x => x.Contexts);
+        public IQueryableList<StatusContext> Contexts => this.CreateProperty(x => x.Contexts);
 
         public string Id { get; }
 

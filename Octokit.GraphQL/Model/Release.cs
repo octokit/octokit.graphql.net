@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A release contains the content for a release.
     /// </summary>
-    public class Release : QueryEntity
+    public class Release : QueryableValue<Release>
     {
         public Release(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

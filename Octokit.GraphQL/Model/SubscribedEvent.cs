@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'subscribed' event on a given `Subscribable`.
     /// </summary>
-    public class SubscribedEvent : QueryEntity
+    public class SubscribedEvent : QueryableValue<SubscribedEvent>
     {
         public SubscribedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

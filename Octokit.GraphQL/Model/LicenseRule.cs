@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Describes a License's conditions, permissions, and limitations
     /// </summary>
-    public class LicenseRule : QueryEntity
+    public class LicenseRule : QueryableValue<LicenseRule>
     {
         public LicenseRule(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

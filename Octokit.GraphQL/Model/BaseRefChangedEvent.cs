@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'base_ref_changed' event on a given issue or pull request.
     /// </summary>
-    public class BaseRefChangedEvent : QueryEntity
+    public class BaseRefChangedEvent : QueryableValue<BaseRefChangedEvent>
     {
         public BaseRefChangedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

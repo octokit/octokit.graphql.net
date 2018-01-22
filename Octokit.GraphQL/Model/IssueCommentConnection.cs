@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for IssueComment.
     /// </summary>
-    public class IssueCommentConnection : QueryEntity
+    public class IssueCommentConnection : QueryableValue<IssueCommentConnection>
     {
         public IssueCommentConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<IssueCommentEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<IssueCommentEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<IssueComment> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<IssueComment> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

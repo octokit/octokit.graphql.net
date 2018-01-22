@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The results of a search.
     /// </summary>
-    public class SearchResultItem : QueryEntity, IUnion
+    public class SearchResultItem : QueryableValue<SearchResultItem>, IUnion
     {
         public SearchResultItem(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

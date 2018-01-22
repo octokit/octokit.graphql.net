@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequestTimelineItem.
     /// </summary>
-    public class PullRequestTimelineConnection : QueryEntity
+    public class PullRequestTimelineConnection : QueryableValue<PullRequestTimelineConnection>
     {
         public PullRequestTimelineConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<PullRequestTimelineItemEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PullRequestTimelineItemEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<PullRequestTimelineItem> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PullRequestTimelineItem> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

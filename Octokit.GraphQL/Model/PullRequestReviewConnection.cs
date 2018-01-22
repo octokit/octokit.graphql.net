@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequestReview.
     /// </summary>
-    public class PullRequestReviewConnection : QueryEntity
+    public class PullRequestReviewConnection : QueryableValue<PullRequestReviewConnection>
     {
         public PullRequestReviewConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<PullRequestReviewEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PullRequestReviewEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<PullRequestReview> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PullRequestReview> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of projects associated with the owner.
     /// </summary>
-    public class ProjectConnection : QueryEntity
+    public class ProjectConnection : QueryableValue<ProjectConnection>
     {
         public ProjectConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ProjectEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ProjectEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Project> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Project> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

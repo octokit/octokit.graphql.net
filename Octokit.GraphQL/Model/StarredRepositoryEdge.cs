@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a starred repository.
     /// </summary>
-    public class StarredRepositoryEdge : QueryEntity
+    public class StarredRepositoryEdge : QueryableValue<StarredRepositoryEdge>
     {
         public StarredRepositoryEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

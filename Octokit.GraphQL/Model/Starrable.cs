@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Things that can be starred.
     /// </summary>
-    public interface IStarrable : IQueryEntity
+    public interface IStarrable : IQueryableValue<IStarrable>
     {
         string Id { get; }
 
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIStarrable : QueryEntity, IStarrable
+    internal class StubIStarrable : QueryableValue<StubIStarrable>, IStarrable
     {
         public StubIStarrable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

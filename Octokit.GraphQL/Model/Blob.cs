@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git blob.
     /// </summary>
-    public class Blob : QueryEntity
+    public class Blob : QueryableValue<Blob>
     {
         public Blob(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

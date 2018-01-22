@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An external identity provisioned by SAML SSO or SCIM.
     /// </summary>
-    public class ExternalIdentity : QueryEntity
+    public class ExternalIdentity : QueryableValue<ExternalIdentity>
     {
         public ExternalIdentity(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

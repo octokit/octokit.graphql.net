@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An account on GitHub, with one or more owners, that has repositories, members and teams.
     /// </summary>
-    public class Organization : QueryEntity
+    public class Organization : QueryableValue<Organization>
     {
         public Organization(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

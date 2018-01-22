@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a mention made by one issue or pull request to another.
     /// </summary>
-    public class CrossReferencedEvent : QueryEntity
+    public class CrossReferencedEvent : QueryableValue<CrossReferencedEvent>
     {
         public CrossReferencedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

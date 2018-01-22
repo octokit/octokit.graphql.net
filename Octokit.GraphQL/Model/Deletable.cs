@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can be deleted.
     /// </summary>
-    public interface IDeletable : IQueryEntity
+    public interface IDeletable : IQueryableValue<IDeletable>
     {
         /// <summary>
         /// Check if the current viewer can delete this object.
@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIDeletable : QueryEntity, IDeletable
+    internal class StubIDeletable : QueryableValue<StubIDeletable>, IDeletable
     {
         public StubIDeletable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

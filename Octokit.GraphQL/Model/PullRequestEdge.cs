@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class PullRequestEdge : QueryEntity
+    public class PullRequestEdge : QueryableValue<PullRequestEdge>
     {
         public PullRequestEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

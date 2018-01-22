@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Information about a signature (GPG or S/MIME) on a Commit or Tag.
     /// </summary>
-    public interface IGitSignature : IQueryEntity
+    public interface IGitSignature : IQueryableValue<IGitSignature>
     {
         /// <summary>
         /// Email used to sign this object.
@@ -54,7 +54,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIGitSignature : QueryEntity, IGitSignature
+    internal class StubIGitSignature : QueryableValue<StubIGitSignature>, IGitSignature
     {
         public StubIGitSignature(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

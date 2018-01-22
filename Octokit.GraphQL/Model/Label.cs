@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A label for categorizing Issues or Milestones with a given Repository.
     /// </summary>
-    public class Label : QueryEntity
+    public class Label : QueryableValue<Label>
     {
         public Label(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

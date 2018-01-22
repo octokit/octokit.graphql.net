@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an unknown signature on a Commit or Tag.
     /// </summary>
-    public class UnknownSignature : QueryEntity
+    public class UnknownSignature : QueryableValue<UnknownSignature>
     {
         public UnknownSignature(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

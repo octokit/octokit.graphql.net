@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An Invitation for a user to an organization.
     /// </summary>
-    public class OrganizationInvitation : QueryEntity
+    public class OrganizationInvitation : QueryableValue<OrganizationInvitation>
     {
         public OrganizationInvitation(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

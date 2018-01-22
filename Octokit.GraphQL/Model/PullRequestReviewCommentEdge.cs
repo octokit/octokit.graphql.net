@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class PullRequestReviewCommentEdge : QueryEntity
+    public class PullRequestReviewCommentEdge : QueryableValue<PullRequestReviewCommentEdge>
     {
         public PullRequestReviewCommentEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -1,7 +1,7 @@
 namespace Octokit.GraphQL.Model
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Specifies a review comment to be left with a Pull Request Review.

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A repository-topic connects a repository to a topic.
     /// </summary>
-    public class RepositoryTopic : QueryEntity
+    public class RepositoryTopic : QueryableValue<RepositoryTopic>
     {
         public RepositoryTopic(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

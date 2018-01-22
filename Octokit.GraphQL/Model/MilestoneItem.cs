@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Types that can be inside a Milestone.
     /// </summary>
-    public class MilestoneItem : QueryEntity, IUnion
+    public class MilestoneItem : QueryableValue<MilestoneItem>, IUnion
     {
         public MilestoneItem(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

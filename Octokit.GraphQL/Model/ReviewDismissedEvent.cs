@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'review_dismissed' event on a given issue or pull request.
     /// </summary>
-    public class ReviewDismissedEvent : QueryEntity
+    public class ReviewDismissedEvent : QueryableValue<ReviewDismissedEvent>
     {
         public ReviewDismissedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

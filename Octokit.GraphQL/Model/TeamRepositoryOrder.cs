@@ -1,7 +1,7 @@
 namespace Octokit.GraphQL.Model
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Ordering options for team repository connections

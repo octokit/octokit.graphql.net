@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be locked.
     /// </summary>
-    public interface ILockable : IQueryEntity
+    public interface ILockable : IQueryableValue<ILockable>
     {
         /// <summary>
         /// Reason that the conversation was locked.
@@ -34,7 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubILockable : QueryEntity, ILockable
+    internal class StubILockable : QueryableValue<StubILockable>, ILockable
     {
         public StubILockable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

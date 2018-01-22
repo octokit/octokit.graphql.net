@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'unlocked' event on a given issue or pull request.
     /// </summary>
-    public class UnlockedEvent : QueryEntity
+    public class UnlockedEvent : QueryableValue<UnlockedEvent>
     {
         public UnlockedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

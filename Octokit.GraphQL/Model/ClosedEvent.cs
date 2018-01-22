@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'closed' event on any `Closable`.
     /// </summary>
-    public class ClosedEvent : QueryEntity
+    public class ClosedEvent : QueryableValue<ClosedEvent>
     {
         public ClosedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

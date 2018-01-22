@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git commit part of a pull request.
     /// </summary>
-    public class PullRequestCommit : QueryEntity
+    public class PullRequestCommit : QueryableValue<PullRequestCommit>
     {
         public PullRequestCommit(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Topic.
     /// </summary>
-    public class TopicConnection : QueryEntity
+    public class TopicConnection : QueryableValue<TopicConnection>
     {
         public TopicConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<TopicEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<TopicEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Topic> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Topic> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A user is an individual's account on GitHub that owns repositories and can make new content.
     /// </summary>
-    public class User : QueryEntity
+    public class User : QueryableValue<User>
     {
         public User(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

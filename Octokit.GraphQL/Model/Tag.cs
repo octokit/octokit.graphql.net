@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git tag.
     /// </summary>
-    public class Tag : QueryEntity
+    public class Tag : QueryableValue<Tag>
     {
         public Tag(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

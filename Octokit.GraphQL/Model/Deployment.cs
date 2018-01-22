@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents triggered deployment instance.
     /// </summary>
-    public class Deployment : QueryEntity
+    public class Deployment : QueryableValue<Deployment>
     {
         public Deployment(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

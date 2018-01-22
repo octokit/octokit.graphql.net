@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of languages associated with the parent.
     /// </summary>
-    public class LanguageConnection : QueryEntity
+    public class LanguageConnection : QueryableValue<LanguageConnection>
     {
         public LanguageConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<LanguageEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<LanguageEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Language> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Language> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

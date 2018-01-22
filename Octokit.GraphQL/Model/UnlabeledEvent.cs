@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'unlabeled' event on a given issue or pull request.
     /// </summary>
-    public class UnlabeledEvent : QueryEntity
+    public class UnlabeledEvent : QueryableValue<UnlabeledEvent>
     {
         public UnlabeledEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

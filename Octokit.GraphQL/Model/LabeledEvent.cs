@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'labeled' event on a given issue or pull request.
     /// </summary>
-    public class LabeledEvent : QueryEntity
+    public class LabeledEvent : QueryableValue<LabeledEvent>
     {
         public LabeledEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

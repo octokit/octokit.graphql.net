@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be closed
     /// </summary>
-    public interface IClosable : IQueryEntity
+    public interface IClosable : IQueryableValue<IClosable>
     {
         /// <summary>
         /// `true` if the object is closed (definition of closed may depend on type)
@@ -34,7 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIClosable : QueryEntity, IClosable
+    internal class StubIClosable : QueryableValue<StubIClosable>, IClosable
     {
         public StubIClosable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

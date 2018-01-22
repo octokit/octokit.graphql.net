@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A team or user who has the ability to push to a protected branch.
     /// </summary>
-    public class PushAllowance : QueryEntity
+    public class PushAllowance : QueryableValue<PushAllowance>
     {
         public PushAllowance(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

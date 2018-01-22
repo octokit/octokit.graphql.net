@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A threaded list of comments for a given pull request.
     /// </summary>
-    public class PullRequestReviewThread : QueryEntity
+    public class PullRequestReviewThread : QueryableValue<PullRequestReviewThread>
     {
         public PullRequestReviewThread(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git blame.
     /// </summary>
-    public class Blame : QueryEntity
+    public class Blame : QueryableValue<Blame>
     {
         public Blame(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The list of ranges from a Git blame.
         /// </summary>
-        public IQueryable<BlameRange> Ranges => this.CreateProperty(x => x.Ranges);
+        public IQueryableList<BlameRange> Ranges => this.CreateProperty(x => x.Ranges);
 
         internal static Blame Create(IQueryProvider provider, Expression expression)
         {

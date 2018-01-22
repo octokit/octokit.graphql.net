@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can have users assigned to it.
     /// </summary>
-    public interface IAssignable : IQueryEntity
+    public interface IAssignable : IQueryableValue<IAssignable>
     {
         /// <summary>
         /// A list of Users assigned to this object.
@@ -33,7 +33,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIAssignable : QueryEntity, IAssignable
+    internal class StubIAssignable : QueryableValue<StubIAssignable>, IAssignable
     {
         public StubIAssignable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

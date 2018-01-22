@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object which has a renamable title
     /// </summary>
-    public class RenamedTitleSubject : QueryEntity, IUnion
+    public class RenamedTitleSubject : QueryableValue<RenamedTitleSubject>, IUnion
     {
         public RenamedTitleSubject(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

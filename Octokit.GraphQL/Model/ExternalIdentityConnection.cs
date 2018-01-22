@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for ExternalIdentity.
     /// </summary>
-    public class ExternalIdentityConnection : QueryEntity
+    public class ExternalIdentityConnection : QueryableValue<ExternalIdentityConnection>
     {
         public ExternalIdentityConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ExternalIdentityEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ExternalIdentityEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<ExternalIdentity> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<ExternalIdentity> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class ProtectedBranchEdge : QueryEntity
+    public class ProtectedBranchEdge : QueryableValue<ProtectedBranchEdge>
     {
         public ProtectedBranchEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

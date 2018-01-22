@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// SCIM attributes for the External Identity
     /// </summary>
-    public class ExternalIdentityScimAttributes : QueryEntity
+    public class ExternalIdentityScimAttributes : QueryableValue<ExternalIdentityScimAttributes>
     {
         public ExternalIdentityScimAttributes(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git reference.
     /// </summary>
-    public class Ref : QueryEntity
+    public class Ref : QueryableValue<Ref>
     {
         public Ref(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

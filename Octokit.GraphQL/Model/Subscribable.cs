@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can be subscribed to for web and email notifications.
     /// </summary>
-    public interface ISubscribable : IQueryEntity
+    public interface ISubscribable : IQueryableValue<ISubscribable>
     {
         string Id { get; }
 
@@ -36,7 +36,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubISubscribable : QueryEntity, ISubscribable
+    internal class StubISubscribable : QueryableValue<StubISubscribable>, ISubscribable
     {
         public StubISubscribable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

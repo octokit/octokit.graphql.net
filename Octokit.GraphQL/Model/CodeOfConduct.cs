@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The Code of Conduct for a repository
     /// </summary>
-    public class CodeOfConduct : QueryEntity
+    public class CodeOfConduct : QueryableValue<CodeOfConduct>
     {
         public CodeOfConduct(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

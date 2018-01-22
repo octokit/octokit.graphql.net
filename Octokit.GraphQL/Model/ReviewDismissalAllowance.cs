@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A team or user who has the ability to dismiss a review on a protected branch.
     /// </summary>
-    public class ReviewDismissalAllowance : QueryEntity
+    public class ReviewDismissalAllowance : QueryableValue<ReviewDismissalAllowance>
     {
         public ReviewDismissalAllowance(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

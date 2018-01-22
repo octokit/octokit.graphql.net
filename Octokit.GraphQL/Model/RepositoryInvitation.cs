@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An invitation for a user to be added to a repository.
     /// </summary>
-    public class RepositoryInvitation : QueryEntity
+    public class RepositoryInvitation : QueryableValue<RepositoryInvitation>
     {
         public RepositoryInvitation(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

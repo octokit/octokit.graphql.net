@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for User.
     /// </summary>
-    public class ReactingUserConnection : QueryEntity
+    public class ReactingUserConnection : QueryableValue<ReactingUserConnection>
     {
         public ReactingUserConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ReactingUserEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ReactingUserEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<User> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<User> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

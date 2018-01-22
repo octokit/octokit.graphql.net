@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Gist.
     /// </summary>
-    public class GistConnection : QueryEntity
+    public class GistConnection : QueryableValue<GistConnection>
     {
         public GistConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<GistEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<GistEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Gist> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Gist> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

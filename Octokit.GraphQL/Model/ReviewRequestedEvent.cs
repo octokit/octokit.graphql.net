@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'review_requested' event on a given pull request.
     /// </summary>
-    public class ReviewRequestedEvent : QueryEntity
+    public class ReviewRequestedEvent : QueryableValue<ReviewRequestedEvent>
     {
         public ReviewRequestedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for DeploymentStatus.
     /// </summary>
-    public class DeploymentStatusConnection : QueryEntity
+    public class DeploymentStatusConnection : QueryableValue<DeploymentStatusConnection>
     {
         public DeploymentStatusConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<DeploymentStatusEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<DeploymentStatusEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<DeploymentStatus> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<DeploymentStatus> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

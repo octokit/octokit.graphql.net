@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'demilestoned' event on a given issue or pull request.
     /// </summary>
-    public class DemilestonedEvent : QueryEntity
+    public class DemilestonedEvent : QueryableValue<DemilestonedEvent>
     {
         public DemilestonedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

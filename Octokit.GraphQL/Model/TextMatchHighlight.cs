@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a single highlight in a search result match.
     /// </summary>
-    public class TextMatchHighlight : QueryEntity
+    public class TextMatchHighlight : QueryableValue<TextMatchHighlight>
     {
         public TextMatchHighlight(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

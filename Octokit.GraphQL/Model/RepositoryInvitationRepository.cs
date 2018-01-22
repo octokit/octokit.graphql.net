@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A subset of repository info shared with potential collaborators.
     /// </summary>
-    public class RepositoryInvitationRepository : QueryEntity
+    public class RepositoryInvitationRepository : QueryableValue<RepositoryInvitationRepository>
     {
         public RepositoryInvitationRepository(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

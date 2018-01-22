@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequest.
     /// </summary>
-    public class PullRequestConnection : QueryEntity
+    public class PullRequestConnection : QueryableValue<PullRequestConnection>
     {
         public PullRequestConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<PullRequestEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PullRequestEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<PullRequest> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PullRequest> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

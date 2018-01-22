@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A thread of comments on a commit.
     /// </summary>
-    public class CommitCommentThread : QueryEntity
+    public class CommitCommentThread : QueryableValue<CommitCommentThread>
     {
         public CommitCommentThread(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

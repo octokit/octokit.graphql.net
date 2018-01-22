@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class PublicKeyEdge : QueryEntity
+    public class PublicKeyEdge : QueryableValue<PublicKeyEdge>
     {
         public PublicKeyEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A repository contains the content for a project.
     /// </summary>
-    public class Repository : QueryEntity
+    public class Repository : QueryableValue<Repository>
     {
         public Repository(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -66,7 +66,7 @@ namespace Octokit.GraphQL.Model
         public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Model.Ref.Create);
 
         /// <summary>
-        /// A list of protected branches that are on this repository.
+        /// A list of deploy keys that are on this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>

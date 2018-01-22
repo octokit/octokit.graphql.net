@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A repository pull request.
     /// </summary>
-    public class PullRequest : QueryEntity
+    public class PullRequest : QueryableValue<PullRequest>
     {
         public PullRequest(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -54,6 +54,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the name of the base Ref associated with the pull request, even if the ref has been deleted.
         /// </summary>
         public string BaseRefName { get; }
+
+        /// <summary>
+        /// Identifies the oid of the base ref associated with the pull request, even if the ref has been deleted.
+        /// </summary>
+        public string BaseRefOid { get; }
 
         /// <summary>
         /// Identifies the body of the pull request.
@@ -138,6 +143,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the name of the head Ref associated with the pull request, even if the ref has been deleted.
         /// </summary>
         public string HeadRefName { get; }
+
+        /// <summary>
+        /// Identifies the oid of the head ref associated with the pull request, even if the ref has been deleted.
+        /// </summary>
+        public string HeadRefOid { get; }
 
         /// <summary>
         /// The repository associated with this pull request's head Ref.
@@ -236,7 +246,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -297,7 +307,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reviewer suggestions based on commit history and past review comments.
         /// </summary>
-        public IQueryable<SuggestedReviewer> SuggestedReviewers => this.CreateProperty(x => x.SuggestedReviewers);
+        public IQueryableList<SuggestedReviewer> SuggestedReviewers => this.CreateProperty(x => x.SuggestedReviewers);
 
         /// <summary>
         /// A list of events, comments, commits, etc. associated with the pull request.
@@ -343,7 +353,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.

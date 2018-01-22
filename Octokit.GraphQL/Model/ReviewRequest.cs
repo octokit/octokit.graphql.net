@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A request for a user to review a pull request.
     /// </summary>
-    public class ReviewRequest : QueryEntity
+    public class ReviewRequest : QueryableValue<ReviewRequest>
     {
         public ReviewRequest(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

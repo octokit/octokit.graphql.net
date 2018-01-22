@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequestCommit.
     /// </summary>
-    public class PullRequestCommitConnection : QueryEntity
+    public class PullRequestCommitConnection : QueryableValue<PullRequestCommitConnection>
     {
         public PullRequestCommitConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<PullRequestCommitEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PullRequestCommitEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<PullRequestCommit> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PullRequestCommit> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

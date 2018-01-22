@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A user's public key.
     /// </summary>
-    public class PublicKey : QueryEntity
+    public class PublicKey : QueryableValue<PublicKey>
     {
         public PublicKey(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

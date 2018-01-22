@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edit on user content
     /// </summary>
-    public class UserContentEdit : QueryEntity
+    public class UserContentEdit : QueryableValue<UserContentEdit>
     {
         public UserContentEdit(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

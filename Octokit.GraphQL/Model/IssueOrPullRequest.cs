@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Used for return value of Repository.issueOrPullRequest.
     /// </summary>
-    public class IssueOrPullRequest : QueryEntity, IUnion
+    public class IssueOrPullRequest : QueryableValue<IssueOrPullRequest>, IUnion
     {
         public IssueOrPullRequest(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

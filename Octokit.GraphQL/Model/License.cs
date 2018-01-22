@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A respository's open source license
     /// </summary>
-    public class License : QueryEntity
+    public class License : QueryableValue<License>
     {
         public License(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The conditions set by the license
         /// </summary>
-        public IQueryable<LicenseRule> Conditions => this.CreateProperty(x => x.Conditions);
+        public IQueryableList<LicenseRule> Conditions => this.CreateProperty(x => x.Conditions);
 
         /// <summary>
         /// A human-readable description of the license
@@ -56,7 +56,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The limitations set by the license
         /// </summary>
-        public IQueryable<LicenseRule> Limitations => this.CreateProperty(x => x.Limitations);
+        public IQueryableList<LicenseRule> Limitations => this.CreateProperty(x => x.Limitations);
 
         /// <summary>
         /// The license full name specified by <https://spdx.org/licenses>
@@ -71,7 +71,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The permissions set by the license
         /// </summary>
-        public IQueryable<LicenseRule> Permissions => this.CreateProperty(x => x.Permissions);
+        public IQueryableList<LicenseRule> Permissions => this.CreateProperty(x => x.Permissions);
 
         /// <summary>
         /// Short identifier specified by <https://spdx.org/licenses>

@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Types that can be requested reviewers.
     /// </summary>
-    public class RequestedReviewer : QueryEntity, IUnion
+    public class RequestedReviewer : QueryableValue<RequestedReviewer>, IUnion
     {
         public RequestedReviewer(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

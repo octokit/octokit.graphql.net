@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'milestoned' event on a given issue or pull request.
     /// </summary>
-    public class MilestonedEvent : QueryEntity
+    public class MilestonedEvent : QueryableValue<MilestonedEvent>
     {
         public MilestonedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

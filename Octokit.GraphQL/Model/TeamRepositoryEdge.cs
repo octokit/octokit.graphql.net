@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a team repository.
     /// </summary>
-    public class TeamRepositoryEdge : QueryEntity
+    public class TeamRepositoryEdge : QueryableValue<TeamRepositoryEdge>
     {
         public TeamRepositoryEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

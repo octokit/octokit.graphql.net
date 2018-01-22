@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'reopened' event on any `Closable`.
     /// </summary>
-    public class ReopenedEvent : QueryEntity
+    public class ReopenedEvent : QueryableValue<ReopenedEvent>
     {
         public ReopenedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

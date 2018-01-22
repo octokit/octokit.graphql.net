@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A Gist.
     /// </summary>
-    public class Gist : QueryEntity
+    public class Gist : QueryableValue<Gist>
     {
         public Gist(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

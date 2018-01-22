@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'converted_note_to_issue' event on a given issue or pull request.
     /// </summary>
-    public class ConvertedNoteToIssueEvent : QueryEntity
+    public class ConvertedNoteToIssueEvent : QueryableValue<ConvertedNoteToIssueEvent>
     {
         public ConvertedNoteToIssueEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

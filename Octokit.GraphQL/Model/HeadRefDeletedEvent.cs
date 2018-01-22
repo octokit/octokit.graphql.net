@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'head_ref_deleted' event on a given pull request.
     /// </summary>
-    public class HeadRefDeletedEvent : QueryEntity
+    public class HeadRefDeletedEvent : QueryableValue<HeadRefDeletedEvent>
     {
         public HeadRefDeletedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

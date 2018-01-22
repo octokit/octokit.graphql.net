@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a given language found in repositories.
     /// </summary>
-    public class Language : QueryEntity
+    public class Language : QueryableValue<Language>
     {
         public Language(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

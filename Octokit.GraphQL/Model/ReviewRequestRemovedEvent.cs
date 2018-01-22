@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'review_request_removed' event on a given pull request.
     /// </summary>
-    public class ReviewRequestRemovedEvent : QueryEntity
+    public class ReviewRequestRemovedEvent : QueryableValue<ReviewRequestRemovedEvent>
     {
         public ReviewRequestRemovedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

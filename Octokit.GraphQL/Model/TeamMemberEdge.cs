@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a user who is a member of a team.
     /// </summary>
-    public class TeamMemberEdge : QueryEntity
+    public class TeamMemberEdge : QueryableValue<TeamMemberEdge>
     {
         public TeamMemberEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Types that can be an actor.
     /// </summary>
-    public class ReviewDismissalAllowanceActor : QueryEntity, IUnion
+    public class ReviewDismissalAllowanceActor : QueryableValue<ReviewDismissalAllowanceActor>, IUnion
     {
         public ReviewDismissalAllowanceActor(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

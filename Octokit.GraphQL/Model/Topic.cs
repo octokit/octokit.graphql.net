@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A topic aggregates entities that are related to a subject.
     /// </summary>
-    public class Topic : QueryEntity
+    public class Topic : QueryableValue<Topic>
     {
         public Topic(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -27,7 +27,7 @@ namespace Octokit.GraphQL.Model
         /// A list of related topics, including aliases of this topic, sorted with the most relevant
         /// first.
         /// </summary>
-        public IQueryable<Topic> RelatedTopics => this.CreateProperty(x => x.RelatedTopics);
+        public IQueryableList<Topic> RelatedTopics => this.CreateProperty(x => x.RelatedTopics);
 
         internal static Topic Create(IQueryProvider provider, Expression expression)
         {

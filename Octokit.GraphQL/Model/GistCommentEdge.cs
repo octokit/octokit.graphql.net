@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class GistCommentEdge : QueryEntity
+    public class GistCommentEdge : QueryableValue<GistCommentEdge>
     {
         public GistCommentEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

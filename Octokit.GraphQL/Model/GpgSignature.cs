@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a GPG signature on a Commit or Tag.
     /// </summary>
-    public class GpgSignature : QueryEntity
+    public class GpgSignature : QueryableValue<GpgSignature>
     {
         public GpgSignature(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

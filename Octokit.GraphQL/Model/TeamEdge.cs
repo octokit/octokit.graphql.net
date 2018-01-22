@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class TeamEdge : QueryEntity
+    public class TeamEdge : QueryableValue<TeamEdge>
     {
         public TeamEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

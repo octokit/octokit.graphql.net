@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an object which can take actions on GitHub. Typically a User or Bot.
     /// </summary>
-    public interface IActor : IQueryEntity
+    public interface IActor : IQueryableValue<IActor>
     {
         /// <summary>
         /// A URL pointing to the actor's public avatar.
@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIActor : QueryEntity, IActor
+    internal class StubIActor : QueryableValue<StubIActor>, IActor
     {
         public StubIActor(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

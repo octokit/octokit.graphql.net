@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'head_ref_restored' event on a given pull request.
     /// </summary>
-    public class HeadRefRestoredEvent : QueryEntity
+    public class HeadRefRestoredEvent : QueryableValue<HeadRefRestoredEvent>
     {
         public HeadRefRestoredEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

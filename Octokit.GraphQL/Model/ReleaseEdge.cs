@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class ReleaseEdge : QueryEntity
+    public class ReleaseEdge : QueryableValue<ReleaseEdge>
     {
         public ReleaseEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

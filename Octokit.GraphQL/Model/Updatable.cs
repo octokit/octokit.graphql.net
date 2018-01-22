@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can be updated.
     /// </summary>
-    public interface IUpdatable : IQueryEntity
+    public interface IUpdatable : IQueryableValue<IUpdatable>
     {
         /// <summary>
         /// Check if the current viewer can update this object.
@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIUpdatable : QueryEntity, IUpdatable
+    internal class StubIUpdatable : QueryableValue<StubIUpdatable>, IUpdatable
     {
         public StubIUpdatable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

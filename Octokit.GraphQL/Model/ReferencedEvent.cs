@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'referenced' event on a given `ReferencedSubject`.
     /// </summary>
-    public class ReferencedEvent : QueryEntity
+    public class ReferencedEvent : QueryableValue<ReferencedEvent>
     {
         public ReferencedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

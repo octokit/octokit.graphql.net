@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'renamed' event on a given issue or pull request
     /// </summary>
-    public class RenamedTitleEvent : QueryEntity
+    public class RenamedTitleEvent : QueryableValue<RenamedTitleEvent>
     {
         public RenamedTitleEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

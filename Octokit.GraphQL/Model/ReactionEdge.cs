@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class ReactionEdge : QueryEntity
+    public class ReactionEdge : QueryableValue<ReactionEdge>
     {
         public ReactionEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

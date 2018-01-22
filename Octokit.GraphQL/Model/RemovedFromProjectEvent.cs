@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'removed_from_project' event on a given issue or pull request.
     /// </summary>
-    public class RemovedFromProjectEvent : QueryEntity
+    public class RemovedFromProjectEvent : QueryableValue<RemovedFromProjectEvent>
     {
         public RemovedFromProjectEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

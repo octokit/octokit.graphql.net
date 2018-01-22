@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class LabelEdge : QueryEntity
+    public class LabelEdge : QueryableValue<LabelEdge>
     {
         public LabelEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

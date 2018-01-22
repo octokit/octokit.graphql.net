@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class CommitCommentEdge : QueryEntity
+    public class CommitCommentEdge : QueryableValue<CommitCommentEdge>
     {
         public CommitCommentEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

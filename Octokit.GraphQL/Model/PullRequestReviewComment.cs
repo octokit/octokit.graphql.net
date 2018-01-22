@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A review comment associated with a given repository pull request.
     /// </summary>
-    public class PullRequestReviewComment : QueryEntity
+    public class PullRequestReviewComment : QueryableValue<PullRequestReviewComment>
     {
         public PullRequestReviewComment(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -122,7 +122,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -178,7 +178,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.

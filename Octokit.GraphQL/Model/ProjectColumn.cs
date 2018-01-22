@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A column inside a project.
     /// </summary>
-    public class ProjectColumn : QueryEntity
+    public class ProjectColumn : QueryableValue<ProjectColumn>
     {
         public ProjectColumn(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

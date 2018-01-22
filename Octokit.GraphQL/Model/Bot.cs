@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A special type of user which takes actions on behalf of GitHub Apps.
     /// </summary>
-    public class Bot : QueryEntity
+    public class Bot : QueryableValue<Bot>
     {
         public Bot(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

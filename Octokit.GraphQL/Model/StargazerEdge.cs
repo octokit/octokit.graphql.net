@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a user that's starred a repository.
     /// </summary>
-    public class StargazerEdge : QueryEntity
+    public class StargazerEdge : QueryableValue<StargazerEdge>
     {
         public StargazerEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

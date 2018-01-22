@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a comment on an Gist.
     /// </summary>
-    public class GistComment : QueryEntity
+    public class GistComment : QueryableValue<GistComment>
     {
         public GistComment(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -87,7 +87,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.

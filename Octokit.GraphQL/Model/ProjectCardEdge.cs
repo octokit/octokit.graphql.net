@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class ProjectCardEdge : QueryEntity
+    public class ProjectCardEdge : QueryableValue<ProjectCardEdge>
     {
         public ProjectCardEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

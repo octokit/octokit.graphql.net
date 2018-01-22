@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Team.
     /// </summary>
-    public class TeamConnection : QueryEntity
+    public class TeamConnection : QueryableValue<TeamConnection>
     {
         public TeamConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<TeamEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<TeamEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Team> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Team> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

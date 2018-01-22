@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git commit.
     /// </summary>
-    public class Commit : QueryEntity
+    public class Commit : QueryableValue<Commit>
     {
         public Commit(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

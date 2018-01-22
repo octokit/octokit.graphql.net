@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An emoji reaction to a particular piece of content.
     /// </summary>
-    public class Reaction : QueryEntity
+    public class Reaction : QueryableValue<Reaction>
     {
         public Reaction(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

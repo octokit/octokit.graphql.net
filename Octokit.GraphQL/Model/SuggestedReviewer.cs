@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A suggestion to review a pull request based on a user's commit history and review comments.
     /// </summary>
-    public class SuggestedReviewer : QueryEntity
+    public class SuggestedReviewer : QueryableValue<SuggestedReviewer>
     {
         public SuggestedReviewer(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

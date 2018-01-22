@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git tree entry.
     /// </summary>
-    public class TreeEntry : QueryEntity
+    public class TreeEntry : QueryableValue<TreeEntry>
     {
         public TreeEntry(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

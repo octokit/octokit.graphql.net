@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'deployed' event on a given pull request.
     /// </summary>
-    public class DeployedEvent : QueryEntity
+    public class DeployedEvent : QueryableValue<DeployedEvent>
     {
         public DeployedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

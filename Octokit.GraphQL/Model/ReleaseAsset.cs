@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A release asset contains the content for a release asset.
     /// </summary>
-    public class ReleaseAsset : QueryEntity
+    public class ReleaseAsset : QueryableValue<ReleaseAsset>
     {
         public ReleaseAsset(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

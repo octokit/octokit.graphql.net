@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'comment_deleted' event on a given issue or pull request.
     /// </summary>
-    public class CommentDeletedEvent : QueryEntity
+    public class CommentDeletedEvent : QueryableValue<CommentDeletedEvent>
     {
         public CommentDeletedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

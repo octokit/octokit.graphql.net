@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of results that matched against a search query.
     /// </summary>
-    public class SearchResultItemConnection : QueryEntity
+    public class SearchResultItemConnection : QueryableValue<SearchResultItemConnection>
     {
         public SearchResultItemConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<SearchResultItemEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<SearchResultItemEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// The number of issues that matched the search query.
@@ -34,7 +34,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<SearchResultItem> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<SearchResultItem> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

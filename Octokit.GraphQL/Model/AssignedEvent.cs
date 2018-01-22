@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'assigned' event on any assignable object.
     /// </summary>
-    public class AssignedEvent : QueryEntity
+    public class AssignedEvent : QueryableValue<AssignedEvent>
     {
         public AssignedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

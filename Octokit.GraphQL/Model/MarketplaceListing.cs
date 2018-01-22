@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A listing in the GitHub integration marketplace.
     /// </summary>
-    public class MarketplaceListing : QueryEntity
+    public class MarketplaceListing : QueryableValue<MarketplaceListing>
     {
         public MarketplaceListing(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -162,7 +162,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The URLs for the listing's screenshots.
         /// </summary>
-        public IQueryable<string> ScreenshotUrls => this.CreateProperty(x => x.ScreenshotUrls);
+        public IEnumerable<string> ScreenshotUrls { get; }
 
         /// <summary>
         /// An alternate category that describes the listing.

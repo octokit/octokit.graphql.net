@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a subject that can be reacted on.
     /// </summary>
-    public interface IReactable : IQueryEntity
+    public interface IReactable : IQueryableValue<IReactable>
     {
         /// <summary>
         /// Identifies the primary key from the database.
@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        IQueryable<ReactionGroup> ReactionGroups { get; }
+        IQueryableList<ReactionGroup> ReactionGroups { get; }
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -52,7 +52,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIReactable : QueryEntity, IReactable
+    internal class StubIReactable : QueryableValue<StubIReactable>, IReactable
     {
         public StubIReactable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -63,7 +63,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string Id { get; }
 
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
 

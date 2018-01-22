@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Projects manage issues, pull requests and notes within a project owner.
     /// </summary>
-    public class Project : QueryEntity
+    public class Project : QueryableValue<Project>
     {
         public Project(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

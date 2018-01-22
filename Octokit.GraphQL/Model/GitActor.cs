@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an actor in a Git commit (ie. an author or committer).
     /// </summary>
-    public class GitActor : QueryEntity
+    public class GitActor : QueryableValue<GitActor>
     {
         public GitActor(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

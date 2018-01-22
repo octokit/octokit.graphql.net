@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class ReviewDismissalAllowanceEdge : QueryEntity
+    public class ReviewDismissalAllowanceEdge : QueryableValue<ReviewDismissalAllowanceEdge>
     {
         public ReviewDismissalAllowanceEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

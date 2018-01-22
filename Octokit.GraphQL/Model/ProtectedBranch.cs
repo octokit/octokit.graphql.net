@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A repository protected branch.
     /// </summary>
-    public class ProtectedBranch : QueryEntity
+    public class ProtectedBranch : QueryableValue<ProtectedBranch>
     {
         public ProtectedBranch(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// List of required status check contexts that must pass for commits to be accepted to this branch.
         /// </summary>
-        public IQueryable<string> RequiredStatusCheckContexts => this.CreateProperty(x => x.RequiredStatusCheckContexts);
+        public IEnumerable<string> RequiredStatusCheckContexts { get; }
 
         /// <summary>
         /// A list review dismissal allowances for this protected branch.

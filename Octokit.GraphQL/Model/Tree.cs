@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git tree.
     /// </summary>
-    public class Tree : QueryEntity
+    public class Tree : QueryableValue<Tree>
     {
         public Tree(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -34,7 +34,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of tree entries.
         /// </summary>
-        public IQueryable<TreeEntry> Entries => this.CreateProperty(x => x.Entries);
+        public IQueryableList<TreeEntry> Entries => this.CreateProperty(x => x.Entries);
 
         public string Id { get; }
 

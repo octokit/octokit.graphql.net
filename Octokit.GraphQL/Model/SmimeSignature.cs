@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an S/MIME signature on a Commit or Tag.
     /// </summary>
-    public class SmimeSignature : QueryEntity
+    public class SmimeSignature : QueryableValue<SmimeSignature>
     {
         public SmimeSignature(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

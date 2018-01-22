@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A text match within a search result.
     /// </summary>
-    public class TextMatch : QueryEntity
+    public class TextMatch : QueryableValue<TextMatch>
     {
         public TextMatch(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Highlights within the matched fragment.
         /// </summary>
-        public IQueryable<TextMatchHighlight> Highlights => this.CreateProperty(x => x.Highlights);
+        public IQueryableList<TextMatchHighlight> Highlights => this.CreateProperty(x => x.Highlights);
 
         /// <summary>
         /// The property matched on.

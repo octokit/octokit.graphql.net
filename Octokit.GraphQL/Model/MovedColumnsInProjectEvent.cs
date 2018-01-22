@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'moved_columns_in_project' event on a given issue or pull request.
     /// </summary>
-    public class MovedColumnsInProjectEvent : QueryEntity
+    public class MovedColumnsInProjectEvent : QueryableValue<MovedColumnsInProjectEvent>
     {
         public MovedColumnsInProjectEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

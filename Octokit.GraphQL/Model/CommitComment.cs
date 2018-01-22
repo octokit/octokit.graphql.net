@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a comment on a given Commit.
     /// </summary>
-    public class CommitComment : QueryEntity
+    public class CommitComment : QueryableValue<CommitComment>
     {
         public CommitComment(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -87,7 +87,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -139,7 +139,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.

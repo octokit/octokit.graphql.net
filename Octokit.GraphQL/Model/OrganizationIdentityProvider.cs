@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An Identity Provider configured to provision SAML and SCIM identities for Organizations
     /// </summary>
-    public class OrganizationIdentityProvider : QueryEntity
+    public class OrganizationIdentityProvider : QueryableValue<OrganizationIdentityProvider>
     {
         public OrganizationIdentityProvider(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

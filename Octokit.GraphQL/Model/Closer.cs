@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The object which triggered a `ClosedEvent`.
     /// </summary>
-    public class Closer : QueryEntity, IUnion
+    public class Closer : QueryableValue<Closer>, IUnion
     {
         public Closer(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

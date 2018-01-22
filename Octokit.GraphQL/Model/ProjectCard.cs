@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A card in a project.
     /// </summary>
-    public class ProjectCard : QueryEntity
+    public class ProjectCard : QueryableValue<ProjectCard>
     {
         public ProjectCard(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

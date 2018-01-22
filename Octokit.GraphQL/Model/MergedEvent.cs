@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'merged' event on a given pull request.
     /// </summary>
-    public class MergedEvent : QueryEntity
+    public class MergedEvent : QueryableValue<MergedEvent>
     {
         public MergedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

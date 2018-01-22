@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents the client's rate limit.
     /// </summary>
-    public class RateLimit : QueryEntity
+    public class RateLimit : QueryableValue<RateLimit>
     {
         public RateLimit(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

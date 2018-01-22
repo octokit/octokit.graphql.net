@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Milestone.
     /// </summary>
-    public class MilestoneConnection : QueryEntity
+    public class MilestoneConnection : QueryableValue<MilestoneConnection>
     {
         public MilestoneConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<MilestoneEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<MilestoneEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Milestone> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Milestone> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

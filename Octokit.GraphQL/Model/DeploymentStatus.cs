@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Describes the status of a given deployment attempt.
     /// </summary>
-    public class DeploymentStatus : QueryEntity
+    public class DeploymentStatus : QueryableValue<DeploymentStatus>
     {
         public DeploymentStatus(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

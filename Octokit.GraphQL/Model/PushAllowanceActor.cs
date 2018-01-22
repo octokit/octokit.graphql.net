@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Types that can be an actor.
     /// </summary>
-    public class PushAllowanceActor : QueryEntity, IUnion
+    public class PushAllowanceActor : QueryableValue<PushAllowanceActor>, IUnion
     {
         public PushAllowanceActor(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

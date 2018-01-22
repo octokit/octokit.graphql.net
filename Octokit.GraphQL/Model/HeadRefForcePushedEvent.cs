@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'head_ref_force_pushed' event on a given pull request.
     /// </summary>
-    public class HeadRefForcePushedEvent : QueryEntity
+    public class HeadRefForcePushedEvent : QueryableValue<HeadRefForcePushedEvent>
     {
         public HeadRefForcePushedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

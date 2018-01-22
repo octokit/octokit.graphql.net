@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class UserContentEditEdge : QueryEntity
+    public class UserContentEditEdge : QueryableValue<UserContentEditEdge>
     {
         public UserContentEditEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

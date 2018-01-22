@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class ExternalIdentityEdge : QueryEntity
+    public class ExternalIdentityEdge : QueryableValue<ExternalIdentityEdge>
     {
         public ExternalIdentityEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

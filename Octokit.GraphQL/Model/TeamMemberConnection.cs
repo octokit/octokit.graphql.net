@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for User.
     /// </summary>
-    public class TeamMemberConnection : QueryEntity
+    public class TeamMemberConnection : QueryableValue<TeamMemberConnection>
     {
         public TeamMemberConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<TeamMemberEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<TeamMemberEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<User> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<User> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

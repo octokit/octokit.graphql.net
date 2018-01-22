@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class PushAllowanceEdge : QueryEntity
+    public class PushAllowanceEdge : QueryableValue<PushAllowanceEdge>
     {
         public PushAllowanceEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

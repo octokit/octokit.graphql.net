@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A repository deploy key.
     /// </summary>
-    public class DeployKey : QueryEntity
+    public class DeployKey : QueryableValue<DeployKey>
     {
         public DeployKey(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

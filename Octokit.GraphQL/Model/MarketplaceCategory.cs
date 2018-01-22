@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A public description of a Marketplace category.
     /// </summary>
-    public class MarketplaceCategory : QueryEntity
+    public class MarketplaceCategory : QueryableValue<MarketplaceCategory>
     {
         public MarketplaceCategory(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

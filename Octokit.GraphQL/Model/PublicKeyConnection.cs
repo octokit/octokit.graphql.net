@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PublicKey.
     /// </summary>
-    public class PublicKeyConnection : QueryEntity
+    public class PublicKeyConnection : QueryableValue<PublicKeyConnection>
     {
         public PublicKeyConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<PublicKeyEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PublicKeyEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<PublicKey> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PublicKey> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

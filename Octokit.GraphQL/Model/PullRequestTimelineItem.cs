@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An item in an pull request timeline
     /// </summary>
-    public class PullRequestTimelineItem : QueryEntity, IUnion
+    public class PullRequestTimelineItem : QueryableValue<PullRequestTimelineItem>, IUnion
     {
         public PullRequestTimelineItem(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

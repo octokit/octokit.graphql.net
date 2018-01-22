@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PushAllowance.
     /// </summary>
-    public class PushAllowanceConnection : QueryEntity
+    public class PushAllowanceConnection : QueryableValue<PushAllowanceConnection>
     {
         public PushAllowanceConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<PushAllowanceEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PushAllowanceEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<PushAllowance> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PushAllowance> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

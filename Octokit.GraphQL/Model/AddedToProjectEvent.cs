@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'added_to_project' event on a given issue or pull request.
     /// </summary>
-    public class AddedToProjectEvent : QueryEntity
+    public class AddedToProjectEvent : QueryableValue<AddedToProjectEvent>
     {
         public AddedToProjectEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

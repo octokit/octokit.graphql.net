@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// SAML attributes for the External Identity
     /// </summary>
-    public class ExternalIdentitySamlAttributes : QueryEntity
+    public class ExternalIdentitySamlAttributes : QueryableValue<ExternalIdentitySamlAttributes>
     {
         public ExternalIdentitySamlAttributes(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

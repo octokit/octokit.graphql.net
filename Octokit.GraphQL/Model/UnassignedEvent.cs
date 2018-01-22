@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'unassigned' event on any assignable object.
     /// </summary>
-    public class UnassignedEvent : QueryEntity
+    public class UnassignedEvent : QueryableValue<UnassignedEvent>
     {
         public UnassignedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

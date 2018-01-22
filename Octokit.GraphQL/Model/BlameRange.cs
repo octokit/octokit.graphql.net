@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a range of information from a Git blame.
     /// </summary>
-    public class BlameRange : QueryEntity
+    public class BlameRange : QueryableValue<BlameRange>
     {
         public BlameRange(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

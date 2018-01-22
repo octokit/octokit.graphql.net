@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of reactions that have been left on the subject.
     /// </summary>
-    public class ReactionConnection : QueryEntity
+    public class ReactionConnection : QueryableValue<ReactionConnection>
     {
         public ReactionConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ReactionEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ReactionEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Reaction> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Reaction> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

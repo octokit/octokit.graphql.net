@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A team of users in an organization.
     /// </summary>
-    public class Team : QueryEntity
+    public class Team : QueryableValue<Team>
     {
         public Team(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

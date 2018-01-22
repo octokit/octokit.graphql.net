@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a user that's made a reaction.
     /// </summary>
-    public class ReactingUserEdge : QueryEntity
+    public class ReactingUserEdge : QueryableValue<ReactingUserEdge>
     {
         public ReactingUserEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

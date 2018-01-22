@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for ReleaseAsset.
     /// </summary>
-    public class ReleaseAssetConnection : QueryEntity
+    public class ReleaseAssetConnection : QueryableValue<ReleaseAssetConnection>
     {
         public ReleaseAssetConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ReleaseAssetEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ReleaseAssetEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<ReleaseAsset> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<ReleaseAsset> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

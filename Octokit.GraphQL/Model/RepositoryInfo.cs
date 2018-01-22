@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A subset of repository info.
     /// </summary>
-    public interface IRepositoryInfo : IQueryEntity
+    public interface IRepositoryInfo : IQueryableValue<IRepositoryInfo>
     {
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -145,7 +145,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIRepositoryInfo : QueryEntity, IRepositoryInfo
+    internal class StubIRepositoryInfo : QueryableValue<StubIRepositoryInfo>, IRepositoryInfo
     {
         public StubIRepositoryInfo(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Any referencable object
     /// </summary>
-    public class ReferencedSubject : QueryEntity, IUnion
+    public class ReferencedSubject : QueryableValue<ReferencedSubject>, IUnion
     {
         public ReferencedSubject(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

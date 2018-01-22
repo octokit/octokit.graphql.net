@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Commit.
     /// </summary>
-    public class CommitConnection : QueryEntity
+    public class CommitConnection : QueryableValue<CommitConnection>
     {
         public CommitConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -19,12 +19,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<CommitEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<CommitEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Commit> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Commit> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.

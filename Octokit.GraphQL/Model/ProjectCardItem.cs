@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Types that can be inside Project Cards.
     /// </summary>
-    public class ProjectCardItem : QueryEntity, IUnion
+    public class ProjectCardItem : QueryableValue<ProjectCardItem>, IUnion
     {
         public ProjectCardItem(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

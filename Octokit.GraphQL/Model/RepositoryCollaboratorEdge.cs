@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a user who is a collaborator of a repository.
     /// </summary>
-    public class RepositoryCollaboratorEdge : QueryEntity
+    public class RepositoryCollaboratorEdge : QueryableValue<RepositoryCollaboratorEdge>
     {
         public RepositoryCollaboratorEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

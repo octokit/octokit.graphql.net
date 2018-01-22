@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'mentioned' event on a given issue or pull request.
     /// </summary>
-    public class MentionedEvent : QueryEntity
+    public class MentionedEvent : QueryableValue<MentionedEvent>
     {
         public MentionedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
