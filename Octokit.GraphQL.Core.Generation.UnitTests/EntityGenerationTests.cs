@@ -11,20 +11,19 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     public class Entity : QueryableValue<Entity>{1}
     {{
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Entity(Expression expression) : base(expression)
         {{
         }}
 {0}
-        internal static Entity Create(IQueryProvider provider, Expression expression)
+        internal static Entity Create(Expression expression)
         {{
-            return new Entity(provider, expression);
+            return new Entity(expression);
         }}
     }}
 }}";
@@ -1247,7 +1246,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -1257,13 +1255,13 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Entity(Expression expression) : base(expression)
         {
         }
 
-        internal static Entity Create(IQueryProvider provider, Expression expression)
+        internal static Entity Create(Expression expression)
         {
-            return new Entity(provider, expression);
+            return new Entity(expression);
         }
     }
 }";
@@ -1408,26 +1406,25 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     public class Entity : QueryableValue<Entity>, IQuery
     {
-        public Entity() : base(new QueryProvider())
+        public Entity() : base(null)
         {
         }
 
-        internal Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Entity(Expression expression) : base(expression)
         {
         }
 
         public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);
 
-        internal static Entity Create(IQueryProvider provider, Expression expression)
+        internal static Entity Create(Expression expression)
         {
-            return new Entity(provider, expression);
+            return new Entity(expression);
         }
     }
 }";
@@ -1458,26 +1455,25 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     public class Mutation : QueryableValue<Mutation>, IMutation
     {
-        public Mutation() : base(new QueryProvider())
+        public Mutation() : base(null)
         {
         }
 
-        internal Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Mutation(Expression expression) : base(expression)
         {
         }
 
         public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);
 
-        internal static Mutation Create(IQueryProvider provider, Expression expression)
+        internal static Mutation Create(Expression expression)
         {
-            return new Mutation(provider, expression);
+            return new Mutation(expression);
         }
     }
 }";

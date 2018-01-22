@@ -16,13 +16,13 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class Union : QueryableValue<Union>, IUnion
     {{
-        public Union(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Union(Expression expression) : base(expression)
         {{
         }}
 {0}
-        internal static Union Create(IQueryProvider provider, Expression expression)
+        internal static Union Create(Expression expression)
         {{
-            return new Union(provider, expression);
+            return new Union(expression);
         }}
     }}
 }}";

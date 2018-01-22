@@ -22,13 +22,13 @@ namespace Octokit.GraphQL.Core.Generation
 
     {GenerateUnionDocComments(type)}public class {className} : QueryableValue<{className}>, IUnion
     {{
-        public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public {className}(Expression expression) : base(expression)
         {{
         }}{GeneratePossibleTypes(type, entityNamespace)}
 
-        internal static {className} Create(IQueryProvider provider, Expression expression)
+        internal static {className} Create(Expression expression)
         {{
-            return new {className}(provider, expression);
+            return new {className}(expression);
         }}
     }}
 }}";

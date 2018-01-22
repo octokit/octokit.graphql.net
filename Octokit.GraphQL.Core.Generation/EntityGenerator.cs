@@ -24,20 +24,19 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type)}
     {{
-        public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType)}
 
-        internal static {className} Create(IQueryProvider provider, Expression expression)
+        internal static {className} Create(Expression expression)
         {{
-            return new {className}(provider, expression);
+            return new {className}(expression);
         }}
     }}
 }}";
@@ -54,24 +53,23 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;{includeEntities}
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     {GenerateDocComments(type, true)}public class {className} : QueryableValue<{className}>, {interfaceName}
     {{
-        public {className}() : base(new QueryProvider())
+        public {className}() : base(null)
         {{
         }}
 
-        internal {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType)}
 
-        internal static {className} Create(IQueryProvider provider, Expression expression)
+        internal static {className} Create(Expression expression)
         {{
-            return new {className}(provider, expression);
+            return new {className}(expression);
         }}
     }}
 }}";

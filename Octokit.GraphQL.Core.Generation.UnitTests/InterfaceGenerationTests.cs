@@ -27,20 +27,19 @@ namespace Test.Internal
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     internal class StubIEntity : QueryableValue<StubIEntity>, IEntity
     {{
-        public StubIEntity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIEntity(Expression expression) : base(expression)
         {{
         }}
 {1}
-        internal static StubIEntity Create(IQueryProvider provider, Expression expression)
+        internal static StubIEntity Create(Expression expression)
         {{
-            return new StubIEntity(provider, expression);
+            return new StubIEntity(expression);
         }}
     }}
 }}";
@@ -742,7 +741,6 @@ namespace Test.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -752,13 +750,13 @@ namespace Test.Internal
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Entity(Expression expression) : base(expression)
         {
         }
 
-        internal static Entity Create(IQueryProvider provider, Expression expression)
+        internal static Entity Create(Expression expression)
         {
-            return new Entity(provider, expression);
+            return new Entity(expression);
         }
     }
 }";
