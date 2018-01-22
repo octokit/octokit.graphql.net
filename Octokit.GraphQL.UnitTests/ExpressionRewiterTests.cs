@@ -110,7 +110,7 @@ namespace Octokit.GraphQL.UnitTests
                               }));
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.Value.SelectX(
+                Rewritten.Value.SelectList(
                     data["data"],
                     x => 
                         Rewritten.List.Select(

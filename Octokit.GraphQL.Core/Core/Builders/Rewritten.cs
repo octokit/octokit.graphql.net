@@ -12,7 +12,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             public static readonly MethodInfo OfTypeMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(OfType));
             public static readonly MethodInfo SelectMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Select));
-            public static readonly MethodInfo SelectXMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SelectX));
+            public static readonly MethodInfo SelectListMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SelectList));
             public static readonly MethodInfo SingleMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Single));
             public static readonly MethodInfo SingleOrDefaultMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SingleOrDefault));
 
@@ -26,7 +26,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return source.Type != JTokenType.Null ? selector(source) : default(TResult);
             }
 
-            public static IEnumerable<TResult> SelectX<TResult>(JToken source, Func<JToken, IEnumerable<TResult>> selector)
+            public static IEnumerable<TResult> SelectList<TResult>(JToken source, Func<JToken, IEnumerable<TResult>> selector)
             {
                 return selector(source);
             }

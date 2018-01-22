@@ -303,7 +303,7 @@ namespace Octokit.GraphQL.Core.Builders
                 var itemType = GetEnumerableItemType(select.ReturnType);
 
                 return Expression.Call(
-                    Rewritten.Value.SelectXMethod.MakeGenericMethod(itemType),
+                    Rewritten.Value.SelectListMethod.MakeGenericMethod(itemType),
                     instance,
                     select);
             }
