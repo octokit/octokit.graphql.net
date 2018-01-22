@@ -4,7 +4,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class Directive : QueryableValue
+    public class Directive : QueryableValue<Directive>
     {
         public Directive(IQueryProvider provider)
             : base(provider)

@@ -4,7 +4,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class InputValue : QueryableValue
+    public class InputValue : QueryableValue<InputValue>
     {
         public InputValue(IQueryProvider provider)
             : base(provider)

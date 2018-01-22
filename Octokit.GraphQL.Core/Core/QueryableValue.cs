@@ -4,18 +4,18 @@ using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core
 {
-    public class QueryableValue : IQueryableValue
+    public class QueryableValue<T> : IQueryableValue<T>
     {
         private IQueryProvider provider;
         private Expression expression;
 
-        protected QueryableValue(IQueryProvider provider)
+        public QueryableValue(IQueryProvider provider)
         {
             this.provider = provider;
             expression = Expression.Constant(this);
         }
 
-        protected QueryableValue(IQueryProvider provider, Expression expression)
+        public QueryableValue(IQueryProvider provider, Expression expression)
         {
             this.provider = provider;
             this.expression = expression;
@@ -23,13 +23,5 @@ namespace Octokit.GraphQL.Core
 
         public Expression Expression => expression;
         public IQueryProvider Provider => provider;
-    }
-
-    public class QueryableValue<T> : QueryableValue, IQueryableValue<T>
-    {
-        public QueryableValue(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
-        {
-        }
     }
 }
