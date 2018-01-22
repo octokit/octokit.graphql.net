@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 r.DatabaseId,
             });
 
-            var repository = Connection.Run(query).Result.FirstOrDefault();
+            var repository = Connection.Run(query).Result;
 
             Assert.NotNull(repository);
             Assert.Equal(repository.Name, "octokit.net");
@@ -85,7 +85,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     PullRequestId = issueOrPullRequest.PullRequest.Id
                 });
 
-            var result = Connection.Run(query).Result.First();
+            var result = Connection.Run(query).Result;
         }
     }
 }

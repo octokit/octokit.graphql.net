@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 user.IsViewer
             });
 
-            var graphqlUser = Connection.Run(query).Result.FirstOrDefault();
+            var graphqlUser = Connection.Run(query).Result;
 
             Assert.NotNull(graphqlUser);
             Assert.True(graphqlUser.IsViewer);
@@ -47,7 +47,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 user.Location,
             });
 
-            var graphqlUser = Connection.Run(query).Result.FirstOrDefault();
+            var graphqlUser = Connection.Run(query).Result;
 
             Assert.NotNull(graphqlUser);
 

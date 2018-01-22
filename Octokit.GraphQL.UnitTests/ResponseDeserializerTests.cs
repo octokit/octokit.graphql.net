@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.UnitTests
                     Owner = x.Owner.Select(o => new
                     {
                         o.Login
-                    }),
+                    }).Single(),
                     x.IsFork,
                     x.IsPrivate,
                 });
@@ -45,11 +45,11 @@ namespace Octokit.GraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("1234", result.Id);
             Assert.Equal("Octokit.GraphQL.Core", result.Name);
-            Assert.Equal("grokys", Enumerable.Single(result.Owner).Login);
+            Assert.Equal("grokys", result.Owner.Login);
             Assert.Equal(false, result.IsFork);
             Assert.Equal(false, result.IsPrivate);
         }
@@ -70,7 +70,7 @@ namespace Octokit.GraphQL.UnitTests
                     Owner = x.Owner.Select(o => new
                     {
                         o.Login
-                    }),
+                    }).Single(),
                     x.IsFork,
                     x.IsPrivate,
                 });
@@ -113,14 +113,14 @@ namespace Octokit.GraphQL.UnitTests
             var item = result.ElementAt(0);
             Assert.Equal("1234", item.Id);
             Assert.Equal("Octokit.GraphQL.Core", item.Name);
-            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
+            Assert.Equal("grokys", item.Owner.Login);
             Assert.False(item.IsFork);
             Assert.False(item.IsPrivate);
 
             item = result.ElementAt(1);
             Assert.Equal("2345", item.Id);
             Assert.Equal("Avalonia", item.Name);
-            Assert.Equal("grokys", Queryable.Single(item.Owner).Login);
+            Assert.Equal("grokys", item.Owner.Login);
             Assert.True(item.IsFork);
             Assert.False(item.IsPrivate);
         }
@@ -138,7 +138,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("grokys@gmail.com", result.Email);
         }
@@ -156,7 +156,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("grokys", result.Login);
             Assert.Equal("grokys@gmail.com", result.Email);
@@ -174,7 +174,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("https://foo/bar", result.AvatarUrl);
         }

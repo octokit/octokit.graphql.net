@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 RepositoryName = i.Repository.Name,
             });
 
-            var results = Connection.Run(query).Result.ToArray();
+            var results = Connection.Run(query).Result;
             foreach (var result in results)
             {
                 Assert.Equal("octokit.net", result.RepositoryName);
