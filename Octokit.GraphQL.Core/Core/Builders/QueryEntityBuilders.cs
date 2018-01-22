@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -24,7 +23,6 @@ namespace Octokit.GraphQL.Core.Builders
             }
 
             return new QueryableList<TValue>(
-                o.Provider,
                 Expression.Call(
                     Expression.Constant(o),
                     methodCall.Method,
@@ -34,7 +32,7 @@ namespace Octokit.GraphQL.Core.Builders
         public static TValue CreateMethodCall<TObject, TValue>(
             this TObject o,
             Expression<Func<TObject, TValue>> selector,
-            Func<IQueryProvider, Expression, TValue> create)
+            Func<Expression, TValue> create)
                 where TObject : IQueryableValue
                 where TValue : IQueryableValue
         {
@@ -49,7 +47,6 @@ namespace Octokit.GraphQL.Core.Builders
             }
 
             return create(
-                o.Provider,
                 Expression.Call(
                     Expression.Constant(o),
                     methodCall.Method,
@@ -59,11 +56,10 @@ namespace Octokit.GraphQL.Core.Builders
         public static TValue CreateProperty<TObject, TValue>(
             this TObject o,
             Expression<Func<TObject, TValue>> selector,
-            Func<IQueryProvider, Expression, TValue> create)
+            Func<Expression, TValue> create)
                 where TObject : IQueryableValue
         {
             return create(
-                o.Provider,
                 Expression.Property(
                     Expression.Constant(o),
                     (PropertyInfo)((MemberExpression)selector.Body).Member));
@@ -76,7 +72,6 @@ namespace Octokit.GraphQL.Core.Builders
                 where TValue : IQueryableValue
         {
             return new QueryableList<TValue>(
-                o.Provider,
                 Expression.Property(
                     Expression.Constant(o),
                     (PropertyInfo)((MemberExpression)selector.Body).Member));

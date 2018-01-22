@@ -7,7 +7,6 @@ namespace Octokit.GraphQL.Core
     public interface IQueryableList
     {
         Expression Expression { get; }
-        IQueryProvider Provider { get; }
     }
 
     public interface IQueryableList<out T> : IQueryableList

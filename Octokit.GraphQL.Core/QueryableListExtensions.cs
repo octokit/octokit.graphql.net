@@ -20,7 +20,6 @@ namespace Octokit.GraphQL
             where TResult : IQueryableValue
         {
             return new QueryableList<TResult>(
-                source.Provider,
                 Expression.Call(
                     null,
                     GetMethodInfoOf(() => OfType<TResult>(default(IQueryableList))),
@@ -34,7 +33,6 @@ namespace Octokit.GraphQL
                 where TValue : IQueryableValue
         {
             return new QueryableList<TResult>(
-                source.Provider,
                 Expression.Call(
                     null,
                     GetMethodInfoOf(() => Select(

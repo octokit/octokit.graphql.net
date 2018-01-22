@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
     class TestQuery : QueryableValue<TestQuery>, IQuery
     {
         public TestQuery()
-            : base(new QueryProvider(), null)
+            : base(null)
         {
         }
 

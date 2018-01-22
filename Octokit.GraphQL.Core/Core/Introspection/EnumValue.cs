@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
     public class EnumValue : QueryableValue<EnumValue>
     {
-        public EnumValue(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
+        public EnumValue(Expression expression)
+            : base(expression)
         {
         }
 
@@ -16,9 +15,9 @@ namespace Octokit.GraphQL.Core.Introspection
         public bool IsDeprecated { get; }
         public string DeprecationReason { get; }
 
-        internal static EnumValue Create(IQueryProvider provider, Expression expression)
+        internal static EnumValue Create(Expression expression)
         {
-            return new EnumValue(provider, expression);
+            return new EnumValue(expression);
         }
     }
 }

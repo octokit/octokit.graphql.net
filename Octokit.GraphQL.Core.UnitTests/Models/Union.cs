@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Octokit.GraphQL.Core.Builders;
 
@@ -7,8 +6,8 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     class Union : QueryableValue<Union>, IUnion
     {
-        public Union(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
+        public Union(Expression expression)
+            : base(expression)
         {
         }
 
@@ -16,9 +15,9 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 
         public NestedData Nested => this.CreateProperty(x => x.Nested, Nested.Create);
 
-        internal static Union Create(IQueryProvider provider, Expression expression)
+        internal static Union Create(Expression expression)
         {
-            return new Union(provider, expression);
+            return new Union(expression);
         }
     }
 }

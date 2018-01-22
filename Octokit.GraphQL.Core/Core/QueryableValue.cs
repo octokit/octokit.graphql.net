@@ -6,22 +6,13 @@ namespace Octokit.GraphQL.Core
 {
     public class QueryableValue<T> : IQueryableValue<T>
     {
-        private IQueryProvider provider;
         private Expression expression;
 
-        public QueryableValue(IQueryProvider provider)
+        public QueryableValue(Expression expression)
         {
-            this.provider = provider;
-            expression = Expression.Constant(this);
-        }
-
-        public QueryableValue(IQueryProvider provider, Expression expression)
-        {
-            this.provider = provider;
             this.expression = expression;
         }
 
         public Expression Expression => expression;
-        public IQueryProvider Provider => provider;
     }
 }

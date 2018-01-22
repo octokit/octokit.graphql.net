@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Octokit.GraphQL.Core.Builders;
 
@@ -7,8 +6,8 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     class NestedQuery : QueryableValue<NestedQuery>
     {
-        public NestedQuery(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
+        public NestedQuery(Expression expression)
+            : base(expression)
         {
         }
 
@@ -17,9 +16,9 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
             return this.CreateMethodCall(x => x.Simple(arg1), Models.Simple.Create);
         }
 
-        internal static NestedQuery Create(IQueryProvider provider, Expression expression)
+        internal static NestedQuery Create(Expression expression)
         {
-            return new NestedQuery(provider, expression);
+            return new NestedQuery(expression);
         }
     }
 }

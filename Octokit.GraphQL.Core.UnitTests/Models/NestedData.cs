@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Octokit.GraphQL.Core.Builders;
 
@@ -7,13 +6,8 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     class NestedData : QueryableValue<NestedData>, IQueryableValue<NestedData>
     {
-        public NestedData(IQueryProvider provider)
-            : base(provider)
-        {
-        }
-
-        public NestedData(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
+        public NestedData(Expression expression)
+            : base(expression)
         {
         }
 
@@ -21,9 +15,9 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public string Name { get; set; }
         public IQueryableList<Simple> Items => this.CreateProperty(x => x.Items);
 
-        internal NestedData Create(IQueryProvider provider, Expression expression)
+        internal NestedData Create(Expression expression)
         {
-            return new NestedData(provider, expression);
+            return new NestedData(expression);
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Linq;
+using System.Linq.Expressions;
 using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
     public class InputValue : QueryableValue<InputValue>
     {
-        public InputValue(IQueryProvider provider)
-            : base(provider)
+        public InputValue(Expression expression)
+            : base(expression)
         {
         }
 
