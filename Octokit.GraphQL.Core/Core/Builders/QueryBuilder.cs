@@ -293,6 +293,24 @@ namespace Octokit.GraphQL.Core.Builders
                     instance,
                     select);
             }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SingleMethod)
+            {
+                var source = expression.Arguments[0];
+                var instance = Visit(source);
+
+                return Expression.Call(
+                    Rewritten.Value.SingleMethod.MakeGenericMethod(instance.Type),
+                    instance);
+            }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SingleOrDefaultMethod)
+            {
+                var source = expression.Arguments[0];
+                var instance = Visit(source);
+
+                return Expression.Call(
+                    Rewritten.Value.SingleOrDefaultMethod.MakeGenericMethod(instance.Type),
+                    instance);
+            }
             else
             {
                 throw new NotImplementedException();

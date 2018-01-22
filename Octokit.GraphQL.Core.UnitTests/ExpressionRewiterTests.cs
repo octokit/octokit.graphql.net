@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
-using Octokit.GraphQL.Core.Utilities;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.UnitTests
@@ -94,6 +93,72 @@ namespace Octokit.GraphQL.Core.UnitTests
                     {
                         Id = x["id"].ToObject<string>(),
                         Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["items"], i => i["name"]))
+                    });
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+        [Fact]
+        public void Nested_Select_Value_Single()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).Single()
+                });
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.List.Select(
+                    data["data"]["nested"],
+                    x => new
+                    {
+                        Value = Rewritten.Value.Single(
+                            Rewritten.Value.Select(
+                                x["simple"],
+                                y => new
+                                {
+                                    Name = y["name"].ToObject<string>(),
+                                    Number = y["number"].ToObject<int>(),
+                                }))
+                    });
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+        [Fact]
+        public void Nested_Select_Value_SingleOrDefault()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).SingleOrDefault()
+                });
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.List.Select(
+                    data["data"]["nested"],
+                    x => new
+                    {
+                        Value = Rewritten.Value.SingleOrDefault(
+                            Rewritten.Value.Select(
+                                x["simple"],
+                                y => new
+                                {
+                                    Name = y["name"].ToObject<string>(),
+                                    Number = y["number"].ToObject<int>(),
+                                }))
                     });
 
             var query = new QueryBuilder().Build(expression);

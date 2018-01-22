@@ -8,6 +8,8 @@ namespace Octokit.GraphQL
     public static class QueryableValueExtensions
     {
         public static readonly MethodInfo SelectMethod = typeof(QueryableValueExtensions).GetTypeInfo().GetDeclaredMethod(nameof(Select));
+        public static readonly MethodInfo SingleMethod = typeof(QueryableValueExtensions).GetTypeInfo().GetDeclaredMethod(nameof(Single));
+        public static readonly MethodInfo SingleOrDefaultMethod = typeof(QueryableValueExtensions).GetTypeInfo().GetDeclaredMethod(nameof(SingleOrDefault));
 
         public static IQueryableValue<TResult> Select<TValue, TResult>(
             this IQueryableValue<TValue> source,

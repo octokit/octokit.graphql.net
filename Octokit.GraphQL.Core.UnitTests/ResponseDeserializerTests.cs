@@ -336,10 +336,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             var data = @"{
     ""data"":{
         ""union"": { 
-                ""__typename"": ""Simple"",
-                ""name"": ""foo"",
-                ""description"": ""bar"" 
-            }
+            ""__typename"": ""Simple"",
+            ""name"": ""foo"",
+            ""description"": ""bar"" 
+        }
     }
 }";
 
@@ -350,6 +350,74 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal("foo", result.Name);
             Assert.Equal("bar", result.Description);
+        }
+
+        [Fact]
+        public void Nested_Select_Value_Single()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).Single()
+                });
+
+            var data = @"{
+    ""data"":{
+        ""nested"": {
+            ""simple"": {
+                ""name"": ""foo"",
+                ""number"": ""42""
+            }
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data);
+
+            Assert.Equal("foo", result.Value.Name);
+            Assert.Equal(42, result.Value.Number);
+        }
+
+        [Fact]
+        public void Nested_Select_Value_SingleOrDefault()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).SingleOrDefault()
+                });
+
+            var data = @"{
+    ""data"":{
+        ""nested"": {
+            ""simple"": {
+                ""name"": ""foo"",
+                ""number"": ""42""
+            }
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data);
+
+            Assert.Equal("foo", result.Value.Name);
+            Assert.Equal(42, result.Value.Number);
         }
 
         private class NamedClass

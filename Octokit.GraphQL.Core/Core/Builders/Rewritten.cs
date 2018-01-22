@@ -12,6 +12,8 @@ namespace Octokit.GraphQL.Core.Builders
         {
             public static readonly MethodInfo OfTypeMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(OfType));
             public static readonly MethodInfo SelectMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Select));
+            public static readonly MethodInfo SingleMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Single));
+            public static readonly MethodInfo SingleOrDefaultMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SingleOrDefault));
 
             public static JToken OfType(JToken source, string typeName)
             {
@@ -22,6 +24,18 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 return selector(source);
             }
+
+            public static TResult Single<TResult>(TResult value)
+            {
+                if (value == null)
+                {
+                    throw new InvalidOperationException("The value passed to Single was null.");
+                }
+
+                return value;
+            }
+
+            public static TResult SingleOrDefault<TResult>(TResult value) => value;
         }
 
         public static class List
