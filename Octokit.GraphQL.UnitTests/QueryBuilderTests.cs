@@ -218,7 +218,9 @@ namespace Octokit.GraphQL.UnitTests
       }
     }
   }
-  viewer
+  viewer {
+    login
+  }
 }";
 
             var expression = new Query()
