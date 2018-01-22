@@ -293,6 +293,20 @@ namespace Octokit.GraphQL.Core.Builders
                     instance,
                     select);
             }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SelectListMethod)
+            {
+                var source = expression.Arguments[0];
+                var selectExpression = expression.Arguments[1];
+                var lambda = selectExpression.GetLambda();
+                var instance = Visit(source);
+                var select = (LambdaExpression)Visit(lambda);
+                var itemType = GetEnumerableItemType(select.ReturnType);
+
+                return Expression.Call(
+                    Rewritten.Value.SelectXMethod.MakeGenericMethod(itemType),
+                    instance,
+                    select);
+            }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SingleMethod)
             {
                 var source = expression.Arguments[0];

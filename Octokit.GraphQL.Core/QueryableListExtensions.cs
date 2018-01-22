@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Internal;
 
 namespace Octokit.GraphQL
 {
     public static class QueryableListExtensions
     {
-        public static readonly MethodInfo OfTypeMethod = typeof(QueryableListExtensions).GetTypeInfo().GetDeclaredMethod(nameof(OfType));
-        public static readonly MethodInfo SelectMethod = typeof(QueryableListExtensions).GetTypeInfo().GetDeclaredMethod(nameof(Select));
-        public static readonly MethodInfo ToDictionaryMethod = typeof(QueryableListExtensions).GetTypeInfo().GetDeclaredMethod(nameof(ToDictionary));
-        public static readonly MethodInfo ToListMethod = typeof(QueryableListExtensions).GetTypeInfo().GetDeclaredMethod(nameof(ToList));
+        public static readonly MethodInfo OfTypeMethod = GetMethodInfo(nameof(OfTypeMethod));
+        public static readonly MethodInfo SelectMethod = GetMethodInfo(nameof(SelectMethod));
+        public static readonly MethodInfo ToDictionaryMethod = GetMethodInfo(nameof(ToDictionaryMethod));
+        public static readonly MethodInfo ToListMethod = GetMethodInfo(nameof(ToListMethod));
 
+        [MethodId(nameof(OfTypeMethod))]
         public static IQueryableList<TResult> OfType<TResult>(this IQueryableList source)
             where TResult : IQueryableValue
         {
@@ -24,6 +27,7 @@ namespace Octokit.GraphQL
                     new Expression[] { source.Expression }));
         }
 
+        [MethodId(nameof(SelectMethod))]
         public static IQueryableList<TResult> Select<TValue, TResult>(
             this IQueryableList<TValue> source,
             Expression<Func<TValue, TResult>> selector)
@@ -39,6 +43,7 @@ namespace Octokit.GraphQL
                     new Expression[] { source.Expression, Expression.Quote(selector) }));
         }
 
+        [MethodId(nameof(ToDictionaryMethod))]
         public static IDictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(
             this IQueryableList<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -47,9 +52,19 @@ namespace Octokit.GraphQL
             throw new NotImplementedException();
         }
 
+        [MethodId(nameof(ToListMethod))]
         public static IList<TValue> ToList<TValue>(this IQueryableList<TValue> source)
         {
             throw new NotImplementedException();
+        }
+
+        private static MethodInfo GetMethodInfo(string id)
+        {
+            return typeof(QueryableListExtensions)
+                .GetTypeInfo()
+                .DeclaredMethods
+                .Where(x => x.GetCustomAttribute<MethodIdAttribute>()?.Id == id)
+                .SingleOrDefault();
         }
 
         private static MethodInfo GetMethodInfoOf<T>(Expression<Func<T>> expression)

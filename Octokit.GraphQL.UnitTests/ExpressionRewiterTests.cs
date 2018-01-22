@@ -75,17 +75,60 @@ namespace Octokit.GraphQL.UnitTests
                     Rewritten.List.Select(
                         data["data"]["repositoryOwner"]["repositories"]["edges"],
                         x => x["node"]),
-                    x => new
-                    {
-                        Id = x["id"].ToObject<string>(),
-                        Name = x["name"].ToObject<string>(),
-                        Owner = Rewritten.Value.Single(
-                            Rewritten.Value.Select(
-                                x["owner"],
-                                o => new { Login = o["login"].ToObject<string>() })),
-                        IsFork = x["isFork"].ToObject<string>(),
-                        IsPrivate = x["isPrivate"].ToObject<string>(),
-                    });
+                        x => new
+                        {
+                            Id = x["id"].ToObject<string>(),
+                            Name = x["name"].ToObject<string>(),
+                            Owner = Rewritten.Value.Single(
+                                Rewritten.Value.Select(
+                                    x["owner"],
+                                    o => new { Login = o["login"].ToObject<string>() })),
+                            IsFork = x["isFork"].ToObject<string>(),
+                            IsPrivate = x["isPrivate"].ToObject<string>(),
+                        });
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+        [Fact]
+        public void Repository_Details_With_Viewer()
+        {
+            var expression = new Query()
+                .Select(x => x.RepositoryOwner("foo")
+                              .Repositories(30, null, null, null, null, null, null, null, null)
+                              .Edges
+                              .Select(y => y.Node)
+                              .Select(z => new
+                              {
+                                  z.Name,
+                                  z.IsPrivate,
+                                  Viewer = x.Viewer.Select(a => new
+                                  {
+                                      a.Login
+                                  }).Single()
+                              }));
+
+            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
+                Rewritten.Value.SelectX(
+                    data["data"],
+                    x => 
+                        Rewritten.List.Select(
+                            Rewritten.List.Select(
+                                x["repositoryOwner"]["repositories"]["edges"],
+                                y => y["node"]),
+                            z => new
+                            {
+                                Name = z["name"].ToObject<string>(),
+                                IsPrivate = z["isPrivate"].ToObject<string>(),
+                                Viewer = Rewritten.Value.Single(
+                                    Rewritten.Value.Select(
+                                        x["viewer"],
+                                        a => new
+                                        {
+                                            Login = a["login"].ToObject<string>()
+                                        }))
+                            }));
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
