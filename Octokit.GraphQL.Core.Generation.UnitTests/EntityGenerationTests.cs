@@ -379,6 +379,78 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Property_For_List_Of_Ints()
+        {
+            var expected = FormatMemberTemplate("public IEnumerable<int> Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.NonNull(TypeModel.Int())),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_List_Of_Nullable_Ints()
+        {
+            var expected = FormatMemberTemplate("public IEnumerable<int?> Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Int()),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_List_Of_Strings()
+        {
+            var expected = FormatMemberTemplate("public IEnumerable<string> Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.String()),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
         public void Generates_Property_For_Deprecated_List_Field()
         {
             var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IQueryableList<Other> Foo => this.CreateProperty(x => x.Foo);");
@@ -432,7 +504,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_NonNull_List_Of_NonNull_Enums_Field()
         {
-            var expected = FormatMemberTemplate("public IQueryableList<Bar> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate("public IEnumerable<Bar> Foo { get; }");
 
             var model = new TypeModel
             {
@@ -456,7 +528,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_NonNull_List_Of_Nullable_Enums_Field()
         {
-            var expected = FormatMemberTemplate("public IQueryableList<Bar?> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate("public IEnumerable<Bar?> Foo { get; }");
 
             var model = new TypeModel
             {

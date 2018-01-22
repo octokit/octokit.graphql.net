@@ -238,7 +238,11 @@ namespace Octokit.GraphQL.Core.Generation
 
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"{obsoleteAttribute}        public {typeName} {name} => this.CreateProperty(x => x.{name});";
+            var getter = TypeUtilities.IsCSharpPrimitive(type.OfType) ?
+                "{ get; }" :
+                $"=> this.CreateProperty(x => x.{name});";
+
+            return $"{obsoleteAttribute}        public {typeName} {name} {getter}";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)
