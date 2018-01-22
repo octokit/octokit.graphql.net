@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.Core
 
         public QueryableValue(Expression expression)
         {
-            this.expression = expression;
+            this.expression = expression ?? Expression.Constant(this);
         }
 
         public Expression Expression => expression;
