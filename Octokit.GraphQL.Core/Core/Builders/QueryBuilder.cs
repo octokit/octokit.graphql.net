@@ -18,20 +18,6 @@ namespace Octokit.GraphQL.Core.Builders
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
 
-        public GraphQLQuery<TResult> Build<TResult>(IQueryable<TResult> query)
-        {
-            throw new NotImplementedException();
-            //root = null;
-            //syntax = new SyntaxTree();
-            //lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
-
-            //var rewritten = Visit(query.Expression);
-            //var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
-            //    rewritten.AddCast(typeof(IQueryable<TResult>)),
-            //    RootDataParameter);
-            //return new GraphQLQuery<TResult>(root, expression);
-        }
-
         public GraphQLQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
             root = null;
@@ -106,7 +92,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override MemberAssignment VisitMemberAssignment(MemberAssignment node)
         {
-            if (IsQueryEntityMember(node.Expression))
+            if (IsQueryableValueMember(node.Expression))
             {
                 var expression = BookmarkAndVisit(node.Expression).AddCast(node.Expression.Type);
                 return Expression.Bind(node.Member, expression);
@@ -160,7 +146,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override Expression VisitParameter(ParameterExpression node)
         {
-            if (IsQueryEntity(node.Type))
+            if (IsQueryableValue(node.Type))
             {
                 LambdaParameter result;
 
@@ -194,7 +180,7 @@ namespace Octokit.GraphQL.Core.Builders
                     source,
                     Expression.Constant(fragment.TypeCondition.Name));
             }
-            else if (IsQueryEntityMember(node.Member))
+            else if (IsQueryableValueMember(node.Member))
             {
                 var parameterExpression = node.Expression as ParameterExpression;
 
@@ -247,20 +233,7 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 return RewriteListExtension(node);
             }
-            else if (IsSelect(node.Method))
-            {
-                return VisitSelect(node.Arguments[0], node.Arguments[1]);
-            }
-            else if (IsOfType(node.Method))
-            {
-                var source = Visit(node.Arguments[0]);
-                var fragment = syntax.AddInlineFragment(node.Method.GetGenericArguments()[0], true);
-                return Expression.Call(
-                    ExpressionMethods.ChildrenOfTypeMethod,
-                    source,
-                    Expression.Constant(fragment.TypeCondition.Name));
-            }
-            else if (IsQueryEntityMember(node.Method))
+            else if (IsQueryableValueMember(node.Method))
             {
                 return VisitQueryMethod(node, alias);
             }
@@ -327,7 +300,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException($"{expression.Method.Name}() is not supported");
             }
         }
 
@@ -403,7 +376,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException($"{expression.Method.Name}() is not supported");
             }
         }
 
@@ -438,56 +411,13 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private Expression VisitSelect(Expression source, Expression selectExpression)
-        {
-            var lambda = selectExpression.GetLambda();
-            var instance = Visit(source);
-            var select = (LambdaExpression)Visit(lambda);
-            var sourceIsValue = typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(source.Type.GetTypeInfo());
-            var sourceIsList = typeof(IQueryableList).GetTypeInfo().IsAssignableFrom(source.Type.GetTypeInfo());
-
-            if (sourceIsValue)
-            {
-                return Expression.Call(
-                    Rewritten.Value.SelectMethod.MakeGenericMethod(select.ReturnType),
-                    instance,
-                    select);
-            }
-            else if (sourceIsList)
-            {
-                return Expression.Call(
-                    Rewritten.List.SelectMethod.MakeGenericMethod(select.ReturnType),
-                    instance,
-                    select);
-            }
-            else
-            {
-                throw new NotSupportedException("Shouldn't get here");
-            }
-        }
-
-        private IEnumerable<Type> RewriteArgumentTypes(IEnumerable<Expression> arguments)
-        {
-            foreach (var arg in arguments)
-            {
-                if (typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(arg.Type.GetTypeInfo()))
-                {
-                    yield return typeof(JToken);
-                }
-                else
-                {
-                    yield return arg.Type;
-                }
-            }
-        }
-
         private IEnumerable<ParameterExpression> RewriteParameters(IEnumerable<ParameterExpression> parameters)
         {
             var result = new List<ParameterExpression>();
 
             foreach (var parameter in parameters)
             {
-                if (IsQueryEntity(parameter.Type))
+                if (IsQueryableValue(parameter.Type))
                 {
                     var rewritten = Expression.Parameter(typeof(JToken), parameter.Name);
                     var p = new LambdaParameter(
@@ -552,36 +482,20 @@ namespace Octokit.GraphQL.Core.Builders
             return newExpression.Type == typeof(JToken) && oldExpression.Type != typeof(JToken);
         }
 
-        private static bool IsOfType(MethodInfo method)
-        {
-            return (method.DeclaringType == typeof(Queryable) || method.DeclaringType == typeof(QueryableListExtensions)) &&
-                method.Name == nameof(Queryable.OfType) &&
-                method.GetParameters().Length == 1 &&
-                method.GetGenericArguments().Length == 1;
-        }
-
-        private static bool IsSelect(MethodInfo method)
-        {
-            return (method.DeclaringType == typeof(Queryable) && method.Name == nameof(Queryable.Select) && method.GetParameters().Length == 2) ||
-                   ////(method.DeclaringType == typeof(QueryEntityExtensions) && method.Name == nameof(QueryEntityExtensions.Select) && method.GetParameters().Length == 2) ||
-                   (method.DeclaringType == typeof(QueryableListExtensions) && method.Name == nameof(QueryableListExtensions.Select) && method.GetParameters().Length == 2) ||
-                   (method.DeclaringType == typeof(QueryableValueExtensions) && method.Name == nameof(QueryableValueExtensions.Select) && method.GetParameters().Length == 2);
-        }
-
-        private static bool IsQueryEntity(Type type)
+        private static bool IsQueryableValue(Type type)
         {
             return typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
-        private static bool IsQueryEntityMember(Expression expression)
+        private static bool IsQueryableValueMember(Expression expression)
         {
             var memberExpression = expression as MemberExpression;
-            return memberExpression != null && IsQueryEntityMember(memberExpression.Member);
+            return memberExpression != null && IsQueryableValueMember(memberExpression.Member);
         }
 
-        private static bool IsQueryEntityMember(MemberInfo member)
+        private static bool IsQueryableValueMember(MemberInfo member)
         {
-            return IsQueryEntity(member.DeclaringType);
+            return IsQueryableValue(member.DeclaringType);
         }
 
         private static bool IsUnion(Type type)

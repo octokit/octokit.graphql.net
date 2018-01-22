@@ -31,13 +31,6 @@ namespace Octokit.GraphQL.Core.Serializers
             }
         }
 
-        public string Serialize(FieldSelection field)
-        {
-            StringBuilder builder = new StringBuilder();
-            Serialize(field, builder);
-            return builder.ToString();
-        }
-
         public string Serialize(OperationDefinition operation)
         {
             StringBuilder builder = new StringBuilder();
@@ -62,13 +55,6 @@ namespace Octokit.GraphQL.Core.Serializers
             }
 
             SerializeSelections(operation, builder);
-            return builder.ToString();
-        }
-
-        private string SerializeSelections(ISelectionSet selectionSet)
-        {
-            StringBuilder builder = new StringBuilder();
-            SerializeSelections(selectionSet, builder);
             return builder.ToString();
         }
 

@@ -212,28 +212,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Description = x["description"].ToObject<string>(),
                     });
 
-            // We need to remove the (Func<JToken, IQueryable<JToken>>) cast that is needed by
-            // C# but not by expression trees.
-            expected = (Expression<Func<JObject, object>>)RemoveConvert.Default.Visit(expected);
-
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
-        }
-
-        class RemoveConvert : ExpressionVisitor
-        {
-            private RemoveConvert() { }
-            public static readonly RemoveConvert Default = new RemoveConvert();
-
-            protected override Expression VisitBinary(BinaryExpression node)
-            {
-                return base.VisitBinary(node);
-            }
-
-            protected override Expression VisitUnary(UnaryExpression node)
-            {
-                return Visit(node.NodeType == ExpressionType.Convert ? node.Operand : node);
-            }
         }
     }
 }

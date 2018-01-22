@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.Core
 
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
-            return new FieldQuery<TElement>(this, expression);
+            throw new NotImplementedException();
         }
 
         public object Execute(Expression expression)

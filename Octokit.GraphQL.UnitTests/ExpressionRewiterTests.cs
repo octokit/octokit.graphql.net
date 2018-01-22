@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using Octokit.GraphQL.Core;
-using Octokit.GraphQL.Core.Builders;
-using Octokit.GraphQL.Core.Utilities;
 using Newtonsoft.Json.Linq;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Model;
 using Xunit;
 
@@ -143,8 +140,8 @@ namespace Octokit.GraphQL.UnitTests
                 .Select(x => x.User.Name);
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                ExpressionMethods.Select(
-                    ExpressionMethods.ChildrenOfType(data["data"]["search"]["edges"], "User"),
+                Rewritten.List.Select(
+                    Rewritten.Value.OfType(data["data"]["search"]["edges"], "User"),
                     x => x["name"].ToObject<string>());
 
             var query = new QueryBuilder().Build(expression);
