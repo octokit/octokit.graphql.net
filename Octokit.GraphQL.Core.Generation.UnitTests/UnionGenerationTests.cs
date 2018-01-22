@@ -14,7 +14,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public class Union : QueryEntity, IUnion
+    public class Union : QueryableValue<Union>, IUnion
     {{
         public Union(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{

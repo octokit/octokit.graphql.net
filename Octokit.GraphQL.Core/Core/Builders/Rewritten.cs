@@ -22,7 +22,7 @@ namespace Octokit.GraphQL.Core.Builders
 
             public static TResult Select<TResult>(JToken source, Func<JToken, TResult> selector)
             {
-                return selector(source);
+                return source.Type != JTokenType.Null ? selector(source) : default(TResult);
             }
 
             public static TResult Single<TResult>(TResult value)

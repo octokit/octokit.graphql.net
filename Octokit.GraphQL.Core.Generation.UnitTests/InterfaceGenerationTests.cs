@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public interface IEntity : IQueryEntity
+    public interface IEntity : IQueryableValue<IEntity>
     {{
         {0}
     }}
@@ -32,7 +32,7 @@ namespace Test.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIEntity : QueryEntity, IEntity
+    internal class StubIEntity : QueryableValue<StubIEntity>, IEntity
     {{
         public StubIEntity(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
@@ -179,8 +179,8 @@ namespace Test.Internal
         public void Generates_Property_For_List_Field()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo { get; }",
-                "public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
+                "IQueryableList<Other> Foo { get; }",
+                "public IQueryableList<Other> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -273,8 +273,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Nullable_Int_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(int? bar = null);",
-                "public IQueryable<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(int? bar = null);",
+                "public IQueryableList<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -307,8 +307,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Nullable_Int_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(IEnumerable<int?> bar = null);",
-                "public IQueryable<Other> Foo(IEnumerable<int?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(IEnumerable<int?> bar = null);",
+                "public IQueryableList<Other> Foo(IEnumerable<int?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -341,8 +341,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_NotNull_Int_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(IEnumerable<int> bar = null);",
-                "public IQueryable<Other> Foo(IEnumerable<int> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(IEnumerable<int> bar = null);",
+                "public IQueryableList<Other> Foo(IEnumerable<int> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -375,8 +375,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Object_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(IEnumerable<Another> bar = null);",
-                "public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(IEnumerable<Another> bar = null);",
+                "public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -409,8 +409,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_NonNull_Object_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(IEnumerable<Another> bar);",
-                "public IQueryable<Other> Foo(IEnumerable<Another> bar) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(IEnumerable<Another> bar);",
+                "public IQueryableList<Other> Foo(IEnumerable<Another> bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -443,8 +443,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Nullable_Enum_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(IEnumerable<Another?> bar = null);",
-                "public IQueryable<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(IEnumerable<Another?> bar = null);",
+                "public IQueryableList<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -477,8 +477,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_NonNull_Enum_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryable<Other> Foo(IEnumerable<Another> bar = null);",
-                "public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(IEnumerable<Another> bar = null);",
+                "public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -750,7 +750,7 @@ namespace Test.Internal
     /// <summary>
     /// Testing if doc comments are generated.
     /// </summary>
-    public class Entity : QueryEntity
+    public class Entity : QueryableValue<Entity>
     {
         public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
         {

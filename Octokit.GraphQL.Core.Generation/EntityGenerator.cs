@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryEntity{GenerateImplementedInterfaces(type)}
+    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type)}
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
@@ -59,7 +59,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, true)}public class {className} : QueryEntity, {interfaceName}
+    {GenerateDocComments(type, true)}public class {className} : QueryableValue<{className}>, {interfaceName}
     {{
         public {className}() : base(new QueryProvider())
         {{

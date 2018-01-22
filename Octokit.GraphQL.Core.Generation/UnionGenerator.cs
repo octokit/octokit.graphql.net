@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateUnionDocComments(type)}public class {className} : QueryEntity, IUnion
+    {GenerateUnionDocComments(type)}public class {className} : QueryableValue<{className}>, IUnion
     {{
         public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{

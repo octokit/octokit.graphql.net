@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public class Entity : QueryEntity{1}
+    public class Entity : QueryableValue<Entity>{1}
     {{
         public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
         {{
@@ -357,7 +357,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_List_Field()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -381,7 +381,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_Deprecated_List_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IQueryableList<Other> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -407,7 +407,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_Deprecated_WithoutReason_List_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public IQueryable<Other> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public IQueryableList<Other> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -432,7 +432,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_NonNull_List_Of_NonNull_Enums_Field()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate("public IQueryableList<Bar> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -456,7 +456,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_NonNull_List_Of_Nullable_Enums_Field()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Bar?> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate("public IQueryableList<Bar?> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -555,7 +555,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_List_Of_Unions_Field()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate("public IQueryableList<Bar> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -579,7 +579,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_Deprecated_List_Of_Unions_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public IQueryableList<Bar> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -605,7 +605,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_Deprecated_WithoutReason_List_Of_Unions_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public IQueryable<Bar> Foo => this.CreateProperty(x => x.Foo);");
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public IQueryableList<Bar> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
             {
@@ -726,7 +726,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Int_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -758,7 +758,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Object_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -790,7 +790,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_NonNull_Enum_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -822,7 +822,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Nullable_Enum_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryable<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -1183,7 +1183,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// <summary>
     /// Testing if doc comments are generated.
     /// </summary>
-    public class Entity : QueryEntity
+    public class Entity : QueryableValue<Entity>
     {
         public Entity(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
@@ -1341,7 +1341,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public class Entity : QueryEntity, IQuery
+    public class Entity : QueryableValue<Entity>, IQuery
     {
         public Entity() : base(new QueryProvider())
         {
@@ -1391,7 +1391,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public class Mutation : QueryEntity, IMutation
+    public class Mutation : QueryableValue<Mutation>, IMutation
     {
         public Mutation() : base(new QueryProvider())
         {
