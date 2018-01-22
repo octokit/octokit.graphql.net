@@ -74,7 +74,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Contains("discussions", repositoryNames);
         }
 
-        [IntegrationTest]
+        [IntegrationTest(Skip = "Querying unions like this no longer works")]
         public void Should_Query_Union_Issue_Or_PullRequest()
         {
             var query = new Query().Repository("octokit", "octokit.net")

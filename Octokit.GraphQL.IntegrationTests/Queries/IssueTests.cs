@@ -42,7 +42,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             }
         }
 
-        [IntegrationTest]
+        [IntegrationTest(Skip = "Querying unions like this no longer works")]
         public void Should_Query_Union_Issue_Or_PullRequest2()
         {
             var query = new Query().Repository("octokit", "octokit.net").Issue(23)
