@@ -46,11 +46,11 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Data_Select_Single_Member()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => x.Id);
 
             Expression<Func<JObject, string>> expected = data =>
-                Rewritten.Value.Select(data["data"]["data"], x => x["id"].ToObject<string>());
+                Rewritten.Value.Select(data["data"]["queryItems"], x => x["id"].ToObject<string>());
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
@@ -79,20 +79,20 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Nested_Selects()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name).ToList(),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             Expression<Func<JObject, object>> expected = data =>
                 Rewritten.List.Select(
-                    data["data"]["data"],
+                    data["data"]["queryItems"],
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["items"], i => i["name"]))
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["nestedItems"], i => i["name"]))
                     });
 
             var query = new QueryBuilder().Build(expression);
@@ -169,21 +169,21 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Inline_Fragment()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .OfType<NestedData>()
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name).ToList(),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             Expression<Func<JObject, object>> expected = data =>
                 Rewritten.List.Select(
-                    Rewritten.List.OfType(data["data"]["data"], "NestedData"),
+                    Rewritten.List.OfType(data["data"]["queryItems"], "NestedData"),
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["items"], i => i["name"]))
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["nestedItems"], i => i["name"]))
                     });
 
             var query = new QueryBuilder().Build(expression);
