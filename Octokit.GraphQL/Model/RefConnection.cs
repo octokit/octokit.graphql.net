@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Ref.
     /// </summary>
-    public class RefConnection : QueryEntity
+    public class RefConnection : QueryableValue<RefConnection>
     {
-        public RefConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RefConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<RefEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<RefEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Ref> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Ref> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static RefConnection Create(IQueryProvider provider, Expression expression)
+        internal static RefConnection Create(Expression expression)
         {
-            return new RefConnection(provider, expression);
+            return new RefConnection(expression);
         }
     }
 }

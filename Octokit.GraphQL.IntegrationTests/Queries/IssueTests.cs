@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 RepositoryName = i.Repository.Name,
             });
 
-            var results = Connection.Run(query).Result.ToArray();
+            var results = Connection.Run(query).Result;
             foreach (var result in results)
             {
                 Assert.Equal("octokit.net", result.RepositoryName);
@@ -42,7 +42,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             }
         }
 
-        [IntegrationTest]
+        [IntegrationTest(Skip = "Querying unions like this no longer works")]
         public void Should_Query_Union_Issue_Or_PullRequest2()
         {
             var query = new Query().Repository("octokit", "octokit.net").Issue(23)

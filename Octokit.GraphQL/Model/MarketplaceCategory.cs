@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A public description of a Marketplace category.
     /// </summary>
-    public class MarketplaceCategory : QueryEntity
+    public class MarketplaceCategory : QueryableValue<MarketplaceCategory>
     {
-        public MarketplaceCategory(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MarketplaceCategory(Expression expression) : base(expression)
         {
         }
 
@@ -56,9 +55,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static MarketplaceCategory Create(IQueryProvider provider, Expression expression)
+        internal static MarketplaceCategory Create(Expression expression)
         {
-            return new MarketplaceCategory(provider, expression);
+            return new MarketplaceCategory(expression);
         }
     }
 }

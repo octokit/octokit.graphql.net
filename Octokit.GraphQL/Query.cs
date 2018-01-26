@@ -2,7 +2,6 @@ namespace Octokit.GraphQL
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Model;
     using Octokit.GraphQL.Core;
@@ -11,13 +10,13 @@ namespace Octokit.GraphQL
     /// <summary>
     /// The query root of GitHub's GraphQL interface.
     /// </summary>
-    public class Query : QueryEntity, IQuery
+    public class Query : QueryableValue<Query>, IQuery
     {
-        public Query() : base(new QueryProvider())
+        public Query() : base(null)
         {
         }
 
-        internal Query(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Query(Expression expression) : base(expression)
         {
         }
 
@@ -30,7 +29,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Look up a code of conduct by its key
         /// </summary>
-        public IQueryable<CodeOfConduct> CodesOfConduct => this.CreateProperty(x => x.CodesOfConduct);
+        public IQueryableList<CodeOfConduct> CodesOfConduct => this.CreateProperty(x => x.CodesOfConduct);
 
         /// <summary>
         /// Look up an open source license by its key
@@ -41,13 +40,13 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Return a list of known open source licenses
         /// </summary>
-        public IQueryable<License> Licenses => this.CreateProperty(x => x.Licenses);
+        public IQueryableList<License> Licenses => this.CreateProperty(x => x.Licenses);
 
         /// <summary>
         /// Get alphabetically sorted list of Marketplace categories
         /// </summary>
         /// <param name="excludeEmpty">Exclude categories with no listings.</param>
-        public IQueryable<MarketplaceCategory> MarketplaceCategories(bool? excludeEmpty = null) => this.CreateMethodCall(x => x.MarketplaceCategories(excludeEmpty));
+        public IQueryableList<MarketplaceCategory> MarketplaceCategories(bool? excludeEmpty = null) => this.CreateMethodCall(x => x.MarketplaceCategories(excludeEmpty));
 
         /// <summary>
         /// Look up a Marketplace category by its slug.
@@ -93,7 +92,7 @@ namespace Octokit.GraphQL
         /// Lookup nodes by a list of IDs.
         /// </summary>
         /// <param name="ids">The list of node IDs.</param>
-        public IQueryable<INode> Nodes(IEnumerable<string> ids) => this.CreateMethodCall(x => x.Nodes(ids));
+        public IQueryableList<INode> Nodes(IEnumerable<string> ids) => this.CreateMethodCall(x => x.Nodes(ids));
 
         /// <summary>
         /// Lookup a organization by login.
@@ -159,9 +158,9 @@ namespace Octokit.GraphQL
         /// </summary>
         public User Viewer => this.CreateProperty(x => x.Viewer, Octokit.GraphQL.Model.User.Create);
 
-        internal static Query Create(IQueryProvider provider, Expression expression)
+        internal static Query Create(Expression expression)
         {
-            return new Query(provider, expression);
+            return new Query(expression);
         }
     }
 }

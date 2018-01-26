@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class PullRequestReviewCommentEdge : QueryEntity
+    public class PullRequestReviewCommentEdge : QueryableValue<PullRequestReviewCommentEdge>
     {
-        public PullRequestReviewCommentEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestReviewCommentEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequestReviewComment Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.PullRequestReviewComment.Create);
 
-        internal static PullRequestReviewCommentEdge Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestReviewCommentEdge Create(Expression expression)
         {
-            return new PullRequestReviewCommentEdge(provider, expression);
+            return new PullRequestReviewCommentEdge(expression);
         }
     }
 }

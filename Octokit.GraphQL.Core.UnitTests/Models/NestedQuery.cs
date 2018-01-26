@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class NestedQuery : QueryEntity
+    class NestedQuery : QueryableValue<NestedQuery>
     {
-        public NestedQuery(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
+        public NestedQuery(Expression expression)
+            : base(expression)
         {
         }
 
-        public IQueryable<Simple> Simple(string arg1)
+        public Simple Simple(string arg1)
         {
-            return this.CreateMethodCall(x => x.Simple(arg1));
+            return this.CreateMethodCall(x => x.Simple(arg1), Models.Simple.Create);
         }
 
-        internal static NestedQuery Create(IQueryProvider provider, Expression expression)
+        internal static NestedQuery Create(Expression expression)
         {
-            return new NestedQuery(provider, expression);
+            return new NestedQuery(expression);
         }
     }
 }

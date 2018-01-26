@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'head_ref_force_pushed' event on a given pull request.
     /// </summary>
-    public class HeadRefForcePushedEvent : QueryEntity
+    public class HeadRefForcePushedEvent : QueryableValue<HeadRefForcePushedEvent>
     {
-        public HeadRefForcePushedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public HeadRefForcePushedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -48,9 +47,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Model.Ref.Create);
 
-        internal static HeadRefForcePushedEvent Create(IQueryProvider provider, Expression expression)
+        internal static HeadRefForcePushedEvent Create(Expression expression)
         {
-            return new HeadRefForcePushedEvent(provider, expression);
+            return new HeadRefForcePushedEvent(expression);
         }
     }
 }

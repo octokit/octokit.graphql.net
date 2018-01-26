@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for OrganizationInvitation.
     /// </summary>
-    public class OrganizationInvitationConnection : QueryEntity
+    public class OrganizationInvitationConnection : QueryableValue<OrganizationInvitationConnection>
     {
-        public OrganizationInvitationConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public OrganizationInvitationConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<OrganizationInvitationEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<OrganizationInvitationEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<OrganizationInvitation> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<OrganizationInvitation> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static OrganizationInvitationConnection Create(IQueryProvider provider, Expression expression)
+        internal static OrganizationInvitationConnection Create(Expression expression)
         {
-            return new OrganizationInvitationConnection(provider, expression);
+            return new OrganizationInvitationConnection(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of languages associated with the parent.
     /// </summary>
-    public class LanguageConnection : QueryEntity
+    public class LanguageConnection : QueryableValue<LanguageConnection>
     {
-        public LanguageConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public LanguageConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<LanguageEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<LanguageEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Language> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Language> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -41,9 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalSize { get; }
 
-        internal static LanguageConnection Create(IQueryProvider provider, Expression expression)
+        internal static LanguageConnection Create(Expression expression)
         {
-            return new LanguageConnection(provider, expression);
+            return new LanguageConnection(expression);
         }
     }
 }

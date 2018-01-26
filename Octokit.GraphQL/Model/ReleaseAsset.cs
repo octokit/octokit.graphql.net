@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A release asset contains the content for a release asset.
     /// </summary>
-    public class ReleaseAsset : QueryEntity
+    public class ReleaseAsset : QueryableValue<ReleaseAsset>
     {
-        public ReleaseAsset(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReleaseAsset(Expression expression) : base(expression)
         {
         }
 
@@ -56,6 +55,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static ReleaseAsset Create(IQueryProvider provider, Expression expression)
+        internal static ReleaseAsset Create(Expression expression)
         {
-            return new ReleaseAsset(provider, expression);
+            return new ReleaseAsset(expression);
         }
     }
 }

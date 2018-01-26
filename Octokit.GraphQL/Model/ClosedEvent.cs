@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'closed' event on any `Closable`.
     /// </summary>
-    public class ClosedEvent : QueryEntity
+    public class ClosedEvent : QueryableValue<ClosedEvent>
     {
-        public ClosedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ClosedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -34,6 +33,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the commit associated with the 'closed' event.
         /// </summary>
+        [Obsolete(@"Use ClosedEvent.closer instead.")]
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace Octokit.GraphQL.Model
 
         public string Id { get; }
 
-        internal static ClosedEvent Create(IQueryProvider provider, Expression expression)
+        internal static ClosedEvent Create(Expression expression)
         {
-            return new ClosedEvent(provider, expression);
+            return new ClosedEvent(expression);
         }
     }
 }

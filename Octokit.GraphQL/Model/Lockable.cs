@@ -11,8 +11,13 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be locked.
     /// </summary>
-    public interface ILockable : IQueryEntity
+    public interface ILockable : IQueryableValue<ILockable>
     {
+        /// <summary>
+        /// Reason that the conversation was locked.
+        /// </summary>
+        LockReason? ActiveLockReason { get; }
+
         /// <summary>
         /// `true` if the object is locked
         /// </summary>
@@ -24,22 +29,23 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubILockable : QueryEntity, ILockable
+    internal class StubILockable : QueryableValue<StubILockable>, ILockable
     {
-        public StubILockable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubILockable(Expression expression) : base(expression)
         {
         }
 
+        public LockReason? ActiveLockReason { get; }
+
         public bool Locked { get; }
 
-        internal static StubILockable Create(IQueryProvider provider, Expression expression)
+        internal static StubILockable Create(Expression expression)
         {
-            return new StubILockable(provider, expression);
+            return new StubILockable(expression);
         }
     }
 }

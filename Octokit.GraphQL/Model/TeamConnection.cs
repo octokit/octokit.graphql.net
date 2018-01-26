@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Team.
     /// </summary>
-    public class TeamConnection : QueryEntity
+    public class TeamConnection : QueryableValue<TeamConnection>
     {
-        public TeamConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public TeamConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<TeamEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<TeamEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Team> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Team> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static TeamConnection Create(IQueryProvider provider, Expression expression)
+        internal static TeamConnection Create(Expression expression)
         {
-            return new TeamConnection(provider, expression);
+            return new TeamConnection(expression);
         }
     }
 }

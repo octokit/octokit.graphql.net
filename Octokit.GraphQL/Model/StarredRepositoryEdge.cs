@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a starred repository.
     /// </summary>
-    public class StarredRepositoryEdge : QueryEntity
+    public class StarredRepositoryEdge : QueryableValue<StarredRepositoryEdge>
     {
-        public StarredRepositoryEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StarredRepositoryEdge(Expression expression) : base(expression)
         {
         }
 
@@ -25,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset? StarredAt { get; }
 
-        internal static StarredRepositoryEdge Create(IQueryProvider provider, Expression expression)
+        internal static StarredRepositoryEdge Create(Expression expression)
         {
-            return new StarredRepositoryEdge(provider, expression);
+            return new StarredRepositoryEdge(expression);
         }
     }
 }

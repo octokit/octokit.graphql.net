@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can have labels assigned to it.
     /// </summary>
-    public interface ILabelable : IQueryEntity
+    public interface ILabelable : IQueryableValue<ILabelable>
     {
         /// <summary>
         /// A list of labels associated with the object.
@@ -28,22 +28,21 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubILabelable : QueryEntity, ILabelable
+    internal class StubILabelable : QueryableValue<StubILabelable>, ILabelable
     {
-        public StubILabelable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubILabelable(Expression expression) : base(expression)
         {
         }
 
         public LabelConnection Labels(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octokit.GraphQL.Model.LabelConnection.Create);
 
-        internal static StubILabelable Create(IQueryProvider provider, Expression expression)
+        internal static StubILabelable Create(Expression expression)
         {
-            return new StubILabelable(provider, expression);
+            return new StubILabelable(expression);
         }
     }
 }

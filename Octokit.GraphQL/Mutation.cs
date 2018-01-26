@@ -1,22 +1,22 @@
-namespace Octokit.GraphQL.Model
+namespace Octokit.GraphQL
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
+    using Octokit.GraphQL.Model;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
     /// The root query for implementing GraphQL mutations.
     /// </summary>
-    public class Mutation : QueryEntity, IMutation
+    public class Mutation : QueryableValue<Mutation>, IMutation
     {
-        public Mutation() : base(new QueryProvider())
+        public Mutation() : base(null)
         {
         }
 
-        internal Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Mutation(Expression expression) : base(expression)
         {
         }
 
@@ -96,6 +96,11 @@ namespace Octokit.GraphQL.Model
         public DismissPullRequestReviewPayload DismissPullRequestReview(DismissPullRequestReviewInput input) => this.CreateMethodCall(x => x.DismissPullRequestReview(input), Octokit.GraphQL.Model.DismissPullRequestReviewPayload.Create);
 
         /// <summary>
+        /// Lock a lockable object
+        /// </summary>
+        public LockLockablePayload LockLockable(LockLockableInput input) => this.CreateMethodCall(x => x.LockLockable(input), Octokit.GraphQL.Model.LockLockablePayload.Create);
+
+        /// <summary>
         /// Moves a project card to another place.
         /// </summary>
         public MoveProjectCardPayload MoveProjectCard(MoveProjectCardInput input) => this.CreateMethodCall(x => x.MoveProjectCard(input), Octokit.GraphQL.Model.MoveProjectCardPayload.Create);
@@ -165,9 +170,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public UpdateTopicsPayload UpdateTopics(UpdateTopicsInput input) => this.CreateMethodCall(x => x.UpdateTopics(input), Octokit.GraphQL.Model.UpdateTopicsPayload.Create);
 
-        internal static Mutation Create(IQueryProvider provider, Expression expression)
+        internal static Mutation Create(Expression expression)
         {
-            return new Mutation(provider, expression);
+            return new Mutation(expression);
         }
     }
 }

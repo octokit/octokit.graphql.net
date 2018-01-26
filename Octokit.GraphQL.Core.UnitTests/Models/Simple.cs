@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class Simple : QueryEntity
+    class Simple : QueryableValue<Simple>
     {
-        public Simple(IQueryProvider provider)
-            : base(provider)
-        {
-        }
-
-        public Simple(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
+        public Simple(Expression expression)
+            : base(expression)
         {
         }
 
@@ -20,9 +14,9 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public string Description { get; set; }
         public int Number { get; set; }
 
-        internal Simple Create(IQueryProvider provider, Expression expression)
+        internal static Simple Create(Expression expression)
         {
-            return new Simple(provider, expression);
+            return new Simple(expression);
         }
     }
 }

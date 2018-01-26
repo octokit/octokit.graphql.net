@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'merged' event on a given pull request.
     /// </summary>
-    public class MergedEvent : QueryEntity
+    public class MergedEvent : QueryableValue<MergedEvent>
     {
-        public MergedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MergedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -58,9 +57,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static MergedEvent Create(IQueryProvider provider, Expression expression)
+        internal static MergedEvent Create(Expression expression)
         {
-            return new MergedEvent(provider, expression);
+            return new MergedEvent(expression);
         }
     }
 }

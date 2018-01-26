@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Projects manage issues, pull requests and notes within a project owner.
     /// </summary>
-    public class Project : QueryEntity
+    public class Project : QueryableValue<Project>
     {
-        public Project(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Project(Expression expression) : base(expression)
         {
         }
 
@@ -58,6 +57,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         public string Id { get; }
@@ -99,6 +99,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
@@ -111,9 +112,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool ViewerCanUpdate { get; }
 
-        internal static Project Create(IQueryProvider provider, Expression expression)
+        internal static Project Create(Expression expression)
         {
-            return new Project(provider, expression);
+            return new Project(expression);
         }
     }
 }

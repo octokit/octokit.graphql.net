@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Octokit.GraphQL;
 using Octokit.GraphQL.Core.Generation;
 using System.IO;
+using System.Linq;
 
 namespace Generate
 {
@@ -33,6 +34,14 @@ namespace Generate
                 Directory.CreateDirectory(modelPath);
             }
 
+            var csFiles = Directory.EnumerateFiles(path, "*.cs")
+                .Union(Directory.EnumerateFiles(modelPath, "*.cs"));
+
+            foreach (var csFile in csFiles)
+            {
+                File.Delete(csFile);
+            }
+
             var header = new ProductHeaderValue("Octokit.GraphQL", "0.1");
             var connection = new Connection(header, token);
 
@@ -41,8 +50,8 @@ namespace Generate
 
             foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL", "Octokit.GraphQL.Model"))
             {
-                Console.WriteLine("Writing " + file.FileName);
-                File.WriteAllText(Path.Combine(path, file.FileName), file.Content);
+                Console.WriteLine("Writing " + file.Path);
+                File.WriteAllText(Path.Combine(path, file.Path), file.Content);
             }
         }
     }

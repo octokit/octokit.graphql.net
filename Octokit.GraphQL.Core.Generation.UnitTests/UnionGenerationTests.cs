@@ -14,15 +14,15 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public class Union : QueryEntity, IUnion
+    public class Union : QueryableValue<Union>, IUnion
     {{
-        public Union(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Union(Expression expression) : base(expression)
         {{
         }}
 {0}
-        internal static Union Create(IQueryProvider provider, Expression expression)
+        internal static Union Create(Expression expression)
         {{
-            return new Union(provider, expression);
+            return new Union(expression);
         }}
     }}
 }}";
@@ -44,7 +44,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new GeneratedFile(@"Model\Union.cs", expected), result);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(new GeneratedFile(@"Model\Union.cs", expected), result);
         }
 
         private string FormatMemberTemplate(string members, string interfaces = null)

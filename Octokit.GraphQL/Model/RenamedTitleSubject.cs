@@ -8,9 +8,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object which has a renamable title
     /// </summary>
-    public class RenamedTitleSubject : QueryEntity, IUnion
+    public class RenamedTitleSubject : QueryableValue<RenamedTitleSubject>, IUnion
     {
-        public RenamedTitleSubject(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RenamedTitleSubject(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static RenamedTitleSubject Create(IQueryProvider provider, Expression expression)
+        internal static RenamedTitleSubject Create(Expression expression)
         {
-            return new RenamedTitleSubject(provider, expression);
+            return new RenamedTitleSubject(expression);
         }
     }
 }

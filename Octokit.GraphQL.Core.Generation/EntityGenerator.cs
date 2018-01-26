@@ -24,20 +24,19 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryEntity{GenerateImplementedInterfaces(type)}
+    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type)}
     {{
-        public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType)}
 
-        internal static {className} Create(IQueryProvider provider, Expression expression)
+        internal static {className} Create(Expression expression)
         {{
-            return new {className}(provider, expression);
+            return new {className}(expression);
         }}
     }}
 }}";
@@ -54,24 +53,23 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;{includeEntities}
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, true)}public class {className} : QueryEntity, {interfaceName}
+    {GenerateDocComments(type, true)}public class {className} : QueryableValue<{className}>, {interfaceName}
     {{
-        public {className}() : base(new QueryProvider())
+        public {className}() : base(null)
         {{
         }}
 
-        internal {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType)}
 
-        internal static {className} Create(IQueryProvider provider, Expression expression)
+        internal static {className} Create(Expression expression)
         {{
-            return new {className}(provider, expression);
+            return new {className}(expression);
         }}
     }}
 }}";
@@ -184,27 +182,39 @@ namespace Octokit.GraphQL.Core.Generation
 
         private static string GenerateScalarField(FieldModel field, TypeModel type)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                    ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                    : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"        public {typeName} {name} {{ get; }}";
+            return $"{obsoleteAttribute}        public {typeName} {name} {{ get; }}";
         }
 
         private static string GenerateObjectField(FieldModel field, TypeModel type, string rootNamespace, string entityNamespace, string queryType)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
             var implName = GetEntityImplementationName(type,(typeName != queryType) ? entityNamespace : rootNamespace);
-            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
+            return $"{obsoleteAttribute}        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
         }
 
         private static string GenerateScalarMethod(FieldModel field, TypeModel type)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var csharpType = TypeUtilities.GetCSharpReturnType(type);
 
             GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"        public {csharpType} {name}({arguments}) => null;";
+            return $"{obsoleteAttribute}        public {csharpType} {name}({arguments}) => null;";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type, string entityNamespace)
@@ -220,9 +230,17 @@ namespace Octokit.GraphQL.Core.Generation
 
         private static string GenerateListField(FieldModel field, TypeModel type)
         {
+            var obsoleteAttribute = field.IsDeprecated
+                ? $@"        {AttributeGenerator.GenerateObsoleteAttribute(field.DeprecationReason)}{Environment.NewLine}"
+                : string.Empty;
+
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"        public {typeName} {name} => this.CreateProperty(x => x.{name});";
+            var getter = TypeUtilities.IsCSharpPrimitive(type.OfType) ?
+                "{ get; }" :
+                $"=> this.CreateProperty(x => x.{name});";
+
+            return $"{obsoleteAttribute}        public {typeName} {name} {getter}";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)

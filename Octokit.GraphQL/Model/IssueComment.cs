@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a comment on an Issue.
     /// </summary>
-    public class IssueComment : QueryEntity
+    public class IssueComment : QueryableValue<IssueComment>
     {
-        public IssueComment(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public IssueComment(Expression expression) : base(expression)
         {
         }
 
@@ -54,6 +53,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -113,6 +113,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
@@ -138,16 +139,16 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.
         /// </summary>
         public bool ViewerDidAuthor { get; }
 
-        internal static IssueComment Create(IQueryProvider provider, Expression expression)
+        internal static IssueComment Create(Expression expression)
         {
-            return new IssueComment(provider, expression);
+            return new IssueComment(expression);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Core.Introspection;
@@ -76,7 +75,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Kind = t.Kind,
                         Name = t.Name,
                         Description = t.Description,
-                        Fields = t.Fields(true).Select((Field f) => new FieldModel
+                        Fields = t.Fields(true).Select(f => new FieldModel
                         {
                             Name = f.Name,
                             Description = f.Description,
@@ -90,7 +89,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expectedQuery, queryResult);
 
-            var responseResult = new ResponseDeserializer().Deserialize(query, data).Single();
+            var responseResult = new ResponseDeserializer().Deserialize(query, data);
 
             var type = responseResult.Types[0];
             Assert.Equal(TypeKind.Scalar, type.Kind);

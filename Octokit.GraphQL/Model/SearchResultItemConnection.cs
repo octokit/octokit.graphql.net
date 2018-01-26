@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of results that matched against a search query.
     /// </summary>
-    public class SearchResultItemConnection : QueryEntity
+    public class SearchResultItemConnection : QueryableValue<SearchResultItemConnection>
     {
-        public SearchResultItemConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public SearchResultItemConnection(Expression expression) : base(expression)
         {
         }
 
@@ -24,7 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<SearchResultItemEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<SearchResultItemEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// The number of issues that matched the search query.
@@ -34,7 +33,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<SearchResultItem> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<SearchResultItem> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -56,9 +55,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int WikiCount { get; }
 
-        internal static SearchResultItemConnection Create(IQueryProvider provider, Expression expression)
+        internal static SearchResultItemConnection Create(Expression expression)
         {
-            return new SearchResultItemConnection(provider, expression);
+            return new SearchResultItemConnection(expression);
         }
     }
 }

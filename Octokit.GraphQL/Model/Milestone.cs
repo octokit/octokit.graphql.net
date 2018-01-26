@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Milestone object on a given repository.
     /// </summary>
-    public class Milestone : QueryEntity
+    public class Milestone : QueryableValue<Milestone>
     {
-        public Milestone(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Milestone(Expression expression) : base(expression)
         {
         }
 
@@ -66,6 +65,20 @@ namespace Octokit.GraphQL.Model
         public int Number { get; }
 
         /// <summary>
+        /// A list of pull requests associated with the milestone.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="states">A list of states to filter the pull requests by.</param>
+        /// <param name="labels">A list of label names to filter the pull requests by.</param>
+        /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
+        /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
+        /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
+        public PullRequestConnection PullRequests(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<PullRequestState> states = null, IEnumerable<string> labels = null, string headRefName = null, string baseRefName = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
+
+        /// <summary>
         /// The repository associated with this milestone.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
@@ -88,6 +101,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
@@ -95,9 +109,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static Milestone Create(IQueryProvider provider, Expression expression)
+        internal static Milestone Create(Expression expression)
         {
-            return new Milestone(provider, expression);
+            return new Milestone(expression);
         }
     }
 }

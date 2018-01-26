@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git tree entry.
     /// </summary>
-    public class TreeEntry : QueryEntity
+    public class TreeEntry : QueryableValue<TreeEntry>
     {
-        public TreeEntry(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public TreeEntry(Expression expression) : base(expression)
         {
         }
 
@@ -46,9 +45,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Type { get; }
 
-        internal static TreeEntry Create(IQueryProvider provider, Expression expression)
+        internal static TreeEntry Create(Expression expression)
         {
-            return new TreeEntry(provider, expression);
+            return new TreeEntry(expression);
         }
     }
 }

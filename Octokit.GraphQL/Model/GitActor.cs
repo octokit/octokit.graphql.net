@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an actor in a Git commit (ie. an author or committer).
     /// </summary>
-    public class GitActor : QueryEntity
+    public class GitActor : QueryableValue<GitActor>
     {
-        public GitActor(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public GitActor(Expression expression) : base(expression)
         {
         }
 
@@ -42,9 +41,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.Model.User.Create);
 
-        internal static GitActor Create(IQueryProvider provider, Expression expression)
+        internal static GitActor Create(Expression expression)
         {
-            return new GitActor(provider, expression);
+            return new GitActor(expression);
         }
     }
 }

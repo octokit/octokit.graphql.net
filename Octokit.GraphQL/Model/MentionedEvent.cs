@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'mentioned' event on a given issue or pull request.
     /// </summary>
-    public class MentionedEvent : QueryEntity
+    public class MentionedEvent : QueryableValue<MentionedEvent>
     {
-        public MentionedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MentionedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -29,13 +28,14 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         public string Id { get; }
 
-        internal static MentionedEvent Create(IQueryProvider provider, Expression expression)
+        internal static MentionedEvent Create(Expression expression)
         {
-            return new MentionedEvent(provider, expression);
+            return new MentionedEvent(expression);
         }
     }
 }

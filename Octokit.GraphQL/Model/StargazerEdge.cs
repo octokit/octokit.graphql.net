@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a user that's starred a repository.
     /// </summary>
-    public class StargazerEdge : QueryEntity
+    public class StargazerEdge : QueryableValue<StargazerEdge>
     {
-        public StargazerEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StargazerEdge(Expression expression) : base(expression)
         {
         }
 
@@ -25,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset? StarredAt { get; }
 
-        internal static StargazerEdge Create(IQueryProvider provider, Expression expression)
+        internal static StargazerEdge Create(Expression expression)
         {
-            return new StargazerEdge(provider, expression);
+            return new StargazerEdge(expression);
         }
     }
 }

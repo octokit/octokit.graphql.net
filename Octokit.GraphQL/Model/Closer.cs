@@ -8,9 +8,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The object which triggered a `ClosedEvent`.
     /// </summary>
-    public class Closer : QueryEntity, IUnion
+    public class Closer : QueryableValue<Closer>, IUnion
     {
-        public Closer(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Closer(Expression expression) : base(expression)
         {
         }
 
@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static Closer Create(IQueryProvider provider, Expression expression)
+        internal static Closer Create(Expression expression)
         {
-            return new Closer(provider, expression);
+            return new Closer(expression);
         }
     }
 }

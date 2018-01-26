@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,11 +9,16 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A repository pull request.
     /// </summary>
-    public class PullRequest : QueryEntity
+    public class PullRequest : QueryableValue<PullRequest>
     {
-        public PullRequest(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequest(Expression expression) : base(expression)
         {
         }
+
+        /// <summary>
+        /// Reason that the conversation was locked.
+        /// </summary>
+        public LockReason? ActiveLockReason { get; }
 
         /// <summary>
         /// The number of additions in this pull request.
@@ -49,6 +53,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the name of the base Ref associated with the pull request, even if the ref has been deleted.
         /// </summary>
         public string BaseRefName { get; }
+
+        /// <summary>
+        /// Identifies the oid of the base ref associated with the pull request, even if the ref has been deleted.
+        /// </summary>
+        public string BaseRefOid { get; }
 
         /// <summary>
         /// Identifies the body of the pull request.
@@ -111,6 +120,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -132,6 +142,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the name of the head Ref associated with the pull request, even if the ref has been deleted.
         /// </summary>
         public string HeadRefName { get; }
+
+        /// <summary>
+        /// Identifies the oid of the head ref associated with the pull request, even if the ref has been deleted.
+        /// </summary>
+        public string HeadRefOid { get; }
 
         /// <summary>
         /// The repository associated with this pull request's head Ref.
@@ -230,7 +245,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -291,7 +306,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reviewer suggestions based on commit history and past review comments.
         /// </summary>
-        public IQueryable<SuggestedReviewer> SuggestedReviewers => this.CreateProperty(x => x.SuggestedReviewers);
+        public IQueryableList<SuggestedReviewer> SuggestedReviewers => this.CreateProperty(x => x.SuggestedReviewers);
 
         /// <summary>
         /// A list of events, comments, commits, etc. associated with the pull request.
@@ -311,6 +326,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
@@ -336,7 +352,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.
@@ -348,9 +364,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public SubscriptionState ViewerSubscription { get; }
 
-        internal static PullRequest Create(IQueryProvider provider, Expression expression)
+        internal static PullRequest Create(Expression expression)
         {
-            return new PullRequest(provider, expression);
+            return new PullRequest(expression);
         }
     }
 }

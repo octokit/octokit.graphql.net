@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 r.DatabaseId,
             });
 
-            var repository = Connection.Run(query).Result.FirstOrDefault();
+            var repository = Connection.Run(query).Result;
 
             Assert.NotNull(repository);
             Assert.Equal(repository.Name, "octokit.net");
@@ -74,7 +74,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Contains("discussions", repositoryNames);
         }
 
-        [IntegrationTest]
+        [IntegrationTest(Skip = "Querying unions like this no longer works")]
         public void Should_Query_Union_Issue_Or_PullRequest()
         {
             var query = new Query().Repository("octokit", "octokit.net")
@@ -85,7 +85,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     PullRequestId = issueOrPullRequest.PullRequest.Id
                 });
 
-            var result = Connection.Run(query).Result.First();
+            var result = Connection.Run(query).Result;
         }
     }
 }

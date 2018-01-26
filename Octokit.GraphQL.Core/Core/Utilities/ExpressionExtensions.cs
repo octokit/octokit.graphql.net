@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Octokit.GraphQL.Core.Syntax;
 using Newtonsoft.Json.Linq;
+using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Utilities
 {
@@ -51,11 +51,11 @@ namespace Octokit.GraphQL.Core.Utilities
                 // If the source type is a JToken use JToken.ToObject to convert to the target type.
                 return Expression.Call(
                     expression,
-                    ExpressionMethods.JTokenToObject.MakeGenericMethod(type));
+                    JsonMethods.JTokenToObject.MakeGenericMethod(type));
             }
-            else if (IsIQueryableOfJToken(sourceType))
+            else if (IsIEnumerableOfJToken(sourceType))
             {
-                // If the source type is an IQueryable<JToken> then add a select statement to cast.
+                // If the source type is an IEnumerable<JToken> then add a select statement to cast.
                 return AddSelectCast(expression, type);
             }
 
@@ -88,19 +88,8 @@ namespace Octokit.GraphQL.Core.Utilities
                 // Returns `expression[fieldName];`
                 return Expression.Call(
                     expression,
-                    ExpressionMethods.JTokenIndexer,
+                    JsonMethods.JTokenIndexer,
                     Expression.Constant(fieldName));
-            }
-            else if (IsIQueryableOfJToken(expression.Type))
-            {
-                // Returns `expression.Select(x => x[fieldName]);`
-                var lambdaParameter = Expression.Parameter(typeof(JToken));
-                return Expression.Call(
-                    ExpressionMethods.SelectMethod.MakeGenericMethod(typeof(JToken)),
-                    expression,
-                    Expression.Lambda(
-                        lambdaParameter.AddIndexer(fieldName),
-                        lambdaParameter));
             }
             else
             {
@@ -129,59 +118,13 @@ namespace Octokit.GraphQL.Core.Utilities
                         var instance = methodCall.Arguments[0];
                         var lambda = methodCall.Arguments[1].GetLambda();
                         return Expression.Call(
-                            ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
-                            instance,
-                            Expression.Lambda(
-                                lambda.Body.AddCast(queryType),
-                                lambda.Parameters));
-                    }
-                    else if (IsSelectEntity(methodCall.Method))
-                    {
-                        // The source expression is an ExpressionMethods.SelectEntity call. Create a new
-                        // ExpressionMethods.SelectEntity call with a modified selector lambda which adds
-                        // the required cast. For example the following expression:
-                        //
-                        //     ExpressionMethods.SelectEntity(list, x => x["a"])
-                        //
-                        // Would be rewritten as
-                        //
-                        //      ExpressionMethods.SelectEntity(list, x => x["a"].ToObject<TargetType>())
-                        //
-                        var instance = methodCall.Arguments[0];
-                        var lambda = methodCall.Arguments[1].GetLambda();
-                        return Expression.Call(
-                            ExpressionMethods.SelectEntityMethod.MakeGenericMethod(queryType),
+                            methodCall.Method.GetGenericMethodDefinition().MakeGenericMethod(queryType),
                             instance,
                             Expression.Lambda(
                                 lambda.Body.AddCast(queryType),
                                 lambda.Parameters));
                     }
                 }
-                else
-                {
-                    // The source expression is not a Select call; add a new select call on the
-                    // IEnumerable<> to cast each element.
-                    var parameter = Expression.Parameter(typeof(JToken));
-                    return Expression.Call(
-                        ExpressionMethods.SelectMethod.MakeGenericMethod(queryType),
-                        expression,
-                        Expression.Lambda(
-                            parameter.AddCast(queryType),
-                            parameter));
-                }
-            }
-            else
-            {
-                // The target type is not an IEnumerable<>. Call ExpressionMethods.FirstOrDefault
-                // on the source with a cast to the correct type.
-                var parameter = Expression.Parameter(typeof(JToken));
-                var result =  Expression.Call(
-                    ExpressionMethods.FirstOrDefaultMethod.MakeGenericMethod(type),
-                    expression,
-                    Expression.Lambda(
-                        parameter.AddCast(type),
-                        parameter));
-                return result;
             }
 
             throw new NotSupportedException(
@@ -209,28 +152,15 @@ namespace Octokit.GraphQL.Core.Utilities
             return null;
         }
 
-        private static bool IsIQueryableOfJToken(Type type)
+        private static bool IsIEnumerableOfJToken(TypeInfo type)
         {
-            return IsIQueryableOfJToken(type.GetTypeInfo());
-        }
-
-        private static bool IsIQueryableOfJToken(TypeInfo type)
-        {
-            return typeof(IQueryable<JToken>).GetTypeInfo().IsAssignableFrom(type);
+            return typeof(IEnumerable<JToken>).GetTypeInfo().IsAssignableFrom(type);
         }
 
         private static bool IsSelect(MethodInfo method)
         {
-            return (method.DeclaringType == typeof(ExpressionMethods) &&
-                method.Name == nameof(ExpressionMethods.Select) &&
-                method.GetParameters().Length == 2);
-        }
-
-        private static bool IsSelectEntity(MethodInfo method)
-        {
-            return (method.DeclaringType == typeof(ExpressionMethods) &&
-                method.Name == nameof(ExpressionMethods.SelectEntity) &&
-                method.GetParameters().Length == 2);
+            return method.GetGenericMethodDefinition() == Rewritten.List.SelectMethod ||
+                method.GetGenericMethodDefinition() == Rewritten.Value.SelectMethod;
         }
     }
 }

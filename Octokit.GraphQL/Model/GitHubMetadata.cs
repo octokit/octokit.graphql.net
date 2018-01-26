@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents information about the GitHub instance.
     /// </summary>
-    public class GitHubMetadata : QueryEntity
+    public class GitHubMetadata : QueryableValue<GitHubMetadata>
     {
-        public GitHubMetadata(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public GitHubMetadata(Expression expression) : base(expression)
         {
         }
 
@@ -24,17 +23,17 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// IP addresses that users connect to for git operations
         /// </summary>
-        public IQueryable<string> GitIpAddresses => this.CreateProperty(x => x.GitIpAddresses);
+        public IEnumerable<string> GitIpAddresses { get; }
 
         /// <summary>
         /// IP addresses that service hooks are sent from
         /// </summary>
-        public IQueryable<string> HookIpAddresses => this.CreateProperty(x => x.HookIpAddresses);
+        public IEnumerable<string> HookIpAddresses { get; }
 
         /// <summary>
         /// IP addresses that the importer connects from
         /// </summary>
-        public IQueryable<string> ImporterIpAddresses => this.CreateProperty(x => x.ImporterIpAddresses);
+        public IEnumerable<string> ImporterIpAddresses { get; }
 
         /// <summary>
         /// Whether or not users are verified
@@ -44,11 +43,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// IP addresses for GitHub Pages' A records
         /// </summary>
-        public IQueryable<string> PagesIpAddresses => this.CreateProperty(x => x.PagesIpAddresses);
+        public IEnumerable<string> PagesIpAddresses { get; }
 
-        internal static GitHubMetadata Create(IQueryProvider provider, Expression expression)
+        internal static GitHubMetadata Create(Expression expression)
         {
-            return new GitHubMetadata(provider, expression);
+            return new GitHubMetadata(expression);
         }
     }
 }

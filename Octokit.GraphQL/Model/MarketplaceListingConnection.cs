@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Look up Marketplace Listings
     /// </summary>
-    public class MarketplaceListingConnection : QueryEntity
+    public class MarketplaceListingConnection : QueryableValue<MarketplaceListingConnection>
     {
-        public MarketplaceListingConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public MarketplaceListingConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<MarketplaceListingEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<MarketplaceListingEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<MarketplaceListing> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<MarketplaceListing> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static MarketplaceListingConnection Create(IQueryProvider provider, Expression expression)
+        internal static MarketplaceListingConnection Create(Expression expression)
         {
-            return new MarketplaceListingConnection(provider, expression);
+            return new MarketplaceListingConnection(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'removed_from_project' event on a given issue or pull request.
     /// </summary>
-    public class RemovedFromProjectEvent : QueryEntity
+    public class RemovedFromProjectEvent : QueryableValue<RemovedFromProjectEvent>
     {
-        public RemovedFromProjectEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RemovedFromProjectEvent(Expression expression) : base(expression)
         {
         }
 
@@ -29,13 +28,14 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         public string Id { get; }
 
-        internal static RemovedFromProjectEvent Create(IQueryProvider provider, Expression expression)
+        internal static RemovedFromProjectEvent Create(Expression expression)
         {
-            return new RemovedFromProjectEvent(provider, expression);
+            return new RemovedFromProjectEvent(expression);
         }
     }
 }

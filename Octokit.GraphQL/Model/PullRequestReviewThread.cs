@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A threaded list of comments for a given pull request.
     /// </summary>
-    public class PullRequestReviewThread : QueryEntity
+    public class PullRequestReviewThread : QueryableValue<PullRequestReviewThread>
     {
-        public PullRequestReviewThread(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestReviewThread(Expression expression) : base(expression)
         {
         }
 
@@ -37,9 +36,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
-        internal static PullRequestReviewThread Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestReviewThread Create(Expression expression)
         {
-            return new PullRequestReviewThread(provider, expression);
+            return new PullRequestReviewThread(expression);
         }
     }
 }

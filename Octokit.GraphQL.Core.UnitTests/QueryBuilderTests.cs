@@ -85,92 +85,12 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void SimpleQuery_Where_Error()
-        {
-            var expected = "{simple(arg1:\"foo\"){name}}";
-
-            var expression = new TestQuery()
-                .Simple("foo")
-                .Where(simple => simple.Name == "Something")
-                .Select(x => x.Name);
-
-            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
-            {
-                var query = new QueryBuilder().Build(expression);
-            });
-
-            Assert.Equal(notSupportedException.Message, "Where() is not supported");
-        }
-
-        [Fact]
-        public void SimpleQuery_GroupBy_Error()
-        {
-            var expected = "{simple(arg1:\"foo\"){name}}";
-
-            var expression = new TestQuery()
-                .Simple("foo")
-                .GroupBy(simple => simple.Name);
-
-            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
-            {
-                var query = new QueryBuilder().Build(expression);
-            });
-
-            Assert.Equal(notSupportedException.Message, "GroupBy() is not supported");
-        }
-
-        [Fact]
-        public void SimpleQuery_SkipWhile_Error()
-        {
-            var expected = "{simple(arg1:\"foo\"){name}}";
-
-            var expression = new TestQuery()
-                .Simple("foo")
-                .SkipWhile(simple => true);
-
-            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
-            {
-                var query = new QueryBuilder().Build(expression);
-            });
-
-            Assert.Equal(notSupportedException.Message, "SkipWhile() is not supported");
-        }
-
-        [Fact]
-        public void SimpleQuery_ToArray_Error()
-        {
-            var expression = new TestQuery()
-                .Simple("foo");
-
-            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
-            {
-                expression.ToArray();
-            });
-
-            Assert.Equal(notSupportedException.Message, "QueryProvider cannot be executed");
-        }
-
-        [Fact]
-        public void SimpleQuery_ToList_Error()
-        {
-            var expression = new TestQuery()
-                .Simple("foo");
-
-            var notSupportedException = Assert.Throws<NotSupportedException>(() =>
-            {
-                expression.ToList();
-            });
-
-            Assert.Equal(notSupportedException.Message, "QueryProvider cannot be executed");
-        }
-
-        [Fact]
         public void Data_Select_Single_Member()
         {
-            var expected = "query{data{id}}";
+            var expected = "query{queryItems{id}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => x.Id);
 
             var query = new QueryBuilder().Build(expression);
@@ -182,10 +102,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Data_Select_Multiple_Members()
         {
-            var expected = "query{data{id name}}";
+            var expected = "query{queryItems{id name}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new{ x.Id, x.Name});
 
             var query = new QueryBuilder().Build(expression);
@@ -213,14 +133,14 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Nested_Selects()
         {
-            var expected = "query{data{id items{name}}}";
+            var expected = "query{queryItems{id nestedItems{name}}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var query = new QueryBuilder().Build(expression);
@@ -232,15 +152,15 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Inline_Fragment()
         {
-            var expected = "query{data{... on NestedData{__typename id items{name}}}}";
+            var expected = "query{queryItems{... on NestedData{__typename id nestedItems{name}}}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .OfType<NestedData>()
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var query = new QueryBuilder().Build(expression);

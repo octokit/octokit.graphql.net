@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A user is an individual's account on GitHub that owns repositories and can make new content.
     /// </summary>
-    public class User : QueryEntity
+    public class User : QueryableValue<User>
     {
-        public User(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public User(Expression expression) : base(expression)
         {
         }
 
@@ -72,6 +71,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -300,6 +300,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
         /// <summary>
@@ -335,9 +336,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string WebsiteUrl { get; }
 
-        internal static User Create(IQueryProvider provider, Expression expression)
+        internal static User Create(Expression expression)
         {
-            return new User(provider, expression);
+            return new User(expression);
         }
     }
 }

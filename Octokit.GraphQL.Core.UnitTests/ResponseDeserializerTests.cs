@@ -26,7 +26,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var operation = new QueryBuilder().Build(query);
             var expectedType = query.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(operation, data).Single();
+            var result = new ResponseDeserializer().Deserialize(operation, data);
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);
@@ -49,7 +49,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Hello World!", result.Name);
             Assert.Equal("Goodbye cruel world", result.Description);
@@ -59,12 +59,12 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Data_Select_Single_Member()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => x.Id);
 
             var data = @"{
   ""data"":{
-    ""data"":[
+    ""queryItems"":[
       { ""id"": ""foo"" },
       { ""id"": ""bar"" }
     ]
@@ -89,15 +89,15 @@ namespace Octokit.GraphQL.Core.UnitTests
     ""data"":{
         ""nested"": {
             ""simple"":{
-            ""name"": ""Hello World!"",
-            ""description"": ""Goodbye cruel world""
+              ""name"": ""Hello World!"",
+              ""description"": ""Goodbye cruel world""
             }
         }
     }
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Hello World!", result.Name);
             Assert.Equal("Goodbye cruel world", result.Description);
@@ -115,8 +115,8 @@ namespace Octokit.GraphQL.Core.UnitTests
     ""data"":{
         ""nested"": {
             ""simple"":{
-            ""name"": ""Hello World!"",
-            ""description"": ""Goodbye cruel world""
+              ""name"": ""Hello World!"",
+              ""description"": ""Goodbye cruel world""
             }
         }
     }
@@ -124,7 +124,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = new QueryBuilder().Build(expression);
             var expectedType = expression.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result.Name);
@@ -147,8 +147,8 @@ namespace Octokit.GraphQL.Core.UnitTests
     ""data"":{
         ""nested"": {
             ""simple"":{
-            ""name"": ""Hello World!"",
-            ""description"": ""Goodbye cruel world""
+              ""name"": ""Hello World!"",
+              ""description"": ""Goodbye cruel world""
             }
         }
     }
@@ -156,7 +156,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = new QueryBuilder().Build(expression);
             var expectedType = expression.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result.Name);
@@ -167,96 +167,96 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Nested_Selects()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""queryItems"": [{
             ""id"": ""foo"",
-            ""items"": [
+            ""nestedItems"": [
                 { ""name"": ""item1"" },
                 { ""name"": ""item2"" }
             ]
-        }
+        }]
     }
 }";
 
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("foo", result.Id);
-            Assert.Equal(new[] { "item1", "item2" }, result.Items);
+            Assert.Equal("foo", result[0].Id);
+            Assert.Equal(new[] { "item1", "item2" }, result[0].Items);
         }
 
         [Fact]
         public void Field_Alias()
         {
-            var expression = new TestQuery().Data.Select(x => new { Foo = x.Id });
+            var expression = new TestQuery().QueryItems.Select(x => new { Foo = x.Id });
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""queryItems"": [{
             ""foo"": ""123"",
-        }
+        }]
     }
 }";
 
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("123", result.Foo);
+            Assert.Equal("123", result[0].Foo);
         }
 
         [Fact]
         public void Select_ToList()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name).ToList(),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""queryItems"": [{
             ""id"": ""foo"",
-            ""items"": [
+            ""nestedItems"": [
                 { ""name"": ""item1"" },
                 { ""name"": ""item2"" }
             ]
-        }
+        }]
     }
 }";
 
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("foo", result.Id);
-            Assert.Equal(new[] { "item1", "item2" }, result.Items);
+            Assert.Equal("foo", result[0].Id);
+            Assert.Equal(new[] { "item1", "item2" }, result[0].Items);
         }
 
         [Fact]
         public void Select_ToDictionary()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => new
+                    Items = x.NestedItems.Select(i => new
                     {
                         i.Name,
                         i.Description,
@@ -265,31 +265,31 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": {
+        ""queryItems"": [{
             ""id"": ""foo"",
-            ""items"": [
+            ""nestedItems"": [
                 { ""name"": ""item1"", ""description"": ""foo"" },
                 { ""name"": ""item2"", ""description"": ""bar"" }
             ]
-        }
+        }]
     }
 }";
 
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("foo", result.Id);
-            Assert.Equal(new[] { "item1", "item2" }, result.Items.Keys);
-            Assert.Equal(new[] { "foo", "bar" }, result.Items.Values);
+            Assert.Equal("foo", result[0].Id);
+            Assert.Equal(new[] { "item1", "item2" }, result[0].Items.Keys);
+            Assert.Equal(new[] { "foo", "bar" }, result[0].Items.Values);
         }
 
         [Fact]
         public void Fragment()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .OfType<Simple>()
                 .Select(x => new
                 {
@@ -299,7 +299,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": [
+        ""queryItems"": [
             { 
                 ""__typename"": ""Simple"",
                 ""name"": ""foo"",
@@ -315,10 +315,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("foo", result.Name);
-            Assert.Equal("bar", result.Description);
+            Assert.Equal("foo", result[0].Name);
+            Assert.Equal("bar", result[0].Description);
         }
 
         [Fact]
@@ -335,26 +335,89 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""union"": [
-            { 
-                ""__typename"": ""Simple"",
-                ""name"": ""foo"",
-                ""description"": ""bar"" 
-            },
-            { 
-                ""__typename"": ""Another"",
-            }
-        ]
+        ""union"": { 
+            ""__typename"": ""Simple"",
+            ""name"": ""foo"",
+            ""description"": ""bar"" 
+        }
     }
 }";
 
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("foo", result.Name);
             Assert.Equal("bar", result.Description);
+        }
+
+        [Fact]
+        public void Nested_Select_Value_Single()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).Single()
+                });
+
+            var data = @"{
+    ""data"":{
+        ""nested"": {
+            ""simple"": {
+                ""name"": ""foo"",
+                ""number"": ""42""
+            }
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data);
+
+            Assert.Equal("foo", result.Value.Name);
+            Assert.Equal(42, result.Value.Number);
+        }
+
+        [Fact]
+        public void Nested_Select_Value_SingleOrDefault()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).SingleOrDefault()
+                });
+
+            var data = @"{
+    ""data"":{
+        ""nested"": {
+            ""simple"": {
+                ""name"": ""foo"",
+                ""number"": ""42""
+            }
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data);
+
+            Assert.Equal("foo", result.Value.Name);
+            Assert.Equal(42, result.Value.Number);
         }
 
         private class NamedClass

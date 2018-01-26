@@ -1,7 +1,7 @@
 namespace Octokit.GraphQL.Model
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Specifies an author for filtering Git commits.
@@ -10,6 +10,6 @@ namespace Octokit.GraphQL.Model
     {
         public string Id { get; set; }
 
-        public IQueryable<string> Emails { get; set; }
+        public IEnumerable<string> Emails { get; set; }
     }
 }

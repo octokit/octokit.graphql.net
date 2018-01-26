@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An external identity provisioned by SAML SSO or SCIM.
     /// </summary>
-    public class ExternalIdentity : QueryEntity
+    public class ExternalIdentity : QueryableValue<ExternalIdentity>
     {
-        public ExternalIdentity(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ExternalIdentity(Expression expression) : base(expression)
         {
         }
 
@@ -43,9 +42,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.Model.User.Create);
 
-        internal static ExternalIdentity Create(IQueryProvider provider, Expression expression)
+        internal static ExternalIdentity Create(Expression expression)
         {
-            return new ExternalIdentity(provider, expression);
+            return new ExternalIdentity(expression);
         }
     }
 }

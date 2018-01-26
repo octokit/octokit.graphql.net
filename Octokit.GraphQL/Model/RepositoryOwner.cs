@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an owner of a Repository.
     /// </summary>
-    public interface IRepositoryOwner : IQueryEntity
+    public interface IRepositoryOwner : IQueryableValue<IRepositoryOwner>
     {
         /// <summary>
         /// A URL pointing to the owner's public avatar.
@@ -75,14 +75,13 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIRepositoryOwner : QueryEntity, IRepositoryOwner
+    internal class StubIRepositoryOwner : QueryableValue<StubIRepositoryOwner>, IRepositoryOwner
     {
-        public StubIRepositoryOwner(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIRepositoryOwner(Expression expression) : base(expression)
         {
         }
 
@@ -102,9 +101,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string Url { get; }
 
-        internal static StubIRepositoryOwner Create(IQueryProvider provider, Expression expression)
+        internal static StubIRepositoryOwner Create(Expression expression)
         {
-            return new StubIRepositoryOwner(provider, expression);
+            return new StubIRepositoryOwner(expression);
         }
     }
 }

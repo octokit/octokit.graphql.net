@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'converted_note_to_issue' event on a given issue or pull request.
     /// </summary>
-    public class ConvertedNoteToIssueEvent : QueryEntity
+    public class ConvertedNoteToIssueEvent : QueryableValue<ConvertedNoteToIssueEvent>
     {
-        public ConvertedNoteToIssueEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ConvertedNoteToIssueEvent(Expression expression) : base(expression)
         {
         }
 
@@ -29,13 +28,14 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
         public int? DatabaseId { get; }
 
         public string Id { get; }
 
-        internal static ConvertedNoteToIssueEvent Create(IQueryProvider provider, Expression expression)
+        internal static ConvertedNoteToIssueEvent Create(Expression expression)
         {
-            return new ConvertedNoteToIssueEvent(provider, expression);
+            return new ConvertedNoteToIssueEvent(expression);
         }
     }
 }

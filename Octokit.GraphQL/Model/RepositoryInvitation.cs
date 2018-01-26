@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An invitation for a user to be added to a repository.
     /// </summary>
-    public class RepositoryInvitation : QueryEntity
+    public class RepositoryInvitation : QueryableValue<RepositoryInvitation>
     {
-        public RepositoryInvitation(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public RepositoryInvitation(Expression expression) : base(expression)
         {
         }
 
@@ -33,9 +32,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RepositoryInvitationRepository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.RepositoryInvitationRepository.Create);
 
-        internal static RepositoryInvitation Create(IQueryProvider provider, Expression expression)
+        internal static RepositoryInvitation Create(Expression expression)
         {
-            return new RepositoryInvitation(provider, expression);
+            return new RepositoryInvitation(expression);
         }
     }
 }
