@@ -131,6 +131,34 @@ namespace Octokit.GraphQL.UnitTests
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
+        [Fact]
+        public void Issues_Select_Nodes()
+        {
+            var expression = new Query()
+                .Repository("github", "VisualStudio")
+                .Issues(first: 30, labels: new[] { "bug" }, states: new[] { IssueState.Closed })
+                .Select(x => x.Nodes)
+                .Select(x => new
+                {
+                    x.Number,
+                    x.Title,
+                });
+
+            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
+                Rewritten.List.Select(
+                    Rewritten.Value.SelectList(
+                        data["data"]["repository"]["issues"],
+                        x => x["nodes"]),
+                    x => new
+                    {
+                        Number = x["number"].ToObject<int>(),
+                        Title = x["title"].ToObject<string>(),
+                    });
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
         [Fact(Skip = "Not yet working")]
         public void Search_User_Name_Via_Edges()
         {
