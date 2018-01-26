@@ -273,7 +273,9 @@ namespace Octokit.GraphQL.Core.Builders
                 var lambda = selectExpression.GetLambda();
                 var instance = Visit(source);
                 var select = (LambdaExpression)Visit(lambda);
-                var itemType = GetEnumerableItemType(select.ReturnType);
+                var itemType = select.ReturnType == typeof(JToken) ?
+                    select.ReturnType :
+                    GetEnumerableItemType(select.ReturnType);
 
                 return Expression.Call(
                     Rewritten.Value.SelectListMethod.MakeGenericMethod(itemType),
@@ -448,7 +450,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             var ti = type.GetTypeInfo();
 
-            if (ti.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            if (ti.IsGenericType && ti.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 return ti.GenericTypeArguments[0];
             }
