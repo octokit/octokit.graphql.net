@@ -59,12 +59,12 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Data_Select_Single_Member()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => x.Id);
 
             var data = @"{
   ""data"":{
-    ""data"":[
+    ""queryItems"":[
       { ""id"": ""foo"" },
       { ""id"": ""bar"" }
     ]
@@ -167,18 +167,18 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Nested_Selects()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name).ToList(),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var data = @"{
     ""data"":{
-        ""data"": [{
+        ""queryItems"": [{
             ""id"": ""foo"",
-            ""items"": [
+            ""nestedItems"": [
                 { ""name"": ""item1"" },
                 { ""name"": ""item2"" }
             ]
@@ -198,11 +198,11 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Field_Alias()
         {
-            var expression = new TestQuery().Data.Select(x => new { Foo = x.Id });
+            var expression = new TestQuery().QueryItems.Select(x => new { Foo = x.Id });
 
             var data = @"{
     ""data"":{
-        ""data"": [{
+        ""queryItems"": [{
             ""foo"": ""123"",
         }]
     }
@@ -220,18 +220,18 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Select_ToList()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name).ToList(),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var data = @"{
     ""data"":{
-        ""data"": [{
+        ""queryItems"": [{
             ""id"": ""foo"",
-            ""items"": [
+            ""nestedItems"": [
                 { ""name"": ""item1"" },
                 { ""name"": ""item2"" }
             ]
@@ -252,11 +252,11 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Select_ToDictionary()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => new
+                    Items = x.NestedItems.Select(i => new
                     {
                         i.Name,
                         i.Description,
@@ -265,9 +265,9 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": [{
+        ""queryItems"": [{
             ""id"": ""foo"",
-            ""items"": [
+            ""nestedItems"": [
                 { ""name"": ""item1"", ""description"": ""foo"" },
                 { ""name"": ""item2"", ""description"": ""bar"" }
             ]
@@ -289,7 +289,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Fragment()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .OfType<Simple>()
                 .Select(x => new
                 {
@@ -299,7 +299,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""data"": [
+        ""queryItems"": [
             { 
                 ""__typename"": ""Simple"",
                 ""name"": ""foo"",

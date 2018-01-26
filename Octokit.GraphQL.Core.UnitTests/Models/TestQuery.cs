@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public IQueryableList<NestedData> Data => this.CreateProperty(x => Data);
+        public IQueryableList<NestedData> QueryItems => this.CreateProperty(x => QueryItems);
 
         public Union Union => this.CreateProperty(x => Union, Union.Create);
 

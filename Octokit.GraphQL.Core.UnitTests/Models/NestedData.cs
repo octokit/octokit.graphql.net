@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 
         public string Id { get; set; }
         public string Name { get; set; }
-        public IQueryableList<Simple> Items => this.CreateProperty(x => x.Items);
+        public IQueryableList<Simple> NestedItems => this.CreateProperty(x => x.NestedItems);
 
         internal NestedData Create(Expression expression)
         {

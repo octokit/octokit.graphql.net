@@ -167,10 +167,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Data_Select_Single_Member()
         {
-            var expected = "query{data{id}}";
+            var expected = "query{queryItems{id}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => x.Id);
 
             var query = new QueryBuilder().Build(expression);
@@ -182,10 +182,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Data_Select_Multiple_Members()
         {
-            var expected = "query{data{id name}}";
+            var expected = "query{queryItems{id name}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new{ x.Id, x.Name});
 
             var query = new QueryBuilder().Build(expression);
@@ -213,14 +213,14 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Nested_Selects()
         {
-            var expected = "query{data{id items{name}}}";
+            var expected = "query{queryItems{id nestedItems{name}}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name).ToList(),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var query = new QueryBuilder().Build(expression);
@@ -232,15 +232,15 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Inline_Fragment()
         {
-            var expected = "query{data{... on NestedData{__typename id items{name}}}}";
+            var expected = "query{queryItems{... on NestedData{__typename id nestedItems{name}}}}";
 
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .OfType<NestedData>()
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name).ToList(),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             var query = new QueryBuilder().Build(expression);
