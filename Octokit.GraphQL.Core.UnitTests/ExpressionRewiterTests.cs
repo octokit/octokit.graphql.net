@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json.Linq;
@@ -49,8 +50,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .QueryItems
                 .Select(x => x.Id);
 
-            Expression<Func<JObject, string>> expected = data =>
-                Rewritten.Value.Select(data["data"]["queryItems"], x => x["id"].ToObject<string>());
+            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
+                Rewritten.List.Select(data["data"]["queryItems"], x => x["id"].ToObject<string>());
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
