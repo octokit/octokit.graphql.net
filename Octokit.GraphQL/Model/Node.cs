@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object with an ID.
     /// </summary>
-    public interface INode : IQueryableValue<INode>
+    public interface INode : IQueryableValue<INode>, IQueryableInterface
     {
         /// <summary>
         /// ID of the object.

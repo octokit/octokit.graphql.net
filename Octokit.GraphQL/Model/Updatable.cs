@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can be updated.
     /// </summary>
-    public interface IUpdatable : IQueryableValue<IUpdatable>
+    public interface IUpdatable : IQueryableValue<IUpdatable>, IQueryableInterface
     {
         /// <summary>
         /// Check if the current viewer can update this object.

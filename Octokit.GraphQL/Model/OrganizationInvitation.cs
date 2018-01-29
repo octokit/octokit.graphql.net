@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public DateTimeOffset? CreatedAt { get; }
+
+        /// <summary>
         /// The email address of the user invited to the organization.
         /// </summary>
         public string Email { get; }
@@ -36,6 +41,11 @@ namespace Octokit.GraphQL.Model
         /// The user who created the invitation.
         /// </summary>
         public User Inviter => this.CreateProperty(x => x.Inviter, Octokit.GraphQL.Model.User.Create);
+
+        /// <summary>
+        /// The organization the invite is for
+        /// </summary>
+        public Organization Organization => this.CreateProperty(x => x.Organization, Octokit.GraphQL.Model.Organization.Create);
 
         /// <summary>
         /// The user's pending role in the organization (e.g. member, owner).

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Information about a signature (GPG or S/MIME) on a Commit or Tag.
     /// </summary>
-    public interface IGitSignature : IQueryableValue<IGitSignature>
+    public interface IGitSignature : IQueryableValue<IGitSignature>, IQueryableInterface
     {
         /// <summary>
         /// Email used to sign this object.
