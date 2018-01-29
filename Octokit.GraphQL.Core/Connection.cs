@@ -19,9 +19,6 @@ namespace Octokit.GraphQL
         /// </summary>
         public static readonly Uri GithubApiUri = new Uri("https://api.github.com/graphql");
 
-        private static readonly QueryBuilder builder = new QueryBuilder();
-        private static readonly QuerySerializer serializer = new QuerySerializer();
-        private static readonly ResponseDeserializer deserializer = new ResponseDeserializer();
         private readonly ICredentialStore credentialStore;
         private readonly HttpClient httpClient;
 
@@ -51,6 +48,7 @@ namespace Octokit.GraphQL
 
         public async Task<T> Run<T>(IQueryableValue<T> queryable)
         {
+            var builder = new QueryBuilder();
             var query = builder.Build(queryable);
             var payload = query.GetPayload();
             var token = await credentialStore.GetCredentials();
@@ -59,11 +57,13 @@ namespace Octokit.GraphQL
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
             var response = await httpClient.SendAsync(request);
             var data = await response.Content.ReadAsStringAsync();
+            var deserializer = new ResponseDeserializer();
             return deserializer.Deserialize(query, data);
         }
 
         public async Task<IEnumerable<T>> Run<T>(IQueryableList<T> queryable)
         {
+            var builder = new QueryBuilder();
             var query = builder.Build(queryable);
             var payload = query.GetPayload();
             var token = await credentialStore.GetCredentials();
@@ -72,6 +72,7 @@ namespace Octokit.GraphQL
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
             var response = await httpClient.SendAsync(request);
             var data = await response.Content.ReadAsStringAsync();
+            var deserializer = new ResponseDeserializer();
             return deserializer.Deserialize(query, data);
         }
 
