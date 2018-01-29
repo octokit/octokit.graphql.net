@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Comments that can be updated.
     /// </summary>
-    public interface IUpdatableComment : IQueryableValue<IUpdatableComment>
+    public interface IUpdatableComment : IQueryableValue<IUpdatableComment>, IQueryableInterface
     {
         /// <summary>
         /// Reasons why the current viewer can not update this comment.

@@ -76,5 +76,22 @@ namespace Octokit.GraphQL.Core.Builders
                 return source.Select(x => x.ToObject<TResult>()).ToList();
             }
         }
+
+        public static class Interface
+        {
+            public static readonly MethodInfo CastMethod = typeof(Interface).GetTypeInfo().GetDeclaredMethod(nameof(Cast));
+
+            public static JToken Cast(JToken source, string typeName)
+            {
+                var received = (string)source["__typename"];
+
+                if (received == typeName)
+                {
+                    return source;
+                }
+
+                throw new InvalidOperationException($"Cast failed: expected '{typeName}', received '{received}'.");
+            }
+        }
     }
 }

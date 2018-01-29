@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a type that can be retrieved by a URL.
     /// </summary>
-    public interface IUniformResourceLocatable : IQueryableValue<IUniformResourceLocatable>
+    public interface IUniformResourceLocatable : IQueryableValue<IUniformResourceLocatable>, IQueryableInterface
     {
         /// <summary>
         /// The HTML path to this resource.

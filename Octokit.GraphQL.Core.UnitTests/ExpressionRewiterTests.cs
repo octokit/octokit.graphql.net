@@ -216,5 +216,22 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
+
+        [Fact]
+        public void Interface_Cast()
+        {
+            var expression = new TestQuery()
+                .Node(123)
+                .Cast<Simple>()
+                .Select(x => x.Name);
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
+                    Rewritten.Interface.Cast(data["data"]["node"], "Simple"),
+                    x => x["name"]).ToObject<string>();
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
     }
 }

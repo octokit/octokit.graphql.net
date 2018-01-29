@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be closed
     /// </summary>
-    public interface IClosable : IQueryableValue<IClosable>
+    public interface IClosable : IQueryableValue<IClosable>, IQueryableInterface
     {
         /// <summary>
         /// `true` if the object is closed (definition of closed may depend on type)

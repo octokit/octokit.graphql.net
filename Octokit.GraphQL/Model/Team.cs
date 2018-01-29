@@ -25,6 +25,12 @@ namespace Octokit.GraphQL.Model
         public TeamConnection Ancestors(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Ancestors(first, after, last, before), Octokit.GraphQL.Model.TeamConnection.Create);
 
         /// <summary>
+        /// A URL pointing to the team's avatar.
+        /// </summary>
+        /// <param name="size">The size in pixels of the resulting square image.</param>
+        public string AvatarUrl(int? size = 400) => null;
+
+        /// <summary>
         /// List of child teams belonging to this team
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

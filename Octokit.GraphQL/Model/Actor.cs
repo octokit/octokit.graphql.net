@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an object which can take actions on GitHub. Typically a User or Bot.
     /// </summary>
-    public interface IActor : IQueryableValue<IActor>
+    public interface IActor : IQueryableValue<IActor>, IQueryableInterface
     {
         /// <summary>
         /// A URL pointing to the actor's public avatar.
