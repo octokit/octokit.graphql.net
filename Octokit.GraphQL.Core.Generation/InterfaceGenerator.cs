@@ -22,7 +22,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type)}public interface {className} : IQueryableValue<{className}>
+    {GenerateDocComments(type)}public interface {className} : IQueryableValue<{className}>, IQueryableInterface
     {{{GenerateFields(type)}
     }}
 }}
