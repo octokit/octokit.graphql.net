@@ -103,9 +103,9 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void SimpleQuery_Cast_NUllable_Member_To_Enum()
+        public void SimpleQuery_Cast_Nullable_Member_To_Enum()
         {
-            var expected = "query{simple(arg1:\"foo\"){number}}";
+            var expected = "query{simple(arg1:\"foo\"){nullableNumber}}";
 
             var expression = new TestQuery()
                 .Simple("foo")
