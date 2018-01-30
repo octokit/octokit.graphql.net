@@ -4,6 +4,7 @@ using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
+using Octokit.GraphQL.Model;
 using Xunit;
 
 namespace Octokit.GraphQL.UnitTests
@@ -212,6 +213,72 @@ namespace Octokit.GraphQL.UnitTests
             }
 
             Assert.True(thrown);
+        }
+
+        [Fact]
+        public void PullRequest_Review_State_ChangesRequested()
+        {
+            var expression = new Query()
+                .Repository("grokys", "VisualStudio")
+                .PullRequest(1)
+                .Reviews(first : 30)
+                .Select(x => x.Nodes)
+                .Select(x => new
+                {
+                    x.State
+                });
+
+            string data = @"{
+  ""data"": {
+    ""repository"": {
+      ""pullRequest"": {
+        ""reviews"": {
+          ""nodes"": [{
+            ""state"": ""CHANGES_REQUESTED""
+          }]
+        }
+      }
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+
+            Assert.Equal(PullRequestReviewState.ChangesRequested, result[0].State);
+        }
+
+        [Fact]
+        public void PullRequest_Review_State_ChangesRequested_Cast_To_Int()
+        {
+            var expression = new Query()
+                .Repository("grokys", "VisualStudio")
+                .PullRequest(1)
+                .Reviews(first: 30)
+                .Select(x => x.Nodes)
+                .Select(x => new
+                {
+                    State = (int)x.State
+                });
+
+            string data = @"{
+  ""data"": {
+    ""repository"": {
+      ""pullRequest"": {
+        ""reviews"": {
+          ""nodes"": [{
+            ""state"": ""CHANGES_REQUESTED""
+          }]
+        }
+      }
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+
+            Assert.Equal(3, result[0].State);
         }
     }
 }
