@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can have users assigned to it.
     /// </summary>
-    public interface IAssignable : IQueryableValue<IAssignable>
+    public interface IAssignable : IQueryableValue<IAssignable>, IQueryableInterface
     {
         /// <summary>
         /// A list of Users assigned to this object.

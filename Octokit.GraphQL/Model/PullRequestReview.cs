@@ -124,6 +124,15 @@ namespace Octokit.GraphQL.Model
         public string Url { get; }
 
         /// <summary>
+        /// A list of edits to this content.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public UserContentEditConnection UserContentEdits(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
+
+        /// <summary>
         /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }

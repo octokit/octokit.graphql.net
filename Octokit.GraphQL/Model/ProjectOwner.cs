@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an owner of a Project.
     /// </summary>
-    public interface IProjectOwner : IQueryableValue<IProjectOwner>
+    public interface IProjectOwner : IQueryableValue<IProjectOwner>, IQueryableInterface
     {
         string Id { get; }
 

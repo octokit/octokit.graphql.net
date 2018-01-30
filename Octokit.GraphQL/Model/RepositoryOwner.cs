@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an owner of a Repository.
     /// </summary>
-    public interface IRepositoryOwner : IQueryableValue<IRepositoryOwner>
+    public interface IRepositoryOwner : IQueryableValue<IRepositoryOwner>, IQueryableInterface
     {
         /// <summary>
         /// A URL pointing to the owner's public avatar.

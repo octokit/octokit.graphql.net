@@ -495,5 +495,27 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Interface_Cast()
+        {
+            var expected = @"query {
+    node(id: 123) {
+        ... on Simple {
+            __typename
+            name
+        }
+    }
+}";
+            var expression = new TestQuery()
+                .Node(123)
+                .Cast<Simple>()
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
     }
 }
