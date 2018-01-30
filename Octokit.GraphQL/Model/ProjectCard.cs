@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A card in a project.
     /// </summary>
-    public class ProjectCard : QueryEntity
+    public class ProjectCard : QueryableValue<ProjectCard>
     {
-        public ProjectCard(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ProjectCard(Expression expression) : base(expression)
         {
         }
 
@@ -84,9 +83,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static ProjectCard Create(IQueryProvider provider, Expression expression)
+        internal static ProjectCard Create(Expression expression)
         {
-            return new ProjectCard(provider, expression);
+            return new ProjectCard(expression);
         }
     }
 }

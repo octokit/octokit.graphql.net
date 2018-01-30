@@ -3,10 +3,10 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class IntrospectionQuery : QueryEntity, IQuery
+    public class IntrospectionQuery : QueryableValue<IntrospectionQuery>, IQuery
     {
         public IntrospectionQuery()
-            : base(new QueryProvider())
+            : base(null)
         {
         }
 

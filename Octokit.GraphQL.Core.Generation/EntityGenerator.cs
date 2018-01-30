@@ -24,20 +24,19 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryEntity{GenerateImplementedInterfaces(type)}
+    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type)}
     {{
-        public {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType)}
 
-        internal static {className} Create(IQueryProvider provider, Expression expression)
+        internal static {className} Create(Expression expression)
         {{
-            return new {className}(provider, expression);
+            return new {className}(expression);
         }}
     }}
 }}";
@@ -54,24 +53,23 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;{includeEntities}
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, true)}public class {className} : QueryEntity, {interfaceName}
+    {GenerateDocComments(type, true)}public class {className} : QueryableValue<{className}>, {interfaceName}
     {{
-        public {className}() : base(new QueryProvider())
+        public {className}() : base(null)
         {{
         }}
 
-        internal {className}(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType)}
 
-        internal static {className} Create(IQueryProvider provider, Expression expression)
+        internal static {className} Create(Expression expression)
         {{
-            return new {className}(provider, expression);
+            return new {className}(expression);
         }}
     }}
 }}";
@@ -238,7 +236,11 @@ namespace Octokit.GraphQL.Core.Generation
 
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"{obsoleteAttribute}        public {typeName} {name} => this.CreateProperty(x => x.{name});";
+            var getter = TypeUtilities.IsCSharpPrimitive(type.OfType) ?
+                "{ get; }" :
+                $"=> this.CreateProperty(x => x.{name});";
+
+            return $"{obsoleteAttribute}        public {typeName} {name} {getter}";
         }
 
         private static string GenerateListMethod(FieldModel field, TypeModel type)

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A team or user who has the ability to push to a protected branch.
     /// </summary>
-    public class PushAllowance : QueryEntity
+    public class PushAllowance : QueryableValue<PushAllowance>
     {
-        public PushAllowance(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PushAllowance(Expression expression) : base(expression)
         {
         }
 
@@ -28,9 +27,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ProtectedBranch ProtectedBranch => this.CreateProperty(x => x.ProtectedBranch, Octokit.GraphQL.Model.ProtectedBranch.Create);
 
-        internal static PushAllowance Create(IQueryProvider provider, Expression expression)
+        internal static PushAllowance Create(Expression expression)
         {
-            return new PushAllowance(provider, expression);
+            return new PushAllowance(expression);
         }
     }
 }

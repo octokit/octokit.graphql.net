@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
-using Octokit.GraphQL.Core.Utilities;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.UnitTests
@@ -19,8 +18,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name);
 
-            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["simple"], x => x["name"].ToObject<string>());
+            Expression<Func<JObject, string>> expected = data =>
+                Rewritten.Value.Select(data["data"]["simple"], x => x["name"]).ToObject<string>();
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
@@ -34,7 +33,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["simple"], x => new
+                Rewritten.Value.Select(data["data"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),
@@ -48,11 +47,11 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Data_Select_Single_Member()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => x.Id);
 
             Expression<Func<JObject, IEnumerable<string>>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["data"], x => x["id"].ToObject<string>());
+                Rewritten.List.Select(data["data"]["queryItems"], x => x["id"].ToObject<string>());
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
@@ -67,7 +66,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new { x.Name, x.Description });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.SelectEntity(data["data"]["nested"]["simple"], x => new
+                Rewritten.Value.Select(data["data"]["nested"]["simple"], x => new
                 {
                     Name = x["name"].ToObject<string>(),
                     Description = x["description"].ToObject<string>(),
@@ -81,20 +80,86 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Nested_Selects()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.SelectEntity(
-                    data["data"]["data"],
+                Rewritten.List.Select(
+                    data["data"]["queryItems"],
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["nestedItems"], i => i["name"]))
+                    });
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+        [Fact]
+        public void Nested_Select_Value_Single()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).Single()
+                });
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.List.Select(
+                    data["data"]["nested"],
+                    x => new
+                    {
+                        Value = Rewritten.Value.Single(
+                            Rewritten.Value.Select(
+                                x["simple"],
+                                y => new
+                                {
+                                    Name = y["name"].ToObject<string>(),
+                                    Number = y["number"].ToObject<int>(),
+                                }))
+                    });
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+        [Fact]
+        public void Nested_Select_Value_SingleOrDefault()
+        {
+            var expression = new TestQuery()
+                .Nested("foo")
+                .Select(x => new
+                {
+                    Value = x.Simple("bar").Select(y => new
+                    {
+                        y.Name,
+                        y.Number,
+                    }).SingleOrDefault()
+                });
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.List.Select(
+                    data["data"]["nested"],
+                    x => new
+                    {
+                        Value = Rewritten.Value.SingleOrDefault(
+                            Rewritten.Value.Select(
+                                x["simple"],
+                                y => new
+                                {
+                                    Name = y["name"].ToObject<string>(),
+                                    Number = y["number"].ToObject<int>(),
+                                }))
                     });
 
             var query = new QueryBuilder().Build(expression);
@@ -105,21 +170,21 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Inline_Fragment()
         {
             var expression = new TestQuery()
-                .Data
+                .QueryItems
                 .OfType<NestedData>()
                 .Select(x => new
                 {
                     x.Id,
-                    Items = x.Items.Select(i => i.Name),
+                    Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.Select(
-                    ExpressionMethods.ChildrenOfType(data["data"]["data"], "NestedData"),
+                Rewritten.List.Select(
+                    Rewritten.List.OfType(data["data"]["queryItems"], "NestedData"),
                     x => new
                     {
                         Id = x["id"].ToObject<string>(),
-                        Items = ExpressionMethods.SelectEntity(x["items"], i => i["name"].ToObject<string>())
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["nestedItems"], i => i["name"]))
                     });
 
             var query = new QueryBuilder().Build(expression);
@@ -140,36 +205,16 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                ExpressionMethods.Select(
-                    ((Func<JToken, IQueryable<JToken>>)(x => ExpressionMethods.ChildrenOfType(x, "Simple")))((data["data"]["union"])),
+                Rewritten.Value.Select(
+                    Rewritten.Value.Select(data["data"]["union"], x => Rewritten.Value.OfType(x, "Simple")),
                     x => new
                     {
                         Name = x["name"].ToObject<string>(),
                         Description = x["description"].ToObject<string>(),
                     });
 
-            // We need to remove the (Func<JToken, IQueryable<JToken>>) cast that is needed by
-            // C# but not by expression trees.
-            expected = (Expression<Func<JObject, object>>)RemoveConvert.Default.Visit(expected);
-
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.Expression.ToString());
-        }
-
-        class RemoveConvert : ExpressionVisitor
-        {
-            private RemoveConvert() { }
-            public static readonly RemoveConvert Default = new RemoveConvert();
-
-            protected override Expression VisitBinary(BinaryExpression node)
-            {
-                return base.VisitBinary(node);
-            }
-
-            protected override Expression VisitUnary(UnaryExpression node)
-            {
-                return Visit(node.NodeType == ExpressionType.Convert ? node.Operand : node);
-            }
         }
     }
 }

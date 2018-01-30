@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a range of information from a Git blame.
     /// </summary>
-    public class BlameRange : QueryEntity
+    public class BlameRange : QueryableValue<BlameRange>
     {
-        public BlameRange(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public BlameRange(Expression expression) : base(expression)
         {
         }
 
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int StartingLine { get; }
 
-        internal static BlameRange Create(IQueryProvider provider, Expression expression)
+        internal static BlameRange Create(Expression expression)
         {
-            return new BlameRange(provider, expression);
+            return new BlameRange(expression);
         }
     }
 }

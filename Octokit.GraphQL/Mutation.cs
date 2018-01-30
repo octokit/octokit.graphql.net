@@ -2,7 +2,6 @@ namespace Octokit.GraphQL
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Model;
     using Octokit.GraphQL.Core;
@@ -11,13 +10,13 @@ namespace Octokit.GraphQL
     /// <summary>
     /// The root query for implementing GraphQL mutations.
     /// </summary>
-    public class Mutation : QueryEntity, IMutation
+    public class Mutation : QueryableValue<Mutation>, IMutation
     {
-        public Mutation() : base(new QueryProvider())
+        public Mutation() : base(null)
         {
         }
 
-        internal Mutation(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Mutation(Expression expression) : base(expression)
         {
         }
 
@@ -171,9 +170,9 @@ namespace Octokit.GraphQL
         /// </summary>
         public UpdateTopicsPayload UpdateTopics(UpdateTopicsInput input) => this.CreateMethodCall(x => x.UpdateTopics(input), Octokit.GraphQL.Model.UpdateTopicsPayload.Create);
 
-        internal static Mutation Create(IQueryProvider provider, Expression expression)
+        internal static Mutation Create(Expression expression)
         {
-            return new Mutation(provider, expression);
+            return new Mutation(expression);
         }
     }
 }

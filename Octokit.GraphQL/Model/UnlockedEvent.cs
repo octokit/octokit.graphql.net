@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'unlocked' event on a given issue or pull request.
     /// </summary>
-    public class UnlockedEvent : QueryEntity
+    public class UnlockedEvent : QueryableValue<UnlockedEvent>
     {
-        public UnlockedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public UnlockedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -33,9 +32,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ILockable Lockable => this.CreateProperty(x => x.Lockable, Octokit.GraphQL.Model.Internal.StubILockable.Create);
 
-        internal static UnlockedEvent Create(IQueryProvider provider, Expression expression)
+        internal static UnlockedEvent Create(Expression expression)
         {
-            return new UnlockedEvent(provider, expression);
+            return new UnlockedEvent(expression);
         }
     }
 }

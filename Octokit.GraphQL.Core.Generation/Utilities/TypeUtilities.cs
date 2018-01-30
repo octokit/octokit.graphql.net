@@ -134,7 +134,8 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
                 case TypeKind.NonNull:
                     return GetCSharpType(type.OfType, false, returnType);
                 case TypeKind.List:
-                    return (returnType ? "IQueryable" : "IEnumerable") + $"<{GetCSharpType(type.OfType, type.Kind != TypeKind.NonNull, false)}>";
+                    var enumerable = !returnType || IsCSharpPrimitive(type.OfType);
+                    return (enumerable ? "IEnumerable" : "IQueryableList") + $"<{GetCSharpType(type.OfType, type.Kind != TypeKind.NonNull, false)}>";
                 default:
                     throw new NotSupportedException();
             }

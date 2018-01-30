@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class TestQuery : QueryEntity, IQuery
+    class TestQuery : QueryableValue<TestQuery>, IQuery
     {
         public TestQuery()
-            : base(new QueryProvider())
+            : base(null)
         {
         }
 
-        public IQueryable<NestedData> Data => this.CreateProperty(x => Data);
+        public IQueryableList<NestedData> QueryItems => this.CreateProperty(x => QueryItems);
 
-        public IQueryable<Union> Union => this.CreateProperty(x => Union);
+        public Union Union => this.CreateProperty(x => Union, Union.Create);
 
-        public IQueryable<Simple> Simple(string arg1, int? arg2 = null)
+        public Simple Simple(string arg1, int? arg2 = null)
         {
-            return this.CreateMethodCall(x => x.Simple(arg1, arg2));
+            return this.CreateMethodCall(x => x.Simple(arg1, arg2), Models.Simple.Create);
         }
 
         public NestedQuery Nested(string arg1, int? arg2 = null)
@@ -26,39 +25,39 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
             return this.CreateMethodCall(x => x.Nested(arg1, arg2), NestedQuery.Create);
         }
 
-        public IQueryable<Simple> StringValue(string value)
+        public Simple StringValue(string value)
         {
-            return this.CreateMethodCall(x => x.StringValue(value));
+            return this.CreateMethodCall(x => x.StringValue(value), Models.Simple.Create);
         }
 
-        public IQueryable<Simple> BoolValue(bool boolean)
+        public Simple BoolValue(bool boolean)
         {
-            return this.CreateMethodCall(x => x.BoolValue(boolean));
+            return this.CreateMethodCall(x => x.BoolValue(boolean), Models.Simple.Create);
         }
 
-        public IQueryable<Simple> IntValue(int integer)
+        public Simple IntValue(int integer)
         {
-            return this.CreateMethodCall(x => x.IntValue(integer));
+            return this.CreateMethodCall(x => x.IntValue(integer), Models.Simple.Create);
         }
 
-        public IQueryable<Simple> FloatValue(float flt)
+        public Simple FloatValue(float flt)
         {
-            return this.CreateMethodCall(x => x.FloatValue(flt));
+            return this.CreateMethodCall(x => x.FloatValue(flt), Models.Simple.Create);
         }
 
-        public IQueryable<Simple> ObjectValue(object value)
+        public Simple ObjectValue(object value)
         {
-            return this.CreateMethodCall(x => x.ObjectValue(value));
+            return this.CreateMethodCall(x => x.ObjectValue(value), Models.Simple.Create);
         }
 
-        public IQueryable<Simple> EnumerableValue(IEnumerable<object> value)
+        public Simple EnumerableValue(IEnumerable<object> value)
         {
-            return this.CreateMethodCall(x => x.EnumerableValue(value));
+            return this.CreateMethodCall(x => x.EnumerableValue(value), Models.Simple.Create);
         }
 
-        public IQueryable<Simple> InputObject(InputObject input)
+        public Simple InputObject(InputObject input)
         {
-            return this.CreateMethodCall(x => x.InputObject(input));
+            return this.CreateMethodCall(x => x.InputObject(input), Models.Simple.Create);
         }
     }
 }

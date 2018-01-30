@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an 'unassigned' event on any assignable object.
     /// </summary>
-    public class UnassignedEvent : QueryEntity
+    public class UnassignedEvent : QueryableValue<UnassignedEvent>
     {
-        public UnassignedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public UnassignedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -38,9 +37,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.Model.User.Create);
 
-        internal static UnassignedEvent Create(IQueryProvider provider, Expression expression)
+        internal static UnassignedEvent Create(Expression expression)
         {
-            return new UnassignedEvent(provider, expression);
+            return new UnassignedEvent(expression);
         }
     }
 }

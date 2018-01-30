@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for ReviewDismissalAllowance.
     /// </summary>
-    public class ReviewDismissalAllowanceConnection : QueryEntity
+    public class ReviewDismissalAllowanceConnection : QueryableValue<ReviewDismissalAllowanceConnection>
     {
-        public ReviewDismissalAllowanceConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReviewDismissalAllowanceConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ReviewDismissalAllowanceEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ReviewDismissalAllowanceEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<ReviewDismissalAllowance> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<ReviewDismissalAllowance> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static ReviewDismissalAllowanceConnection Create(IQueryProvider provider, Expression expression)
+        internal static ReviewDismissalAllowanceConnection Create(Expression expression)
         {
-            return new ReviewDismissalAllowanceConnection(provider, expression);
+            return new ReviewDismissalAllowanceConnection(expression);
         }
     }
 }

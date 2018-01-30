@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'head_ref_deleted' event on a given pull request.
     /// </summary>
-    public class HeadRefDeletedEvent : QueryEntity
+    public class HeadRefDeletedEvent : QueryableValue<HeadRefDeletedEvent>
     {
-        public HeadRefDeletedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public HeadRefDeletedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -43,9 +42,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static HeadRefDeletedEvent Create(IQueryProvider provider, Expression expression)
+        internal static HeadRefDeletedEvent Create(Expression expression)
         {
-            return new HeadRefDeletedEvent(provider, expression);
+            return new HeadRefDeletedEvent(expression);
         }
     }
 }

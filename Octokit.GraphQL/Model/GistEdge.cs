@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class GistEdge : QueryEntity
+    public class GistEdge : QueryableValue<GistEdge>
     {
-        public GistEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public GistEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Gist Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Gist.Create);
 
-        internal static GistEdge Create(IQueryProvider provider, Expression expression)
+        internal static GistEdge Create(Expression expression)
         {
-            return new GistEdge(provider, expression);
+            return new GistEdge(expression);
         }
     }
 }

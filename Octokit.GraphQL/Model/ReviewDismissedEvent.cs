@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'review_dismissed' event on a given issue or pull request.
     /// </summary>
-    public class ReviewDismissedEvent : QueryEntity
+    public class ReviewDismissedEvent : QueryableValue<ReviewDismissedEvent>
     {
-        public ReviewDismissedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReviewDismissedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -74,9 +73,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static ReviewDismissedEvent Create(IQueryProvider provider, Expression expression)
+        internal static ReviewDismissedEvent Create(Expression expression)
         {
-            return new ReviewDismissedEvent(provider, expression);
+            return new ReviewDismissedEvent(expression);
         }
     }
 }

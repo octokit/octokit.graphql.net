@@ -8,9 +8,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An item in an pull request timeline
     /// </summary>
-    public class PullRequestTimelineItem : QueryEntity, IUnion
+    public class PullRequestTimelineItem : QueryableValue<PullRequestTimelineItem>, IUnion
     {
-        public PullRequestTimelineItem(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestTimelineItem(Expression expression) : base(expression)
         {
         }
 
@@ -164,9 +164,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ReviewDismissedEvent ReviewDismissedEvent => this.CreateProperty(x => x.ReviewDismissedEvent, Octokit.GraphQL.Model.ReviewDismissedEvent.Create);
 
-        internal static PullRequestTimelineItem Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestTimelineItem Create(Expression expression)
         {
-            return new PullRequestTimelineItem(provider, expression);
+            return new PullRequestTimelineItem(expression);
         }
     }
 }

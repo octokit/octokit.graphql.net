@@ -37,7 +37,7 @@ namespace Octokit.GraphQL.UnitTests
                     Owner = x.Owner.Select(o => new
                     {
                         o.Login
-                    }),
+                    }).Single(),
                     x.IsFork,
                     x.IsPrivate,
                 });
@@ -81,7 +81,7 @@ namespace Octokit.GraphQL.UnitTests
                     Owner = x.Owner.Select(o => new
                     {
                         o.Login
-                    }),
+                    }).Single(),
                     x.IsFork,
                     x.IsPrivate,
                 });
@@ -123,7 +123,7 @@ namespace Octokit.GraphQL.UnitTests
                     .RepositoryOwner("foo")
                     .Repositories(30, null, null, null, null, null, null, null, null)
                     .Edges.Select(x => x.Node)
-                    .Select((Repository x) => new
+                    .Select(x => new
                     {
                         x.Id,
                         x.Name,
@@ -131,10 +131,10 @@ namespace Octokit.GraphQL.UnitTests
                         {
                             o.Login,
                             AvatarUrl = o.AvatarUrl(null),
-                        }),
+                        }).Single(),
                         x.IsFork,
                         x.IsPrivate,
-                        Login = root.Viewer.Select(l => l.Login),
+                        Login = root.Viewer.Select(l => l.Login).Single(),
                         root.Viewer.Email
                     }));
 
@@ -170,14 +170,14 @@ namespace Octokit.GraphQL.UnitTests
                 .Select(x => new
                 {
                     x.UserCount,
-                    User = x.Edges.Select(e => e.Node).OfType<User>().Select((User u) => new
+                    User = x.Edges.Select(e => e.Node).OfType<User>().Select(u => new
                     {
                         u.Id,
                         u.Login,
                         AvatarUrl = u.AvatarUrl(null),
                         u.WebsiteUrl,
                         u.Name,
-                    })
+                    }).ToList(),
                 });
 
             var serializer = new QuerySerializer(2);
@@ -218,7 +218,9 @@ namespace Octokit.GraphQL.UnitTests
       }
     }
   }
-  viewer
+  viewer {
+    login
+  }
 }";
 
             var expression = new Query()
@@ -230,7 +232,10 @@ namespace Octokit.GraphQL.UnitTests
                               {
                                   y.Name,
                                   y.IsPrivate,
-                                  x.Viewer
+                                  Viewer = x.Viewer.Select(z => new
+                                  {
+                                      z.Login
+                                  }).Single()
                               }));
 
             var serializer = new QuerySerializer(2);

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class TeamEdge : QueryEntity
+    public class TeamEdge : QueryableValue<TeamEdge>
     {
-        public TeamEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public TeamEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Team Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Team.Create);
 
-        internal static TeamEdge Create(IQueryProvider provider, Expression expression)
+        internal static TeamEdge Create(Expression expression)
         {
-            return new TeamEdge(provider, expression);
+            return new TeamEdge(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A respository's open source license
     /// </summary>
-    public class License : QueryEntity
+    public class License : QueryableValue<License>
     {
-        public License(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public License(Expression expression) : base(expression)
         {
         }
 
@@ -24,7 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The conditions set by the license
         /// </summary>
-        public IQueryable<LicenseRule> Conditions => this.CreateProperty(x => x.Conditions);
+        public IQueryableList<LicenseRule> Conditions => this.CreateProperty(x => x.Conditions);
 
         /// <summary>
         /// A human-readable description of the license
@@ -56,7 +55,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The limitations set by the license
         /// </summary>
-        public IQueryable<LicenseRule> Limitations => this.CreateProperty(x => x.Limitations);
+        public IQueryableList<LicenseRule> Limitations => this.CreateProperty(x => x.Limitations);
 
         /// <summary>
         /// The license full name specified by <https://spdx.org/licenses>
@@ -71,7 +70,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The permissions set by the license
         /// </summary>
-        public IQueryable<LicenseRule> Permissions => this.CreateProperty(x => x.Permissions);
+        public IQueryableList<LicenseRule> Permissions => this.CreateProperty(x => x.Permissions);
 
         /// <summary>
         /// Short identifier specified by <https://spdx.org/licenses>
@@ -83,9 +82,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static License Create(IQueryProvider provider, Expression expression)
+        internal static License Create(Expression expression)
         {
-            return new License(provider, expression);
+            return new License(expression);
         }
     }
 }

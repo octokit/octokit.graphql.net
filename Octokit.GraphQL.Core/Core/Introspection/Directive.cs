@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Linq;
+using System.Linq.Expressions;
 using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class Directive : QueryEntity
+    public class Directive : QueryableValue<Directive>
     {
-        public Directive(IQueryProvider provider)
-            : base(provider)
+        public Directive(Expression expression)
+            : base(expression)
         {
         }
 
         public string Name { get; }
         public string Description { get; }
-        public IQueryable<DirectiveLocation> Locations => this.CreateProperty(x => x.Locations);
-        public IQueryable<InputValue> Args => this.CreateProperty(x => x.Args);
+        public DirectiveLocation Locations { get; }
+        public IQueryableList<InputValue> Args => this.CreateProperty(x => x.Args);
     }
 }

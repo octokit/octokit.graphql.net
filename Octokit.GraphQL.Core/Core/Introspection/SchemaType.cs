@@ -5,34 +5,34 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.Introspection
 {
-    public class SchemaType : QueryEntity, IQuery
+    public class SchemaType : QueryableValue<SchemaType>, IQuery, IQueryableValue<SchemaType>
     {
-        public SchemaType(IQueryProvider provider, Expression expression)
-            : base(provider, expression)
+        public SchemaType(Expression expression)
+            : base(expression)
         {
         }
 
         public TypeKind Kind { get; }
         public string Name { get; }
         public string Description { get; }
-        public IQueryable<SchemaType> Interfaces => this.CreateProperty(x => Interfaces);
-        public IQueryable<SchemaType> PossibleTypes => this.CreateProperty(x => x.PossibleTypes);
-        public IQueryable<InputValue> InputFields => this.CreateProperty(x => x.InputFields);
+        public IQueryableList<SchemaType> Interfaces => this.CreateProperty(x => Interfaces);
+        public IQueryableList<SchemaType> PossibleTypes => this.CreateProperty(x => x.PossibleTypes);
+        public IQueryableList<InputValue> InputFields => this.CreateProperty(x => x.InputFields);
         public SchemaType OfType => this.CreateProperty(x => x.OfType, SchemaType.Create);
 
-        public IQueryable<Field> Fields(bool includeDeprecated = false)
+        public IQueryableList<Field> Fields(bool includeDeprecated = false)
         {
             return this.CreateMethodCall(x => x.Fields(includeDeprecated));
         }
 
-        public IQueryable<EnumValue> EnumValues(bool includeDeprecated = false)
+        public IQueryableList<EnumValue> EnumValues(bool includeDeprecated = false)
         {
             return this.CreateMethodCall(x => x.EnumValues(includeDeprecated));
         }
 
-        internal static SchemaType Create(IQueryProvider provider, Expression expression)
+        internal static SchemaType Create(Expression expression)
         {
-            return new SchemaType(provider, expression);
+            return new SchemaType(expression);
         }
     }
 }

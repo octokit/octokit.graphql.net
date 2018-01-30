@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git commit part of a pull request.
     /// </summary>
-    public class PullRequestCommit : QueryEntity
+    public class PullRequestCommit : QueryableValue<PullRequestCommit>
     {
-        public PullRequestCommit(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestCommit(Expression expression) : base(expression)
         {
         }
 
@@ -38,9 +37,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Url { get; }
 
-        internal static PullRequestCommit Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestCommit Create(Expression expression)
         {
-            return new PullRequestCommit(provider, expression);
+            return new PullRequestCommit(expression);
         }
     }
 }

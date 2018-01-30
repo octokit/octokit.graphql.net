@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents the language of a repository.
     /// </summary>
-    public class LanguageEdge : QueryEntity
+    public class LanguageEdge : QueryableValue<LanguageEdge>
     {
-        public LanguageEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public LanguageEdge(Expression expression) : base(expression)
         {
         }
 
@@ -25,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int Size { get; }
 
-        internal static LanguageEdge Create(IQueryProvider provider, Expression expression)
+        internal static LanguageEdge Create(Expression expression)
         {
-            return new LanguageEdge(provider, expression);
+            return new LanguageEdge(expression);
         }
     }
 }

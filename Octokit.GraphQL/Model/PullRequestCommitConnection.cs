@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequestCommit.
     /// </summary>
-    public class PullRequestCommitConnection : QueryEntity
+    public class PullRequestCommitConnection : QueryableValue<PullRequestCommitConnection>
     {
-        public PullRequestCommitConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestCommitConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<PullRequestCommitEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PullRequestCommitEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<PullRequestCommit> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PullRequestCommit> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static PullRequestCommitConnection Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestCommitConnection Create(Expression expression)
         {
-            return new PullRequestCommitConnection(provider, expression);
+            return new PullRequestCommitConnection(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for ReviewRequest.
     /// </summary>
-    public class ReviewRequestConnection : QueryEntity
+    public class ReviewRequestConnection : QueryableValue<ReviewRequestConnection>
     {
-        public ReviewRequestConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReviewRequestConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ReviewRequestEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ReviewRequestEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<ReviewRequest> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<ReviewRequest> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static ReviewRequestConnection Create(IQueryProvider provider, Expression expression)
+        internal static ReviewRequestConnection Create(Expression expression)
         {
-            return new ReviewRequestConnection(provider, expression);
+            return new ReviewRequestConnection(expression);
         }
     }
 }

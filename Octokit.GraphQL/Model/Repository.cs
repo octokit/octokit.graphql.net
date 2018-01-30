@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A repository contains the content for a project.
     /// </summary>
-    public class Repository : QueryEntity
+    public class Repository : QueryableValue<Repository>
     {
-        public Repository(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Repository(Expression expression) : base(expression)
         {
         }
 
@@ -66,7 +65,7 @@ namespace Octokit.GraphQL.Model
         public Ref DefaultBranchRef => this.CreateProperty(x => x.DefaultBranchRef, Octokit.GraphQL.Model.Ref.Create);
 
         /// <summary>
-        /// A list of protected branches that are on this repository.
+        /// A list of deploy keys that are on this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -466,9 +465,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         public UserConnection Watchers(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Watchers(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
-        internal static Repository Create(IQueryProvider provider, Expression expression)
+        internal static Repository Create(Expression expression)
         {
-            return new Repository(provider, expression);
+            return new Repository(expression);
         }
     }
 }

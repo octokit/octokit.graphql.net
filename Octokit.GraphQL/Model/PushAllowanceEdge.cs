@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class PushAllowanceEdge : QueryEntity
+    public class PushAllowanceEdge : QueryableValue<PushAllowanceEdge>
     {
-        public PushAllowanceEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PushAllowanceEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PushAllowance Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.PushAllowance.Create);
 
-        internal static PushAllowanceEdge Create(IQueryProvider provider, Expression expression)
+        internal static PushAllowanceEdge Create(Expression expression)
         {
-            return new PushAllowanceEdge(provider, expression);
+            return new PushAllowanceEdge(expression);
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The results of a search.
     /// </summary>
-    public class SearchResultItem : QueryEntity, IUnion
+    public class SearchResultItem : QueryableValue<SearchResultItem>, IUnion
     {
-        public SearchResultItem(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public SearchResultItem(Expression expression) : base(expression)
         {
         }
 
@@ -44,9 +44,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public MarketplaceListing MarketplaceListing => this.CreateProperty(x => x.MarketplaceListing, Octokit.GraphQL.Model.MarketplaceListing.Create);
 
-        internal static SearchResultItem Create(IQueryProvider provider, Expression expression)
+        internal static SearchResultItem Create(Expression expression)
         {
-            return new SearchResultItem(provider, expression);
+            return new SearchResultItem(expression);
         }
     }
 }

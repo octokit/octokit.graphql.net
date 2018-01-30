@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of projects associated with the owner.
     /// </summary>
-    public class ProjectConnection : QueryEntity
+    public class ProjectConnection : QueryableValue<ProjectConnection>
     {
-        public ProjectConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ProjectConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<ProjectEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<ProjectEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Project> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Project> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static ProjectConnection Create(IQueryProvider provider, Expression expression)
+        internal static ProjectConnection Create(Expression expression)
         {
-            return new ProjectConnection(provider, expression);
+            return new ProjectConnection(expression);
         }
     }
 }

@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Describes the status of a given deployment attempt.
     /// </summary>
-    public class DeploymentStatus : QueryEntity
+    public class DeploymentStatus : QueryableValue<DeploymentStatus>
     {
-        public DeploymentStatus(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeploymentStatus(Expression expression) : base(expression)
         {
         }
 
@@ -59,9 +58,9 @@ namespace Octokit.GraphQL.Model
         [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
-        internal static DeploymentStatus Create(IQueryProvider provider, Expression expression)
+        internal static DeploymentStatus Create(Expression expression)
         {
-            return new DeploymentStatus(provider, expression);
+            return new DeploymentStatus(expression);
         }
     }
 }

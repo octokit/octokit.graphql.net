@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git object.
     /// </summary>
-    public interface IGitObject : IQueryEntity
+    public interface IGitObject : IQueryableValue<IGitObject>
     {
         /// <summary>
         /// An abbreviated version of the Git object ID
@@ -46,14 +46,13 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIGitObject : QueryEntity, IGitObject
+    internal class StubIGitObject : QueryableValue<StubIGitObject>, IGitObject
     {
-        public StubIGitObject(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIGitObject(Expression expression) : base(expression)
         {
         }
 
@@ -69,9 +68,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
-        internal static StubIGitObject Create(IQueryProvider provider, Expression expression)
+        internal static StubIGitObject Create(Expression expression)
         {
-            return new StubIGitObject(provider, expression);
+            return new StubIGitObject(expression);
         }
     }
 }

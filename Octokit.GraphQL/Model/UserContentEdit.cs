@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edit on user content
     /// </summary>
-    public class UserContentEdit : QueryEntity
+    public class UserContentEdit : QueryableValue<UserContentEdit>
     {
-        public UserContentEdit(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public UserContentEdit(Expression expression) : base(expression)
         {
         }
 
@@ -34,9 +33,9 @@ namespace Octokit.GraphQL.Model
         [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }
 
-        internal static UserContentEdit Create(IQueryProvider provider, Expression expression)
+        internal static UserContentEdit Create(Expression expression)
         {
-            return new UserContentEdit(provider, expression);
+            return new UserContentEdit(expression);
         }
     }
 }

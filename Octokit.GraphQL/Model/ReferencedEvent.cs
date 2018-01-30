@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'referenced' event on a given `ReferencedSubject`.
     /// </summary>
-    public class ReferencedEvent : QueryEntity
+    public class ReferencedEvent : QueryableValue<ReferencedEvent>
     {
-        public ReferencedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public ReferencedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -59,9 +58,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ReferencedSubject Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.ReferencedSubject.Create);
 
-        internal static ReferencedEvent Create(IQueryProvider provider, Expression expression)
+        internal static ReferencedEvent Create(Expression expression)
         {
-            return new ReferencedEvent(provider, expression);
+            return new ReferencedEvent(expression);
         }
     }
 }

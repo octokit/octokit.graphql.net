@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'base_ref_changed' event on a given issue or pull request.
     /// </summary>
-    public class BaseRefChangedEvent : QueryEntity
+    public class BaseRefChangedEvent : QueryableValue<BaseRefChangedEvent>
     {
-        public BaseRefChangedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public BaseRefChangedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -34,9 +33,9 @@ namespace Octokit.GraphQL.Model
 
         public string Id { get; }
 
-        internal static BaseRefChangedEvent Create(IQueryProvider provider, Expression expression)
+        internal static BaseRefChangedEvent Create(Expression expression)
         {
-            return new BaseRefChangedEvent(provider, expression);
+            return new BaseRefChangedEvent(expression);
         }
     }
 }

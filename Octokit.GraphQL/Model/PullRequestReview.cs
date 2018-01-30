@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A review object for a given pull request.
     /// </summary>
-    public class PullRequestReview : QueryEntity
+    public class PullRequestReview : QueryableValue<PullRequestReview>
     {
-        public PullRequestReview(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestReview(Expression expression) : base(expression)
         {
         }
 
@@ -137,16 +136,16 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.
         /// </summary>
         public bool ViewerDidAuthor { get; }
 
-        internal static PullRequestReview Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestReview Create(Expression expression)
         {
-            return new PullRequestReview(provider, expression);
+            return new PullRequestReview(expression);
         }
     }
 }

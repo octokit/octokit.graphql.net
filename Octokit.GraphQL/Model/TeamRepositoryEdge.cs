@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a team repository.
     /// </summary>
-    public class TeamRepositoryEdge : QueryEntity
+    public class TeamRepositoryEdge : QueryableValue<TeamRepositoryEdge>
     {
-        public TeamRepositoryEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public TeamRepositoryEdge(Expression expression) : base(expression)
         {
         }
 
@@ -25,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RepositoryPermission Permission { get; }
 
-        internal static TeamRepositoryEdge Create(IQueryProvider provider, Expression expression)
+        internal static TeamRepositoryEdge Create(Expression expression)
         {
-            return new TeamRepositoryEdge(provider, expression);
+            return new TeamRepositoryEdge(expression);
         }
     }
 }

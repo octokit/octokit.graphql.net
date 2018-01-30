@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be closed
     /// </summary>
-    public interface IClosable : IQueryEntity
+    public interface IClosable : IQueryableValue<IClosable>
     {
         /// <summary>
         /// `true` if the object is closed (definition of closed may depend on type)
@@ -29,14 +29,13 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIClosable : QueryEntity, IClosable
+    internal class StubIClosable : QueryableValue<StubIClosable>, IClosable
     {
-        public StubIClosable(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIClosable(Expression expression) : base(expression)
         {
         }
 
@@ -44,9 +43,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public DateTimeOffset? ClosedAt { get; }
 
-        internal static StubIClosable Create(IQueryProvider provider, Expression expression)
+        internal static StubIClosable Create(Expression expression)
         {
-            return new StubIClosable(provider, expression);
+            return new StubIClosable(expression);
         }
     }
 }

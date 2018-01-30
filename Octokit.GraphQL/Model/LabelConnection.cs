@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Label.
     /// </summary>
-    public class LabelConnection : QueryEntity
+    public class LabelConnection : QueryableValue<LabelConnection>
     {
-        public LabelConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public LabelConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<LabelEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<LabelEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<Label> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Label> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static LabelConnection Create(IQueryProvider provider, Expression expression)
+        internal static LabelConnection Create(Expression expression)
         {
-            return new LabelConnection(provider, expression);
+            return new LabelConnection(expression);
         }
     }
 }

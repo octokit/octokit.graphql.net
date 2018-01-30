@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.UnitTests
                     Owner = x.Owner.Select(o => new
                     {
                         Thing = x.Name + ": " + o.Login,
-                    }),
+                    }).Single(),
                 });
 
             string data = @"{
@@ -37,9 +37,9 @@ namespace Octokit.GraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).Single();
+            var result = new ResponseDeserializer().Deserialize(query, data);
 
-            Assert.Equal("Octokit.GraphQL.Core: grokys", Enumerable.Single(result.Owner).Thing);
+            Assert.Equal("Octokit.GraphQL.Core: grokys", result.Owner.Thing);
         }
     }
 }

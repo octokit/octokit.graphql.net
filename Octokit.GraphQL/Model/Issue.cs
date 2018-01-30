@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project.
     /// </summary>
-    public class Issue : QueryEntity
+    public class Issue : QueryableValue<Issue>
     {
-        public Issue(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Issue(Expression expression) : base(expression)
         {
         }
 
@@ -152,7 +151,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -224,7 +223,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.
@@ -236,9 +235,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public SubscriptionState ViewerSubscription { get; }
 
-        internal static Issue Create(IQueryProvider provider, Expression expression)
+        internal static Issue Create(Expression expression)
         {
-            return new Issue(provider, expression);
+            return new Issue(expression);
         }
     }
 }

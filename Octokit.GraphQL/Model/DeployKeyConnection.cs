@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,21 +9,21 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for DeployKey.
     /// </summary>
-    public class DeployKeyConnection : QueryEntity
+    public class DeployKeyConnection : QueryableValue<DeployKeyConnection>
     {
-        public DeployKeyConnection(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public DeployKeyConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryable<DeployKeyEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<DeployKeyEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryable<DeployKey> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<DeployKey> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -36,9 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        internal static DeployKeyConnection Create(IQueryProvider provider, Expression expression)
+        internal static DeployKeyConnection Create(Expression expression)
         {
-            return new DeployKeyConnection(provider, expression);
+            return new DeployKeyConnection(expression);
         }
     }
 }

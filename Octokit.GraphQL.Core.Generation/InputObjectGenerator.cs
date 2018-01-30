@@ -15,7 +15,7 @@ namespace Octokit.GraphQL.Core.Generation
             return $@"namespace {entityNamespace}
 {{
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
 
     {GenerateDocComments(type)}public class {className}
     {{{GenerateFields(type)}
@@ -53,7 +53,7 @@ namespace Octokit.GraphQL.Core.Generation
         private static string GenerateField(InputValueModel field)
         {
             var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpReturnType(field.Type);
+            var typeName = TypeUtilities.GetCSharpArgType(field.Type);
             return $"        public {typeName} {name} {{ get; set; }}";
         }
 
@@ -98,85 +98,6 @@ namespace Octokit.GraphQL.Core.Generation
             {
                 return null;
             }
-        }
-
-        private static string GenerateScalarField(FieldModel field, TypeModel type)
-        {
-            var name = TypeUtilities.PascalCase(field.Name);
-            return $"        {TypeUtilities.GetCSharpReturnType(type)} {name} {{ get; }}";
-        }
-
-        private static string GenerateObjectField(FieldModel field, TypeModel type)
-        {
-            var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"        {typeName} {name} {{ get; }}";
-        }
-
-        private static string GenerateScalarMethod(FieldModel field, TypeModel type)
-        {
-            var name = TypeUtilities.PascalCase(field.Name);
-            var csharpType = TypeUtilities.GetCSharpReturnType(type);
-            var arguments = GenerateArguments(field);
-
-            return $"        IQueryable<{csharpType}> {name}({arguments});";
-        }
-
-        private static string GenerateObjectMethod(FieldModel field, TypeModel type)
-        {
-            var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpReturnType(type);
-            var arguments = GenerateArguments(field);
-
-            return $"        {typeName} {name}({arguments});";
-        }
-
-        private static string GenerateListField(FieldModel field, TypeModel type)
-        {
-            var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpReturnType(type);
-            return $"        IQueryable<{typeName}> {name} {{ get; }}";
-        }
-
-        private static string GenerateListMethod(FieldModel field, TypeModel type)
-        {
-            var name = TypeUtilities.PascalCase(field.Name);
-            var typeName = TypeUtilities.GetCSharpReturnType(type);
-            var arguments = GenerateArguments(field);
-
-            return $"        IQueryable<{typeName}> {name}({arguments});";
-        }
-
-        private static string GenerateArguments(FieldModel field)
-        {
-            var argBuilder = new StringBuilder();
-            var paramBuilder = new StringBuilder();
-            var first = true;
-
-            foreach (var arg in field.Args)
-            {
-                if (!first)
-                {
-                    argBuilder.Append(", ");
-                    paramBuilder.Append(", ");
-                }
-
-                var argName = TypeUtilities.GetArgName(arg);
-                argBuilder.Append(TypeUtilities.GetCSharpReturnType(arg.Type));
-                argBuilder.Append(' ');
-                argBuilder.Append(argName);
-                paramBuilder.Append(argName);
-
-                if (arg.DefaultValue != null)
-                {
-                    argBuilder.Append(" = ");
-                    argBuilder.Append(TypeUtilities.GetCSharpLiteral(arg.DefaultValue, arg.Type));
-                }
-
-                first = false;
-            }
-
-            return argBuilder.ToString();
         }
     }
 }

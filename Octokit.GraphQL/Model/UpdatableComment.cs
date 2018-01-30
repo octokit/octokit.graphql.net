@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Comments that can be updated.
     /// </summary>
-    public interface IUpdatableComment : IQueryEntity
+    public interface IUpdatableComment : IQueryableValue<IUpdatableComment>
     {
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
+        IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
     }
 }
 
@@ -24,22 +24,21 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIUpdatableComment : QueryEntity, IUpdatableComment
+    internal class StubIUpdatableComment : QueryableValue<StubIUpdatableComment>, IUpdatableComment
     {
-        public StubIUpdatableComment(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIUpdatableComment(Expression expression) : base(expression)
         {
         }
 
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
-        internal static StubIUpdatableComment Create(IQueryProvider provider, Expression expression)
+        internal static StubIUpdatableComment Create(Expression expression)
         {
-            return new StubIUpdatableComment(provider, expression);
+            return new StubIUpdatableComment(expression);
         }
     }
 }

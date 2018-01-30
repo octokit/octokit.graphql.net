@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A review comment associated with a given repository pull request.
     /// </summary>
-    public class PullRequestReviewComment : QueryEntity
+    public class PullRequestReviewComment : QueryableValue<PullRequestReviewComment>
     {
-        public PullRequestReviewComment(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestReviewComment(Expression expression) : base(expression)
         {
         }
 
@@ -122,7 +121,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
         /// </summary>
-        public IQueryable<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
         /// <summary>
         /// A list of Reactions left on the Issue.
@@ -178,16 +177,16 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reasons why the current viewer can not update this comment.
         /// </summary>
-        public IQueryable<CommentCannotUpdateReason> ViewerCannotUpdateReasons => this.CreateProperty(x => x.ViewerCannotUpdateReasons);
+        public IEnumerable<CommentCannotUpdateReason> ViewerCannotUpdateReasons { get; }
 
         /// <summary>
         /// Did the viewer author this comment.
         /// </summary>
         public bool ViewerDidAuthor { get; }
 
-        internal static PullRequestReviewComment Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestReviewComment Create(Expression expression)
         {
-            return new PullRequestReviewComment(provider, expression);
+            return new PullRequestReviewComment(expression);
         }
     }
 }

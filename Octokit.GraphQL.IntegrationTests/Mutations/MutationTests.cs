@@ -26,7 +26,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
             var repositoryQuery = new Query().Repository(Helper.Username, _repoName)
                 .Select(r => r.Id );
 
-            _repositoryId = Connection.Run(repositoryQuery).Result.First();
+            _repositoryId = Connection.Run(repositoryQuery).Result;
         }
 
         [IntegrationTest]
@@ -48,7 +48,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
                 })
                 .Select(payload => new {payload.ClientMutationId, ProjectId = payload.Project.Id, ProjectName = payload.Project.Name, ProjectOwnerId = payload.Project.Owner.Id});
 
-            var projectData = Connection.Run(createProjectQuery).Result.First();
+            var projectData = Connection.Run(createProjectQuery).Result;
 
             Assert.Equal(projectData.ClientMutationId, clientMutationId);
             Assert.Equal(projectData.ProjectName, projectName);
@@ -71,7 +71,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
                     payload.ClientMutationId,
                 });
 
-            var deleteResult = Connection.Run(deleteProjectQuery).Result.First();
+            var deleteResult = Connection.Run(deleteProjectQuery).Result;
 
             Assert.Equal(deleteResult.ClientMutationId, clientMutationId);
             Assert.Equal(deleteResult.ProjectOwnerId, _repositoryId);
@@ -83,7 +83,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
         {
             var viewerHasStarredQuery = new Query().Repository(Helper.Username, _repoName).Select(repository => repository.ViewerHasStarred);
 
-            var viewerHasStarred = Connection.Run(viewerHasStarredQuery).Result.First();
+            var viewerHasStarred = Connection.Run(viewerHasStarredQuery).Result;
             Assert.False(viewerHasStarred);
 
             var clientMutationId = "abc123";
@@ -99,7 +99,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
                 payload.Starrable.ViewerHasStarred
             });
 
-            var addStarResult = Connection.Run(addStarQuery).Result.First();
+            var addStarResult = Connection.Run(addStarQuery).Result;
 
             Assert.Equal(addStarResult.ClientMutationId, clientMutationId);
             Assert.Equal(addStarResult.StarrableId, _repositoryId);
@@ -118,7 +118,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
                 payload.Starrable.ViewerHasStarred
             });
 
-            var removeStarResult = Connection.Run(removeStarQuery).Result.First();
+            var removeStarResult = Connection.Run(removeStarQuery).Result;
 
             Assert.Equal(removeStarResult.ClientMutationId, clientMutationId);
             Assert.Equal(removeStarResult.StarrableId, _repositoryId);

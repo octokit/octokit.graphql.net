@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A label for categorizing Issues or Milestones with a given Repository.
     /// </summary>
-    public class Label : QueryEntity
+    public class Label : QueryableValue<Label>
     {
-        public Label(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public Label(Expression expression) : base(expression)
         {
         }
 
@@ -59,9 +58,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
-        internal static Label Create(IQueryProvider provider, Expression expression)
+        internal static Label Create(Expression expression)
         {
-            return new Label(provider, expression);
+            return new Label(expression);
         }
     }
 }

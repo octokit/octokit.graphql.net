@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a 'subscribed' event on a given `Subscribable`.
     /// </summary>
-    public class SubscribedEvent : QueryEntity
+    public class SubscribedEvent : QueryableValue<SubscribedEvent>
     {
-        public SubscribedEvent(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public SubscribedEvent(Expression expression) : base(expression)
         {
         }
 
@@ -33,9 +32,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ISubscribable Subscribable => this.CreateProperty(x => x.Subscribable, Octokit.GraphQL.Model.Internal.StubISubscribable.Create);
 
-        internal static SubscribedEvent Create(IQueryProvider provider, Expression expression)
+        internal static SubscribedEvent Create(Expression expression)
         {
-            return new SubscribedEvent(provider, expression);
+            return new SubscribedEvent(expression);
         }
     }
 }

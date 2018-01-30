@@ -2,7 +2,6 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -10,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class PullRequestEdge : QueryEntity
+    public class PullRequestEdge : QueryableValue<PullRequestEdge>
     {
-        public PullRequestEdge(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public PullRequestEdge(Expression expression) : base(expression)
         {
         }
 
@@ -26,9 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequest Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.PullRequest.Create);
 
-        internal static PullRequestEdge Create(IQueryProvider provider, Expression expression)
+        internal static PullRequestEdge Create(Expression expression)
         {
-            return new PullRequestEdge(provider, expression);
+            return new PullRequestEdge(expression);
         }
     }
 }

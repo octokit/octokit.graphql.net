@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a comment.
     /// </summary>
-    public interface IComment : IQueryEntity
+    public interface IComment : IQueryableValue<IComment>
     {
         /// <summary>
         /// The actor who authored the comment.
@@ -76,14 +76,13 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubIComment : QueryEntity, IComment
+    internal class StubIComment : QueryableValue<StubIComment>, IComment
     {
-        public StubIComment(IQueryProvider provider, Expression expression) : base(provider, expression)
+        public StubIComment(Expression expression) : base(expression)
         {
         }
 
@@ -112,9 +111,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool ViewerDidAuthor { get; }
 
-        internal static StubIComment Create(IQueryProvider provider, Expression expression)
+        internal static StubIComment Create(Expression expression)
         {
-            return new StubIComment(provider, expression);
+            return new StubIComment(expression);
         }
     }
 }
