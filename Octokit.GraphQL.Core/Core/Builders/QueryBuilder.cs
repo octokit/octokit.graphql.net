@@ -398,18 +398,31 @@ namespace Octokit.GraphQL.Core.Builders
             for (var i = 0; i < parameters.Length; ++i)
             {
                 var parameter = parameters[i];
-                var constantArgument = arguments[i] as ConstantExpression
-                    ?? (arguments[i] as UnaryExpression)?.Operand as ConstantExpression;
+                var value = EvaluateValue(arguments[i]);
 
-                if (constantArgument == null)
+                if (value != null)
                 {
-                    throw new NotSupportedException("Non-constant field arguments not yet supported.");
+                    syntax.AddArgument(parameter.Name, value);
                 }
+            }
+        }
 
-                if (constantArgument.Value != null)
-                {
-                    syntax.AddArgument(parameter.Name, constantArgument.Value);
-                }
+        private object EvaluateValue(Expression expression)
+        {
+            if (expression is ConstantExpression c)
+            {
+                return c.Value;
+            }
+            else if (expression is LambdaExpression l)
+            {
+                var compiled = l.Compile();
+                return compiled.DynamicInvoke();
+            }
+            else
+            {
+                var lambda = Expression.Lambda(expression);
+                var compiled = lambda.Compile();
+                return compiled.DynamicInvoke();
             }
         }
 

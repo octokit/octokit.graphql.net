@@ -150,6 +150,29 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Nested_Select_With_Captured_Parameter()
+        {
+            var expected = "query{nested(arg1:\"bar\"){simple(arg1:\"foo\"){name description}}}";
+
+            var arg1 = "foo";
+            var expression = new TestQuery()
+                .Nested("bar")
+                .Select(x => new
+                {
+                    Items = x.Simple(arg1).Select(y => new
+                    {
+                        y.Name,
+                        y.Description,
+                    }).Single()
+                });
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Inline_Fragment()
         {
             var expected = "query{queryItems{... on NestedData{__typename id nestedItems{name}}}}";
