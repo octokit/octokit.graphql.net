@@ -166,6 +166,12 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override Expression VisitUnary(UnaryExpression node)
         {
+            if (node.NodeType == ExpressionType.Convert)
+            {
+                var rewritten = Visit(node.Operand);
+                return rewritten.AddCast(node.Type);
+            }
+
             return node.Update(Visit(node.Operand));
         }
 
