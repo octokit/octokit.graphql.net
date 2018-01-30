@@ -103,6 +103,24 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void SimpleQuery_Cast_NUllable_Member_To_Enum()
+        {
+            var expected = "query{simple(arg1:\"foo\"){number}}";
+
+            var expression = new TestQuery()
+                .Simple("foo")
+                .Select(x => new
+                {
+                    Float = (DayOfWeek)x.NullableNumber.Value
+                });
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
         public void Data_Select_Single_Member()
         {
             var expected = "query{queryItems{id}}";
