@@ -31,12 +31,13 @@ namespace Octokit.GraphQL.Core
             return new QuerySerializer(2).Serialize(OperationDefinition);
         }
 
-        public string GetPayload()
+        public string GetPayload(IDictionary<string, object> variables)
         {
             var query = new QuerySerializer().Serialize(OperationDefinition);
             var payload = new
             {
                 Query = query,
+                Variables = variables,
             };
 
             return JsonConvert.SerializeObject(
