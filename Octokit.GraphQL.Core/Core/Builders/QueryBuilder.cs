@@ -172,7 +172,9 @@ namespace Octokit.GraphQL.Core.Builders
 
                 if (rewritten.Type == typeof(JToken))
                 {
-                    return rewritten.AddCast(node.Type);
+                    return Expression.Convert(
+                        rewritten.AddCast(node.Operand.Type),
+                        node.Type);
                 }
             }
 
