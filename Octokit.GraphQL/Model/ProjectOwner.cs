@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         /// Find project by number.
         /// </summary>
         /// <param name="number">The project number to find.</param>
-        Project Project(int number);
+        Project Project(Arg<int> number);
 
         /// <summary>
         /// A list of projects under the owner.
@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for projects returned from the connection</param>
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
-        ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IEnumerable<ProjectState> states = null);
+        ProjectConnection Projects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectOrder>? orderBy = null, Arg<string>? search = null, Arg<IEnumerable<ProjectState>>? states = null);
 
         /// <summary>
         /// The HTTP path listing owners projects
@@ -66,9 +66,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string Id { get; }
 
-        public Project Project(int number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
+        public Project Project(Arg<int> number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
 
-        public ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IEnumerable<ProjectState> states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
+        public ProjectConnection Projects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectOrder>? orderBy = null, Arg<string>? search = null, Arg<IEnumerable<ProjectState>>? states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
 
         public string ProjectsResourcePath { get; }
 

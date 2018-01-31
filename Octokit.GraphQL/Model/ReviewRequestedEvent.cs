@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the user whose review was requested.
         /// </summary>
-        [Obsolete(@"Use `ReviewRequestedEvent.requestedReviewer` instead.")]
+        [Obsolete(@"`subject` will be renamed. Use `ReviewRequestedEvent.requestedReviewer` instead. Removal on 2018-07-01 UTC.")]
         public User Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.User.Create);
 
         internal static ReviewRequestedEvent Create(Expression expression)

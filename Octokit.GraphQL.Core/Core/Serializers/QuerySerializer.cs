@@ -54,6 +54,20 @@ namespace Octokit.GraphQL.Core.Serializers
                 builder.Append(' ').Append(operation.Name);
             }
 
+            if (operation.VariableDefinitions.Count > 0)
+            {
+                builder.Append('(');
+
+                var first = true;
+                foreach (var v in operation.VariableDefinitions)
+                {
+                    if (!first) builder.Append(comma);
+                    builder.Append('$').Append(v.Name).Append(colon).Append(v.Type);
+                }
+
+                builder.Append(')');
+            }
+
             SerializeSelections(operation, builder);
             return builder.ToString();
         }
@@ -174,6 +188,10 @@ namespace Octokit.GraphQL.Core.Serializers
 
                 builder.Append("]");
             }
+            else if (value is VariableDefinition v)
+            {
+                builder.Append('$').Append(v.Name);
+            }
             else
             {
                 var objectType = value.GetType();
@@ -196,7 +214,7 @@ namespace Octokit.GraphQL.Core.Serializers
                 for (var index = 0; index < properties.Length; index++)
                 {
                     var property = properties[index];
-                    
+
                     if (index == 0)
                     {
                         OpenBrace(builder);

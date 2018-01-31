@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Octokit.GraphQL.Model;
 using Xunit;
+using static Octokit.GraphQL.Variable;
 
 namespace Octokit.GraphQL.IntegrationTests.Queries
 {
@@ -26,7 +28,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public void Should_Query_Issues_By_State_And_Repository()
         {
-            var openState = new[] { IssueState.Closed }.AsQueryable();
+            var openState = new[] { IssueState.Closed };
             var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => new
             {
                 i.Title,
@@ -40,6 +42,30 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 Assert.Equal("octokit.net", result.RepositoryName);
                 Assert.Equal(IssueState.Closed, result.State);
             }
+        }
+
+        [IntegrationTest]
+        public void Should_Query_Issues_With_Variable()
+        {
+            var openState = new[] { IssueState.Closed };
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .Issues(Var("first"), states: openState)
+                .Nodes
+                .Select(i => new
+            {
+                i.Title,
+                i.State,
+                RepositoryName = i.Repository.Name,
+            });
+
+            var vars = new Dictionary<string, object>
+            {
+                { "first", 3 }
+            };
+
+            var results = Connection.Run(query, vars).Result.ToArray();
+            Assert.Equal(3, results.Length);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]

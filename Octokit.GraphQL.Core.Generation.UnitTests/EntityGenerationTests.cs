@@ -701,7 +701,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Object_Field_With_Args()
         {
-            var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
+            var expected = FormatMemberTemplate("public Other Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -733,7 +733,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_Object_Field_With_Args()
         {
-            var expected = FormatMemberTemplate("public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
+            var expected = FormatMemberTemplate("public Other Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -765,7 +765,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Interface_Field_With_Args()
         {
-            var expected = FormatMemberTemplate("public IOther Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+            var expected = FormatMemberTemplate("public IOther Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
             {
@@ -797,7 +797,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Int_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(Arg<int>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -829,7 +829,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Object_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -861,7 +861,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_NonNull_Enum_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -893,7 +893,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_List_Field_With_Nullable_Enum_List_Arg()
         {
-            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+            var expected = FormatMemberTemplate("public IQueryableList<Other> Foo(Arg<IEnumerable<Another?>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -923,9 +923,73 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Method_For_String_Field()
+        {
+            var expected = FormatMemberTemplate("public int? Foo(Arg<string>? bar = null) => null;");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.String(),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
+        public void Generates_Method_For_NonNull_String_Field()
+        {
+            var expected = FormatMemberTemplate("public int? Foo(Arg<string> bar) => null;");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Int(),
+                        Args = new[]
+                        {
+                            new InputValueModel
+                            {
+                                Name = "bar",
+                                Type = TypeModel.NonNull(TypeModel.String()),
+                            }
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+        }
+
+        [Fact]
         public void Generates_Method_For_Scalar_Field()
         {
-            var expected = FormatMemberTemplate("public int? Foo(int? bar = null) => null;");
+            var expected = FormatMemberTemplate("public int? Foo(Arg<int>? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -957,7 +1021,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Deprecated_WithoutReason_Scalar_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public int? Foo(int? bar = null) => null;");
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public int? Foo(Arg<int>? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -991,7 +1055,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Deprecated_Scalar_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo(int? bar = null) => null;");
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo(Arg<int>? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -1024,7 +1088,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_Scalar_Field()
         {
-            var expected = FormatMemberTemplate("public int Foo(int? bar = null) => null;");
+            var expected = FormatMemberTemplate("public int Foo(Arg<int>? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -1056,7 +1120,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Union_Field()
         {
-            var expected = FormatMemberTemplate("public Bar Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Bar.Create);");
+            var expected = FormatMemberTemplate("public Bar Foo(Arg<int>? bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Bar.Create);");
 
             var model = new TypeModel
             {
@@ -1092,7 +1156,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [InlineData(TypeKind.InputObject, "InputObj", "InputObj")]
         public void NonNull_Arg_With_Null_DefaultValue_Has_No_Default(TypeKind argType, string type, string csharpType)
         {
-            var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+            var expected = FormatMemberTemplate($"public IOther Foo(Arg<{csharpType}> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
             {
@@ -1126,54 +1190,13 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Theory]
-        [InlineData(TypeKind.Scalar, "Int", "int", "5", "5")]
-        [InlineData(TypeKind.Scalar, "Boolean", "bool", "true", "true")]
-        [InlineData(TypeKind.Scalar, "String", "string", "foo", "\"foo\"")]
-        [InlineData(TypeKind.Enum, "EnumType", "EnumType", "FOO", "EnumType.Foo")]
-        public void NonNull_Arg_With_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType, string defaultValue, string csharpDefaultValue)
-        {
-            var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar = {csharpDefaultValue}) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Object,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.Interface("Other"),
-                        Args = new[]
-                        {
-                            new InputValueModel
-                            {
-                                Name = "bar",
-                                Type = TypeModel.NonNull(new TypeModel
-                                {
-                                    Kind = argType,
-                                    Name = type,
-                                }),
-                                DefaultValue = defaultValue,
-                            }
-                        }
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
-        }
-
-        [Theory]
-        [InlineData(TypeKind.Scalar, "Int", "int?")]
-        [InlineData(TypeKind.Scalar, "Boolean", "bool?")]
+        [InlineData(TypeKind.Scalar, "Int", "int")]
+        [InlineData(TypeKind.Scalar, "Boolean", "bool")]
         [InlineData(TypeKind.Scalar, "String", "string")]
         [InlineData(TypeKind.InputObject, "InputObj", "InputObj")]
         public void Nullable_Arg_With_No_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType)
         {
-            var expected = FormatMemberTemplate($"public IOther Foo({csharpType} bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+            var expected = FormatMemberTemplate($"public IOther Foo(Arg<{csharpType}>? bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
             {
@@ -1210,7 +1233,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         public void Args_With_Default_Values_Come_After_Args_With_No_Default_Values()
         {
             var expected = FormatMemberTemplate(
-                "public IOther Foo(int req1, int req2, int? opt1 = null, int opt2 = 5) => " + 
+                "public IOther Foo(Arg<int> req1, Arg<int> req2, Arg<int>? opt1 = null, Arg<int>? opt2 = null) => " + 
                 "this.CreateMethodCall(x => x.Foo(req1, req2, opt1, opt2), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
@@ -1228,7 +1251,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                             new InputValueModel { Name = "req1", Type = TypeModel.NonNull(TypeModel.Int()) },
                             new InputValueModel { Name = "opt1", Type = TypeModel.Int() },
                             new InputValueModel { Name = "req2", Type = TypeModel.NonNull(TypeModel.Int()) },
-                            new InputValueModel { Name = "opt2", Type = TypeModel.NonNull(TypeModel.Int()), DefaultValue = "5" },
+                            new InputValueModel { Name = "opt2", Type = TypeModel.Int(), DefaultValue = "5" },
                         }
                     },
                 }
@@ -1315,7 +1338,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
         /// <param name=""arg2"">The second argument. With a windows newline. Ending with a space.</param>
-        public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
+        public Other Foo(Arg<int>? arg1 = null, Arg<int>? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -1362,7 +1385,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
         /// <param name=""arg2"">The second argument. With a linux newline. Ending with a newline.</param>
-        public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
+        public Other Foo(Arg<int>? arg1 = null, Arg<int>? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
             {

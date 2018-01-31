@@ -436,6 +436,18 @@ namespace Octokit.GraphQL.Core.Builders
                 var parameter = parameters[i];
                 var value = EvaluateValue(arguments[i]);
 
+                if (value is IArg arg)
+                {
+                    if (arg.VariableName == null)
+                    {
+                        value = arg.Value;
+                    }
+                    else
+                    {
+                        value = syntax.AddVariableDefinition(arg.Type, arg.VariableName);
+                    }
+                }
+
                 if (value != null)
                 {
                     syntax.AddArgument(parameter.Name, value);

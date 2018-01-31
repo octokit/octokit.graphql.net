@@ -204,8 +204,8 @@ namespace Test.Internal
         public void Generates_Method_For_Object_Field_With_Int_Arg()
         {
             var expected = FormatMemberTemplate(
-                "Other Foo(int bar);",
-                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
+                "Other Foo(Arg<int> bar);",
+                "public Other Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -238,8 +238,8 @@ namespace Test.Internal
         public void Generates_Method_For_NonNull_Object_Field_With_Int_Arg()
         {
             var expected = FormatMemberTemplate(
-                "Other Foo(int bar);",
-                "public Other Foo(int bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
+                "Other Foo(Arg<int> bar);",
+                "public Other Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
             {
@@ -272,8 +272,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Nullable_Int_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryableList<Other> Foo(int? bar = null);",
-                "public IQueryableList<Other> Foo(int? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(Arg<int>? bar = null);",
+                "public IQueryableList<Other> Foo(Arg<int>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -306,8 +306,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Nullable_Int_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryableList<Other> Foo(IEnumerable<int?> bar = null);",
-                "public IQueryableList<Other> Foo(IEnumerable<int?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(Arg<IEnumerable<int?>>? bar = null);",
+                "public IQueryableList<Other> Foo(Arg<IEnumerable<int?>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -340,8 +340,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_NotNull_Int_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryableList<Other> Foo(IEnumerable<int> bar = null);",
-                "public IQueryableList<Other> Foo(IEnumerable<int> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(Arg<IEnumerable<int>>? bar = null);",
+                "public IQueryableList<Other> Foo(Arg<IEnumerable<int>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -374,8 +374,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Object_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryableList<Other> Foo(IEnumerable<Another> bar = null);",
-                "public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null);",
+                "public IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -408,8 +408,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_NonNull_Object_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryableList<Other> Foo(IEnumerable<Another> bar);",
-                "public IQueryableList<Other> Foo(IEnumerable<Another> bar) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(Arg<IEnumerable<Another>> bar);",
+                "public IQueryableList<Other> Foo(Arg<IEnumerable<Another>> bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -442,8 +442,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_Nullable_Enum_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryableList<Other> Foo(IEnumerable<Another?> bar = null);",
-                "public IQueryableList<Other> Foo(IEnumerable<Another?> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(Arg<IEnumerable<Another?>>? bar = null);",
+                "public IQueryableList<Other> Foo(Arg<IEnumerable<Another?>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -476,8 +476,8 @@ namespace Test.Internal
         public void Generates_Method_For_List_Field_With_NonNull_Enum_List_Arg()
         {
             var expected = FormatMemberTemplate(
-                "IQueryableList<Other> Foo(IEnumerable<Another> bar = null);",
-                "public IQueryableList<Other> Foo(IEnumerable<Another> bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
+                "IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null);",
+                "public IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
             {
@@ -510,8 +510,8 @@ namespace Test.Internal
         public void Generates_Method_For_Scalar()
         {
             var expected = FormatMemberTemplate(
-                "int? Foo(int? bar = null);",
-                "public int? Foo(int? bar = null) => null;");
+                "int? Foo(Arg<int>? bar = null);",
+                "public int? Foo(Arg<int>? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -544,8 +544,8 @@ namespace Test.Internal
         public void Generates_Method_For_NonNull_Scalar()
         {
             var expected = FormatMemberTemplate(
-                "int Foo(int? bar = null);",
-                "public int Foo(int? bar = null) => null;");
+                "int Foo(Arg<int>? bar = null);",
+                "public int Foo(Arg<int>? bar = null) => null;");
 
             var model = new TypeModel
             {
@@ -582,8 +582,8 @@ namespace Test.Internal
         public void NonNull_Arg_With_Null_DefaultValue_Has_No_Default(TypeKind argType, string type, string csharpType)
         {
             var expected = FormatMemberTemplate(
-                $"IOther Foo({csharpType} bar);",
-                $"public IOther Foo({csharpType} bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+                $"IOther Foo(Arg<{csharpType}> bar);",
+                $"public IOther Foo(Arg<{csharpType}> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
             {
@@ -617,57 +617,15 @@ namespace Test.Internal
         }
 
         [Theory]
-        [InlineData(TypeKind.Scalar, "Int", "int", "5", "5")]
-        [InlineData(TypeKind.Scalar, "Boolean", "bool", "true", "true")]
-        [InlineData(TypeKind.Scalar, "String", "string", "foo", "\"foo\"")]
-        public void NonNull_Arg_With_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType, string defaultValue, string csharpDefaultValue)
-        {
-            var expected = FormatMemberTemplate(
-                $"IOther Foo({csharpType} bar = {csharpDefaultValue});",
-                $"public IOther Foo({csharpType} bar = {csharpDefaultValue}) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Interface,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.Interface("Other"),
-                        Args = new[]
-                        {
-                            new InputValueModel
-                            {
-                                Name = "bar",
-                                Type = TypeModel.NonNull(new TypeModel
-                                {
-                                    Kind = argType,
-                                    Name = type,
-                                }),
-                                DefaultValue = defaultValue,
-                            }
-                        }
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
-        }
-
-        [Theory]
-        [InlineData(TypeKind.Scalar, "Int", "int?")]
-        [InlineData(TypeKind.Scalar, "Boolean", "bool?")]
+        [InlineData(TypeKind.Scalar, "Int", "int")]
+        [InlineData(TypeKind.Scalar, "Boolean", "bool")]
         [InlineData(TypeKind.Scalar, "String", "string")]
         [InlineData(TypeKind.InputObject, "InputObj", "InputObj")]
         public void Nullable_Arg_With_No_DefaultValue_Has_Default(TypeKind argType, string type, string csharpType)
         {
             var expected = FormatMemberTemplate(
-                $"IOther Foo({csharpType} bar = null);",
-                $"public IOther Foo({csharpType} bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
+                $"IOther Foo(Arg<{csharpType}>? bar = null);",
+                $"public IOther Foo(Arg<{csharpType}>? bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
             {
@@ -704,8 +662,8 @@ namespace Test.Internal
         public void Args_With_Default_Values_Come_After_Args_With_No_Default_Values()
         {
             var expected = FormatMemberTemplate(
-                "IOther Foo(int req1, int req2, int? opt1 = null, int opt2 = 5);",
-                "public IOther Foo(int req1, int req2, int? opt1 = null, int opt2 = 5) => " +
+                "IOther Foo(Arg<int> req1, Arg<int> req2, Arg<int>? opt1 = null, Arg<int>? opt2 = null);",
+                "public IOther Foo(Arg<int> req1, Arg<int> req2, Arg<int>? opt1 = null, Arg<int>? opt2 = null) => " +
                 "this.CreateMethodCall(x => x.Foo(req1, req2, opt1, opt2), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
@@ -723,7 +681,7 @@ namespace Test.Internal
                             new InputValueModel { Name = "req1", Type = TypeModel.NonNull(TypeModel.Int()) },
                             new InputValueModel { Name = "opt1", Type = TypeModel.Int() },
                             new InputValueModel { Name = "req2", Type = TypeModel.NonNull(TypeModel.Int()) },
-                            new InputValueModel { Name = "opt2", Type = TypeModel.NonNull(TypeModel.Int()), DefaultValue = "5" },
+                            new InputValueModel { Name = "opt2", Type = TypeModel.Int(), DefaultValue = "5" },
                         }
                     },
                 }
@@ -812,8 +770,8 @@ namespace Test.Internal
         /// Testing if doc comments are generated.
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
-        Other Foo(int? arg1 = null, int? arg2 = null);",
-                "public Other Foo(int? arg1 = null, int? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
+        Other Foo(Arg<int>? arg1 = null, Arg<int>? arg2 = null);",
+                "public Other Foo(Arg<int>? arg1 = null, Arg<int>? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
             {
