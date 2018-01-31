@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Core.Generation
 {
     public static class SchemaReader
     {
-        public static async Task<SchemaModel> ReadSchema(Connection connection)
+        public static async Task<SchemaModel> ReadSchema(IConnection connection)
         {
             var query = new IntrospectionQuery()
                 .Schema
