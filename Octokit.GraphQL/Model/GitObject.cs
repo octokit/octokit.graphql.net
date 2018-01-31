@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git object.
     /// </summary>
-    public interface IGitObject : IQueryableValue<IGitObject>
+    public interface IGitObject : IQueryableValue<IGitObject>, IQueryableInterface
     {
         /// <summary>
         /// An abbreviated version of the Git object ID

@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    public interface IEntity : IQueryableValue<IEntity>
+    public interface IEntity : IQueryableValue<IEntity>, IQueryableInterface
     {{
         {0}
     }}

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a subject that can be reacted on.
     /// </summary>
-    public interface IReactable : IQueryableValue<IReactable>
+    public interface IReactable : IQueryableValue<IReactable>, IQueryableInterface
     {
         /// <summary>
         /// Identifies the primary key from the database.

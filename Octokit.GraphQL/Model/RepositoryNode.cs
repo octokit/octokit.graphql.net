@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a object that belongs to a repository.
     /// </summary>
-    public interface IRepositoryNode : IQueryableValue<IRepositoryNode>
+    public interface IRepositoryNode : IQueryableValue<IRepositoryNode>, IQueryableInterface
     {
         /// <summary>
         /// The repository associated with this node.

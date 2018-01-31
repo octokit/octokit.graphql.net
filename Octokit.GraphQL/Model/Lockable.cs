@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be locked.
     /// </summary>
-    public interface ILockable : IQueryableValue<ILockable>
+    public interface ILockable : IQueryableValue<ILockable>, IQueryableInterface
     {
         /// <summary>
         /// Reason that the conversation was locked.

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can be deleted.
     /// </summary>
-    public interface IDeletable : IQueryableValue<IDeletable>
+    public interface IDeletable : IQueryableValue<IDeletable>, IQueryableInterface
     {
         /// <summary>
         /// Check if the current viewer can delete this object.
