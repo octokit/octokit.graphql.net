@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
@@ -21,7 +20,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             Expression<Func<JObject, string>> expected = data =>
                 Rewritten.Value.Select(data["data"]["simple"], x => x["name"]).ToObject<string>();
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -39,7 +38,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Description = x["description"].ToObject<string>(),
                 });
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -53,7 +52,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             Expression<Func<JObject, IEnumerable<string>>> expected = data =>
                 Rewritten.List.Select(data["data"]["queryItems"], x => x["id"].ToObject<string>());
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -72,7 +71,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Description = x["description"].ToObject<string>(),
                 });
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -96,7 +95,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["nestedItems"], i => i["name"]))
                     });
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -129,7 +128,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                                 }))
                     });
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -162,7 +161,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                                 }))
                     });
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -187,7 +186,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["nestedItems"], i => i["name"]))
                     });
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -213,7 +212,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Description = x["description"].ToObject<string>(),
                     });
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
 
@@ -230,7 +229,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Rewritten.Interface.Cast(data["data"]["node"], "Simple"),
                     x => x["name"]).ToObject<string>();
 
-            var query = new QueryBuilder().Build(expression);
+            var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
     }

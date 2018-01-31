@@ -1,6 +1,4 @@
 ﻿using System;
-using Octokit.GraphQL.Core.Builders;
-using Octokit.GraphQL.Core.Serializers;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 using static Octokit.GraphQL.Variable;
@@ -18,10 +16,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -33,10 +30,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo", 2)
                 .Select(x => new { x.Name, x.Description });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -48,10 +44,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name + " World!");
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -63,10 +58,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name + x.Description);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -78,10 +72,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name + x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -96,10 +89,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Float = (DayOfWeek)x.Number
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -114,10 +106,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Float = (DayOfWeek)x.NullableNumber.Value
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -129,10 +120,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .QueryItems
                 .Select(x => x.Id);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -144,10 +134,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .QueryItems
                 .Select(x => new{ x.Id, x.Name});
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -160,10 +149,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("bar")
                 .Select(x => new { x.Name, x.Description });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -179,10 +167,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -202,10 +189,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).Single()
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -222,20 +208,19 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
         public void Field_Aliases()
         {
             var expected = @"query {
-    simple(arg1: ""foo"", arg2: 1) {
-        foo: name
-        bar: description
-    }
+  simple(arg1: ""foo"", arg2: 1) {
+    foo: name
+    bar: description
+  }
 }";
 
             var expression = new TestQuery()
@@ -246,10 +231,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Bar = x.Description,
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -261,10 +245,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .BoolValue(false)
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -288,10 +271,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -303,10 +285,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .StringValue("hello")
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -318,10 +299,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .IntValue(123)
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -333,10 +313,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .FloatValue(123.3f)
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -348,10 +327,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .ObjectValue(null)
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -368,10 +346,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .InputObject(input)
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -388,10 +365,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .InputObject(input)
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         public class SampleObject
@@ -414,10 +390,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -433,13 +408,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            var querySerializer = new QuerySerializer();
-            var queryBuilder = new QueryBuilder();
+            var query = expression.Compile();
 
-            var query = queryBuilder.Build(expression);
-            var result = querySerializer.Serialize(query.OperationDefinition);
-
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
 
             expected = "query{objectValue(value:{value1:\"A different answer\",value2:14}){name}}";
 
@@ -451,23 +422,22 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            query = queryBuilder.Build(expression);
-            result = querySerializer.Serialize(query.OperationDefinition);
+            query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
         public void Union()
         {
             var expected = @"query {
-    union {
-        ... on Simple {
-            __typename
-            name
-            description
-        }
+  union {
+    ... on Simple {
+      __typename
+      name
+      description
     }
+  }
 }";
 
             var expression = new TestQuery()
@@ -479,44 +449,42 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x.Description,
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
         public void Union_Select_Child_Property()
         {
             var expected = @"query {
-    union {
-        ... on Simple {
-            __typename
-            name
-        }
+  union {
+    ... on Simple {
+      __typename
+      name
     }
+  }
 }";
 
             var expression = new TestQuery()
                 .Union
                 .Select(x => x.Simple.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
         public void Union_Select_Child_Property_To_Class()
         {
             var expected = @"query {
-    union {
-        ... on Simple {
-            __typename
-            name
-        }
+  union {
+    ... on Simple {
+      __typename
+      name
     }
+  }
 }";
 
             var expression = new TestQuery()
@@ -526,10 +494,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x.Simple.Name,
                 });
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -541,10 +508,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple(Var("var1"))
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -556,10 +522,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .IntValue(Var("var1"))
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -571,32 +536,30 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .InputObject(Var("var1"))
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
         public void Interface_Cast()
         {
             var expected = @"query {
-    node(id: 123) {
-        ... on Simple {
-            __typename
-            name
-        }
+  node(id: 123) {
+    ... on Simple {
+      __typename
+      name
     }
+  }
 }";
             var expression = new TestQuery()
                 .Node(123)
                 .Cast<Simple>()
                 .Select(x => x.Name);
 
-            var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer(4).Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
     }
 }

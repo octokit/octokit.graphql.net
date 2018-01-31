@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Internal;
 
 namespace Octokit.GraphQL
@@ -54,6 +55,11 @@ namespace Octokit.GraphQL
         public static TValue SingleOrDefault<TValue>(this IQueryableValue<TValue> source)
         {
             throw new NotImplementedException();
+        }
+
+        public static CompiledQuery<T> Compile<T>(this IQueryableValue<T> expression)
+        {
+            return new QueryBuilder().Build(expression);
         }
 
         private static MethodInfo GetMethodInfo(string id)

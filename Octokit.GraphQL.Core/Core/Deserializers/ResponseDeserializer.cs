@@ -7,12 +7,12 @@ namespace Octokit.GraphQL.Core.Deserializers
 {
     public class ResponseDeserializer
     {
-        public TResult Deserialize<TResult>(GraphQLQuery<TResult> query, string data)
+        public TResult Deserialize<TResult>(CompiledQuery<TResult> query, string data)
         {
             return Deserialize(query, JObject.Parse(data));
         }
 
-        public TResult Deserialize<TResult>(GraphQLQuery<TResult> query, JObject data)
+        public TResult Deserialize<TResult>(CompiledQuery<TResult> query, JObject data)
         {
             if (data["errors"] != null)
             {

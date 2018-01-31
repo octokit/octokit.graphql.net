@@ -64,7 +64,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 { "first", 3 }
             };
 
-            var results = Connection.Run(query, vars).Result.ToArray();
+            var compiled = query.Compile();
+            var results = Connection.Run(compiled, vars).Result.ToArray();
             Assert.Equal(3, results.Length);
         }
 

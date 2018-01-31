@@ -47,28 +47,9 @@ namespace Octokit.GraphQL
         public Uri Uri { get; }
 
         public async Task<T> Run<T>(
-            IQueryableValue<T> queryable,
+            CompiledQuery<T> query,
             IDictionary<string, object> variables = null)
         {
-            var builder = new QueryBuilder();
-            var query = builder.Build(queryable);
-            var payload = query.GetPayload(variables);
-            var token = await credentialStore.GetCredentials();
-            var request = new HttpRequestMessage(HttpMethod.Post, Uri);
-            request.Content = new StringContent(payload);
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            var response = await httpClient.SendAsync(request);
-            var data = await response.Content.ReadAsStringAsync();
-            var deserializer = new ResponseDeserializer();
-            return deserializer.Deserialize(query, data);
-        }
-
-        public async Task<IEnumerable<T>> Run<T>(
-            IQueryableList<T> queryable,
-            IDictionary<string, object> variables = null)
-        {
-            var builder = new QueryBuilder();
-            var query = builder.Build(queryable);
             var payload = query.GetPayload(variables);
             var token = await credentialStore.GetCredentials();
             var request = new HttpRequestMessage(HttpMethod.Post, Uri);

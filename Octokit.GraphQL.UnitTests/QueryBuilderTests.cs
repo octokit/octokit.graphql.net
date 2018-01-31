@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Octokit.GraphQL.Core;
-using Octokit.GraphQL.Core.Builders;
-using Octokit.GraphQL.Core.Serializers;
 using Octokit.GraphQL.Model;
 using Xunit;
 
@@ -42,10 +38,9 @@ namespace Octokit.GraphQL.UnitTests
                     x.IsPrivate,
                 });
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -86,10 +81,9 @@ namespace Octokit.GraphQL.UnitTests
                     x.IsPrivate,
                 });
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -138,10 +132,9 @@ namespace Octokit.GraphQL.UnitTests
                         root.Viewer.Email
                     }));
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -180,10 +173,9 @@ namespace Octokit.GraphQL.UnitTests
                     }).ToList(),
                 });
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -198,10 +190,9 @@ namespace Octokit.GraphQL.UnitTests
 
             var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -238,10 +229,9 @@ namespace Octokit.GraphQL.UnitTests
                                   }).Single()
                               }));
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -263,10 +253,9 @@ namespace Octokit.GraphQL.UnitTests
                 .Nodes
                 .Select(x => x.User.Name);
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact]
@@ -294,10 +283,9 @@ namespace Octokit.GraphQL.UnitTests
                     x.Login,
                 });
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
 
         [Fact(Skip = "Not yet working")]
@@ -321,10 +309,9 @@ namespace Octokit.GraphQL.UnitTests
                 .Edges.Select(x => x.Node)
                 .Select(x => x.User.Name);
 
-            var serializer = new QuerySerializer(2);
-            var result = serializer.Serialize(new QueryBuilder().Build(expression).OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.ToString());
         }
     }
 }
