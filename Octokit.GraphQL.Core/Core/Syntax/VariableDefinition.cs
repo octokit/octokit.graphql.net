@@ -8,11 +8,29 @@ namespace Octokit.GraphQL.Core.Syntax
     {
         public VariableDefinition(Type type, string name)
         {
-            Type = type;
+            Type = ToTypeName(type);
             Name = name;
         }
 
-        public Type Type { get; }
+        public string Type { get; }
         public string Name { get; }
+
+        public static string ToTypeName(Type type)
+        {
+            if (type == typeof(int))
+            {
+                return "Int";
+            }
+            else if (type == typeof(double))
+            {
+                return "Float";
+            }
+            else if (type == typeof(bool))
+            {
+                return "Boolean";
+            }
+
+            return type.Name;
+        }
     }
 }

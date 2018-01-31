@@ -546,5 +546,35 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void IntValue_Variable()
+        {
+            var expected = "query($var1:Int){intValue(integer:$var1){name}}";
+
+            var expression = new TestQuery()
+                .IntValue(Var("var1"))
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void InputObject_Variable()
+        {
+            var expected = "query($var1:InputObject){inputObject(input:$var1){name}}";
+
+            var expression = new TestQuery()
+                .InputObject(Var("var1"))
+                .Select(x => x.Name);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = new QuerySerializer().Serialize(query.OperationDefinition);
+
+            Assert.Equal(expected, result);
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace Octokit.GraphQL.Core.Serializers
                 foreach (var v in operation.VariableDefinitions)
                 {
                     if (!first) builder.Append(comma);
-                    builder.Append('$').Append(v.Name).Append(colon).Append(v.Type.Name);
+                    builder.Append('$').Append(v.Name).Append(colon).Append(v.Type);
                 }
 
                 builder.Append(')');
