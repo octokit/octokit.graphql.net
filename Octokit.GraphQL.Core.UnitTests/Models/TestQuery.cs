@@ -59,5 +59,10 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
             return this.CreateMethodCall(x => x.InputObject(input), Models.Simple.Create);
         }
+
+        public INode Node(int id)
+        {
+            return this.CreateMethodCall(x => x.Node(id), Models.StubINode.Create);
+        }
     }
 }

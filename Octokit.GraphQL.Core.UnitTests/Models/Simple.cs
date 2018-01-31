@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class Simple : QueryableValue<Simple>
+    class Simple : QueryableValue<Simple>, INode
     {
         public Simple(Expression expression)
             : base(expression)

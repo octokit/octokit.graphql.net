@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A subset of repository info.
     /// </summary>
-    public interface IRepositoryInfo : IQueryableValue<IRepositoryInfo>
+    public interface IRepositoryInfo : IQueryableValue<IRepositoryInfo>, IQueryableInterface
     {
         /// <summary>
         /// Identifies the date and time when the object was created.

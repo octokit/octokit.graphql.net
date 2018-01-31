@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Things that can be starred.
     /// </summary>
-    public interface IStarrable : IQueryableValue<IStarrable>
+    public interface IStarrable : IQueryableValue<IStarrable>, IQueryableInterface
     {
         string Id { get; }
 

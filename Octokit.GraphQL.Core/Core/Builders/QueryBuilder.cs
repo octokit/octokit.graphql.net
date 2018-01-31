@@ -241,9 +241,13 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 return RewriteValueExtension(node);
             }
-            if (node.Method.DeclaringType == typeof(QueryableListExtensions))
+            else if (node.Method.DeclaringType == typeof(QueryableListExtensions))
             {
                 return RewriteListExtension(node);
+            }
+            else if (node.Method.DeclaringType == typeof(QueryableInterfaceExtensions))
+            {
+                return RewriteInterfaceExtension(node);
             }
             else if (IsQueryableValueMember(node.Method))
             {
@@ -385,6 +389,26 @@ namespace Octokit.GraphQL.Core.Builders
 
                 return Expression.Call(
                     Rewritten.List.OfTypeMethod,
+                    instance,
+                    Expression.Constant(fragment.TypeCondition.Name));
+            }
+            else
+            {
+                throw new NotSupportedException($"{expression.Method.Name}() is not supported");
+            }
+        }
+
+        private Expression RewriteInterfaceExtension(MethodCallExpression expression)
+        {
+            if (expression.Method.GetGenericMethodDefinition() == QueryableInterfaceExtensions.CastMethod)
+            {
+                var source = expression.Arguments[0];
+                var instance = Visit(source);
+                var targetType = expression.Method.GetGenericArguments()[0];
+                var fragment = syntax.AddInlineFragment(targetType, true);
+
+                return Expression.Call(
+                    Rewritten.Interface.CastMethod,
                     instance,
                     Expression.Constant(fragment.TypeCondition.Name));
             }

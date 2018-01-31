@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can have labels assigned to it.
     /// </summary>
-    public interface ILabelable : IQueryableValue<ILabelable>
+    public interface ILabelable : IQueryableValue<ILabelable>, IQueryableInterface
     {
         /// <summary>
         /// A list of labels associated with the object.
