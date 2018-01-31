@@ -47,7 +47,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public PullRequestReviewCommentConnection Comments(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.PullRequestReviewCommentConnection.Create);
+        public PullRequestReviewCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.PullRequestReviewCommentConnection.Create);
 
         /// <summary>
         /// Identifies the commit associated with this pull request review.
@@ -122,6 +122,15 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL permalink for this PullRequestReview.
         /// </summary>
         public string Url { get; }
+
+        /// <summary>
+        /// A list of edits to this content.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 
         /// <summary>
         /// Check if the current viewer can delete this object.

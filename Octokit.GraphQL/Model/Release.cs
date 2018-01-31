@@ -60,7 +60,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="name">A list of names to filter the assets by.</param>
-        public ReleaseAssetConnection ReleaseAssets(int? first = null, string after = null, int? last = null, string before = null, string name = null) => this.CreateMethodCall(x => x.ReleaseAssets(first, after, last, before, name), Octokit.GraphQL.Model.ReleaseAssetConnection.Create);
+        public ReleaseAssetConnection ReleaseAssets(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? name = null) => this.CreateMethodCall(x => x.ReleaseAssets(first, after, last, before, name), Octokit.GraphQL.Model.ReleaseAssetConnection.Create);
 
         /// <summary>
         /// The HTTP path for this issue

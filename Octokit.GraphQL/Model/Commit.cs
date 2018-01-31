@@ -44,7 +44,7 @@ namespace Octokit.GraphQL.Model
         /// Fetches `git blame` information.
         /// </summary>
         /// <param name="path">The file whose Git blame information you want.</param>
-        public Blame Blame(string path) => this.CreateMethodCall(x => x.Blame(path), Octokit.GraphQL.Model.Blame.Create);
+        public Blame Blame(Arg<string> path) => this.CreateMethodCall(x => x.Blame(path), Octokit.GraphQL.Model.Blame.Create);
 
         /// <summary>
         /// The number of changed files in this commit.
@@ -58,7 +58,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public CommitCommentConnection Comments(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.CommitCommentConnection.Create);
+        public CommitCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.CommitCommentConnection.Create);
 
         /// <summary>
         /// The HTTP path for this Git object
@@ -101,7 +101,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="author">If non-null, filters history to only show commits with matching authorship.</param>
         /// <param name="since">Allows specifying a beginning time or date for fetching commits.</param>
         /// <param name="until">Allows specifying an ending time or date for fetching commits.</param>
-        public CommitHistoryConnection History(int? first = null, string after = null, int? last = null, string before = null, string path = null, CommitAuthor author = null, string since = null, string until = null) => this.CreateMethodCall(x => x.History(first, after, last, before, path, author, since, until), Octokit.GraphQL.Model.CommitHistoryConnection.Create);
+        public CommitHistoryConnection History(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? path = null, Arg<CommitAuthor>? author = null, Arg<string>? since = null, Arg<string>? until = null) => this.CreateMethodCall(x => x.History(first, after, last, before, path, author, since, until), Octokit.GraphQL.Model.CommitHistoryConnection.Create);
 
         public string Id { get; }
 
@@ -142,7 +142,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public CommitConnection Parents(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Parents(first, after, last, before), Octokit.GraphQL.Model.CommitConnection.Create);
+        public CommitConnection Parents(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Parents(first, after, last, before), Octokit.GraphQL.Model.CommitConnection.Create);
 
         /// <summary>
         /// The datetime when this commit was pushed.

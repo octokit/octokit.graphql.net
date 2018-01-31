@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         /// A URL pointing to the organization's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        public string AvatarUrl(int? size = null) => null;
+        public string AvatarUrl(Arg<int>? size = null) => null;
 
         /// <summary>
         /// Identifies the primary key from the database.
@@ -56,7 +56,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public UserConnection Members(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.Members(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
+        public UserConnection Members(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Members(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
         /// The organization's public profile name.
@@ -89,13 +89,13 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection PinnedRepositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.Model.RepositoryConnection.Create);
+        public RepositoryConnection PinnedRepositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RepositoryPrivacy>? privacy = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Find project by number.
         /// </summary>
         /// <param name="number">The project number to find.</param>
-        public Project Project(int number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
+        public Project Project(Arg<int> number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
 
         /// <summary>
         /// A list of projects under the owner.
@@ -107,7 +107,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for projects returned from the connection</param>
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
-        public ProjectConnection Projects(int? first = null, string after = null, int? last = null, string before = null, ProjectOrder orderBy = null, string search = null, IEnumerable<ProjectState> states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
+        public ProjectConnection Projects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectOrder>? orderBy = null, Arg<string>? search = null, Arg<IEnumerable<ProjectState>>? states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
 
         /// <summary>
         /// The HTTP path listing organization's projects
@@ -131,13 +131,13 @@ namespace Octokit.GraphQL.Model
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
         /// <param name="isFork">If non-null, filters repositories according to whether they are forks of another repository</param>
-        public RepositoryConnection Repositories(int? first = null, string after = null, int? last = null, string before = null, RepositoryPrivacy? privacy = null, RepositoryOrder orderBy = null, IEnumerable<RepositoryAffiliation?> affiliations = null, bool? isLocked = null, bool? isFork = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, orderBy, affiliations, isLocked, isFork), Octokit.GraphQL.Model.RepositoryConnection.Create);
+        public RepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RepositoryPrivacy>? privacy = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null, Arg<bool>? isFork = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, orderBy, affiliations, isLocked, isFork), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Find Repository.
         /// </summary>
         /// <param name="name">Name of Repository to find.</param>
-        public Repository Repository(string name) => this.CreateMethodCall(x => x.Repository(name), Octokit.GraphQL.Model.Repository.Create);
+        public Repository Repository(Arg<string> name) => this.CreateMethodCall(x => x.Repository(name), Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
         /// The HTTP path for this user
@@ -153,7 +153,7 @@ namespace Octokit.GraphQL.Model
         /// Find an organization's team by its slug.
         /// </summary>
         /// <param name="slug">The name or slug of the team to find.</param>
-        public Team Team(string slug) => this.CreateMethodCall(x => x.Team(slug), Octokit.GraphQL.Model.Team.Create);
+        public Team Team(Arg<string> slug) => this.CreateMethodCall(x => x.Team(slug), Octokit.GraphQL.Model.Team.Create);
 
         /// <summary>
         /// A list of teams in this organization.
@@ -169,7 +169,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for teams returned from the connection</param>
         /// <param name="ldapMapped">If true, filters teams that are mapped to an LDAP Group (Enterprise only)</param>
         /// <param name="rootTeamsOnly">If true, restrict to only root teams</param>
-        public TeamConnection Teams(int? first = null, string after = null, int? last = null, string before = null, TeamPrivacy? privacy = null, TeamRole? role = null, string query = null, IEnumerable<string> userLogins = null, TeamOrder orderBy = null, bool? ldapMapped = null, bool? rootTeamsOnly = false) => this.CreateMethodCall(x => x.Teams(first, after, last, before, privacy, role, query, userLogins, orderBy, ldapMapped, rootTeamsOnly), Octokit.GraphQL.Model.TeamConnection.Create);
+        public TeamConnection Teams(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<TeamPrivacy>? privacy = null, Arg<TeamRole>? role = null, Arg<string>? query = null, Arg<IEnumerable<string>>? userLogins = null, Arg<TeamOrder>? orderBy = null, Arg<bool>? ldapMapped = null, Arg<bool>? rootTeamsOnly = null) => this.CreateMethodCall(x => x.Teams(first, after, last, before, privacy, role, query, userLogins, orderBy, ldapMapped, rootTeamsOnly), Octokit.GraphQL.Model.TeamConnection.Create);
 
         /// <summary>
         /// The HTTP path listing organization's teams

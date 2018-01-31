@@ -33,7 +33,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the commit associated with the 'closed' event.
         /// </summary>
-        [Obsolete(@"Use ClosedEvent.closer instead.")]
+        [Obsolete(@"`ClosedEvent` may be associated with other objects than a commit. Use ClosedEvent.closer instead. Removal on 2018-07-01 UTC.")]
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);
 
         /// <summary>

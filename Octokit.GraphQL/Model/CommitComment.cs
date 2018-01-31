@@ -97,7 +97,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
-        public ReactionConnection Reactions(int? first = null, string after = null, int? last = null, string before = null, ReactionContent? content = null, ReactionOrder orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
+        public ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
 
         /// <summary>
         /// The repository associated with this node.
@@ -119,6 +119,15 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL permalink for this commit comment.
         /// </summary>
         public string Url { get; }
+
+        /// <summary>
+        /// A list of edits to this content.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 
         /// <summary>
         /// Check if the current viewer can delete this object.

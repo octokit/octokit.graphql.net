@@ -27,7 +27,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
         /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
-        public PullRequestConnection AssociatedPullRequests(int? first = null, string after = null, int? last = null, string before = null, IEnumerable<PullRequestState> states = null, IEnumerable<string> labels = null, string headRefName = null, string baseRefName = null, IssueOrder orderBy = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
+        public PullRequestConnection AssociatedPullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PullRequestState>>? states = null, Arg<IEnumerable<string>>? labels = null, Arg<string>? headRefName = null, Arg<string>? baseRefName = null, Arg<IssueOrder>? orderBy = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
 
         public string Id { get; }
 

@@ -125,7 +125,7 @@ namespace Octokit.GraphQL.Model
         /// A description of the repository, rendered to HTML without any links in it.
         /// </summary>
         /// <param name="limit">How many characters to return.</param>
-        public string ShortDescriptionHTML(int? limit = 200) => null;
+        public string ShortDescriptionHTML(Arg<int>? limit = null) => null;
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

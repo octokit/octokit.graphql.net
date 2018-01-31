@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.Model
         /// A URL pointing to the actor's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        string AvatarUrl(int? size = null);
+        string AvatarUrl(Arg<int>? size = null);
 
         /// <summary>
         /// The username of the actor.
@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public string AvatarUrl(int? size = null) => null;
+        public string AvatarUrl(Arg<int>? size = null) => null;
 
         public string Login { get; }
 
