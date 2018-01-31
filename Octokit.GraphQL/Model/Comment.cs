@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a comment.
     /// </summary>
-    public interface IComment : IQueryableValue<IComment>
+    public interface IComment : IQueryableValue<IComment>, IQueryableInterface
     {
         /// <summary>
         /// The actor who authored the comment.

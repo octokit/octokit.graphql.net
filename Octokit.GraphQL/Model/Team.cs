@@ -31,12 +31,6 @@ namespace Octokit.GraphQL.Model
         public string AvatarUrl(Arg<int>? size = null) => null;
 
         /// <summary>
-        /// A URL pointing to the team's avatar.
-        /// </summary>
-        /// <param name="size">The size in pixels of the resulting square image.</param>
-        public string AvatarUrl(int? size = 400) => null;
-
-        /// <summary>
         /// List of child teams belonging to this team
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
