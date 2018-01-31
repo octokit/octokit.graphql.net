@@ -4,7 +4,7 @@ namespace Octokit.GraphQL
 {
     public struct Variable
     {
-        private Variable(string name)
+        public Variable(string name)
         {
             Name = name;
         }
