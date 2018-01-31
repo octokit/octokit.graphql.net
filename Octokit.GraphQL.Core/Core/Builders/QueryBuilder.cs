@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Core.Builders
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
 
-        public GraphQLQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
+        public CompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
@@ -28,10 +28,10 @@ namespace Octokit.GraphQL.Core.Builders
             var expression = Expression.Lambda<Func<JObject, TResult>>(
                 rewritten.AddCast(typeof(TResult)),
                 RootDataParameter);
-            return new GraphQLQuery<TResult>(root, expression);
+            return new CompiledQuery<TResult>(root, expression);
         }
 
-        public GraphQLQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
+        public CompiledQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Core.Builders
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
                 rewritten.AddCast(typeof(IEnumerable<TResult>)),
                 RootDataParameter);
-            return new GraphQLQuery<IEnumerable<TResult>>(root, expression);
+            return new CompiledQuery<IEnumerable<TResult>>(root, expression);
         }
 
         protected override Expression VisitBinary(BinaryExpression node)
