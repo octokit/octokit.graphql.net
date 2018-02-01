@@ -10,7 +10,7 @@ namespace Octokit.GraphQL
     /// <summary>
     /// The query root of GitHub's GraphQL interface.
     /// </summary>
-    public class Query : QueryableValue<Query>, IQuery
+    public class Query : QueryableValue<Query>, IRootQuery
     {
         public Query() : base(null)
         {

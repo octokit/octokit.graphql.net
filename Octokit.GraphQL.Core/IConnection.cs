@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Octokit.GraphQL.Core;
 
 namespace Octokit.GraphQL
 {

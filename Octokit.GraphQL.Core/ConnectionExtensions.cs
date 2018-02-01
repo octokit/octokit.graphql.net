@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL
 {
@@ -12,16 +10,24 @@ namespace Octokit.GraphQL
     {
         public static Task<T> Run<T>(
             this IConnection connection,
+            IQuery<T> query,
+            IDictionary<string, object> variables = null)
+        {
+            return query.Run(connection, variables);
+        }
+
+        public static Task<T> Run<T>(
+            this IConnection connection,
             IQueryableValue<T> expression)
         {
-            return connection.Run(expression.Compile());
+            return connection.Run(new QueryBuilder().Build(expression));
         }
 
         public static Task<IEnumerable<T>> Run<T>(
             this IConnection connection,
             IQueryableList<T> expression)
         {
-            return connection.Run(expression.Compile());
+            return connection.Run(new QueryBuilder().Build(expression));
         }
     }
 }

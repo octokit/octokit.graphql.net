@@ -16,7 +16,7 @@ namespace Octokit.GraphQL
             return new PagedList<IQueryableList<TResult>>(source.Expression, source.Method, selector);
         }
 
-        public static CompiledQuery<IEnumerable<T>> Compile<T>(this IPagedList<T> expression)
+        public static IQuery<IEnumerable<T>> Compile<T>(this IPagedList<T> expression)
             where T : IQueryableList
         {
             return new PagedQueryBuilder().Build(expression);

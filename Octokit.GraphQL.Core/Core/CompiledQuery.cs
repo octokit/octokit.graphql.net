@@ -6,10 +6,11 @@ using Octokit.GraphQL.Core.Syntax;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using System.Threading.Tasks;
 
-namespace Octokit.GraphQL
+namespace Octokit.GraphQL.Core
 {
-    public class CompiledQuery<TResult>
+    public class CompiledQuery<TResult> : IQuery<TResult>
     {
         public CompiledQuery(
             OperationDefinition operationDefinition,
@@ -29,6 +30,13 @@ namespace Octokit.GraphQL
         public Expression<Func<JObject, TResult>> Expression { get; }
 
         public Func<JObject, TResult> CompiledExpression { get; }
+
+        public Task<TResult> Run(
+            IConnection connection,
+            IDictionary<string, object> variables)
+        {
+            return connection.Run(this, variables);
+        }
 
         public override string ToString()
         {

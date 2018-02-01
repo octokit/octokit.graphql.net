@@ -1,4 +1,5 @@
 ﻿using System;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 using static Octokit.GraphQL.Variable;
@@ -16,7 +17,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -30,7 +31,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo", 2)
                 .Select(x => new { x.Name, x.Description });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -44,7 +45,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name + " World!");
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -58,7 +59,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name + x.Description);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -72,7 +73,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("foo")
                 .Select(x => x.Name + x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -89,7 +90,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Float = (DayOfWeek)x.Number
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -106,7 +107,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Float = (DayOfWeek)x.NullableNumber.Value
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -120,7 +121,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .QueryItems
                 .Select(x => x.Id);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -134,7 +135,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .QueryItems
                 .Select(x => new{ x.Id, x.Name});
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -149,7 +150,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple("bar")
                 .Select(x => new { x.Name, x.Description });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -167,7 +168,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -189,7 +190,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).Single()
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -208,7 +209,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Items = x.NestedItems.Select(i => i.Name).ToList(),
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -231,7 +232,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Bar = x.Description,
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.ToString());
         }
@@ -245,7 +246,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .BoolValue(false)
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -271,7 +272,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -285,7 +286,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .StringValue("hello")
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -299,7 +300,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .IntValue(123)
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -313,7 +314,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .FloatValue(123.3f)
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -327,7 +328,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .ObjectValue(null)
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -346,7 +347,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .InputObject(input)
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -365,7 +366,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .InputObject(input)
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -390,7 +391,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -408,7 +409,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
 
@@ -422,7 +423,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Select(x => x.Name);
 
-            query = expression.Compile();
+            query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -449,7 +450,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x.Description,
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.ToString());
         }
@@ -470,7 +471,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Union
                 .Select(x => x.Simple.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.ToString());
         }
@@ -494,7 +495,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x.Simple.Name,
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.ToString());
         }
@@ -508,7 +509,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple(Var("var1"))
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -522,7 +523,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .IntValue(Var("var1"))
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -536,7 +537,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .InputObject(Var("var1"))
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -557,7 +558,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Cast<Simple>()
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.ToString());
         }

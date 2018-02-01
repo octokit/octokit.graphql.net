@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Core.Introspection;
 using Xunit;
@@ -16,7 +17,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Schema.QueryType
                 .Select(x => x.Kind);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
@@ -80,7 +81,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList()
                 });
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expectedQuery, query.ToString());
 

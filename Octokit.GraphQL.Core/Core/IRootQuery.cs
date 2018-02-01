@@ -2,7 +2,7 @@
 
 namespace Octokit.GraphQL.Core
 {
-    public interface IQuery
+    public interface IRootQuery
     {
     }
 }

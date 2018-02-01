@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Octokit.GraphQL.Core.Builders
 {
     public class PagedQueryBuilder
     {
-        public CompiledQuery<IEnumerable<T>> Build<T>(IPagedList<T> pages)
+        public IQuery<IEnumerable<T>> Build<T>(IPagedList<T> pages)
             where T : IQueryableList
         {
             throw new NotImplementedException();

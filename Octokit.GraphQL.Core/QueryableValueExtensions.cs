@@ -57,7 +57,7 @@ namespace Octokit.GraphQL
             throw new NotImplementedException();
         }
 
-        public static CompiledQuery<T> Compile<T>(this IQueryableValue<T> expression)
+        public static IQuery<T> Compile<T>(this IQueryableValue<T> expression)
         {
             return new QueryBuilder().Build(expression);
         }

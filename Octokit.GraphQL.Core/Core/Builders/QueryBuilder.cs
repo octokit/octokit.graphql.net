@@ -68,7 +68,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             if (syntax.Root == null)
             {
-                var query = node.Value as IQuery;
+                var query = node.Value as IRootQuery;
                 var mutation = node.Value as IMutation;
                 var queryEntity = node.Value as IQueryableValue;
 

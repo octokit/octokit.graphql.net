@@ -5,7 +5,7 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    class TestQuery : QueryableValue<TestQuery>, IQuery
+    class TestQuery : QueryableValue<TestQuery>, IRootQuery
     {
         public TestQuery()
             : base(null)
