@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             var connectionType = pages.Expression.Type;
             var resultType = pages.Selector.ReturnType;
-            var pageModelType = typeof(PageModel<>).MakeGenericType(resultType);
+            var pageModelType = typeof(Page<>).MakeGenericType(resultType);
 
             // Gets the `IPagingConnection<TNode>` type.
             var pagingConnectionType = connectionType.GetTypeInfo()
@@ -98,13 +98,6 @@ namespace Octokit.GraphQL.Core.Builders
                     yield return Expression.Constant(null, p.ParameterType);
                 }
             }
-        }
-
-        public class PageModel<T>
-        {
-            public bool HasNextPage { get; set; }
-            public string EndCursor { get; set; }
-            public IList<T> Items { get; set; }
         }
     }
 }

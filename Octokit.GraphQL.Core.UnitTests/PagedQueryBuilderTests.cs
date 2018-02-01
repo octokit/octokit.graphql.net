@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         new Arg<int>("first", 0),
                         new Arg<string>("after", null),
                         new Arg<PageOption>(null, PageOption.Second))
-                    .Select(connection => new PagedQueryBuilder.PageModel<string>
+                    .Select(connection => new Page<string>
                     {
                         HasNextPage = connection.PageInfo.HasNextPage,
                         EndCursor = connection.PageInfo.EndCursor,
