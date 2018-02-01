@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Core.Builders
 {
     public class PagedQueryBuilder
     {
-        public IQuery<IEnumerable<T>> Build<T>(IPagedList<T> pages)
+        public PagingQuery<IEnumerable<T>> Build<T>(IPagedList<T> pages)
             where T : IQueryableList
         {
             throw new NotImplementedException();
