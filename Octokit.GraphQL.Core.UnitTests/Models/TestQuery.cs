@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Octokit.GraphQL.Core.Builders;
+using static Octokit.GraphQL.Variable;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
@@ -66,16 +67,14 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
             return this.CreateMethodCall(x => x.Node(id), Models.StubINode.Create);
         }
 
-        public IQueryableList<Simple> PagesOfSimple(Arg<int>? first = null, Arg<string>? after = null, Arg<bool>? option = null)
+        public SimpleConnection PagesOfSimple(Arg<int>? first = null, Arg<string>? after = null, Arg<PageOption>? option = null)
         {
-            return this.CreateMethodCall(x => x.PagesOfSimple(first, after, option));
+            return this.CreateMethodCall(x => x.PagesOfSimple(first, after, option), SimpleConnection.Create);
         }
 
-        public IPagedList<IQueryableList<Simple>> PagesOfSimple(Arg<bool>? option = null)
+        public IPagedList<SimpleConnection> PagesOfSimple(Arg<PageOption>? option = null)
         {
-            return PagedList<IQueryableList<Simple>>.Create<TestQuery>(
-                Expression,
-                x => x.PagesOfSimple(null, null, null));
+            return this.CreatePagedMethodCall(x => x.PagesOfSimple(new Arg<int>("first", 0), new Arg<string>("after", null), option));
         }
     }
 

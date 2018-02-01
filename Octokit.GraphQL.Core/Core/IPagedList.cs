@@ -4,11 +4,10 @@ using System.Reflection;
 
 namespace Octokit.GraphQL.Core
 {
-    public interface IPagedList<T>
-        where T : IQueryableList
+    public interface IPagedList<out T>
+        where T : IPagingConnection
     {
         Expression Expression { get; }
-        MethodInfo Method { get; }
         LambdaExpression Selector { get; }
     }
 }

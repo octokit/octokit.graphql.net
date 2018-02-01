@@ -8,16 +8,16 @@ namespace Octokit.GraphQL
 {
     public static class PagedListExtensions
     {
-        public static IPagedList<IQueryableList<TResult>> Select<TValue, TResult>(
-            this IPagedList<IQueryableList<TValue>> source,
+        public static IPagedList<IPagingConnection<TResult>> Select<TValue, TResult>(
+            this IPagedList<IPagingConnection<TValue>> source,
             Expression<Func<TValue, TResult>> selector)
                 where TValue : IQueryableValue
         {
-            return new PagedList<IQueryableList<TResult>>(source.Expression, source.Method, selector);
+            return new PagedList<IPagingConnection<TResult>>(source.Expression, selector);
         }
 
         public static IQuery<IEnumerable<T>> Compile<T>(this IPagedList<T> expression)
-            where T : IQueryableList
+            where T : IPagingConnection
         {
             return new PagedQueryBuilder().Build(expression);
         }
