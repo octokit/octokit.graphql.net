@@ -4,7 +4,7 @@ namespace Octokit.GraphQL.Core
 {
     public struct Arg<T> : IArg
     {
-        private Arg(string name, T value)
+        public Arg(string name, T value)
         {
             VariableName = name;
             Value = value;
