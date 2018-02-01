@@ -67,14 +67,14 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
             return this.CreateMethodCall(x => x.Node(id), Models.StubINode.Create);
         }
 
-        public SimpleConnection PagesOfSimple(Arg<int>? first = null, Arg<string>? after = null, Arg<PageOption>? option = null)
+        public NestedDataConnection PagesOfNested(Arg<int>? first = null, Arg<string>? after = null, Arg<PageOption>? option = null)
         {
-            return this.CreateMethodCall(x => x.PagesOfSimple(first, after, option), SimpleConnection.Create);
+            return this.CreateMethodCall(x => x.PagesOfNested(first, after, option), NestedDataConnection.Create);
         }
 
-        public IPagedList<SimpleConnection> PagesOfSimple(Arg<PageOption>? option = null)
+        public IPagedList<NestedDataConnection> PagesOfNested(Arg<PageOption>? option = null)
         {
-            return this.CreatePagedMethodCall(x => x.PagesOfSimple(new Arg<int>("first", 0), new Arg<string>("after", null), option));
+            return this.CreatePagedMethodCall(x => x.PagesOfNested(new Arg<int>("first", 0), new Arg<string>("after", null), option));
         }
     }
 

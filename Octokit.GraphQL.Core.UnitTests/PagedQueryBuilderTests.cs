@@ -9,15 +9,15 @@ namespace Octokit.GraphQL.Core.UnitTests
     public class PagedQueryBuilderTests
     {
         [Fact]
-        public void Builds_Page_Expression_For_PagesOfSimple()
+        public void Builds_Page_Expression_For_PagesOfNested()
         {
             var expression = new TestQuery()
-                .PagesOfSimple(PageOption.Second)
+                .PagesOfNested(PageOption.Second)
                 .Select(x => x.Name);
 
             var expected = ExpectedExpression.Normalize(() =>
                 new TestQuery()
-                    .PagesOfSimple(
+                    .PagesOfNested(
                         new Arg<int>("first", 0),
                         new Arg<string>("after", null),
                         new Arg<PageOption>(null, PageOption.Second))
