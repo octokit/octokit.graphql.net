@@ -182,6 +182,18 @@ namespace Octokit.GraphQL.Model
         /// <param name="states">A list of states to filter the issues by.</param>
         public IssueConnection Issues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, labels, orderBy, states), Octokit.GraphQL.Model.IssueConnection.Create);
 
+        public IPagedList<IssueConnection> IssuesAllPages(Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null)
+        {
+            return this.CreatePagedMethodCall(x => x.Issues(
+                new Arg<int>("first", 0),
+                new Arg<string>("after", null),
+                new Arg<int>("last", 0),
+                new Arg<string>("before", null),
+                labels,
+                orderBy,
+                states));
+        }
+
         /// <summary>
         /// Returns a single label by name
         /// </summary>

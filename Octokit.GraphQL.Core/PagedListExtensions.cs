@@ -16,8 +16,7 @@ namespace Octokit.GraphQL
             return new PagedList<IPagingConnection<TResult>>(source.Expression, selector);
         }
 
-        public static IQuery<IEnumerable<T>> Compile<T>(this IPagedList<T> expression)
-            where T : IPagingConnection
+        public static IQuery<IEnumerable<T>> Compile<T>(this IPagedList<IPagingConnection<T>> expression)
         {
             return new PagedQueryBuilder().Build(expression);
         }

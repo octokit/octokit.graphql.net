@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var openState = new[] { IssueState.Closed };
             var query = new Query()
                 .Repository("octokit", "octokit.net")
-                .Issues(Var("first"), states: openState)
+                .Issues(first: Var("first"), states: openState)
                 .Nodes
                 .Select(i => new
             {
@@ -67,6 +67,25 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var compiled = query.Compile();
             var results = Connection.Run(compiled, vars).Result.ToArray();
             Assert.Equal(3, results.Length);
+        }
+
+        [IntegrationTest]
+        public void Should_Query_AutoPaging_Issues()
+        {
+            var openState = new[] { IssueState.Closed };
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .IssuesAllPages()
+                .Select(i => new
+                {
+                    i.Number,
+                    i.Title
+                });
+
+            var compiled = query.Compile();
+            var results = Connection.Run(compiled).Result.ToList();
+
+            Assert.True(results.Count >= 723);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]

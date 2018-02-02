@@ -44,17 +44,17 @@ namespace Octokit.GraphQL.Core.Builders
             return new CompiledQuery<IEnumerable<TResult>>(root, expression);
         }
 
-        public CompiledQuery<IEnumerable<TResult>> Build<TResult>(Expression query)
+        public CompiledQuery<TResult> Build<TResult>(Expression query)
         {
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
 
             var rewritten = Visit(query);
-            var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
-                rewritten.AddCast(typeof(IEnumerable<TResult>)),
+            var expression = Expression.Lambda<Func<JObject, TResult>>(
+                rewritten.AddCast(typeof(TResult)),
                 RootDataParameter);
-            return new CompiledQuery<IEnumerable<TResult>>(root, expression);
+            return new CompiledQuery<TResult>(root, expression);
         }
 
         protected override Expression VisitBinary(BinaryExpression node)

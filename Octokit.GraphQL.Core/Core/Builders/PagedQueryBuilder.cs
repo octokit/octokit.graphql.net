@@ -8,10 +8,10 @@ namespace Octokit.GraphQL.Core.Builders
 {
     public class PagedQueryBuilder
     {
-        public PagingQuery<IEnumerable<T>> Build<T>(IPagedList<T> pages)
-            where T : IPagingConnection
+        public PagingQuery<T> Build<T>(IPagedList<IPagingConnection<T>> paging)
         {
-            throw new NotImplementedException();
+            var rewritten = RewriteExpression(paging);
+            return new PagingQuery<T>(rewritten);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Core.Builders
         ///    });
         /// ```
         /// </remarks>
-        public Expression RewriteExpression<T>(IPagedList<T> paging)
+        public MethodCallExpression RewriteExpression<T>(IPagedList<T> paging)
             where T : IPagingConnection
         {
             var connectionType = paging.Expression.Type;
