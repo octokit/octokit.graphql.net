@@ -3,4 +3,12 @@
     <AllowParallelTestExecution>True</AllowParallelTestExecution>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>
+  <EngineModes>
+    <EngineMode>
+      <Name>Run integration tests manually, others automatically</Name>
+      <Settings>
+        <TestsToExecuteAutomatically>IsNotInProjectWithName 'Octokit.GraphQL.IntegrationTests'</TestsToExecuteAutomatically>
+      </Settings>
+    </EngineMode>
+  </EngineModes>
 </SolutionConfiguration>
