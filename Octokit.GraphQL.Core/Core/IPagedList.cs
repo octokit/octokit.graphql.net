@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Octokit.GraphQL.Core
 {
@@ -8,6 +7,5 @@ namespace Octokit.GraphQL.Core
         where T : IPagingConnection
     {
         Expression Expression { get; }
-        LambdaExpression Selector { get; }
     }
 }

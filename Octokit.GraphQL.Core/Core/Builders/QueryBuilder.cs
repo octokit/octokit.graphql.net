@@ -262,6 +262,10 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 return RewriteInterfaceExtension(node);
             }
+            else if (node.Method.DeclaringType == typeof(PagedListExtensions))
+            {
+                return RewritePagedListExtension(node);
+            }
             else if (IsQueryableValueMember(node.Method))
             {
                 return VisitQueryMethod(node, alias);
@@ -424,6 +428,27 @@ namespace Octokit.GraphQL.Core.Builders
                     Rewritten.Interface.CastMethod,
                     instance,
                     Expression.Constant(fragment.TypeCondition.Name));
+            }
+            else
+            {
+                throw new NotSupportedException($"{expression.Method.Name}() is not supported");
+            }
+        }
+
+        private Expression RewritePagedListExtension(MethodCallExpression expression)
+        {
+            if (expression.Method.GetGenericMethodDefinition() == PagedListExtensions.SelectMethod)
+            {
+                var source = expression.Arguments[0];
+                var select = expression.Arguments[1].GetLambda();
+                throw new NotImplementedException();
+                //return new PagedQueryBuilder().RewriteExpression(source, select);
+            }
+            else if (expression.Method.GetGenericMethodDefinition() == PagedListExtensions.ToListMethod)
+            {
+                var source = expression.Arguments[0];
+                var instance = Visit(source);
+                return instance;
             }
             else
             {

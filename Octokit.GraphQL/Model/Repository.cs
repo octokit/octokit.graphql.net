@@ -184,14 +184,7 @@ namespace Octokit.GraphQL.Model
 
         public IPagedList<IssueConnection> IssuesAllPages(Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null)
         {
-            return this.CreatePagedMethodCall(x => x.Issues(
-                new Arg<int>("first", 0),
-                new Arg<string>("after", null),
-                new Arg<int>("last", 0),
-                new Arg<string>("before", null),
-                labels,
-                orderBy,
-                states));
+            return this.CreateMethodCall(x => x.IssuesAllPages(labels, orderBy, states));
         }
 
         /// <summary>

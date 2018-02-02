@@ -28,16 +28,15 @@ namespace Octokit.GraphQL.Core.Builders
             return create(methodCall.Update(Expression.Constant(o), methodCall.Arguments));
         }
 
-        public static IPagedList<TValue> CreatePagedMethodCall<TObject, TValue>(
+        public static IPagedList<TValue> CreateMethodCall<TObject, TValue>(
             this TObject o,
-            Expression<Func<TObject, TValue>> selector)
+            Expression<Func<TObject, IPagedList<TValue>>> selector)
                 where TObject : IQueryableValue
                 where TValue : IPagingConnection
         {
             var methodCall = (MethodCallExpression)selector.Body;
             return new PagedList<TValue>(
-                methodCall.Update(Expression.Constant(o), methodCall.Arguments),
-                selector);
+                methodCall.Update(Expression.Constant(o), methodCall.Arguments));
         }
 
         public static TValue CreateProperty<TObject, TValue>(

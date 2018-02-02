@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using static Octokit.GraphQL.Variable;
 
 namespace Octokit.GraphQL.Core.Builders
 {
@@ -10,7 +11,7 @@ namespace Octokit.GraphQL.Core.Builders
     {
         public PagingQuery<T> Build<T>(IPagedList<IPagingConnection<T>> paging)
         {
-            var rewritten = RewriteExpression(paging);
+            var rewritten = RewriteExpression(paging.Expression);
             return new PagingQuery<T>(rewritten);
         }
 
@@ -36,7 +37,7 @@ namespace Octokit.GraphQL.Core.Builders
         /// ```
         /// var query = new TestQuery()
         ///    .Repository("foo", "bar")
-        ///    .PullRequests(first: Var("first"), after: Var("after"))
+        ///    .PullRequests(Var("first"), Var("after"), Var("last"), Var("before"))
         ///    .Select(connection => new Page<string>
         ///    {
         ///        HasNextPage = connection.PageInfo.HasNextPage,
@@ -45,35 +46,28 @@ namespace Octokit.GraphQL.Core.Builders
         ///    });
         /// ```
         /// </remarks>
-        public MethodCallExpression RewriteExpression<T>(IPagedList<T> paging)
-            where T : IPagingConnection
+        public MethodCallExpression RewriteExpression(Expression expression)
         {
-            var connectionType = paging.Expression.Type;
-            var resultType = paging.Selector.ReturnType;
-            var pageType = typeof(Page<>).MakeGenericType(resultType);
+            var selectMethod = GetSelectMethod(expression);
+            var sourceConnectionType = GetPagingConnectionType(selectMethod.Arguments[0]);
+            var sourceNodeType = GetPagingConnectionNodeType(sourceConnectionType);
+            var resultConnectionType = GetPagingConnectionType(expression);
+            var resultNodeType = GetPagingConnectionNodeType(resultConnectionType);
+            var pageType = typeof(Page<>).MakeGenericType(resultNodeType);
 
-            // Gets the `IPagingConnection<TNode>` type.
-            var pagingConnectionType = connectionType.GetTypeInfo()
-                .ImplementedInterfaces
-                .First(x => x.IsConstructedGenericType && 
-                            x.GetGenericTypeDefinition() == typeof(IPagingConnection<>));
+            // The `connection` parameter.
+            var connectionParameter = Expression.Parameter(sourceConnectionType, "connection");
 
-            // Gets the `TNode` type in `IPagingConnection<TNode>`
-            var nodeType = pagingConnectionType.GenericTypeArguments[0];
-
-            // The `connection` parameter passed into the select lambda.
-            var connectionParameter = Expression.Parameter(connectionType, "connection");
-
-            // Builds `connection.Nodes`.
+            //// Builds `connection.Nodes`.
             var connectionNodes = Expression.Property(connectionParameter, "Nodes");
 
-            // Builds `connection.Nodes.Select(pages.Selector).ToList`.
+            //// Builds `connection.Nodes.Select(pages.Selector).ToList`.
             var selectNodes = Expression.Call(
-                QueryableListExtensions.ToListMethod.MakeGenericMethod(resultType),
+                QueryableListExtensions.ToListMethod.MakeGenericMethod(resultNodeType),
                 Expression.Call(
-                    QueryableListExtensions.SelectMethod.MakeGenericMethod(nodeType, paging.Selector.ReturnType),
+                    QueryableListExtensions.SelectMethod.MakeGenericMethod(sourceNodeType, resultNodeType),
                     Expression.Property(connectionParameter, "Nodes"),
-                    paging.Selector));
+                    selectMethod.Arguments[1]));
 
             // Builds the select lambda:
             //
@@ -84,7 +78,7 @@ namespace Octokit.GraphQL.Core.Builders
             //     Items = connection.Nodes.Select(pages.Selector).ToList(),
             // }
             var connectionPageInfo = Expression.Property(connectionParameter, "PageInfo");
-            var selectPageModel = Expression.Lambda(
+            var selectPage = Expression.Lambda(
                 Expression.MemberInit(
                     Expression.New(pageType),
                     Expression.Bind(
@@ -98,18 +92,119 @@ namespace Octokit.GraphQL.Core.Builders
                         selectNodes)),
                 connectionParameter);
 
-            // Builds the final expression:
-            //
-            // pages.Expression.Select(connection => new Page<TResult>
-            // {
-            //     HasNextPage = connection.PageInfo.HasNextPage,
-            //     EndCursor = connection.PageInfo.EndCursor,
-            //     Items = connection.Nodes.Select(pages.Selector).ToList(),
-            // }
+            // Gets the target query, i.e. the related query with the first, after, last, before args.
+            var target = BuildTarget(selectMethod.Arguments[0]);
+
+            //// Builds the final expression:
+            ////
+            //// targetExpression.Select(connection => new Page<TResult>
+            //// {
+            ////     HasNextPage = connection.PageInfo.HasNextPage,
+            ////     EndCursor = connection.PageInfo.EndCursor,
+            ////     Items = connection.Nodes.Select(pages.Selector).ToList(),
+            //// }
             return Expression.Call(
-                QueryableValueExtensions.SelectMethod.MakeGenericMethod(connectionType, pageType),
-                paging.Expression,
-                selectPageModel);
+                QueryableValueExtensions.SelectMethod.MakeGenericMethod(sourceConnectionType, pageType),
+                target,
+                selectPage);
+            throw new NotImplementedException();
+        }
+
+        private static Expression BuildTarget(Expression source)
+        {
+            if (source is MethodCallExpression m &&
+                typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(m.Method.DeclaringType.GetTypeInfo()))
+            {
+                var pagingParameters = new[]
+                {
+                    typeof(Arg<int>?),
+                    typeof(Arg<string>?),
+                    typeof(Arg<int>?),
+                    typeof(Arg<string>?),
+                };
+
+                var pagingArgs = new []
+                {
+                    Expression.Constant(new Arg<int>("first", 100), typeof(Arg<int>?)),
+                    Expression.Constant(new Arg<string>("after", null), typeof(Arg<string>?)),
+                    Expression.Constant(new Arg<int>("last", 100), typeof(Arg<int>?)),
+                    Expression.Constant(new Arg<string>("before", null), typeof(Arg<string>?)),
+                };
+
+                var methodName = m.Method.Name + "AllPages";
+                var parameters = pagingParameters.Concat(m.Arguments.Select(x => x.Type)).ToArray();
+                var targetMethod = m.Method.DeclaringType.GetRuntimeMethod(methodName, parameters);
+
+                if (targetMethod == null)
+                {
+                    throw new NotSupportedException(
+                        $"Could not find method {m.Method.DeclaringType.Name}.{methodName}.");
+                }
+
+                var args = pagingArgs.Concat(m.Arguments).ToList();
+                return Expression.Call(
+                    m.Object,
+                    targetMethod,
+                    args);
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    $"Expected a method call on an IQueryableValue but got '{source}'");
+            }
+        }
+
+        private static MethodCallExpression GetSelectMethod(Expression expression)
+        {
+            if (expression is MethodCallExpression m &&
+                m.Method.GetGenericMethodDefinition() == PagedListExtensions.SelectMethod)
+            {
+                return m;
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    $"Expected an IPagedList<T>.Select() expression but got '{expression}'.");
+            }
+        }
+
+        private static Type GetPagingConnectionType(Expression expression)
+        {
+            var t = expression.Type;
+
+            if (t.IsConstructedGenericType && t.GetGenericTypeDefinition() == typeof(IPagedList<>))
+            {
+                return t.GenericTypeArguments[0];
+            }
+            else
+            {
+                throw new NotSupportedException($"Expected an 'IPagedList<>' but got {t}.");
+            }
+        }
+
+        private static Type GetPagingConnectionNodeType(Type type)
+        {
+            bool IsPagingConnection(Type t)
+            {
+                return t.IsConstructedGenericType &&
+                    t.GetGenericTypeDefinition() == typeof(IPagingConnection<>);
+            }
+
+            if (IsPagingConnection(type))
+            {
+                return type.GenericTypeArguments[0];
+            }
+
+            var i = type.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(IsPagingConnection);
+
+            if (i != null)
+            {
+                return i.GenericTypeArguments[0];
+            }
+            else
+            {
+                throw new NotSupportedException($"Expected an 'IPagingConnection<T>' but got {type}.");
+            }
         }
 
         private static IEnumerable<Expression> BuildPagingVariables(MethodInfo method)
