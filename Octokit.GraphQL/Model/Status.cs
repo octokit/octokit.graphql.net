@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         /// Looks up an individual status context by context name.
         /// </summary>
         /// <param name="name">The context name.</param>
-        public StatusContext Context(string name) => this.CreateMethodCall(x => x.Context(name), Octokit.GraphQL.Model.StatusContext.Create);
+        public StatusContext Context(Arg<string> name) => this.CreateMethodCall(x => x.Context(name), Octokit.GraphQL.Model.StatusContext.Create);
 
         /// <summary>
         /// The individual status contexts for this commit.

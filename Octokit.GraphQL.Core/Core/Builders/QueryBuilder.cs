@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Core.Builders
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
 
-        public GraphQLQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
+        public CompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
@@ -28,10 +28,10 @@ namespace Octokit.GraphQL.Core.Builders
             var expression = Expression.Lambda<Func<JObject, TResult>>(
                 rewritten.AddCast(typeof(TResult)),
                 RootDataParameter);
-            return new GraphQLQuery<TResult>(root, expression);
+            return new CompiledQuery<TResult>(root, expression);
         }
 
-        public GraphQLQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
+        public CompiledQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
@@ -41,7 +41,20 @@ namespace Octokit.GraphQL.Core.Builders
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
                 rewritten.AddCast(typeof(IEnumerable<TResult>)),
                 RootDataParameter);
-            return new GraphQLQuery<IEnumerable<TResult>>(root, expression);
+            return new CompiledQuery<IEnumerable<TResult>>(root, expression);
+        }
+
+        public CompiledQuery<TResult> Build<TResult>(Expression query)
+        {
+            root = null;
+            syntax = new SyntaxTree();
+            lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+
+            var rewritten = Visit(query);
+            var expression = Expression.Lambda<Func<JObject, TResult>>(
+                rewritten.AddCast(typeof(TResult)),
+                RootDataParameter);
+            return new CompiledQuery<TResult>(root, expression);
         }
 
         protected override Expression VisitBinary(BinaryExpression node)
@@ -55,7 +68,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             if (syntax.Root == null)
             {
-                var query = node.Value as IQuery;
+                var query = node.Value as IRootQuery;
                 var mutation = node.Value as IMutation;
                 var queryEntity = node.Value as IQueryableValue;
 
@@ -435,6 +448,18 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 var parameter = parameters[i];
                 var value = EvaluateValue(arguments[i]);
+
+                if (value is IArg arg)
+                {
+                    if (arg.VariableName == null)
+                    {
+                        value = arg.Value;
+                    }
+                    else
+                    {
+                        value = syntax.AddVariableDefinition(arg.Type, arg.VariableName);
+                    }
+                }
 
                 if (value != null)
                 {

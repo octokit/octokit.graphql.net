@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
-using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
-using Octokit.GraphQL.Core.Serializers;
 using Octokit.GraphQL.Internal;
 
 namespace Octokit.GraphQL
 {
-    public class Connection
+    public class Connection : IConnection
     {
         /// <summary>
         /// The address of the GitHub GraphQL API.
@@ -46,26 +43,11 @@ namespace Octokit.GraphQL
 
         public Uri Uri { get; }
 
-        public async Task<T> Run<T>(IQueryableValue<T> queryable)
+        public async Task<T> Run<T>(
+            CompiledQuery<T> query,
+            IDictionary<string, object> variables = null)
         {
-            var builder = new QueryBuilder();
-            var query = builder.Build(queryable);
-            var payload = query.GetPayload();
-            var token = await credentialStore.GetCredentials();
-            var request = new HttpRequestMessage(HttpMethod.Post, Uri);
-            request.Content = new StringContent(payload);
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            var response = await httpClient.SendAsync(request);
-            var data = await response.Content.ReadAsStringAsync();
-            var deserializer = new ResponseDeserializer();
-            return deserializer.Deserialize(query, data);
-        }
-
-        public async Task<IEnumerable<T>> Run<T>(IQueryableList<T> queryable)
-        {
-            var builder = new QueryBuilder();
-            var query = builder.Build(queryable);
-            var payload = query.GetPayload();
+            var payload = query.GetPayload(variables);
             var token = await credentialStore.GetCredentials();
             var request = new HttpRequestMessage(HttpMethod.Post, Uri);
             request.Content = new StringContent(payload);

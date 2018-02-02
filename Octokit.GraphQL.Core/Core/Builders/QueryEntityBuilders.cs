@@ -13,20 +13,8 @@ namespace Octokit.GraphQL.Core.Builders
                 where TObject : IQueryableValue
         {
             var methodCall = (MethodCallExpression)selector.Body;
-            var arguments = new List<ConstantExpression>();
-
-            foreach (MemberExpression arg in methodCall.Arguments)
-            {
-                var expression = (ConstantExpression)arg.Expression;
-                var value = ((FieldInfo)arg.Member).GetValue(expression.Value);
-                arguments.Add(Expression.Constant(value, arg.Type));
-            }
-
             return new QueryableList<TValue>(
-                Expression.Call(
-                    Expression.Constant(o),
-                    methodCall.Method,
-                    arguments));
+                methodCall.Update(Expression.Constant(o), methodCall.Arguments));
         }
 
         public static TValue CreateMethodCall<TObject, TValue>(
@@ -37,20 +25,19 @@ namespace Octokit.GraphQL.Core.Builders
                 where TValue : IQueryableValue
         {
             var methodCall = (MethodCallExpression)selector.Body;
-            var arguments = new List<ConstantExpression>();
+            return create(methodCall.Update(Expression.Constant(o), methodCall.Arguments));
+        }
 
-            foreach (MemberExpression arg in methodCall.Arguments)
-            {
-                var expression = (ConstantExpression)arg.Expression;
-                var value = ((FieldInfo)arg.Member).GetValue(expression.Value);
-                arguments.Add(Expression.Constant(value, arg.Type));
-            }
-
-            return create(
-                Expression.Call(
-                    Expression.Constant(o),
-                    methodCall.Method,
-                    arguments));
+        public static IPagedList<TValue> CreatePagedMethodCall<TObject, TValue>(
+            this TObject o,
+            Expression<Func<TObject, TValue>> selector)
+                where TObject : IQueryableValue
+                where TValue : IPagingConnection
+        {
+            var methodCall = (MethodCallExpression)selector.Body;
+            return new PagedList<TValue>(
+                methodCall.Update(Expression.Constant(o), methodCall.Arguments),
+                selector);
         }
 
         public static TValue CreateProperty<TObject, TValue>(
@@ -59,10 +46,8 @@ namespace Octokit.GraphQL.Core.Builders
             Func<Expression, TValue> create)
                 where TObject : IQueryableValue
         {
-            return create(
-                Expression.Property(
-                    Expression.Constant(o),
-                    (PropertyInfo)((MemberExpression)selector.Body).Member));
+            var memberExpression = (MemberExpression)selector.Body;
+            return create(memberExpression.Update(Expression.Constant(o)));
         }
 
         public static IQueryableList<TValue> CreateProperty<TObject, TValue>(
@@ -71,10 +56,9 @@ namespace Octokit.GraphQL.Core.Builders
                 where TObject : IQueryableValue
                 where TValue : IQueryableValue
         {
+            var memberExpression = (MemberExpression)selector.Body;
             return new QueryableList<TValue>(
-                Expression.Property(
-                    Expression.Constant(o),
-                    (PropertyInfo)((MemberExpression)selector.Body).Member));
+                memberExpression.Update(Expression.Constant(o)));
         }
     }
 }

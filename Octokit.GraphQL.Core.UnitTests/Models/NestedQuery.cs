@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public Simple Simple(string arg1)
+        public Simple Simple(Arg<string> arg1)
         {
             return this.CreateMethodCall(x => x.Simple(arg1), Models.Simple.Create);
         }

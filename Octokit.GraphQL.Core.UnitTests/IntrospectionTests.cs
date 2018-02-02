@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Core.Introspection;
-using Octokit.GraphQL.Core.Serializers;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.UnitTests
@@ -20,9 +18,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => x.Kind);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new QuerySerializer().Serialize(query.OperationDefinition);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, query.Query);
         }
 
         [Fact]
@@ -85,9 +82,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             var query = new QueryBuilder().Build(expression);
-            var queryResult = new QuerySerializer(2).Serialize(query.OperationDefinition);
 
-            Assert.Equal(expectedQuery, queryResult);
+            Assert.Equal(expectedQuery, query.ToString());
 
             var responseResult = new ResponseDeserializer().Deserialize(query, data);
 
@@ -134,10 +130,9 @@ namespace Octokit.GraphQL.Core.UnitTests
     }
   }
 }";
-            var query = new QueryBuilder().Build(expression);
-            var queryResult = new QuerySerializer(2).Serialize(query.OperationDefinition);
+            var query = expression.Compile();
 
-            Assert.Equal(expectedQuery, queryResult);
+            Assert.Equal(expectedQuery, query.ToString());
         }
 
         private class SchemaModel

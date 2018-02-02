@@ -126,7 +126,7 @@ namespace Octokit.GraphQL.Model
         /// URL for the listing's logo image.
         /// </summary>
         /// <param name="size">The size in pixels of the resulting square image.</param>
-        public string LogoUrl(int? size = 400) => null;
+        public string LogoUrl(Arg<int>? size = null) => null;
 
         /// <summary>
         /// The listing's full name.

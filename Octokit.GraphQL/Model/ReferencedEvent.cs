@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Reference originated in a different repository.
         /// </summary>
-        [Obsolete(@"Use ReferencedEvent.isCrossRepository instead.")]
+        [Obsolete(@"`is_cross_reference` will be renamed. Use ReferencedEvent.isCrossRepository instead. Removal on 2018-07-01 UTC.")]
         public bool IsCrossReference { get; }
 
         /// <summary>
