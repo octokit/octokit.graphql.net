@@ -28,15 +28,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Items = connection.Nodes.Select(x => x.Name).ToList(),
                     }));
 
-            var result = new PagedQueryBuilder().BuildPageExpression(expression);
+            var result = new PagedQueryBuilder().RewriteExpression(expression);
             var normalized = ExpectedExpression.Normalize(result);
 
             Assert.Equal(expected.ToString(), normalized.ToString());
-        }
-
-        static Expression Eval<T>(Expression<Func<T>> f)
-        {
-            return f.Body;
         }
     }
 }

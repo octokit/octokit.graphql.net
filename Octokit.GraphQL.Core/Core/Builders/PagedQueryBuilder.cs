@@ -14,12 +14,43 @@ namespace Octokit.GraphQL.Core.Builders
             throw new NotImplementedException();
         }
 
-        public Expression BuildPageExpression<T>(IPagedList<T> pages)
+        /// <summary>
+        /// Rewrites an auto-paging query expression to its underlying paged implementation.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="paging">The paging expression.</param>
+        /// <returns>The rewritten expression.</returns>
+        /// <remarks>
+        /// An auto-paging expression must be rewritten into a query with variables describing
+        /// the page to read. For example:
+        /// 
+        /// ```
+        /// var query = new Query()
+        ///    .Repository("foo", "bar")
+        ///    .PullRequests() // Auto-paging query
+        ///    .Select(x => x.Title);
+        /// ```
+        /// 
+        /// Will be rewritten as:
+        /// 
+        /// ```
+        /// var query = new TestQuery()
+        ///    .Repository("foo", "bar")
+        ///    .PullRequests(first: Var("first"), after: Var("after"))
+        ///    .Select(connection => new Page<string>
+        ///    {
+        ///        HasNextPage = connection.PageInfo.HasNextPage,
+        ///        EndCursor = connection.PageInfo.EndCursor,
+        ///        Items = connection.Nodes.Select(x => x.Title).ToList(),
+        ///    });
+        /// ```
+        /// </remarks>
+        public Expression RewriteExpression<T>(IPagedList<T> paging)
             where T : IPagingConnection
         {
-            var connectionType = pages.Expression.Type;
-            var resultType = pages.Selector.ReturnType;
-            var pageModelType = typeof(Page<>).MakeGenericType(resultType);
+            var connectionType = paging.Expression.Type;
+            var resultType = paging.Selector.ReturnType;
+            var pageType = typeof(Page<>).MakeGenericType(resultType);
 
             // Gets the `IPagingConnection<TNode>` type.
             var pagingConnectionType = connectionType.GetTypeInfo()
@@ -40,13 +71,13 @@ namespace Octokit.GraphQL.Core.Builders
             var selectNodes = Expression.Call(
                 QueryableListExtensions.ToListMethod.MakeGenericMethod(resultType),
                 Expression.Call(
-                    QueryableListExtensions.SelectMethod.MakeGenericMethod(nodeType, pages.Selector.ReturnType),
+                    QueryableListExtensions.SelectMethod.MakeGenericMethod(nodeType, paging.Selector.ReturnType),
                     Expression.Property(connectionParameter, "Nodes"),
-                    pages.Selector));
+                    paging.Selector));
 
             // Builds the select lambda:
             //
-            // connection => new PageModel<TResult>
+            // connection => new Page<TResult>
             // {
             //     HasNextPage = connection.PageInfo.HasNextPage,
             //     EndCursor = connection.PageInfo.EndCursor,
@@ -55,29 +86,29 @@ namespace Octokit.GraphQL.Core.Builders
             var connectionPageInfo = Expression.Property(connectionParameter, "PageInfo");
             var selectPageModel = Expression.Lambda(
                 Expression.MemberInit(
-                    Expression.New(pageModelType),
+                    Expression.New(pageType),
                     Expression.Bind(
-                        pageModelType.GetRuntimeProperty("HasNextPage"),
+                        pageType.GetRuntimeProperty("HasNextPage"),
                         Expression.Property(connectionPageInfo, "HasNextPage")),
                     Expression.Bind(
-                        pageModelType.GetRuntimeProperty("EndCursor"),
+                        pageType.GetRuntimeProperty("EndCursor"),
                         Expression.Property(connectionPageInfo, "EndCursor")),
                     Expression.Bind(
-                        pageModelType.GetRuntimeProperty("Items"),
+                        pageType.GetRuntimeProperty("Items"),
                         selectNodes)),
                 connectionParameter);
 
             // Builds the final expression:
             //
-            // pages.Expression.Select(connection => new PageModel<TResult>
+            // pages.Expression.Select(connection => new Page<TResult>
             // {
             //     HasNextPage = connection.PageInfo.HasNextPage,
             //     EndCursor = connection.PageInfo.EndCursor,
             //     Items = connection.Nodes.Select(pages.Selector).ToList(),
             // }
             return Expression.Call(
-                QueryableValueExtensions.SelectMethod.MakeGenericMethod(connectionType, pageModelType),
-                pages.Expression,
+                QueryableValueExtensions.SelectMethod.MakeGenericMethod(connectionType, pageType),
+                paging.Expression,
                 selectPageModel);
         }
 
