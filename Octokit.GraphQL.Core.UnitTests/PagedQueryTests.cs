@@ -1,5 +1,6 @@
 ﻿using System;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 
@@ -67,6 +68,49 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.ToString());
+        }
+
+        [Fact]
+        public void Deserializes_Master_Query_Data_For_Paged_Inner_Query()
+        {
+            var expression = new TestQuery()
+                .Simple("foo")
+                .Select(x => new
+                {
+                    x.Name,
+                    Nested = x.PagesOfNested(PageOption.First).Select(y => y.Name).ToList(),
+                });
+
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": ""Hello World!"",
+      ""pagesOfNested"": {
+        ""pageInfo"": {
+          ""hasNextPage"": ""true"",
+          ""endCursor"": ""123abc"",
+        },
+        ""nodes"": [
+          { ""name"": ""foo"" }, 
+          { ""name"": ""bar"" }
+        ]
+      }
+    }
+  }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+
+            var result = new ResponseDeserializer().Deserialize(query, data);
+
+            Assert.Equal("Hello World!", result.Name);
+            Assert.Equal(2, result.Nested.Count);
+            Assert.Equal("foo", result.Nested[0]);
+            Assert.Equal("bar", result.Nested[1]);
+
+            var page = (Page<string>)result.Nested;
+            Assert.Equal(true, page.HasNextPage);
+            Assert.Equal("123abc", page.EndCursor);
         }
     }
 }
