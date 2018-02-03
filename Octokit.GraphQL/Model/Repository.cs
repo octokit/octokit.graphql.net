@@ -180,13 +180,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
         /// <param name="states">A list of states to filter the issues by.</param>
-        [GraphQLIdentifier("issues")]
-        public IssueConnection IssuesInternal(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null) => this.CreateMethodCall(x => x.IssuesInternal(first, after, last, before, labels, orderBy, states), Octokit.GraphQL.Model.IssueConnection.Create);
-
-        public IPagedList<IssueConnection> Issues(Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null)
-        {
-            return this.CreateMethodCall(x => x.Issues(labels, orderBy, states));
-        }
+        public IssueConnection Issues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, labels, orderBy, states), Octokit.GraphQL.Model.IssueConnection.Create);
 
         /// <summary>
         /// Returns a single label by name

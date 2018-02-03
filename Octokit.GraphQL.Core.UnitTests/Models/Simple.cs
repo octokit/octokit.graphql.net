@@ -16,15 +16,9 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public int Number { get; set; }
         public int? NullableNumber { get; set; }
 
-        public IPagedList<NestedDataConnection> PagesOfNested(Arg<PageOption>? option = null)
+        public NestedDataConnection PagesOfNested(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<PageOption>? option = null)
         {
-            return this.CreateMethodCall(x => x.PagesOfNested(option));
-        }
-
-        [GraphQLIdentifier("pagesOfNested")]
-        internal NestedDataConnection PagesOfNestedInternal(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<PageOption>? option = null)
-        {
-            return this.CreateMethodCall(x => x.PagesOfNestedInternal(first, after, last, before, option), NestedDataConnection.Create);
+            return this.CreateMethodCall(x => x.PagesOfNested(first, after, last, before, option), NestedDataConnection.Create);
         }
 
         internal static Simple Create(Expression expression)

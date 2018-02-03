@@ -9,12 +9,12 @@ namespace Octokit.GraphQL.Core
 {
     public class PagingQuery<TResult> : IQuery<IEnumerable<TResult>>
     {
-        CompiledQuery<Page<TResult>> compiled;
-
         public PagingQuery(Expression expression)
         {
-            compiled = new QueryBuilder().Build<Page<TResult>>(expression);
+            Master = new QueryBuilder().Build<Page<TResult>>(expression);
         }
+
+        public CompiledQuery<Page<TResult>> Master;
 
         public async Task<IEnumerable<TResult>> Run(IConnection connection, IDictionary<string, object> variables)
         {
@@ -28,7 +28,7 @@ namespace Octokit.GraphQL.Core
 
             while (true)
             {
-                var page = await connection.Run(compiled, vars);
+                var page = await connection.Run(Master, vars);
 
                 result.AddRange(page.Items);
 

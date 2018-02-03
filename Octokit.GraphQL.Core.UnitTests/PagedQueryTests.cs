@@ -12,16 +12,16 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Builds_Page_Expression_For_PagesOfNested()
         {
             var query = new TestQuery()
-                .PagesOfNested(PageOption.Second)
+                .PagesOfNested(option: PageOption.Second).AllPages()
                 .Select(x => x.Name);
 
             var expected = ExpectedExpression.Normalize(() =>
                 new TestQuery()
-                    .PagesOfNestedInternal(
+                    .PagesOfNested(
                         new Arg<int>("first", 0),
                         new Arg<string>("after", null),
-                        new Arg<int>("last", 0),
-                        new Arg<string>("before", null),
+                        null,
+                        null,
                         new Arg<PageOption>(null, PageOption.Second))
                     .Select(connection => new Page<string>
                     {
@@ -39,10 +39,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Builds_Master_Query_For_Paged_Inner_Query()
         {
-            var expected = @"query($first: Int, $after: String, $last: Int, $before: String) {
+            var expected = @"query($first: Int, $after: String) {
   simple(arg1: ""foo"") {
     name
-    pagesOfNested(first: $first, after: $after, last: $last, before: $before, option: FIRST) {
+    pagesOfNested(first: $first, after: $after, option: FIRST) {
       pageInfo {
         hasNextPage
         endCursor
@@ -59,7 +59,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new
                 {
                     x.Name,
-                    Nested = x.PagesOfNested(PageOption.First).Select(y => new
+                    Nested = x.PagesOfNested(null, null, null, null, PageOption.First).AllPages().Select(y => new
                     {
                         y.Name
                     }).ToList(),
@@ -78,7 +78,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new
                 {
                     x.Name,
-                    Nested = x.PagesOfNested(PageOption.First).Select(y => y.Name).ToList(),
+                    Nested = x.PagesOfNested(null, null, null, null, PageOption.First).AllPages().Select(y => y.Name).ToList(),
                 });
 
             var data = @"{

@@ -1,6 +1,6 @@
 ﻿namespace Octokit.GraphQL.Core
 {
-    public interface IPageInfo
+    public interface IPageInfo : IQueryableValue<IPageInfo>
     {
         string EndCursor { get; }
         bool HasNextPage { get; }

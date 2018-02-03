@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core
 {
-    public interface IPagingConnection
+    public interface IPagingConnection : IQueryableValue
     {
         IPageInfo PageInfo { get; }
     }

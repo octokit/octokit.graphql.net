@@ -49,7 +49,8 @@ namespace Octokit.GraphQL.Core.Builders
         public MethodCallExpression RewriteExpression(Expression expression)
         {
             var selectMethod = GetSelectMethod(expression);
-            var sourceConnectionType = GetPagingConnectionType(selectMethod.Arguments[0]);
+            var source = selectMethod.Arguments[0];
+            var sourceConnectionType = GetPagingConnectionType(source);
             var sourceNodeType = GetPagingConnectionNodeType(sourceConnectionType);
             var resultConnectionType = GetPagingConnectionType(expression);
             var resultNodeType = GetPagingConnectionNodeType(resultConnectionType);
@@ -77,7 +78,7 @@ namespace Octokit.GraphQL.Core.Builders
             //     EndCursor = connection.PageInfo.EndCursor,
             //     Items = connection.Nodes.Select(pages.Selector).ToList(),
             // }
-            var connectionPageInfo = Expression.Property(connectionParameter, "PageInfo");
+            var connectionPageInfo = Expression.Property(connectionParameter, typeof(IPagingConnection), "PageInfo");
             var selectPage = Expression.Lambda(
                 Expression.MemberInit(
                     Expression.New(pageType),
@@ -92,12 +93,11 @@ namespace Octokit.GraphQL.Core.Builders
                         selectNodes)),
                 connectionParameter);
 
-            // Gets the target query, i.e. the related query with the first, after, last, before args.
-            var target = BuildTarget(selectMethod.Arguments[0]);
+            var target = GetTarget(source);
 
             //// Builds the final expression:
             ////
-            //// targetExpression.Select(connection => new Page<TResult>
+            //// source.Select(connection => new Page<TResult>
             //// {
             ////     HasNextPage = connection.PageInfo.HasNextPage,
             ////     EndCursor = connection.PageInfo.EndCursor,
@@ -107,54 +107,6 @@ namespace Octokit.GraphQL.Core.Builders
                 QueryableValueExtensions.SelectMethod.MakeGenericMethod(sourceConnectionType, pageType),
                 target,
                 selectPage);
-            throw new NotImplementedException();
-        }
-
-        private static Expression BuildTarget(Expression source)
-        {
-            if (source is MethodCallExpression m &&
-                typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(m.Method.DeclaringType.GetTypeInfo()))
-            {
-                var pagingParameters = new[]
-                {
-                    typeof(Arg<int>?),
-                    typeof(Arg<string>?),
-                    typeof(Arg<int>?),
-                    typeof(Arg<string>?),
-                };
-
-                var pagingArgs = new []
-                {
-                    Expression.Constant(new Arg<int>("first", 100), typeof(Arg<int>?)),
-                    Expression.Constant(new Arg<string>("after", null), typeof(Arg<string>?)),
-                    Expression.Constant(new Arg<int>("last", 100), typeof(Arg<int>?)),
-                    Expression.Constant(new Arg<string>("before", null), typeof(Arg<string>?)),
-                };
-
-                var methodName = m.Method.Name + "Internal";
-                var parameters = pagingParameters.Concat(m.Arguments.Select(x => x.Type)).ToArray();
-                var targetMethod = m.Method.DeclaringType.GetRuntimeMethods()
-                    .FirstOrDefault(x => 
-                        x.Name == methodName &&
-                        x.GetParameters().Select(y => y.ParameterType).SequenceEqual(parameters));
-
-                if (targetMethod == null)
-                {
-                    throw new NotSupportedException(
-                        $"Could not find method {m.Method.DeclaringType.Name}.{methodName}.");
-                }
-
-                var args = pagingArgs.Concat(m.Arguments).ToList();
-                return Expression.Call(
-                    m.Object,
-                    targetMethod,
-                    args);
-            }
-            else
-            {
-                throw new NotSupportedException(
-                    $"Expected a method call on an IQueryableValue but got '{source}'");
-            }
         }
 
         private static MethodCallExpression GetSelectMethod(Expression expression)
@@ -168,6 +120,56 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 throw new NotSupportedException(
                     $"Expected an IPagedList<T>.Select() expression but got '{expression}'.");
+            }
+        }
+
+        private static Expression GetTarget(Expression expression)
+        {
+            if (expression is MethodCallExpression allPages &&
+                allPages.Method.IsGenericMethod &&
+                allPages.Method.GetGenericMethodDefinition() == PagedListExtensions.AllPagesMethod)
+            {
+                var queryMethod = GetQueryableValueMethod(allPages.Arguments[0]);
+                var arguments = queryMethod.Arguments.ToList();
+                var parameters = queryMethod.Method.GetParameters();
+
+                for (var i = 0; i < parameters.Length; ++i)
+                {
+                    switch (parameters[i].Name)
+                    {
+                        case "first":
+                            arguments[i] = Expression.Constant(
+                                new Arg<int>("first", 0),
+                                typeof(Arg<int>?));
+                            break;
+                        case "after":
+                            arguments[i] = Expression.Constant(
+                                new Arg<string>("after", null),
+                                typeof(Arg<string>?));
+                            break;
+                    }
+                }
+
+                return queryMethod.Update(queryMethod.Object, arguments);
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    $"Expected an IPagingConnection<T>.AllPages() expression but got '{expression}'.");
+            }
+        }
+
+        private static MethodCallExpression GetQueryableValueMethod(Expression expression)
+        {
+            if (expression is MethodCallExpression m &&
+                typeof(IQueryableValue).GetTypeInfo().IsAssignableFrom(m.Method.DeclaringType.GetTypeInfo()))
+            {
+                return m;
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    $"Expected an IQueryableValue method expression but got '{expression}'.");
             }
         }
 

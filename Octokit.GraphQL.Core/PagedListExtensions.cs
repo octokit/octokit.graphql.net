@@ -11,8 +11,21 @@ namespace Octokit.GraphQL
 {
     public static class PagedListExtensions
     {
+        public static readonly MethodInfo AllPagesMethod = GetMethodInfo(nameof(AllPages));
         public static readonly MethodInfo SelectMethod = GetMethodInfo(nameof(SelectMethod));
         public static readonly MethodInfo ToListMethod = GetMethodInfo(nameof(ToListMethod));
+
+        [MethodId(nameof(AllPages))]
+        public static IPagedList<IPagingConnection<TResult>> AllPages<TResult>(
+            this IPagingConnection<TResult> source)
+        {
+            return new PagedList<IPagingConnection<TResult>>(
+                Expression.Call(
+                    null,
+                    GetMethodInfoOf(() => AllPages(default(IPagingConnection<TResult>))),
+                    new Expression[] { source.Expression }));
+
+        }
 
         [MethodId(nameof(SelectMethod))]
         public static IPagedList<IPagingConnection<TResult>> Select<TValue, TResult>(
@@ -24,7 +37,7 @@ namespace Octokit.GraphQL
                 Expression.Call(
                     null,
                     GetMethodInfoOf(() => Select(
-                        default(PagedList<IPagingConnection<TValue>>),
+                        default(IPagedList<IPagingConnection<TValue>>),
                         default(Expression<Func<TValue, TResult>>))),
                     new Expression[] { source.Expression, Expression.Quote(selector) }));
         }

@@ -136,7 +136,7 @@ namespace Octokit.GraphQL.UnitTests
         {
             var expression = new Query()
                 .Repository("github", "VisualStudio")
-                .IssuesInternal(first: 30, labels: new[] { "bug" }, states: new[] { IssueState.Closed })
+                .Issues(first: 30, labels: new[] { "bug" }, states: new[] { IssueState.Closed })
                 .Select(x => x.Nodes)
                 .Select(x => new
                 {

@@ -12,7 +12,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public void Should_Query_Issues_By_Repository()
         {
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").IssuesInternal(first: 3).Nodes.Select(i => new
+            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3).Nodes.Select(i => new
             {
                 i.Title,
                 RepositoryName = i.Repository.Name,
@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public void Should_Query_Issues_By_State_And_Repository()
         {
             var openState = new[] { IssueState.Closed };
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").IssuesInternal(first: 3, states: openState).Nodes.Select(i => new
+            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => new
             {
                 i.Title,
                 i.State,
@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var openState = new[] { IssueState.Closed };
             var query = new Query()
                 .Repository("octokit", "octokit.net")
-                .IssuesInternal(first: Var("first"), states: openState)
+                .Issues(first: Var("first"), states: openState)
                 .Nodes
                 .Select(i => new
             {
@@ -75,7 +75,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var openState = new[] { IssueState.Closed };
             var query = new Query()
                 .Repository("octokit", "octokit.net")
-                .Issues()
+                .Issues().AllPages()
                 .Select(i => new
                 {
                     i.Number,
