@@ -561,5 +561,19 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, query.ToString());
         }
+
+        [Fact]
+        public void Multiple_Variables()
+        {
+            var expected = "query($foo:String,$bar:Int){simple(arg1:$foo,arg2:$bar){name}}";
+
+            var expression = new TestQuery()
+                .Simple(Var("foo"), Var("bar"))
+                .Select(x => x.Name);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.Query);
+        }
     }
 }
