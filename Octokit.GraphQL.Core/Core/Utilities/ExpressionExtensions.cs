@@ -58,6 +58,10 @@ namespace Octokit.GraphQL.Core.Utilities
                 // If the source type is an IEnumerable<JToken> then add a select statement to cast.
                 return AddSelectCast(expression, type);
             }
+            else if (expression.Type.IsConstructedGenericType && expression.Type.GetGenericTypeDefinition() == typeof(Page<>))
+            {
+                return Expression.Property(expression, "Items");
+            }
 
             throw new NotSupportedException(
                 $"Don't know how to cast '{expression}' ({expression.Type}) to '{type}'.");

@@ -441,8 +441,7 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 var source = expression.Arguments[0];
                 var select = expression.Arguments[1].GetLambda();
-                throw new NotImplementedException();
-                //return new PagedQueryBuilder().RewriteExpression(source, select);
+                return Visit(new PagedQueryBuilder().RewriteExpression(expression));
             }
             else if (expression.Method.GetGenericMethodDefinition() == PagedListExtensions.ToListMethod)
             {

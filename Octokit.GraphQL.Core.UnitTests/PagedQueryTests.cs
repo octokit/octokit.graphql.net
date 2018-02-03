@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var expected = ExpectedExpression.Normalize(() =>
                 new TestQuery()
-                    .PagesOfNestedAllPages(
+                    .PagesOfNestedInternal(
                         new Arg<int>("first", 0),
                         new Arg<string>("after", null),
                         new Arg<int>("last", 0),
@@ -38,10 +38,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Builds_Master_Query_For_Paged_Inner_Query()
         {
-            var expected = @"query {
-  simple(arg1:""foo"") {
+            var expected = @"query($first: Int, $after: String, $last: Int, $before: String) {
+  simple(arg1: ""foo"") {
     name
-    nested {
+    pagesOfNested(first: $first, after: $after, last: $last, before: $before, option: FIRST) {
       pageInfo {
         hasNextPage
         endCursor

@@ -131,9 +131,12 @@ namespace Octokit.GraphQL.Core.Builders
                     Expression.Constant(new Arg<string>("before", null), typeof(Arg<string>?)),
                 };
 
-                var methodName = m.Method.Name + "AllPages";
+                var methodName = m.Method.Name + "Internal";
                 var parameters = pagingParameters.Concat(m.Arguments.Select(x => x.Type)).ToArray();
-                var targetMethod = m.Method.DeclaringType.GetRuntimeMethod(methodName, parameters);
+                var targetMethod = m.Method.DeclaringType.GetRuntimeMethods()
+                    .FirstOrDefault(x => 
+                        x.Name == methodName &&
+                        x.GetParameters().Select(y => y.ParameterType).SequenceEqual(parameters));
 
                 if (targetMethod == null)
                 {
