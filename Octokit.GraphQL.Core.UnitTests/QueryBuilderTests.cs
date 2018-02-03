@@ -572,7 +572,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Simple(Var("foo"), Var("bar"))
                 .Select(x => x.Name);
 
-            var query = expression.Compile();
+            var query = new QueryBuilder().Build(expression);
 
             Assert.Equal(expected, query.Query);
         }
