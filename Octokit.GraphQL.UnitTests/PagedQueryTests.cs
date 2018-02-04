@@ -52,10 +52,10 @@ namespace Octokit.GraphQL.UnitTests
 
             // This should produce a "master" query as follows. There's no C# expression that represents
             // this as it's rewritten in-place but we can check the generated GraphQL query.
-            var expected = @"query($first: Int, $after: String) {
+            var expected = @"query {
   repository(owner: ""octokit"", name: ""octokit.net"") {
     name
-    pullRequests(first: $first, after: $after) {
+    pullRequests(first: 100) {
       pageInfo {
         hasNextPage
         endCursor

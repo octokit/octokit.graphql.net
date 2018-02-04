@@ -39,10 +39,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Builds_Master_Query_For_Paged_Inner_Query()
         {
-            var expected = @"query($first: Int, $after: String) {
+            var expected = @"query {
   simple(arg1: ""foo"") {
     name
-    pagesOfNested(first: $first, after: $after, option: FIRST) {
+    pagesOfNested(first: 100, option: FIRST) {
       pageInfo {
         hasNextPage
         endCursor

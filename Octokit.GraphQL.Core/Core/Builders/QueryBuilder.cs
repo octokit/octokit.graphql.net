@@ -17,12 +17,14 @@ namespace Octokit.GraphQL.Core.Builders
         OperationDefinition root;
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
+        PagedQueryBuilder pageBuilder;
 
         public CompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+            pageBuilder = new PagedQueryBuilder { InsertVariables = false };
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, TResult>>(
@@ -36,6 +38,7 @@ namespace Octokit.GraphQL.Core.Builders
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+            pageBuilder = new PagedQueryBuilder { InsertVariables = false };
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
@@ -49,6 +52,7 @@ namespace Octokit.GraphQL.Core.Builders
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+            pageBuilder = new PagedQueryBuilder { InsertVariables = false };
 
             var rewritten = Visit(query);
             var expression = Expression.Lambda<Func<JObject, TResult>>(
@@ -441,7 +445,7 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 var source = expression.Arguments[0];
                 var select = expression.Arguments[1].GetLambda();
-                return Visit(new PagedQueryBuilder().RewriteExpression(expression));
+                return Visit(pageBuilder.RewriteExpression(expression));
             }
             else if (expression.Method.GetGenericMethodDefinition() == PagedListExtensions.ToListMethod)
             {

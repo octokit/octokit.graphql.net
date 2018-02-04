@@ -9,6 +9,9 @@ namespace Octokit.GraphQL.Core.Builders
 {
     public class PagedQueryBuilder
     {
+        public bool InsertVariables { get; set; } = true;
+        public int PageSize { get; set; } = 100;
+
         public PagingQuery<T> Build<T>(IPagedList<IPagingConnection<T>> paging)
         {
             var rewritten = RewriteExpression(paging.Expression);
@@ -123,7 +126,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private static Expression GetTarget(Expression expression)
+        private Expression GetTarget(Expression expression)
         {
             if (expression is MethodCallExpression allPages &&
                 allPages.Method.IsGenericMethod &&
@@ -139,13 +142,16 @@ namespace Octokit.GraphQL.Core.Builders
                     {
                         case "first":
                             arguments[i] = Expression.Constant(
-                                new Arg<int>("first", 0),
+                                InsertVariables ? new Arg<int>("first", 0) : new Arg<int>(null, PageSize),
                                 typeof(Arg<int>?));
                             break;
                         case "after":
-                            arguments[i] = Expression.Constant(
-                                new Arg<string>("after", null),
-                                typeof(Arg<string>?));
+                            if (InsertVariables)
+                            {
+                                arguments[i] = Expression.Constant(
+                                    new Arg<string>("after", null),
+                                    typeof(Arg<string>?));
+                            }
                             break;
                     }
                 }
