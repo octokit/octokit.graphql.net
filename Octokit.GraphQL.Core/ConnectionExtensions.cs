@@ -9,14 +9,14 @@ namespace Octokit.GraphQL
     public static class ConnectionExtensions
     {
         public static Task<T> Run<T>(
-            this Connection connection,
+            this IConnection connection,
             IQueryableValue<T> expression)
         {
             return connection.Run(expression.Compile());
         }
 
         public static Task<IEnumerable<T>> Run<T>(
-            this Connection connection,
+            this IConnection connection,
             IQueryableList<T> expression)
         {
             return connection.Run(expression.Compile());

@@ -4,7 +4,7 @@ namespace Octokit.GraphQL.IntegrationTests
 {
     public abstract class IntegrationTestBase
     {
-        protected Connection Connection;
+        protected IConnection Connection;
 
         protected IntegrationTestBase()
         {
