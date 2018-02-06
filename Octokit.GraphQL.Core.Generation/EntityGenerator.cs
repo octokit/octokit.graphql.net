@@ -268,19 +268,19 @@ namespace Octokit.GraphQL.Core.Generation
                 }
 
                 var argName = TypeUtilities.GetArgName(arg);
-                argBuilder.Append(TypeUtilities.GetCSharpArgType(arg.Type));
-                argBuilder.Append(' ');
-                argBuilder.Append(argName);
+                argBuilder
+                    .Append(TypeUtilities.GetWrappedArgType(arg.Type))
+                    .Append(' ')
+                    .Append(argName);
                 paramBuilder.Append(argName);
 
-                if (arg.DefaultValue != null)
-                {
-                    argBuilder.Append(" = ");
-                    argBuilder.Append(TypeUtilities.GetCSharpLiteral(arg.DefaultValue, arg.Type));
-                }
-                else if (arg.Type.Kind != TypeKind.NonNull)
+                if (arg.Type.Kind != TypeKind.NonNull)
                 {
                     argBuilder.Append(" = null");
+                }
+                else if (arg.DefaultValue != null)
+                {
+                    throw new Exception("Encountered default value for non-null type.");
                 }
 
                 first = false;

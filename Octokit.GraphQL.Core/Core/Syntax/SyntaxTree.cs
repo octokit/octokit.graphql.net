@@ -50,6 +50,21 @@ namespace Octokit.GraphQL.Core.Syntax
             return result;
         }
 
+        public VariableDefinition AddVariableDefinition(Type type, string name)
+        {
+            var result = root.VariableDefinitions.SingleOrDefault(x => x.Name == name);
+
+            if (result != null && result.Type != VariableDefinition.ToTypeName(type))
+            {
+                throw new InvalidOperationException(
+                    $"A variable called '{name}' has already been added with a different type.");
+            }
+
+            result = result ?? new VariableDefinition(type, name);
+            root.VariableDefinitions.Add(result);
+            return result;
+        }
+
         public IDisposable Bookmark()
         {
             var oldHead = head;

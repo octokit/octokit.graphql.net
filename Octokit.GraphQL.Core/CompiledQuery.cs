@@ -7,20 +7,24 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Octokit.GraphQL.Core
+namespace Octokit.GraphQL
 {
-    public class GraphQLQuery<TResult>
+    public class CompiledQuery<TResult>
     {
-        public GraphQLQuery(
+        public CompiledQuery(
             OperationDefinition operationDefinition,
             Expression<Func<JObject, TResult>> expression)
         {
+            var serializer = new QuerySerializer();
             OperationDefinition = operationDefinition;
+            Query = serializer.Serialize(operationDefinition);
             Expression = expression;
             CompiledExpression = expression.Compile();
         }
 
         public OperationDefinition OperationDefinition { get; }
+
+        public string Query { get; }
 
         public Expression<Func<JObject, TResult>> Expression { get; }
 
@@ -31,12 +35,12 @@ namespace Octokit.GraphQL.Core
             return new QuerySerializer(2).Serialize(OperationDefinition);
         }
 
-        public string GetPayload()
+        public string GetPayload(IDictionary<string, object> variables)
         {
-            var query = new QuerySerializer().Serialize(OperationDefinition);
-            var payload = new
+           var payload = new
             {
-                Query = query,
+                Query,
+                Variables = variables,
             };
 
             return JsonConvert.SerializeObject(

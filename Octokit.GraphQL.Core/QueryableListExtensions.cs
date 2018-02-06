@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Internal;
 
 namespace Octokit.GraphQL
@@ -54,6 +55,11 @@ namespace Octokit.GraphQL
         public static IList<TValue> ToList<TValue>(this IQueryableList<TValue> source)
         {
             throw new NotImplementedException();
+        }
+
+        public static CompiledQuery<IEnumerable<T>> Compile<T>(this IQueryableList<T> expression)
+        {
+            return new QueryBuilder().Build(expression);
         }
 
         private static MethodInfo GetMethodInfo(string id)

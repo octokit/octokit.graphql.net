@@ -42,6 +42,13 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
             return GetCSharpType(ReduceType(type), type.Kind != TypeKind.NonNull, false);
         }
 
+        public static string GetWrappedArgType(TypeModel type)
+        {
+            var csharpType = GetCSharpType(ReduceType(type), false, false);
+            var nullable = type.Kind != TypeKind.NonNull ? "?" : string.Empty;
+            return "Arg<" + csharpType + '>' + nullable;
+        }
+
         public static string GetClassName(TypeModel type)
         {
             return PascalCase(type.Name);

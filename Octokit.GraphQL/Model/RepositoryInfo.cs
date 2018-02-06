@@ -122,7 +122,7 @@ namespace Octokit.GraphQL.Model
         /// A description of the repository, rendered to HTML without any links in it.
         /// </summary>
         /// <param name="limit">How many characters to return.</param>
-        string ShortDescriptionHTML(int? limit = 200);
+        string ShortDescriptionHTML(Arg<int>? limit = null);
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.
@@ -193,7 +193,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string ResourcePath { get; }
 
-        public string ShortDescriptionHTML(int? limit = 200) => null;
+        public string ShortDescriptionHTML(Arg<int>? limit = null) => null;
 
         [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
         public DateTimeOffset? UpdatedAt { get; }

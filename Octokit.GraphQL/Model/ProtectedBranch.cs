@@ -69,7 +69,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public PushAllowanceConnection PushAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.PushAllowances(first, after, last, before), Octokit.GraphQL.Model.PushAllowanceConnection.Create);
+        public PushAllowanceConnection PushAllowances(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PushAllowances(first, after, last, before), Octokit.GraphQL.Model.PushAllowanceConnection.Create);
 
         /// <summary>
         /// The repository associated with this protected branch.
@@ -88,7 +88,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(int? first = null, string after = null, int? last = null, string before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octokit.GraphQL.Model.ReviewDismissalAllowanceConnection.Create);
+        public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octokit.GraphQL.Model.ReviewDismissalAllowanceConnection.Create);
 
         internal static ProtectedBranch Create(Expression expression)
         {
