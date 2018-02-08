@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Octokit.GraphQL</id>
+    <version>0.0.1</version>
+    <authors>GitHub</authors>
+    <owners>GitHub</owners>
+    <licenseUrl>https://github.com/grokys/octokit.graphql/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/grokys/octokit.graphql</projectUrl>
+    <iconUrl>https://f.cloud.github.com/assets/19977/1441274/160fba8c-41a9-11e3-831d-61d88fa886f4.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An async-based GitHub GraphQL client library for .NET</description>
+    <copyright>Copyright GitHub 2018</copyright>
+    <tags>GitHub API Octokit GraphQL</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="10.0.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.dll" target="lib\netstandard1.1"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.xml" target="lib\netstandard1.1"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.dll" target="lib\netstandard1.1"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.xml" target="lib\netstandard1.1"/>
+  </files>
+</package>
