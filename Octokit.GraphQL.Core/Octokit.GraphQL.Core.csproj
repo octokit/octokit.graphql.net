@@ -4,6 +4,7 @@
     <RootNamespace>Octokit.GraphQL</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\key.snk</AssemblyOriginatorKeyFile>
+    <DocumentationFile>bin\$(Configuration)\netstandard1.1\Octokit.GraphQL.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
