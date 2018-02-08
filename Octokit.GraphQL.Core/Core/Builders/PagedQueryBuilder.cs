@@ -9,20 +9,18 @@ namespace Octokit.GraphQL.Core.Builders
 {
     public class PagedQueryBuilder
     {
-        public bool InsertVariables { get; set; } = true;
-        public int PageSize { get; set; } = 100;
-
         public PagingQuery<T> Build<T>(IPagedList<IPagingConnection<T>> paging)
         {
-            var rewritten = RewriteExpression(paging.Expression);
+            var rewritten = RewritePagedSelect(paging.Expression, true, 100);
             return new PagingQuery<T>(rewritten);
         }
 
         /// <summary>
-        /// Rewrites an auto-paging query expression to its underlying paged implementation.
+        /// Rewrites an auto-paging select expression to its underlying paged implementation.
         /// </summary>
         /// <typeparam name="T">The result type.</typeparam>
-        /// <param name="paging">The paging expression.</param>
+        /// <param name="expression">The select expression.</param>
+        /// <param name="insertVariables">Whether to insert paging variables.</param>
         /// <returns>The rewritten expression.</returns>
         /// <remarks>
         /// An auto-paging expression must be rewritten into a query with variables describing
@@ -31,16 +29,16 @@ namespace Octokit.GraphQL.Core.Builders
         /// ```
         /// var query = new Query()
         ///    .Repository("foo", "bar")
-        ///    .PullRequests() // Auto-paging query
+        ///    .PullRequests().AllPages() // Auto-paging query
         ///    .Select(x => x.Title);
         /// ```
         /// 
-        /// Will be rewritten as:
+        /// Assuming <paramref="insertVariables/> is true will be rewritten as:
         /// 
         /// ```
         /// var query = new TestQuery()
         ///    .Repository("foo", "bar")
-        ///    .PullRequests(Var("first"), Var("after"), Var("last"), Var("before"))
+        ///    .PullRequests(Var("first"), Var("after"))
         ///    .Select(connection => new Page<string>
         ///    {
         ///        HasNextPage = connection.PageInfo.HasNextPage,
@@ -48,8 +46,15 @@ namespace Octokit.GraphQL.Core.Builders
         ///        Items = connection.Nodes.Select(x => x.Title).ToList(),
         ///    });
         /// ```
+        /// 
+        /// If <paramref name="insertVariables"/> is false, then the `$first` and `$after`
+        /// variables will not be written, instead `$first` will be set to <paramref name="pageSize"/>
+        /// and `$after` omitted.
         /// </remarks>
-        public MethodCallExpression RewriteExpression(Expression expression)
+        public MethodCallExpression RewritePagedSelect(
+            Expression expression,
+            bool insertVariables,
+            int pageSize)
         {
             var selectMethod = GetSelectMethod(expression);
             var source = selectMethod.Arguments[0];
@@ -96,7 +101,7 @@ namespace Octokit.GraphQL.Core.Builders
                         selectNodes)),
                 connectionParameter);
 
-            var target = GetTarget(source);
+            var target = GetTarget(source, insertVariables, pageSize);
 
             //// Builds the final expression:
             ////
@@ -126,7 +131,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private Expression GetTarget(Expression expression)
+        private Expression GetTarget(Expression expression, bool insertVariables, int pageSize)
         {
             if (expression is MethodCallExpression allPages &&
                 allPages.Method.IsGenericMethod &&
@@ -142,11 +147,11 @@ namespace Octokit.GraphQL.Core.Builders
                     {
                         case "first":
                             arguments[i] = Expression.Constant(
-                                InsertVariables ? new Arg<int>("first", 0) : new Arg<int>(null, PageSize),
+                                insertVariables ? new Arg<int>("first", 0) : new Arg<int>(null, pageSize),
                                 typeof(Arg<int>?));
                             break;
                         case "after":
-                            if (InsertVariables)
+                            if (insertVariables)
                             {
                                 arguments[i] = Expression.Constant(
                                     new Arg<string>("after", null),

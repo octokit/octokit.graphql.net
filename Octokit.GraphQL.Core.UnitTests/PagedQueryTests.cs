@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Items = connection.Nodes.Select(x => x.Name).ToList(),
                     }));
 
-            var result = new PagedQueryBuilder().RewriteExpression(query.Expression);
+            var result = new PagedQueryBuilder().RewritePagedSelect(query.Expression, true, 100);
             var normalized = ExpectedExpression.Normalize(result);
 
             Assert.Equal(expected.ToString(), normalized.ToString());
@@ -42,6 +42,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var expected = @"query {
   simple(arg1: ""foo"") {
     name
+    id
     pagesOfNested(first: 100, option: FIRST) {
       pageInfo {
         hasNextPage

@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Core.Builders
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
-            pageBuilder = new PagedQueryBuilder { InsertVariables = false };
+            pageBuilder = new PagedQueryBuilder();
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, TResult>>(
@@ -38,7 +38,7 @@ namespace Octokit.GraphQL.Core.Builders
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
-            pageBuilder = new PagedQueryBuilder { InsertVariables = false };
+            pageBuilder = new PagedQueryBuilder();
 
             var rewritten = Visit(query.Expression);
             var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
@@ -52,7 +52,7 @@ namespace Octokit.GraphQL.Core.Builders
             root = null;
             syntax = new SyntaxTree();
             lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
-            pageBuilder = new PagedQueryBuilder { InsertVariables = false };
+            pageBuilder = new PagedQueryBuilder();
 
             var rewritten = Visit(query);
             var expression = Expression.Lambda<Func<JObject, TResult>>(
@@ -444,8 +444,8 @@ namespace Octokit.GraphQL.Core.Builders
             if (expression.Method.GetGenericMethodDefinition() == PagedListExtensions.SelectMethod)
             {
                 var source = expression.Arguments[0];
-                var select = expression.Arguments[1].GetLambda();
-                return Visit(pageBuilder.RewriteExpression(expression));
+                using (syntax.Bookmark()) syntax.AddField("id");
+                return Visit(pageBuilder.RewritePagedSelect(expression, false, 100));
             }
             else if (expression.Method.GetGenericMethodDefinition() == PagedListExtensions.ToListMethod)
             {

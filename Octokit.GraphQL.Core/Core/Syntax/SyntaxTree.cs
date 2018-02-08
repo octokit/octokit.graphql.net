@@ -29,6 +29,11 @@ namespace Octokit.GraphQL.Core.Syntax
             return AddField(parent, new FieldSelection(member, alias));
         }
 
+        public FieldSelection AddField(string name)
+        {
+            return AddField(head, new FieldSelection(name, null));
+        }
+
         public Argument AddArgument(string name, object value)
         {
             var result = new Argument(name, value);

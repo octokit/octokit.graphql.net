@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of repositories owned by the subject.
     /// </summary>
-    public class RepositoryConnection : QueryableValue<RepositoryConnection>
+    public class RepositoryConnection : QueryableValue<RepositoryConnection>, IPagingConnection<Repository>
     {
         public RepositoryConnection(Expression expression) : base(expression)
         {
@@ -39,6 +39,8 @@ namespace Octokit.GraphQL.Model
         /// The total size in kilobytes of all repositories in the connection.
         /// </summary>
         public int TotalDiskUsage { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static RepositoryConnection Create(Expression expression)
         {
