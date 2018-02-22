@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Octokit.GraphQL.Model;
 using Xunit;
+using static Octokit.GraphQL.Variable;
 
 namespace Octokit.GraphQL.IntegrationTests.Queries
 {
@@ -72,6 +74,24 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Contains("octokit.objc", repositoryNames);
             Assert.Contains("go-octokit", repositoryNames);
             Assert.Contains("discussions", repositoryNames);
+        }
+
+        [IntegrationTest]
+        public void Should_Query_Repository_With_Variables()
+        {
+            var query = new Query()
+                .Repository(Var("owner"), Var("name"))
+                .Select(repository => repository.Name)
+                .Compile();
+            var vars = new Dictionary<string, object>
+            {
+                { "owner", "octokit" },
+                { "name", "octokit.net" },
+            };
+
+            var repositoryName = Connection.Run(query, vars).Result;
+
+            Assert.Equal("octokit.net", repositoryName);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]

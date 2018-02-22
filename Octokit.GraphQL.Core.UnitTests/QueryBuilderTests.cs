@@ -565,7 +565,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Multiple_Variables()
         {
-            var expected = "query($foo:String,$bar:Int){simple(arg1:$foo,arg2:$bar){name}}";
+            var expected = "query($foo:String!,$bar:Int){simple(arg1:$foo,arg2:$bar){name}}";
 
             var expression = new TestQuery()
                 .Simple(Var("foo"), Var("bar"))
