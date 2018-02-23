@@ -4,25 +4,41 @@ namespace Octokit.GraphQL.Core
 {
     public struct Arg<T> : IArg
     {
-        private Arg(string name, T value)
+        bool isNullableVariable;
+
+        private Arg(T value)
         {
-            VariableName = name;
+            VariableName = null;
             Value = value;
+            isNullableVariable = false;
+        }
+
+        private Arg(string variableName, bool isNullable)
+        {
+            VariableName = variableName;
+            Value = default(T);
+            isNullableVariable = isNullable;
         }
 
         public string VariableName { get; }
         public T Value { get; }
+        bool IArg.IsNullableVariable => isNullableVariable;
         Type IArg.Type => typeof(T);
         object IArg.Value => Value;
 
         public static implicit operator Arg<T>(T value)
         {
-            return new Arg<T>(null, value);
+            return new Arg<T>(value);
         }
 
         public static implicit operator Arg<T>(Variable variable)
         {
-            return new Arg<T>(variable.Name, default(T));
+            return new Arg<T>(variable.Name, false);
+        }
+
+        public static implicit operator Arg<T>?(Variable variable)
+        {
+            return new Arg<T>(variable.Name, true);
         }
     }
 }
