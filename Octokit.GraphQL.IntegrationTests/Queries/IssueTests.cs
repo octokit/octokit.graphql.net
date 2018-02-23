@@ -69,6 +69,35 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Equal(3, results.Length);
         }
 
+        [IntegrationTest]
+        public void Should_Query_Issue_Page_With_Author_Model()
+        {
+            var openState = new[] { IssueState.Closed };
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .Issues(first: 100, after: Var("after"))
+                .Select(connection => new
+                {
+                    connection.PageInfo.EndCursor,
+                    connection.PageInfo.HasNextPage,
+                    connection.TotalCount,
+                    Items = connection.Nodes.Select(issue => new
+                    {
+                        NodeId = issue.Id,
+                        Number = issue.Number,
+                        Title = issue.Title,
+                        Author = new ActorModel
+                        {
+                            AvatarUrl = issue.Author.AvatarUrl(null),
+                            Login = issue.Author.Login,
+                        },
+                        UpdatedAt = issue.UpdatedAt.Value,
+                    }).ToList(),
+                }).Compile();
+
+            var results = Connection.Run(query).Result;
+        }
+
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
         public void Should_Query_Union_Issue_Or_PullRequest2()
         {
@@ -93,6 +122,12 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 });
 
             Assert.NotNull(Connection.Run(query).Result.Last().ClosedEventId);
+        }
+
+        class ActorModel
+        {
+            public string Login { get; set; }
+            public string AvatarUrl { get; set; }
         }
     }
 }

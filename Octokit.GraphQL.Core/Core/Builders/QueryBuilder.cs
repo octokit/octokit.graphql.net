@@ -92,15 +92,8 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override MemberAssignment VisitMemberAssignment(MemberAssignment node)
         {
-            if (IsQueryableValueMember(node.Expression))
-            {
-                var expression = BookmarkAndVisit(node.Expression).AddCast(node.Expression.Type);
-                return Expression.Bind(node.Member, expression);
-            }
-            else
-            {
-                return node.Update(BookmarkAndVisit(node.Expression));
-            }
+            var expression = BookmarkAndVisit(node.Expression).AddCast(node.Expression.Type);
+            return Expression.Bind(node.Member, expression);
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
