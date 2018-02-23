@@ -502,7 +502,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void SimpleQuery_Variable()
         {
-            var expected = "query($var1:String){simple(arg1:$var1){name}}";
+            var expected = "query($var1:String!){simple(arg1:$var1){name}}";
 
             var expression = new TestQuery()
                 .Simple(Var("var1"))
@@ -530,7 +530,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void InputObject_Variable()
         {
-            var expected = "query($var1:InputObject){inputObject(input:$var1){name}}";
+            var expected = "query($var1:InputObject!){inputObject(input:$var1){name}}";
 
             var expression = new TestQuery()
                 .InputObject(Var("var1"))

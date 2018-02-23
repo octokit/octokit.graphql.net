@@ -50,17 +50,17 @@ namespace Octokit.GraphQL.Core.Syntax
             return result;
         }
 
-        public VariableDefinition AddVariableDefinition(Type type, string name)
+        public VariableDefinition AddVariableDefinition(Type type, bool isNullable, string name)
         {
             var result = root.VariableDefinitions.SingleOrDefault(x => x.Name == name);
 
-            if (result != null && result.Type != VariableDefinition.ToTypeName(type))
+            if (result != null && result.Type != VariableDefinition.ToTypeName(type, isNullable))
             {
                 throw new InvalidOperationException(
                     $"A variable called '{name}' has already been added with a different type.");
             }
 
-            result = result ?? new VariableDefinition(type, name);
+            result = result ?? new VariableDefinition(type, isNullable, name);
             root.VariableDefinitions.Add(result);
             return result;
         }
