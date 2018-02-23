@@ -444,7 +444,7 @@ namespace Octokit.GraphQL.Core.Builders
                     }
                     else
                     {
-                        value = syntax.AddVariableDefinition(arg.Type, arg.VariableName);
+                        value = syntax.AddVariableDefinition(arg.Type, arg.IsNullableVariable, arg.VariableName);
                     }
                 }
 

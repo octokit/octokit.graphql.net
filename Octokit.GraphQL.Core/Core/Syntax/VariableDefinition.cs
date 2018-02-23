@@ -6,16 +6,16 @@ namespace Octokit.GraphQL.Core.Syntax
 {
     public class VariableDefinition
     {
-        public VariableDefinition(Type type, string name)
+        public VariableDefinition(Type type, bool isNullable, string name)
         {
-            Type = ToTypeName(type);
+            Type = ToTypeName(type, isNullable);
             Name = name;
         }
 
         public string Type { get; }
         public string Name { get; }
 
-        public static string ToTypeName(Type type)
+        public static string ToTypeName(Type type, bool isNullable)
         {
             if (type == typeof(int))
             {
@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Core.Syntax
                 return "Boolean";
             }
 
-            return type.Name;
+            return type.Name + (isNullable ? "" : "!");
         }
     }
 }
