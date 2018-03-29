@@ -47,19 +47,26 @@ namespace Octokit.GraphQL
             IDictionary<string, object> variables = null)
         {
             var payload = query.GetPayload(variables);
-            var data = await Send(payload);
+            var data = await Run(payload);
             var deserializer = new ResponseDeserializer();
             return deserializer.Deserialize(query, data);
         }
 
-        protected async Task<string> Send(string payload)
+        protected async Task<string> Run(string payload)
         {
             var token = await CredentialStore.GetCredentials();
-            var request = new HttpRequestMessage(HttpMethod.Post, Uri);
-            request.Content = new StringContent(payload);
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            var response = await HttpClient.SendAsync(request);
-            return await response.Content.ReadAsStringAsync();
+
+            using (var request = new HttpRequestMessage(HttpMethod.Post, Uri))
+            {
+                request.Content = new StringContent(payload);
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+
+                using (var response = await HttpClient.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsStringAsync();
+                }
+            }
         }
 
         private HttpClient CreateHttpClient(ProductHeaderValue header)
