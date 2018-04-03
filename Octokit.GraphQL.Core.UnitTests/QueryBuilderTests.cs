@@ -575,5 +575,61 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, query.Query);
         }
+
+        [Fact]
+        public void Double_Quotes_In_String_Arg_Are_Escaped()
+        {
+            var expected = "query{simple(arg1:\"string with \\\"quotes\\\" in it\"){name}}";
+
+            var expression = new TestQuery()
+                .Simple("string with \"quotes\" in it")
+                .Select(x => x.Name);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.Query);
+        }
+
+        [Fact]
+        public void Backslash_In_String_Arg_Is_Escaped()
+        {
+            var expected = "query{simple(arg1:\"string with \\\\ in it\"){name}}";
+
+            var expression = new TestQuery()
+                .Simple("string with \\ in it")
+                .Select(x => x.Name);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.Query);
+        }
+
+        [Fact]
+        public void Double_Quotes_In_InputObject_Arg_Are_Escaped()
+        {
+            var expected = "query{inputObject(input:{stringValue:\"string with \\\"quotes\\\" in it\"}){name}}";
+
+            var expression = new TestQuery()
+                .InputObject(new InputObject { StringValue = "string with \"quotes\" in it" })
+                .Select(x => x.Name);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.Query);
+        }
+
+        [Fact]
+        public void Backslash_In_InputObject_Arg_Is_Escaped()
+        {
+            var expected = "query{inputObject(input:{stringValue:\"string with \\\\ in it\"}){name}}";
+
+            var expression = new TestQuery()
+                .InputObject(new InputObject { StringValue = "string with \\ in it" })
+                .Select(x => x.Name);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.Query);
+        }
     }
 }
