@@ -28,8 +28,10 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var ex = await Assert.ThrowsAnyAsync<Exception>(async () => await connection.Run(query));
 
             Assert.IsType<HttpRequestException>(ex);
-            Assert.IsType<WebException>(ex.InnerException);
-            Assert.Equal(WebExceptionStatus.NameResolutionFailure, ((WebException)ex.InnerException).Status);
+
+            // We would like to test this, but there doesn't seem to be an x-plat way to do it.
+            // Assert.IsType<WebException>(ex.InnerException);
+            // Assert.Equal(WebExceptionStatus.NameResolutionFailure, ((WebException)ex.InnerException).Status);
         }
 
         [IntegrationTest]
