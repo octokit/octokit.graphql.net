@@ -82,7 +82,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expectedQuery, query.ToString());
+            Assert.Equal(expectedQuery, query.ToString(), ignoreLineEndingDifferences: true);
 
             var responseResult = new ResponseDeserializer().Deserialize(query, data);
 
@@ -131,7 +131,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
             var query = expression.Compile();
 
-            Assert.Equal(expectedQuery, query.ToString());
+            Assert.Equal(expectedQuery, query.ToString(), ignoreLineEndingDifferences: true);
         }
 
         private class SchemaModel

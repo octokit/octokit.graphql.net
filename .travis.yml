@@ -8,4 +8,3 @@ script:
  - dotnet test ./Octokit.GraphQL.UnitTests/Octokit.GraphQL.UnitTests.csproj
  - dotnet test ./Octokit.GraphQL.Core.Generation.UnitTests/Octokit.GraphQL.Core.Generation.UnitTests.csproj
  - dotnet test ./Octokit.GraphQL.IntegrationTests/Octokit.GraphQL.IntegrationTests.csproj
- 

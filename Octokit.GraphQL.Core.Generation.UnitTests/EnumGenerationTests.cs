@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
-    public class EnumGenerationTests
+    public class EnumGenerationTests : TestBase
     {
         const string MemberTemplate = @"using System;
 using System.Runtime.Serialization;
@@ -51,7 +52,7 @@ namespace Test
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\TestEnum.cs", expected), result);
+            CompareModel("TestEnum.cs", expected, result);
         }
 
         [Fact]
@@ -82,7 +83,7 @@ namespace Test
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\TestEnum.cs", expected), result);
+            CompareModel("TestEnum.cs", expected, result);
         }
 
         [Fact]
@@ -122,7 +123,7 @@ namespace Test
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\TestEnum.cs", expected), result);
+            CompareModel("TestEnum.cs", expected, result);
         }
     }
 }
