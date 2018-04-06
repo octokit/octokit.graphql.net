@@ -3,6 +3,7 @@
     <TargetFramework>netstandard1.1</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\key.snk</AssemblyOriginatorKeyFile>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <DocumentationFile>bin\$(Configuration)\netstandard1.1\Octokit.GraphQL.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
