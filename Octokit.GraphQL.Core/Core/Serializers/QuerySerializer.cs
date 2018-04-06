@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Newtonsoft.Json;
 using Octokit.GraphQL.Core.Syntax;
 using Octokit.GraphQL.Core.Utilities;
 
@@ -152,9 +153,9 @@ namespace Octokit.GraphQL.Core.Serializers
             {
                 builder.Append("null");
             }
-            else if (value is string)
+            else if (value is string s)
             {
-                builder.Append('"' + ((string)value) + '"');
+                builder.Append(JsonConvert.ToString(s, '"'));
             }
             else if (value is Enum)
             {
