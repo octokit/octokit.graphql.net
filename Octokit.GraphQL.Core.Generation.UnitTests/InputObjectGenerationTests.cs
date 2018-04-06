@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
-    public class InputObjectGenerationTests
+    public class InputObjectGenerationTests : TestBase
     {
         const string MemberTemplate = @"namespace Test
 {{
@@ -38,7 +39,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\InputObject.cs", expected), result);
+            CompareModel("InputObject.cs", expected, result);
         }
 
         [Fact]
@@ -62,7 +63,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\InputObject.cs", expected), result);
+            CompareModel("InputObject.cs", expected, result);
         }
 
         private string FormatMemberTemplate(string members)

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.Generation.UnitTests
 {
-    public class InterfaceGenerationTests
+    public class InterfaceGenerationTests : TestBase
     {
         const string MemberTemplate = @"namespace Test
 {{
@@ -67,7 +68,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -93,7 +94,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -119,7 +120,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -145,7 +146,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -171,7 +172,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -197,7 +198,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -231,7 +232,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -265,7 +266,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -299,7 +300,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -333,7 +334,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -367,7 +368,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -401,7 +402,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -435,7 +436,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -469,7 +470,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -503,7 +504,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -537,7 +538,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -571,7 +572,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Theory]
@@ -613,7 +614,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Theory]
@@ -655,7 +656,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -689,7 +690,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -729,7 +730,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -759,7 +760,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -804,7 +805,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         [Fact]
@@ -830,7 +831,7 @@ namespace Test.Internal
 
             var result = CodeGenerator.Generate(model, "Test", null);
 
-            Assert.Equal(new GeneratedFile(@"Model\Entity.cs", expected), result);
+            CompareModel("Entity.cs", expected, result);
         }
 
         private string FormatMemberTemplate(string interfaceMembers, string stubMembers)

@@ -233,7 +233,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString());
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
@@ -451,7 +451,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString());
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
@@ -472,7 +472,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString());
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
@@ -496,7 +496,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString());
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
@@ -559,7 +559,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString());
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
