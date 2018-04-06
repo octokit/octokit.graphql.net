@@ -1,0 +1,11 @@
+language: csharp
+mono: none
+dotnet: 1.1.5
+script:
+ - dotnet restore
+ - dotnet build
+ - dotnet test ./Octokit.GraphQL.Core.UnitTests/Octokit.GraphQL.Core.UnitTests.csproj
+ - dotnet test ./Octokit.GraphQL.UnitTests/Octokit.GraphQL.UnitTests.csproj
+ - dotnet test ./Octokit.GraphQL.Core.Generation.UnitTests/Octokit.GraphQL.Core.Generation.UnitTests.csproj
+ - dotnet test ./Octokit.GraphQL.IntegrationTests/Octokit.GraphQL.IntegrationTests.csproj
+ 
