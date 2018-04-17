@@ -52,7 +52,7 @@ namespace Octokit.GraphQL
         }
 
         [MethodId(nameof(ToListMethod))]
-        public static IList<TValue> ToList<TValue>(this IQueryableList<TValue> source)
+        public static List<TValue> ToList<TValue>(this IQueryableList<TValue> source)
         {
             throw new NotImplementedException();
         }

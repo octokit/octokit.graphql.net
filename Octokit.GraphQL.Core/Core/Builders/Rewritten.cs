@@ -63,7 +63,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return source.Select(selector);
             }
 
-            public static IDictionary<TKey, TElement> ToDictionary<TKey, TElement>(
+            public static Dictionary<TKey, TElement> ToDictionary<TKey, TElement>(
                 IEnumerable<JToken> source,
                 Func<JToken, TKey> keySelector,
                 Func<JToken, TElement> elementSelector)
@@ -71,7 +71,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return source.ToDictionary(keySelector, elementSelector);
             }
 
-            public static IList<TResult> ToList<TResult>(IEnumerable<JToken> source)
+            public static List<TResult> ToList<TResult>(IEnumerable<JToken> source)
             {
                 return source.Select(x => x.ToObject<TResult>()).ToList();
             }
