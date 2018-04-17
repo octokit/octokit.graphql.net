@@ -550,6 +550,54 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Property_For_DateTime_Field()
+        {
+            var expected = FormatMemberTemplate("public DateTimeOffset? Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.DateTime(),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
+        public void Generates_Property_For_NonNull_DateTime_Field()
+        {
+            var expected = FormatMemberTemplate("public DateTimeOffset Foo { get; }");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.NonNull(TypeModel.DateTime()),
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
         public void Generates_Property_For_Union_Field()
         {
             var expected = FormatMemberTemplate("public Bar Foo => this.CreateProperty(x => x.Foo, Test.Bar.Create);");

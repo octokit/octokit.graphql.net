@@ -151,7 +151,7 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
         private static bool IsValueType(TypeModel type)
         {
             return type.Kind == TypeKind.Enum ||
-                (type.Kind == TypeKind.Scalar && (type.Name == "Int" || type.Name == "Float" || type.Name == "Boolean"));
+                (type.Kind == TypeKind.Scalar && (type.Name == "Int" || type.Name == "Float" || type.Name == "Boolean" || type.Name == "DateTime"));
         }
     }
 }
