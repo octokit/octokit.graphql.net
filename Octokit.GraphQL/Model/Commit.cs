@@ -38,7 +38,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The datetime when this commit was authored.
         /// </summary>
-        public DateTimeOffset? AuthoredDate { get; }
+        public DateTimeOffset AuthoredDate { get; }
 
         /// <summary>
         /// Fetches `git blame` information.
@@ -73,7 +73,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The datetime when this commit was committed.
         /// </summary>
-        public DateTimeOffset? CommittedDate { get; }
+        public DateTimeOffset CommittedDate { get; }
 
         /// <summary>
         /// Check if commited via GitHub web UI.
@@ -103,7 +103,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="until">Allows specifying an ending time or date for fetching commits.</param>
         public CommitHistoryConnection History(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? path = null, Arg<CommitAuthor>? author = null, Arg<string>? since = null, Arg<string>? until = null) => this.CreateMethodCall(x => x.History(first, after, last, before, path, author, since, until), Octokit.GraphQL.Model.CommitHistoryConnection.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The Git commit message
@@ -170,7 +170,8 @@ namespace Octokit.GraphQL.Model
         public Status Status => this.CreateProperty(x => x.Status, Octokit.GraphQL.Model.Status.Create);
 
         /// <summary>
-        /// Returns a URL to download a tarball archive for a repository.                      Note: For private repositories, these links are temporary and expire after five minutes.
+        /// Returns a URL to download a tarball archive for a repository.
+        /// Note: For private repositories, these links are temporary and expire after five minutes.
         /// </summary>
         public string TarballUrl { get; }
 
@@ -205,7 +206,8 @@ namespace Octokit.GraphQL.Model
         public SubscriptionState ViewerSubscription { get; }
 
         /// <summary>
-        /// Returns a URL to download a zipball archive for a repository.                      Note: For private repositories, these links are temporary and expire after five minutes.
+        /// Returns a URL to download a zipball archive for a repository.
+        /// Note: For private repositories, these links are temporary and expire after five minutes.
         /// </summary>
         public string ZipballUrl { get; }
 

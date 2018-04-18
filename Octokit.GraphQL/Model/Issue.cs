@@ -76,7 +76,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Check if this comment was created via an email reply.
@@ -86,7 +86,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// A list of labels associated with the object.
@@ -197,8 +197,8 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this issue

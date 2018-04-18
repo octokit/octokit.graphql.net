@@ -8,10 +8,10 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MoveProjectColumnInput
     {
+        public ID ColumnId { get; set; }
+
+        public ID? AfterColumnId { get; set; }
+
         public string ClientMutationId { get; set; }
-
-        public string ColumnId { get; set; }
-
-        public string AfterColumnId { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
         private readonly GitHubClient _gitHubClient;
         private readonly Octokit.Repository _repository;
         private readonly string _ticks;
-        private readonly string _repositoryId;
+        private readonly ID _repositoryId;
 
         public MutationTests()
         {

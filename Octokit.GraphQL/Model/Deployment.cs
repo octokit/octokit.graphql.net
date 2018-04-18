@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Identifies the actor who triggered the deployment.
@@ -33,7 +33,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Environment { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The latest status of this deployment.

@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string CommitUrl { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Indicates whether the Blob is binary or text

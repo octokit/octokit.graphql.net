@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Equal(apiUser.Bio, graphqlUser.Bio);
             Assert.Equal(apiUser.Company, graphqlUser.Company);
 
-            Assert.Equal(apiUser.CreatedAt.ToUniversalTime(), graphqlUser.CreatedAt.Value.ToUniversalTime());
+            Assert.Equal(apiUser.CreatedAt.ToUniversalTime(), graphqlUser.CreatedAt.ToUniversalTime());
 
             Assert.Equal(apiUser.Email ?? string.Empty, graphqlUser.Email);
             Assert.Equal(apiUser.Hireable ?? false, graphqlUser.IsHireable);

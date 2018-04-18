@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the object.
         /// </summary>
-        string Id { get; }
+        ID Id { get; }
     }
 }
 
@@ -34,7 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         internal static StubINode Create(Expression expression)
         {

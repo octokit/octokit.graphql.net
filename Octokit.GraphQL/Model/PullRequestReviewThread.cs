@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
         public PullRequestReviewCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.PullRequestReviewCommentConnection.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Identifies the pull request associated with this thread.

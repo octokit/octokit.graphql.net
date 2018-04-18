@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Color { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The name of the current language.

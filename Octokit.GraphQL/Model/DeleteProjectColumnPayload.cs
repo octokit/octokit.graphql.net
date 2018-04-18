@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The deleted column ID.
         /// </summary>
-        public string DeletedColumnId { get; }
+        public ID DeletedColumnId { get; }
 
         /// <summary>
         /// The project the deleted column was in.

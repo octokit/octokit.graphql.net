@@ -15,7 +15,7 @@ namespace Octokit.GraphQL.Model
         {
         }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The HTTP path for this repository-topic.

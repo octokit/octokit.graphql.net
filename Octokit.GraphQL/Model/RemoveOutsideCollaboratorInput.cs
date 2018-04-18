@@ -8,10 +8,10 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveOutsideCollaboratorInput
     {
+        public ID UserId { get; set; }
+
+        public ID OrganizationId { get; set; }
+
         public string ClientMutationId { get; set; }
-
-        public string UserId { get; set; }
-
-        public string OrganizationId { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PushAllowanceActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Model.PushAllowanceActor.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Identifies the protected branch associated with the allowed user or team.

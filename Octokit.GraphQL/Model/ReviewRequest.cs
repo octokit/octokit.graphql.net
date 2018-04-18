@@ -18,10 +18,10 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Identifies the pull request associated with this review request.
@@ -36,7 +36,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the author associated with this review request.
         /// </summary>
-        [Obsolete(@"Use `ReviewRequest.requestedReviewer` instead.")]
+        [Obsolete(@"Field `reviewer` will be changed in favor of returning a union type. Use `ReviewRequest.requestedReviewer` instead. Removal on 2018-07-01 UTC.")]
         public User Reviewer => this.CreateProperty(x => x.Reviewer, Octokit.GraphQL.Model.User.Create);
 
         internal static ReviewRequest Create(Expression expression)

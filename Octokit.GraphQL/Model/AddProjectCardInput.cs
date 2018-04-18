@@ -8,12 +8,12 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddProjectCardInput
     {
-        public string ClientMutationId { get; set; }
+        public ID ProjectColumnId { get; set; }
 
-        public string ProjectColumnId { get; set; }
-
-        public string ContentId { get; set; }
+        public ID? ContentId { get; set; }
 
         public string Note { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

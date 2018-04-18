@@ -18,20 +18,35 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
-        /// The actor who edited this content,
+        /// Identifies the date and time when the object was deleted.
+        /// </summary>
+        public DateTimeOffset? DeletedAt { get; }
+
+        /// <summary>
+        /// The actor who deleted this content
+        /// </summary>
+        public IActor DeletedBy => this.CreateProperty(x => x.DeletedBy, Octokit.GraphQL.Model.Internal.StubIActor.Create);
+
+        /// <summary>
+        /// A summary of the changes for this edit
+        /// </summary>
+        public string Diff { get; }
+
+        /// <summary>
+        /// The actor who edited this content
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         internal static UserContentEdit Create(Expression expression)
         {

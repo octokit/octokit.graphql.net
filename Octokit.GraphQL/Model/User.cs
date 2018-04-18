@@ -66,12 +66,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for gists returned from the connection</param>
         public GistConnection Gists(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<GistPrivacy>? privacy = null, Arg<GistOrder>? orderBy = null) => this.CreateMethodCall(x => x.Gists(first, after, last, before, privacy, orderBy), Octokit.GraphQL.Model.GistConnection.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Whether or not this user is a participant in the GitHub Security Bug Bounty.
@@ -170,7 +170,7 @@ namespace Octokit.GraphQL.Model
         public IssueCommentConnection IssueComments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.IssueComments(first, after, last, before), Octokit.GraphQL.Model.IssueCommentConnection.Create);
 
         /// <summary>
-        /// A list of issues assocated with this user.
+        /// A list of issues associated with this user.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -234,7 +234,7 @@ namespace Octokit.GraphQL.Model
         public PublicKeyConnection PublicKeys(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PublicKeys(first, after, last, before), Octokit.GraphQL.Model.PublicKeyConnection.Create);
 
         /// <summary>
-        /// A list of pull requests assocated with this user.
+        /// A list of pull requests associated with this user.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
@@ -300,8 +300,8 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this user

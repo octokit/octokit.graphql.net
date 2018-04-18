@@ -23,14 +23,14 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Identifies the description of the release.
         /// </summary>
         public string Description { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Whether or not the release is a draft
@@ -75,8 +75,8 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this issue

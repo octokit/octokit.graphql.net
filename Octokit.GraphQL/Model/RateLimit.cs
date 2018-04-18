@@ -38,7 +38,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The time at which the current rate limit window resets in UTC epoch seconds.
         /// </summary>
-        public DateTimeOffset? ResetAt { get; }
+        public DateTimeOffset ResetAt { get; }
 
         internal static RateLimit Create(Expression expression)
         {

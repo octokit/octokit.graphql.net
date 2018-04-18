@@ -8,10 +8,10 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateTopicsInput
     {
-        public string ClientMutationId { get; set; }
-
-        public string RepositoryId { get; set; }
+        public ID RepositoryId { get; set; }
 
         public IEnumerable<string> TopicNames { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }
