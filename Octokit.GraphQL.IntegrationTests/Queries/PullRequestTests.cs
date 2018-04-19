@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
@@ -25,5 +26,26 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Equal(expectedMessage, (string)results[0].Message);
             Assert.Equal((string)"Haacked", (string)results[0].Name);
         }
+
+        [IntegrationTest]
+        public async Task Can_Use_Conditional_In_BaseRef_Query()
+        {
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .PullRequest(1)
+                .Select(pr => pr.BaseRef != null ? pr.BaseRef.Name : null);
+
+            var result = await Connection.Run(query);
+
+            Assert.Equal("master", result);
+        }
     }
+
+    public class GitReferenceModel
+    {
+        public GitReferenceModel(string @ref, string label, string sha, string repositoryCloneUri)
+        {
+        }
+    }
+
 }
