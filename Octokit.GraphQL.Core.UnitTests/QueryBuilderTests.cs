@@ -530,7 +530,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void IntValue_Variable()
         {
-            var expected = "query($var1:Int){intValue(integer:$var1){name}}";
+            var expected = "query($var1:Int!){intValue(integer:$var1){name}}";
 
             var expression = new TestQuery()
                 .IntValue(Var("var1"))

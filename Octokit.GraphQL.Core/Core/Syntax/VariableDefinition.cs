@@ -17,20 +17,22 @@ namespace Octokit.GraphQL.Core.Syntax
 
         public static string ToTypeName(Type type, bool isNullable)
         {
+            var name = type.Name;
+
             if (type == typeof(int))
             {
-                return "Int";
+                name = "Int";
             }
             else if (type == typeof(double))
             {
-                return "Float";
+                name = "Float";
             }
             else if (type == typeof(bool))
             {
-                return "Boolean";
+                name = "Boolean";
             }
 
-            return type.Name + (isNullable ? "" : "!");
+            return name + (isNullable ? "" : "!");
         }
     }
 }
