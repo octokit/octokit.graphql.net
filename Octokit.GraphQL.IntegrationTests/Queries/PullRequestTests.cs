@@ -40,12 +40,4 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Equal("master", result);
         }
     }
-
-    public class GitReferenceModel
-    {
-        public GitReferenceModel(string @ref, string label, string sha, string repositoryCloneUri)
-        {
-        }
-    }
-
 }
