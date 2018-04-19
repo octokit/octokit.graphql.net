@@ -46,9 +46,26 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            var left = BookmarkAndVisit(node.Left).AddCast(node.Left.Type);
-            var right = BookmarkAndVisit(node.Right).AddCast(node.Right.Type);
-            return node.Update(left, node.Conversion, right);
+            var left = BookmarkAndVisit(node.Left);
+            var right = BookmarkAndVisit(node.Right);
+            var leftNull = IsNullConstant(node.Left);
+            var rightNull = IsNullConstant(node.Right);
+
+            if ((node.NodeType == ExpressionType.Equal || node.NodeType == ExpressionType.NotEqual) && (leftNull || rightNull))
+            {
+                // When we're comparing with null, we don't need to call JToken.ToObject<>() to deserialize
+                // the expressions being compared, we just need to check if the tokens are null. Indeed 
+                // calling ToObject<> can cause #84 if the non-null side of the comparison is a query entity.
+                return Expression.MakeBinary(
+                    node.NodeType,
+                    leftNull ? Expression.Constant(null) : left,
+                    rightNull ? Expression.Constant(null) : right);
+            }
+
+            return node.Update(
+                left.AddCast(node.Left.Type),
+                node.Conversion,
+                right.AddCast(node.Right.Type));
         }
 
         protected override Expression VisitConstant(ConstantExpression node)
