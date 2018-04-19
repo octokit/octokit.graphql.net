@@ -57,6 +57,28 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void SimpleQuery_Select_Single_Member_With_Null_Conditional()
+        {
+            var query = new TestQuery()
+                .Simple("foo")
+                .Select(x => x.Name != null ? x.Name : "It's null!");
+            var data = @"{
+  ""data"":{
+    ""simple"":{
+      ""name"": null
+    }
+  }
+}";
+
+            var operation = new QueryBuilder().Build(query);
+            var expectedType = query.GetType().GetGenericArguments()[0];
+            var result = new ResponseDeserializer().Deserialize(operation, data);
+
+            Assert.IsType(expectedType, result);
+            Assert.Equal("It's null!", result);
+        }
+
+        [Fact]
         public void Data_Select_Single_Member()
         {
             var expression = new TestQuery()
