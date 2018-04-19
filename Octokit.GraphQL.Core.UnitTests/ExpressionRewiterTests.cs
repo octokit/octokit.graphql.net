@@ -234,7 +234,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Can_Use_Conditional_With_Null()
+        public void Can_Use_Conditional_With_Null_Result()
         {
             var expression = new TestQuery()
                 .Simple("foo", 2)
@@ -244,6 +244,22 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Rewritten.Value.Select(
                     data["data"]["simple"],
                     x => !string.IsNullOrWhiteSpace(x["name"].ToObject<string>()) ? x["name"] : null).ToObject<string>();
+
+            var query = expression.Compile();
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
+
+        [Fact]
+        public void Can_Use_Conditional_To_Compare_To_Null()
+        {
+            var expression = new TestQuery()
+                .Simple("foo", 2)
+                .Select(x => x.Name != null ? x.Name : null);
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
+                    data["data"]["simple"],
+                    x => x["name"] != null ? x["name"] : null).ToObject<string>();
 
             var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
