@@ -33,14 +33,14 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Reference originated in a different repository.
         /// </summary>
-        [Obsolete(@"`is_cross_reference` will be renamed. Use ReferencedEvent.isCrossRepository instead. Removal on 2018-07-01 UTC.")]
+        [Obsolete(@"`isCrossReference` will be renamed. Use `ReferencedEvent.isCrossRepository` instead. Removal on 2018-07-01 UTC.")]
         public bool IsCrossReference { get; }
 
         /// <summary>

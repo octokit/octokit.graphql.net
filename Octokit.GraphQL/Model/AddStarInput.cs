@@ -8,8 +8,8 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddStarInput
     {
-        public string ClientMutationId { get; set; }
+        public ID StarrableId { get; set; }
 
-        public string StarrableId { get; set; }
+        public string ClientMutationId { get; set; }
     }
 }

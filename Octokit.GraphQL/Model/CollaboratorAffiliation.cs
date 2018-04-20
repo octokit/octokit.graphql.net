@@ -6,19 +6,19 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// Collaborators affiliation level with a repository.
+    /// Collaborators affiliation level with a subject.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum CollaboratorAffiliation
     {
         /// <summary>
-        /// All outside collaborators of an organization-owned repository.
+        /// All outside collaborators of an organization-owned subject.
         /// </summary>
         [EnumMember(Value = "OUTSIDE")]
         Outside,
 
         /// <summary>
-        /// All collaborators with permissions to an organization-owned repository, regardless of organization membership status.
+        /// All collaborators with permissions to an organization-owned subject, regardless of organization membership status.
         /// </summary>
         [EnumMember(Value = "DIRECT")]
         Direct,

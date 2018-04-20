@@ -8,9 +8,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddPullRequestReviewCommentInput
     {
-        public string ClientMutationId { get; set; }
-
-        public string PullRequestReviewId { get; set; }
+        public ID PullRequestReviewId { get; set; }
 
         public string CommitOID { get; set; }
 
@@ -20,6 +18,8 @@ namespace Octokit.GraphQL.Model
 
         public int? Position { get; set; }
 
-        public string InReplyTo { get; set; }
+        public ID? InReplyTo { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IQueryableList<StatusContext> Contexts => this.CreateProperty(x => x.Contexts);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The combined commit status.

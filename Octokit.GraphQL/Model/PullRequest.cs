@@ -60,17 +60,17 @@ namespace Octokit.GraphQL.Model
         public string BaseRefOid { get; }
 
         /// <summary>
-        /// Identifies the body of the pull request.
+        /// The body as Markdown.
         /// </summary>
         public string Body { get; }
 
         /// <summary>
-        /// Identifies the body of the pull request rendered to HTML.
+        /// The body rendered to HTML.
         /// </summary>
         public string BodyHTML { get; }
 
         /// <summary>
-        /// Identifies the body of the pull request rendered to text.
+        /// The body rendered to text.
         /// </summary>
         public string BodyText { get; }
 
@@ -110,7 +110,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Check if this comment was created via an email reply.
@@ -120,7 +120,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IRepositoryOwner HeadRepositoryOwner => this.CreateProperty(x => x.HeadRepositoryOwner, Octokit.GraphQL.Model.Internal.StubIRepositoryOwner.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The head and base repositories are different.
@@ -185,6 +185,11 @@ namespace Octokit.GraphQL.Model
         public bool Locked { get; }
 
         /// <summary>
+        /// Indicates whether maintainers can modify the pull request.
+        /// </summary>
+        public bool MaintainerCanModify { get; }
+
+        /// <summary>
         /// The commit that was created when this pull request was merged.
         /// </summary>
         public Commit MergeCommit => this.CreateProperty(x => x.MergeCommit, Octokit.GraphQL.Model.Commit.Create);
@@ -203,6 +208,11 @@ namespace Octokit.GraphQL.Model
         /// The date and time that the pull request was merged.
         /// </summary>
         public DateTimeOffset? MergedAt { get; }
+
+        /// <summary>
+        /// The actor who merged the pull request.
+        /// </summary>
+        public IActor MergedBy => this.CreateProperty(x => x.MergedBy, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
         /// <summary>
         /// Identifies the milestone associated with the pull request.
@@ -326,8 +336,8 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this pull request.

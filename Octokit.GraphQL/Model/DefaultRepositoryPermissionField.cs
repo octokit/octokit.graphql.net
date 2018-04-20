@@ -6,25 +6,31 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// The possible default permissions for organization-owned repositories.
+    /// The possible default permissions for repositories.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum DefaultRepositoryPermissionField
     {
         /// <summary>
-        /// Members have read access to org repos by default
+        /// No access
+        /// </summary>
+        [EnumMember(Value = "NONE")]
+        None,
+
+        /// <summary>
+        /// Can read repos by default
         /// </summary>
         [EnumMember(Value = "READ")]
         Read,
 
         /// <summary>
-        /// Members have read and write access to org repos by default
+        /// Can read and write repos by default
         /// </summary>
         [EnumMember(Value = "WRITE")]
         Write,
 
         /// <summary>
-        /// Members have read, write, and admin access to org repos by default
+        /// Can read, write, and administrate repos by default
         /// </summary>
         [EnumMember(Value = "ADMIN")]
         Admin,

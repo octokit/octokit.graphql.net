@@ -8,12 +8,12 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeclineTopicSuggestionInput
     {
-        public string ClientMutationId { get; set; }
-
-        public string RepositoryId { get; set; }
+        public ID RepositoryId { get; set; }
 
         public string Name { get; set; }
 
         public TopicSuggestionDeclineReason Reason { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         int? DatabaseId { get; }
 
-        string Id { get; }
+        ID Id { get; }
 
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
@@ -57,10 +57,10 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 

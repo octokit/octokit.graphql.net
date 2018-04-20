@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The file the comments were made on.

@@ -23,9 +23,9 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Reference originated in a different repository.
@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the reference was made.
         /// </summary>
-        public DateTimeOffset? ReferencedAt { get; }
+        public DateTimeOffset ReferencedAt { get; }
 
         /// <summary>
         /// The HTTP path for this pull request.

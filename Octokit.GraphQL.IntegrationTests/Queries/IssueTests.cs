@@ -91,7 +91,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                             AvatarUrl = issue.Author.AvatarUrl(null),
                             Login = issue.Author.Login,
                         },
-                        UpdatedAt = issue.UpdatedAt.Value,
+                        UpdatedAt = issue.UpdatedAt,
                     }).ToList(),
                 }).Compile();
 

@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Guid { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Organization invitation for this SCIM-provisioned external identity
@@ -38,7 +38,7 @@ namespace Octokit.GraphQL.Model
         public ExternalIdentityScimAttributes ScimIdentity => this.CreateProperty(x => x.ScimIdentity, Octokit.GraphQL.Model.ExternalIdentityScimAttributes.Create);
 
         /// <summary>
-        /// User linked to this external identity
+        /// User linked to this external identity. Will be NULL if this identity has not been claimed by an organization member.
         /// </summary>
         public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.Model.User.Create);
 

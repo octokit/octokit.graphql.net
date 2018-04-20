@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool Hidden { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Instructions on how to implement the license
@@ -71,6 +71,11 @@ namespace Octokit.GraphQL.Model
         /// The permissions set by the license
         /// </summary>
         public IQueryableList<LicenseRule> Permissions => this.CreateProperty(x => x.Permissions);
+
+        /// <summary>
+        /// Whether the license is a pseudo-license placeholder (e.g., other, no-license)
+        /// </summary>
+        public bool PseudoLicense { get; }
 
         /// <summary>
         /// Short identifier specified by <https://spdx.org/licenses>

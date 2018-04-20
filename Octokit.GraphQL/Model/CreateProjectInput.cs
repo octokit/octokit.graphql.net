@@ -8,12 +8,12 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CreateProjectInput
     {
-        public string ClientMutationId { get; set; }
-
-        public string OwnerId { get; set; }
+        public ID OwnerId { get; set; }
 
         public string Name { get; set; }
 
         public string Body { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

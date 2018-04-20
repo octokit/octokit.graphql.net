@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        DateTimeOffset? CreatedAt { get; }
+        DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// The description of the repository.
@@ -127,7 +127,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        DateTimeOffset? UpdatedAt { get; }
+        DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this repository
@@ -150,7 +150,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         public string Description { get; }
 
@@ -174,7 +174,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool IsPrivate { get; }
 
-        [Obsolete(@"Use Repository.licenseInfo instead.")]
+        [Obsolete(@"Field `license` will be replaced by a more detailed license object. Use `Repository.licenseInfo` instead. Removal on 2018-07-01 UTC.")]
         public string License { get; }
 
         public License LicenseInfo => this.CreateProperty(x => x.LicenseInfo, Octokit.GraphQL.Model.License.Create);
@@ -195,8 +195,8 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string ShortDescriptionHTML(Arg<int>? limit = null) => null;
 
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         public string Url { get; }
 

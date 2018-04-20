@@ -8,10 +8,10 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LockLockableInput
     {
-        public string ClientMutationId { get; set; }
-
-        public string LockableId { get; set; }
+        public ID LockableId { get; set; }
 
         public LockReason? LockReason { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

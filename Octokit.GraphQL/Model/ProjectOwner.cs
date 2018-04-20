@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public interface IProjectOwner : IQueryableValue<IProjectOwner>, IQueryableInterface
     {
-        string Id { get; }
+        ID Id { get; }
 
         /// <summary>
         /// Find project by number.
@@ -64,7 +64,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         public Project Project(Arg<int> number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
 

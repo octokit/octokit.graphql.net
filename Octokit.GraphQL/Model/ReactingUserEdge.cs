@@ -22,7 +22,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The moment when the user made the reaction.
         /// </summary>
-        public DateTimeOffset? ReactedAt { get; }
+        public DateTimeOffset ReactedAt { get; }
 
         internal static ReactingUserEdge Create(Expression expression)
         {
