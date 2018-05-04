@@ -46,9 +46,35 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            var left = BookmarkAndVisit(node.Left).AddCast(node.Left.Type);
-            var right = BookmarkAndVisit(node.Right).AddCast(node.Right.Type);
-            return node.Update(left, node.Conversion, right);
+            var left = BookmarkAndVisit(node.Left);
+            var right = BookmarkAndVisit(node.Right);
+            var leftNull = IsNullConstant(node.Left);
+            var rightNull = IsNullConstant(node.Right);
+
+            if ((node.NodeType == ExpressionType.Equal || node.NodeType == ExpressionType.NotEqual))
+            {
+                // When we're comparing with null, we need to transform an equality conditional such as
+                // `token["foo"] == null` to `token["foo"].Type == JTokenType.Null`
+                if (!leftNull && rightNull)
+                {
+                    return Expression.MakeBinary(
+                        node.NodeType,
+                        Expression.Property(left, nameof(JToken.Type)),
+                        Expression.Constant(JTokenType.Null));
+                }
+                else if(leftNull && !rightNull)
+                {
+                    return Expression.MakeBinary(
+                        node.NodeType,
+                        Expression.Constant(JTokenType.Null),
+                        Expression.Property(right, nameof(JToken.Type)));
+                }
+            }
+
+            return node.Update(
+                left.AddCast(node.Left.Type),
+                node.Conversion,
+                right.AddCast(node.Right.Type));
         }
 
         protected override Expression VisitConstant(ConstantExpression node)
@@ -86,11 +112,20 @@ namespace Octokit.GraphQL.Core.Builders
             var trueNull = IsNullConstant(ifTrue);
             var falseNull = IsNullConstant(ifFalse);
 
-            if (trueNull && !falseNull)
+            if (!trueNull)
+            {
+                ifTrue = ifTrue.AddCast(node.Type);
+            }
+            else if (!falseNull)
             {
                 ifTrue = Expression.Constant(null, ifFalse.Type);
             }
-            else if (!trueNull && falseNull)
+
+            if (!falseNull)
+            {
+                ifFalse = ifFalse.AddCast(node.Type);
+            }
+            else if (!trueNull)
             {
                 ifFalse = Expression.Constant(null, ifTrue.Type);
             }
