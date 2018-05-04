@@ -232,5 +232,21 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.Expression.ToString());
         }
+
+        [Fact]
+        public void Can_Use_Conditional_With_Null()
+        {
+            var expression = new TestQuery()
+                .Simple("foo", 2)
+                .Select(x => !string.IsNullOrWhiteSpace(x.Name) ? x.Name : null);
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
+                    data["data"]["simple"],
+                    x => !string.IsNullOrWhiteSpace(x["name"].ToObject<string>()) ? x["name"] : null).ToObject<string>();
+
+            var query = expression.Compile();
+            Assert.Equal(expected.ToString(), query.Expression.ToString());
+        }
     }
 }

@@ -49,5 +49,18 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             Assert.Equal("Adding README, CONTRIBUTING, LICENSE", result);
         }
+
+        [IntegrationTest]
+        public async Task Can_Use_Conditional_In_BaseRef_Query()
+        {
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .PullRequest(1)
+                .Select(pr => pr.BaseRef != null ? pr.BaseRef.Name : null);
+
+            var result = await Connection.Run(query);
+
+            Assert.Equal("master", result);
+        }
     }
 }

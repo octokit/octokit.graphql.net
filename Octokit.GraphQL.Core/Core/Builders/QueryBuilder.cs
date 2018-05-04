@@ -78,6 +78,30 @@ namespace Octokit.GraphQL.Core.Builders
             return node;
         }
 
+        protected override Expression VisitConditional(ConditionalExpression node)
+        {
+            var test = Visit(node.Test);
+            var ifTrue = Visit(node.IfTrue);
+            var ifFalse = Visit(node.IfFalse);
+            var trueNull = IsNullConstant(ifTrue);
+            var falseNull = IsNullConstant(ifFalse);
+
+            if (trueNull && !falseNull)
+            {
+                ifTrue = Expression.Constant(null, ifFalse.Type);
+            }
+            else if (!trueNull && falseNull)
+            {
+                ifFalse = Expression.Constant(null, ifTrue.Type);
+            }
+
+            return Expression.Condition(
+                test,
+                ifTrue,
+                ifFalse,
+                !IsNullConstant(ifTrue) ? ifTrue.Type : ifFalse.Type);
+        }
+
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
             var parameters = RewriteParameters(node.Parameters);
@@ -536,6 +560,16 @@ namespace Octokit.GraphQL.Core.Builders
         private static bool ExpressionWasRewritten(Expression oldExpression, Expression newExpression)
         {
             return newExpression.Type == typeof(JToken) && oldExpression.Type != typeof(JToken);
+        }
+
+        private static bool IsNullConstant(Expression expression)
+        {
+            if (expression is ConstantExpression c)
+            {
+                return c.Value == null;
+            }
+
+            return false;
         }
 
         private static bool IsQueryableValue(Type type)
