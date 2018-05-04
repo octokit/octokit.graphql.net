@@ -12,14 +12,29 @@ namespace Octokit.GraphQL
         public static readonly MethodInfo CastMethod = GetMethodInfo(nameof(CastMethod));
 
         [MethodId(nameof(CastMethod))]
-        public static IQueryableValue<TResult> Cast<TResult>(this IQueryableInterface source)
+        public static TResult Cast<TResult>(this IQueryableInterface source)
             where TResult : IQueryableValue
         {
-            return new QueryableValue<TResult>(
-                Expression.Call(
-                    null,
-                    GetMethodInfoOf(() => Cast<TResult>(default(IQueryableInterface))),
-                    new Expression[] { source.Expression }));
+            var ctor = typeof(TResult).GetTypeInfo().DeclaredConstructors.FirstOrDefault(
+                x =>
+                {
+                    var parameters = x.GetParameters();
+                    return parameters.Length == 1 &&
+                        parameters[0].ParameterType == typeof(Expression);
+                });
+
+            if (ctor == null)
+            {
+                throw new InvalidOperationException(
+                    $"Could not find {typeof(TResult).Name}(Expression) constructor");
+            }
+
+            var expression = Expression.Call(
+                null,
+                GetMethodInfoOf(() => Cast<TResult>(default(IQueryableInterface))),
+                new Expression[] { source.Expression });
+
+            return (TResult)ctor.Invoke(new[] { expression });
         }
 
         private static MethodInfo GetMethodInfo(string id)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Octokit.GraphQL.Model;
 using Xunit;
@@ -96,6 +97,55 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 }).Compile();
 
             var results = Connection.Run(query).Result;
+        }
+
+        [IntegrationTest]
+        public async Task Can_Manually_Page_Issues_By_Node_Id()
+        {
+            var masterQuery = new Query()
+                .Repository("octokit", "octokit.net")
+                .Issue(405)
+                .Select(issue => new
+                {
+                    issue.Id,
+                    Comments = issue.Comments(100, null, null, null).Select(page => new
+                    {
+                        page.PageInfo.HasNextPage,
+                        page.PageInfo.EndCursor,
+                        Items = page.Nodes.Select(comment => comment.Body).ToList(),
+                    }).Single(),
+                });
+
+            var pageQuery = new Query()
+                .Node(Var("issueId"))
+                .Cast<Model.Issue>()
+                .Comments(100, Var("after"))
+                .Select(page => new
+                {
+                    page.PageInfo.HasNextPage,
+                    page.PageInfo.EndCursor,
+                    Items = page.Nodes.Select(comment => comment.Body).ToList(),
+                }).Compile();
+
+            var result = await Connection.Run(masterQuery);
+
+            Assert.True(result.Comments.HasNextPage);
+
+            var vars = new Dictionary<string, object>
+            {
+                { "issueId", result.Id },
+                { "after", result.Comments.EndCursor },
+            };
+
+            do
+            {
+
+                var pageResults = await Connection.Run(pageQuery, vars);
+                result.Comments.Items.AddRange(pageResults.Items);
+                vars["after"] = pageResults.HasNextPage ? pageResults.EndCursor : null;
+            } while (vars["after"] != null);
+
+            Assert.True(result.Comments.Items.Count > 100);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
