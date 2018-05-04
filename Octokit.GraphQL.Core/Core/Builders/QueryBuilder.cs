@@ -51,15 +51,24 @@ namespace Octokit.GraphQL.Core.Builders
             var leftNull = IsNullConstant(node.Left);
             var rightNull = IsNullConstant(node.Right);
 
-            if ((node.NodeType == ExpressionType.Equal || node.NodeType == ExpressionType.NotEqual) && (leftNull || rightNull))
+            if ((node.NodeType == ExpressionType.Equal || node.NodeType == ExpressionType.NotEqual))
             {
-                // When we're comparing with null, we don't need to call JToken.ToObject<>() to deserialize
-                // the expressions being compared, we just need to check if the tokens are null. Indeed 
-                // calling ToObject<> can cause #84 if the non-null side of the comparison is a query entity.
-                return Expression.MakeBinary(
-                    node.NodeType,
-                    leftNull ? Expression.Constant(null) : left,
-                    rightNull ? Expression.Constant(null) : right);
+                // When we're comparing with null, we need to transform an equality conditional such as
+                // `token["foo"] == null` to `token["foo"].Type == JTokenType.Null`
+                if (!leftNull && rightNull)
+                {
+                    return Expression.MakeBinary(
+                        node.NodeType,
+                        Expression.Property(left, nameof(JToken.Type)),
+                        Expression.Constant(JTokenType.Null));
+                }
+                else if(leftNull && !rightNull)
+                {
+                    return Expression.MakeBinary(
+                        node.NodeType,
+                        Expression.Constant(JTokenType.Null),
+                        Expression.Property(right, nameof(JToken.Type)));
+                }
             }
 
             return node.Update(
@@ -103,11 +112,20 @@ namespace Octokit.GraphQL.Core.Builders
             var trueNull = IsNullConstant(ifTrue);
             var falseNull = IsNullConstant(ifFalse);
 
-            if (trueNull && !falseNull)
+            if (!trueNull)
+            {
+                ifTrue = ifTrue.AddCast(node.Type);
+            }
+            else if (!falseNull)
             {
                 ifTrue = Expression.Constant(null, ifFalse.Type);
             }
-            else if (!trueNull && falseNull)
+
+            if (!falseNull)
+            {
+                ifFalse = ifFalse.AddCast(node.Type);
+            }
+            else if (!trueNull)
             {
                 ifFalse = Expression.Constant(null, ifTrue.Type);
             }
