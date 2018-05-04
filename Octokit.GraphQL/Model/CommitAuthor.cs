@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommitAuthor
     {
-        public string Id { get; set; }
+        public ID? Id { get; set; }
 
         public IEnumerable<string> Emails { get; set; }
     }

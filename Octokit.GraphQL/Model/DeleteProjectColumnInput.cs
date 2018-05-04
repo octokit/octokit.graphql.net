@@ -8,8 +8,8 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeleteProjectColumnInput
     {
-        public string ClientMutationId { get; set; }
+        public ID ColumnId { get; set; }
 
-        public string ColumnId { get; set; }
+        public string ClientMutationId { get; set; }
     }
 }

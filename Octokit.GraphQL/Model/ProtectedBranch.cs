@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool HasStrictRequiredStatusChecks { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Can admins overwrite branch protection.

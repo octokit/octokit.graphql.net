@@ -51,12 +51,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs.")]
+        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HomepageUrl { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Indicates if the repository is unmaintained.
@@ -195,7 +195,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octokit.GraphQL.Model.LabelConnection.Create);
+        /// <param name="query">If provided, searches labels by name and description.</param>
+        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before, query), Octokit.GraphQL.Model.LabelConnection.Create);
 
         /// <summary>
         /// A list containing a breakdown of the language composition of the repository.
@@ -210,7 +211,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The license associated with the repository
         /// </summary>
-        [Obsolete(@"Use Repository.licenseInfo instead.")]
+        [Obsolete(@"Field `license` will be replaced by a more detailed license object. Use `Repository.licenseInfo` instead. Removal on 2018-07-01 UTC.")]
         public string License { get; }
 
         /// <summary>
@@ -233,6 +234,11 @@ namespace Octokit.GraphQL.Model
         public UserConnection MentionableUsers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.MentionableUsers(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
+        /// Whether or not PRs are merged with a merge commit on this repository.
+        /// </summary>
+        public bool MergeCommitAllowed { get; }
+
+        /// <summary>
         /// Returns a single milestone from the current repository by number.
         /// </summary>
         /// <param name="number">The number for the milestone to be returned.</param>
@@ -245,7 +251,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
-        public MilestoneConnection Milestones(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Milestones(first, after, last, before), Octokit.GraphQL.Model.MilestoneConnection.Create);
+        /// <param name="states">Filter by the state of the milestones.</param>
+        /// <param name="orderBy">Ordering options for milestones.</param>
+        public MilestoneConnection Milestones(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<MilestoneState>>? states = null, Arg<MilestoneOrder>? orderBy = null) => this.CreateMethodCall(x => x.Milestones(first, after, last, before, states, orderBy), Octokit.GraphQL.Model.MilestoneConnection.Create);
 
         /// <summary>
         /// The repository's original mirror URL.
@@ -347,9 +355,14 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset? PushedAt { get; }
 
         /// <summary>
+        /// Whether or not rebase-merging is enabled on this repository.
+        /// </summary>
+        public bool RebaseMergeAllowed { get; }
+
+        /// <summary>
         /// Fetch a given ref from the repository
         /// </summary>
-        /// <param name="qualifiedName">The ref to retrieve.Fully qualified matches are checked in order (`refs/heads/master`) before falling back onto checks for short name matches (`master`).</param>
+        /// <param name="qualifiedName">The ref to retrieve. Fully qualified matches are checked in order (`refs/heads/master`) before falling back onto checks for short name matches (`master`).</param>
         public Ref Ref(Arg<string> qualifiedName) => this.CreateMethodCall(x => x.Ref(qualifiedName), Octokit.GraphQL.Model.Ref.Create);
 
         /// <summary>
@@ -401,6 +414,11 @@ namespace Octokit.GraphQL.Model
         public string ShortDescriptionHTML(Arg<int>? limit = null) => null;
 
         /// <summary>
+        /// Whether or not squash-merging is enabled on this repository.
+        /// </summary>
+        public bool SquashMergeAllowed { get; }
+
+        /// <summary>
         /// The SSH URL to clone this repository
         /// </summary>
         public string SshUrl { get; }
@@ -418,8 +436,8 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this repository
@@ -450,6 +468,11 @@ namespace Octokit.GraphQL.Model
         /// Returns a boolean indicating whether the viewing user has starred this starrable.
         /// </summary>
         public bool ViewerHasStarred { get; }
+
+        /// <summary>
+        /// The users permission level on the repository. Will return null if authenticated as an GitHub App.
+        /// </summary>
+        public RepositoryPermission? ViewerPermission { get; }
 
         /// <summary>
         /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.

@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HowItWorksHTML { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// URL to install the product to the viewer's account or organization.

@@ -24,19 +24,24 @@ namespace Octokit.GraphQL.Model
         CommentAuthorAssociation AuthorAssociation { get; }
 
         /// <summary>
-        /// The comment body as Markdown.
+        /// The body as Markdown.
         /// </summary>
         string Body { get; }
 
         /// <summary>
-        /// The comment body rendered to HTML.
+        /// The body rendered to HTML.
         /// </summary>
         string BodyHTML { get; }
 
         /// <summary>
+        /// The body rendered to text.
+        /// </summary>
+        string BodyText { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        DateTimeOffset? CreatedAt { get; }
+        DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Check if this comment was created via an email reply.
@@ -48,7 +53,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         IActor Editor { get; }
 
-        string Id { get; }
+        ID Id { get; }
 
         /// <summary>
         /// The moment the editor made the last edit
@@ -63,7 +68,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        DateTimeOffset? UpdatedAt { get; }
+        DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// A list of edits to this content.
@@ -103,20 +108,22 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string BodyHTML { get; }
 
-        public DateTimeOffset? CreatedAt { get; }
+        public string BodyText { get; }
+
+        public DateTimeOffset CreatedAt { get; }
 
         public bool CreatedViaEmail { get; }
 
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         public DateTimeOffset? LastEditedAt { get; }
 
         public DateTimeOffset? PublishedAt { get; }
 
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 

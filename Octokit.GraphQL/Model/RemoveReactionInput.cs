@@ -8,10 +8,10 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveReactionInput
     {
-        public string ClientMutationId { get; set; }
-
-        public string SubjectId { get; set; }
+        public ID SubjectId { get; set; }
 
         public ReactionContent Content { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

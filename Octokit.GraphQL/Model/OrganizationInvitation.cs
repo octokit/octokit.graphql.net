@@ -18,14 +18,14 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// The email address of the user invited to the organization.
         /// </summary>
         public string Email { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The type of invitation that was sent (e.g. email, user).

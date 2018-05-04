@@ -20,7 +20,22 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Color { get; }
 
-        public string Id { get; }
+        /// <summary>
+        /// Identifies the date and time when the label was created.
+        /// </summary>
+        public DateTimeOffset? CreatedAt { get; }
+
+        /// <summary>
+        /// A brief description of this label.
+        /// </summary>
+        public string Description { get; }
+
+        public ID Id { get; }
+
+        /// <summary>
+        /// Indicates whether or not this is a default label.
+        /// </summary>
+        public bool IsDefault { get; }
 
         /// <summary>
         /// A list of issues associated with this label.
@@ -57,6 +72,21 @@ namespace Octokit.GraphQL.Model
         /// The repository associated with this label.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
+
+        /// <summary>
+        /// The HTTP path for this label.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the label was last updated.
+        /// </summary>
+        public DateTimeOffset? UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL for this label.
+        /// </summary>
+        public string Url { get; }
 
         internal static Label Create(Expression expression)
         {

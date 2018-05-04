@@ -88,5 +88,23 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "EXPIRED_KEY")]
         ExpiredKey,
+
+        /// <summary>
+        /// Valid signature, pending certificate revocation checking
+        /// </summary>
+        [EnumMember(Value = "OCSP_PENDING")]
+        OcspPending,
+
+        /// <summary>
+        /// Valid siganture, though certificate revocation check failed
+        /// </summary>
+        [EnumMember(Value = "OCSP_ERROR")]
+        OcspError,
+
+        /// <summary>
+        /// One or more certificates in chain has been revoked
+        /// </summary>
+        [EnumMember(Value = "OCSP_REVOKED")]
+        OcspRevoked,
     }
 }

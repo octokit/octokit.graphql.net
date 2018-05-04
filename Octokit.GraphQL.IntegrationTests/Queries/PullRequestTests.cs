@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
+using static Octokit.GraphQL.Variable;
 
 namespace Octokit.GraphQL.IntegrationTests.Queries
 {
@@ -21,10 +23,31 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var results = Enumerable.ToArray(Connection.Run(query).Result);
 
             Assert.Equal(1, results.Length);
-            Assert.Equal((string)"MDY6Q29tbWl0NzUyODY3OTpkYWZhYjhhZjA0ODM5NDU1ODM4Y2QzZmRlMTFkMTM5MTc0MTYyZmFh", (string)results[0].Id);
+            Assert.Equal("MDY6Q29tbWl0NzUyODY3OTpkYWZhYjhhZjA0ODM5NDU1ODM4Y2QzZmRlMTFkMTM5MTc0MTYyZmFh", results[0].Id.Value);
             var expectedMessage = "Adding README, CONTRIBUTING, LICENSE\n\nWe plan to release this code under the MIT license so might as well get\nthe right things in place early.";
-            Assert.Equal(expectedMessage, (string)results[0].Message);
-            Assert.Equal((string)"Haacked", (string)results[0].Name);
+            Assert.Equal(expectedMessage, results[0].Message);
+            Assert.Equal("Haacked", results[0].Name);
+        }
+
+        [IntegrationTest]
+        public async Task Should_Query_Title_With_Vars()
+        {
+            var query = new Query()
+                .Repository(Var("owner"), Var("name"))
+                .PullRequest(Var("number"))
+                .Select(x => x.Title)
+                .Compile();
+
+            var vars = new Dictionary<string, object>
+            {
+                { "owner", "octokit" },
+                { "name", "octokit.net" },
+                { "number", 1 },
+            };
+
+            var result = await Connection.Run(query, vars);
+
+            Assert.Equal("Adding README, CONTRIBUTING, LICENSE", result);
         }
 
         [IntegrationTest]

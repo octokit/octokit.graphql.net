@@ -45,6 +45,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public GitSignatureState State { get; }
 
+        /// <summary>
+        /// True if the signature was made with GitHub's signing key.
+        /// </summary>
+        public bool WasSignedByGitHub { get; }
+
         internal static UnknownSignature Create(Expression expression)
         {
             return new UnknownSignature(expression);

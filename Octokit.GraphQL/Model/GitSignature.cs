@@ -42,6 +42,11 @@ namespace Octokit.GraphQL.Model
         /// The state of this signature. `VALID` if signature is valid and verified by GitHub, otherwise represents reason why signature is considered invalid.
         /// </summary>
         GitSignatureState State { get; }
+
+        /// <summary>
+        /// True if the signature was made with GitHub's signing key.
+        /// </summary>
+        bool WasSignedByGitHub { get; }
     }
 }
 
@@ -70,6 +75,8 @@ namespace Octokit.GraphQL.Model.Internal
         public User Signer => this.CreateProperty(x => x.Signer, Octokit.GraphQL.Model.User.Create);
 
         public GitSignatureState State { get; }
+
+        public bool WasSignedByGitHub { get; }
 
         internal static StubIGitSignature Create(Expression expression)
         {

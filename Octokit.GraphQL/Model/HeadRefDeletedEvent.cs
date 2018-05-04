@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Identifies the Ref associated with the `head_ref_deleted` event.
@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HeadRefName { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// PullRequest referenced by event.

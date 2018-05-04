@@ -28,7 +28,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// The actor who created this status context.
@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Description { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The state of this status context.

@@ -22,7 +22,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies when the item was starred.
         /// </summary>
-        public DateTimeOffset? StarredAt { get; }
+        public DateTimeOffset StarredAt { get; }
 
         internal static StarredRepositoryEdge Create(Expression expression)
         {

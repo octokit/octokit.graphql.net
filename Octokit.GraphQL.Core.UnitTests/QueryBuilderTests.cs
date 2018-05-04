@@ -333,6 +333,20 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void ID_Parameter()
+        {
+            var expected = "query{idValue(id:\"123\"){name}}";
+
+            var expression = new TestQuery()
+                .IdValue(new ID("123"))
+                .Select(x => x.Name);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.Query);
+        }
+
+        [Fact]
         public void InputObject_Parameter()
         {
             var expected = "query{inputObject(input:{stringValue:\"foo\"}){name}}";
@@ -516,7 +530,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void IntValue_Variable()
         {
-            var expected = "query($var1:Int){intValue(integer:$var1){name}}";
+            var expected = "query($var1:Int!){intValue(integer:$var1){name}}";
 
             var expression = new TestQuery()
                 .IntValue(Var("var1"))

@@ -8,9 +8,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateProjectInput
     {
-        public string ClientMutationId { get; set; }
-
-        public string ProjectId { get; set; }
+        public ID ProjectId { get; set; }
 
         public string Name { get; set; }
 
@@ -19,5 +17,7 @@ namespace Octokit.GraphQL.Model
         public ProjectState? State { get; set; }
 
         public bool? Public { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

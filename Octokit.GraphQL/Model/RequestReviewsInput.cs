@@ -8,14 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RequestReviewsInput
     {
-        public string ClientMutationId { get; set; }
+        public ID PullRequestId { get; set; }
 
-        public string PullRequestId { get; set; }
+        public IEnumerable<ID> UserIds { get; set; }
 
-        public IEnumerable<string> UserIds { get; set; }
-
-        public IEnumerable<string> TeamIds { get; set; }
+        public IEnumerable<ID> TeamIds { get; set; }
 
         public bool? Union { get; set; }
+
+        public string ClientMutationId { get; set; }
     }
 }

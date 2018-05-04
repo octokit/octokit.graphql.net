@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// The description of the team.
@@ -67,7 +67,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EditTeamUrl { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// A list of pending invitations for users to this team
@@ -88,7 +88,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="query">The search string to look for.</param>
         /// <param name="membership">Filter by membership type</param>
         /// <param name="role">Filter by team member role</param>
-        public TeamMemberConnection Members(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<TeamMembershipType>? membership = null, Arg<TeamMemberRole>? role = null) => this.CreateMethodCall(x => x.Members(first, after, last, before, query, membership, role), Octokit.GraphQL.Model.TeamMemberConnection.Create);
+        /// <param name="orderBy">Order for the connection.</param>
+        public TeamMemberConnection Members(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<TeamMembershipType>? membership = null, Arg<TeamMemberRole>? role = null, Arg<TeamMemberOrder>? orderBy = null) => this.CreateMethodCall(x => x.Members(first, after, last, before, query, membership, role, orderBy), Octokit.GraphQL.Model.TeamMemberConnection.Create);
 
         /// <summary>
         /// The HTTP path for the team' members
@@ -174,8 +175,8 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps.")]
-        public DateTimeOffset? UpdatedAt { get; }
+        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
+        public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this team

@@ -23,9 +23,9 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
-        public DateTimeOffset? CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// Object referenced by event.

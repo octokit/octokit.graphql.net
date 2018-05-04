@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
         public PullRequestConnection AssociatedPullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PullRequestState>>? states = null, Arg<IEnumerable<string>>? labels = null, Arg<string>? headRefName = null, Arg<string>? baseRefName = null, Arg<IssueOrder>? orderBy = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The ref name.

@@ -15,7 +15,7 @@ namespace Octokit.GraphQL.Model
         {
         }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         /// <summary>
         /// The user who received the invitation.
@@ -28,9 +28,14 @@ namespace Octokit.GraphQL.Model
         public User Inviter => this.CreateProperty(x => x.Inviter, Octokit.GraphQL.Model.User.Create);
 
         /// <summary>
+        /// The permission granted on this repository by this invitation.
+        /// </summary>
+        public RepositoryPermission Permission { get; }
+
+        /// <summary>
         /// The Repository the user is invited to.
         /// </summary>
-        public RepositoryInvitationRepository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.RepositoryInvitationRepository.Create);
+        public IRepositoryInfo Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Internal.StubIRepositoryInfo.Create);
 
         internal static RepositoryInvitation Create(Expression expression)
         {
