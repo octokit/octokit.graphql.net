@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
 
-namespace Octokit.GraphQL
+namespace Octokit.GraphQL.Core
 {
     public class CompiledQuery<TResult> : ICompiledQuery<TResult>
     {
@@ -59,6 +59,11 @@ namespace Octokit.GraphQL
         public IQueryRunner<TResult> Start(IConnection connection, Dictionary<string, object> variables)
         {
             return new Runner(this, connection, variables);
+        }
+
+        IQueryRunner ICompiledQuery.Start(IConnection connection, Dictionary<string, object> variables)
+        {
+            return Start(connection, variables);
         }
 
         class Runner : IQueryRunner<TResult>

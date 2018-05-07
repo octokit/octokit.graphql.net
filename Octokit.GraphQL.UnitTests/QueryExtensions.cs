@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.UnitTests
