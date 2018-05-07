@@ -62,5 +62,18 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             Assert.Equal("master", result);
         }
+
+        [IntegrationTest]
+        public async Task Can_Use_Conditional_When_Selecting_Base_Repository_Owner()
+        {
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .PullRequest(1)
+                .Select(pr => pr.BaseRef != null ? pr.BaseRef.Repository.Owner.Login : null);
+
+            var result = await Connection.Run(query);
+
+            Assert.Equal("octokit", result);
+        }
     }
 }
