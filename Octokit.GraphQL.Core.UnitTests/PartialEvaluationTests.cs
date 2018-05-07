@@ -11,13 +11,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_String()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + " World!");
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello""
     }
   }
@@ -32,15 +32,15 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Number()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
-                .Select(x => x.Name + x.Number);
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(x => x.Name + x.ForkCount);
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello"",
-      ""number"": 5
+      ""forkCount"": 5
     }
   }
 }";
@@ -55,13 +55,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Append_Closure()
         {
             var world = " World!";
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + world);
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello"",
     }
   }
@@ -76,13 +76,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Call_Method()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => Greet(x.Name));
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""World!"",
     }
   }
@@ -98,13 +98,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Method_Call()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + Greet("World!"));
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Wow! "",
     }
   }
@@ -120,13 +120,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Two_Members()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + x.Description);
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello"",
       ""description"": "" World!""
     }
@@ -142,13 +142,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Append_Two_Identical_Members()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + x.Name);
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello"",
       ""description"": "" World!""
     }
@@ -164,14 +164,14 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Cast_Value()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
-                .Select(x => (float)x.Number);
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(x => (float)x.ForkCount);
 
             var data = @"{
   ""data"":{
-    ""simple"":{
-      ""number"": ""12"",
+    ""repository"":{
+      ""forkCount"": ""12"",
     }
   }
 }";
@@ -186,13 +186,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Select_String_Length()
         {
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name.Length);
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello World!"",
     }
   }
