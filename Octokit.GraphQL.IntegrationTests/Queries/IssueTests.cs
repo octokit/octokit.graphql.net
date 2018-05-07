@@ -100,7 +100,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public async Task Can_Manually_Page_Issues_By_Node_Id()
+        public async Task Can_Manually_Page_Issue_Comments_By_Node_Id()
         {
             var masterQuery = new Query()
                 .Repository("octokit", "octokit.net")
