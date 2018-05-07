@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Internal;
 
@@ -42,14 +43,11 @@ namespace Octokit.GraphQL
         protected ICredentialStore CredentialStore { get; }
         protected HttpClient HttpClient { get; }
 
-        public virtual async Task<T> Run<T>(
-            CompiledQuery<T> query,
-            IDictionary<string, object> variables = null)
+        public virtual async Task<T> Run<T>(string query, Func<JObject, T> deserialize)
         {
-            var payload = query.GetPayload(variables);
-            var data = await Run(payload);
+            var data = await Run(query);
             var deserializer = new ResponseDeserializer();
-            return deserializer.Deserialize(query, data);
+            return deserializer.Deserialize(deserialize, data);
         }
 
         protected async Task<string> Run(string payload)

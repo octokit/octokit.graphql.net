@@ -6,10 +6,12 @@ using Octokit.GraphQL.Core.Syntax;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using System.Threading.Tasks;
+using Octokit.GraphQL.Core;
 
 namespace Octokit.GraphQL
 {
-    public class CompiledQuery<TResult>
+    public class CompiledQuery<TResult> : ICompiledQuery<TResult>
     {
         public CompiledQuery(
             OperationDefinition operationDefinition,
@@ -47,6 +49,36 @@ namespace Octokit.GraphQL
                 payload,
                 Formatting.None,
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+        }
+
+        public IQueryRunner<TResult> Start(IConnection connection, Dictionary<string, object> variables)
+        {
+            return new Runner(this, connection, variables);
+        }
+
+        class Runner : IQueryRunner<TResult>
+        {
+            readonly CompiledQuery<TResult> parent;
+            readonly IConnection connection;
+            readonly Dictionary<string, object> variables;
+
+            public Runner(
+                CompiledQuery<TResult> parent,
+                IConnection connection,
+                Dictionary<string, object> variables)
+            {
+                this.parent = parent;
+                this.connection = connection;
+                this.variables = variables;
+            }
+
+            public TResult Result { get; private set; }
+
+            public async Task<bool> RunPage()
+            {
+                Result = await connection.Run(parent.GetPayload(variables), parent.CompiledExpression);
+                return false;
+            }
         }
     }
 }

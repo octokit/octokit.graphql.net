@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Octokit.GraphQL
 {
@@ -8,6 +8,6 @@ namespace Octokit.GraphQL
     {
         Uri Uri { get; }
 
-        Task<T> Run<T>(CompiledQuery<T> query, IDictionary<string, object> variables = null);
+        Task<T> Run<T>(string query, Func<JObject, T> deserialize);
     }
 }
