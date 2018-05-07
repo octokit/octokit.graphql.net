@@ -44,7 +44,7 @@ namespace Octokit.GraphQL.UnitTests
                     });
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.Expression.ToString());
+            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Octokit.GraphQL.UnitTests
                         });
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.Expression.ToString());
+            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace Octokit.GraphQL.UnitTests
                             }));
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.Expression.ToString());
+            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
         }
 
         [Fact]
@@ -156,7 +156,7 @@ namespace Octokit.GraphQL.UnitTests
                     });
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.Expression.ToString());
+            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
         }
 
         [Fact(Skip = "Not yet working")]
@@ -173,7 +173,7 @@ namespace Octokit.GraphQL.UnitTests
                     x => x["name"].ToObject<string>());
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.Expression.ToString());
+            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
         }
     }
 }

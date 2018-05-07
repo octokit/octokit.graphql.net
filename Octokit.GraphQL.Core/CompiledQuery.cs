@@ -34,7 +34,12 @@ namespace Octokit.GraphQL
 
         public override string ToString()
         {
-            return new QuerySerializer(2).Serialize(OperationDefinition);
+            return ToString(2);
+        }
+
+        public string ToString(int indentation)
+        {
+            return new QuerySerializer(indentation).Serialize(OperationDefinition);
         }
 
         public string GetPayload(IDictionary<string, object> variables)

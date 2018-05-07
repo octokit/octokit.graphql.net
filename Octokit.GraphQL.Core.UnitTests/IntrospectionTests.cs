@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList()
                 });
 
-            var query = expression.Compile();
+            var query = (CompiledQuery<SchemaModel>)expression.Compile();
 
             Assert.Equal(expectedQuery, query.ToString(), ignoreLineEndingDifferences: true);
 

@@ -14,7 +14,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Select_Single_Member()
         {
-            var query = new Query()
+            var expression = new Query()
                 .Repository("foo", "bar")
                 .Select(x => x.Name);
             var data = @"{
@@ -25,9 +25,9 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var operation = new QueryBuilder().Build(query);
-            var expectedType = query.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(operation, data);
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = query.Deserialize(data);
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result);
@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("Hello World!", result.Name);
             Assert.Equal("Goodbye cruel world", result.Description);
@@ -59,7 +59,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Select_Single_Member_With_Null_Conditional()
         {
-            var query = new Query()
+            var expression = new Query()
                 .Repository("foo", "bar")
                 .Select(x => x.Name != null ? x.Name : "It's null!");
             var data = @"{
@@ -70,9 +70,9 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var operation = new QueryBuilder().Build(query);
-            var expectedType = query.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(operation, data);
+            var query = new QueryBuilder().Build(expression);
+            var expectedType = expression.GetType().GetGenericArguments()[0];
+            var result = query.Deserialize(data);
 
             Assert.IsType(expectedType, result);
             Assert.Equal("It's null!", result);
@@ -95,7 +95,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal(new[] { "foo", "bar" }, result);
         }
@@ -120,7 +120,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("Hello World!", result.Title);
             Assert.Equal("Goodbye cruel world", result.Body);
@@ -147,7 +147,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = new QueryBuilder().Build(expression);
             var expectedType = expression.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result.Name);
@@ -179,7 +179,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = new QueryBuilder().Build(expression);
             var expectedType = expression.GetType().GetGenericArguments()[0];
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.IsType(expectedType, result);
             Assert.Equal("Hello World!", result.Name);
@@ -212,7 +212,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             Assert.Equal("foo", result[0].Body);
             Assert.Equal(new[] { "item1", "item2" }, result[0].Items);
@@ -236,7 +236,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             Assert.Equal("123", result[0].Foo);
         }
@@ -267,7 +267,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             Assert.Equal("foo", result[0].Body);
             Assert.Equal(new[] { "item1", "item2" }, result[0].Items);
@@ -303,7 +303,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             Assert.Equal("foo", result[0].Body);
             Assert.Equal(new[] { "item1", "item2" }, result[0].Items.Keys);
@@ -340,7 +340,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             Assert.Single(result);
             Assert.Equal("foo", result[0].Name);
@@ -375,7 +375,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("foo", result.Value.Title);
             Assert.Equal(42, result.Value.Number);
@@ -409,7 +409,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var foo = JObject.Parse(data);
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("foo", result.Value.Title);
             Assert.Equal(42, result.Value.Number);

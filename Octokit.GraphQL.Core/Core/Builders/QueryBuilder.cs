@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Core.Builders
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
 
-        public CompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
+        public ICompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Core.Builders
             return new CompiledQuery<TResult>(root, expression);
         }
 
-        public CompiledQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
+        public ICompiledQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
         {
             root = null;
             syntax = new SyntaxTree();
@@ -301,6 +301,10 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 return RewriteInterfaceExtension(node);
             }
+            else if (node.Method.DeclaringType == typeof(PagingConnectionExtensions))
+            {
+                return RewritePagingConnectionExtensions(node);
+            }
             else if (IsQueryableValueMember(node.Method))
             {
                 return VisitQueryMethod(node, alias);
@@ -463,6 +467,18 @@ namespace Octokit.GraphQL.Core.Builders
                     Rewritten.Interface.CastMethod,
                     instance,
                     Expression.Constant(fragment.TypeCondition.Name));
+            }
+            else
+            {
+                throw new NotSupportedException($"{expression.Method.Name}() is not supported");
+            }
+        }
+
+        private Expression RewritePagingConnectionExtensions(MethodCallExpression expression)
+        {
+            if (expression.Method.GetGenericMethodDefinition() == PagingConnectionExtensions.AllPagesMethod)
+            {
+                throw new NotImplementedException();
             }
             else
             {
