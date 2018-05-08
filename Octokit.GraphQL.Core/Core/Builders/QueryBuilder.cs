@@ -473,15 +473,14 @@ namespace Octokit.GraphQL.Core.Builders
 
                     // Add the required "pageInfo" field selections then select "nodes".
                     syntax.Head.Selections.Add(PageInfoSelection());
-                    syntax.AddField("nodes");
 
                     // Create the subquery
                     AddSubquery(allPages.Instance, expression, instance.AddIndexer("pageInfo"));
 
-                    // And continue the query as normal after selecting the "nodes" JToken.
+                    // And continue the query as normal after selecting "nodes".
+                    syntax.AddField("nodes");
                     instance = instance.AddIndexer("nodes");
                 }
-                
                 
                 var select = (LambdaExpression)Visit(lambda);
                 return Expression.Call(
@@ -635,9 +634,10 @@ namespace Octokit.GraphQL.Core.Builders
             subQuery.Query = subQueryBuilder.Build(nodeQuery);
 
             // Create a lambda that selects the "pageInfo" field.
-            subQuery.ParentPageInfo = Expression.Lambda<Func<JObject, JToken>>(
-                pageInfoSelector,
-                RootDataParameter);
+            var selections = syntax.FieldStack
+                .Select(x => x.Name)
+                .Concat(new[] { "pageInfo" });
+            subQuery.ParentPageInfo = CreateSelectorExpression(selections);
             
             subqueries.Add(subQuery);
         }
