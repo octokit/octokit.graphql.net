@@ -83,6 +83,7 @@ namespace Octokit.GraphQL.Core
             }
 
             public TResult Result { get; private set; }
+            object IQueryRunner.Result => Result;
 
             public async Task<bool> RunPage()
             {

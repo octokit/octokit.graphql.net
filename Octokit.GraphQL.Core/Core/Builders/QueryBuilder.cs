@@ -39,9 +39,11 @@ namespace Octokit.GraphQL.Core.Builders
         {
             Initialize();
 
+            var returnType = typeof(IEnumerable<TResult>);
             var rewritten = Visit(query.Expression);
+            var toList = rewritten.AddCast(returnType).AddToList();
             var lambda = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
-                rewritten.AddCast(typeof(IEnumerable<TResult>)),
+                toList.AddCast(returnType),
                 RootDataParameter);
             var master = new CompiledQuery<IEnumerable<TResult>>(root, lambda);
             return subqueries.Count == 0 ?
@@ -53,10 +55,12 @@ namespace Octokit.GraphQL.Core.Builders
         {
             Initialize();
 
+            var itemType = expression.Type.GenericTypeArguments[0];
+            var returnType = typeof(IEnumerable<>).MakeGenericType(itemType);
             var rewritten = Visit(expression);
-            var returnType = typeof(IEnumerable<>).MakeGenericType(expression.Type.GenericTypeArguments[0]);
+            var toList = rewritten.AddCast(returnType).AddToList();
             var lambda = Expression.Lambda(
-                rewritten.AddCast(returnType),
+                toList.AddCast(returnType),
                 RootDataParameter);
             var queryType = typeof(CompiledQuery<>).MakeGenericType(returnType);
             var master = (ICompiledQuery)queryType.GetTypeInfo()

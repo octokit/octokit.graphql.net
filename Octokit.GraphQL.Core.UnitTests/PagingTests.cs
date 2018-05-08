@@ -47,9 +47,9 @@ namespace Octokit.GraphQL.Core.UnitTests
             public void Creates_MasterQuery_Expression()
             {
                 Expression<Func<JObject, IEnumerable<int>>> expected = data =>
-                    Rewritten.List.Select(
+                    (IEnumerable<int>)Rewritten.List.Select(
                         data["data"]["repository"]["issues"]["nodes"],
-                        issue => issue["number"].ToObject<int>());
+                        issue => issue["number"].ToObject<int>()).ToList();
 
                 var master = TestQuery.GetMasterQuery();
 
@@ -214,7 +214,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             public void Creates_MasterQuery_Expression()
             {
                 Expression<Func<JObject, IEnumerable<IssueModel>>> expected = data =>
-                    Rewritten.List.Select(
+                    (IEnumerable<IssueModel>)Rewritten.List.Select(
                         data["data"]["repository"]["issues"]["nodes"],
                         issue => new IssueModel
                         {
@@ -225,7 +225,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                                 {
                                     Body = comment["body"].ToObject<string>(),
                                 }).ToList()
-                        });
+                        }).ToList();
 
                 var master = TestQuery.GetMasterQuery();
 

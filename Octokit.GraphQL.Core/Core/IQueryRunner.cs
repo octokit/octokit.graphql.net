@@ -5,11 +5,12 @@ namespace Octokit.GraphQL.Core
 {
     public interface IQueryRunner
     {
+        object Result { get; }
         Task<bool> RunPage();
     }
 
     public interface IQueryRunner<out TResult> : IQueryRunner
     {
-        TResult Result { get; }
+        new TResult Result { get; }
     }
 }

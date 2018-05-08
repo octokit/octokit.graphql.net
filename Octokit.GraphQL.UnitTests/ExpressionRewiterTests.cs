@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
@@ -68,7 +70,7 @@ namespace Octokit.GraphQL.UnitTests
                 });
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.List.Select(
+                (IEnumerable<object>)Rewritten.List.Select(
                     Rewritten.List.Select(
                         data["data"]["repositoryOwner"]["repositories"]["edges"],
                         x => x["node"]),
@@ -82,7 +84,7 @@ namespace Octokit.GraphQL.UnitTests
                                     o => new { Login = o["login"].ToObject<string>() })),
                             IsFork = x["isFork"].ToObject<string>(),
                             IsPrivate = x["isPrivate"].ToObject<string>(),
-                        });
+                        }).ToList();
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.GetExpression().ToString());
@@ -107,7 +109,7 @@ namespace Octokit.GraphQL.UnitTests
                               }));
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.Value.SelectList(
+                (IEnumerable<object>)Rewritten.Value.SelectList(
                     data["data"],
                     x => 
                         Rewritten.List.Select(
@@ -125,7 +127,7 @@ namespace Octokit.GraphQL.UnitTests
                                         {
                                             Login = a["login"].ToObject<string>()
                                         }))
-                            }));
+                            })).ToList();
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.GetExpression().ToString());
@@ -145,7 +147,7 @@ namespace Octokit.GraphQL.UnitTests
                 });
 
             Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.List.Select(
+                (IEnumerable<object>)Rewritten.List.Select(
                     Rewritten.Value.SelectList(
                         data["data"]["repository"]["issues"],
                         x => x["nodes"]),
@@ -153,7 +155,7 @@ namespace Octokit.GraphQL.UnitTests
                     {
                         Number = x["number"].ToObject<int>(),
                         Title = x["title"].ToObject<string>(),
-                    });
+                    }).ToList();
 
             var query = new QueryBuilder().Build(expression);
             Assert.Equal(expected.ToString(), query.GetExpression().ToString());

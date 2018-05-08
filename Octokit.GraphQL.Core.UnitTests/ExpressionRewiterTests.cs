@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
@@ -50,12 +53,12 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Nodes
                 .Select(x => new { x.Body, x.Closed });
 
-            Expression<Func<JObject, object>> expected = data =>
-                Rewritten.Value.Select(data["data"]["repository"]["issues"]["nodes"], x => new
+            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
+                (IEnumerable<object>)Rewritten.List.Select(data["data"]["repository"]["issues"]["nodes"], x => new
                 {
                     Body = x["body"].ToObject<string>(),
                     Closed = x["closed"].ToObject<bool>(),
-                });
+                }).ToList();
 
             var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.GetExpression().ToString());
@@ -73,13 +76,13 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                Rewritten.List.Select(
+                (IEnumerable)Rewritten.List.Select(
                     data["data"]["licenses"],
                     x => new
                     {
                         Body = x["body"].ToObject<string>(),
                         Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["conditions"], i => i["description"]))
-                    });
+                    }).ToList();
 
             var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.GetExpression().ToString());
@@ -165,12 +168,12 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                Rewritten.List.Select(
+                (IEnumerable)Rewritten.List.Select(
                     Rewritten.List.OfType(data["data"]["nodes"], "Issue"),
                     x => new
                     {
                         Body = x["body"].ToObject<string>(),
-                    });
+                    }).ToList();
 
             var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.GetExpression().ToString());

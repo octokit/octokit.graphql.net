@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,7 @@ namespace Octokit.GraphQL.Core
             }
 
             public TResult Result { get; private set; }
+            object IQueryRunner.Result => Result;
 
             public async Task<bool> RunPage()
             {
@@ -86,10 +88,15 @@ namespace Octokit.GraphQL.Core
                     var subquery = item.Key;
                     var runner = item.Value;
 
-                    // Run the next subquery, removing it if finished.
                     if (await runner.RunPage() == false)
                     {
+                        var list = (IList)Result;
                         subqueries.Remove(subquery);
+
+                        foreach (var i in (IEnumerable)runner.Result)
+                        {
+                            list.Add(i);
+                        }
                     }
                 }
 
