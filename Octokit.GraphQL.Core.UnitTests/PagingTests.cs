@@ -163,6 +163,174 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
         }
 
+        public class Repository_Name_Issues_AllPages
+        {
+            ICompiledQuery<RepositoryModel> TestQuery { get; } = new Query()
+                .Repository("foo", "bar")
+                .Select(repository => new RepositoryModel
+                {
+                    Name = repository.Name,
+                    Issues = repository.Issues(null, null, null, null, null).AllPages().Select(issue => new IssueModel
+                    {
+                        Number = issue.Number,
+                    }).ToList()
+                }).Compile();
+
+            [Fact]
+            public void Creates_MasterQuery()
+            {
+                var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    name
+    issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        number
+      }
+    }
+  }
+}";
+
+                var master = TestQuery.GetMasterQuery();
+
+                Assert.Equal(expected, master.ToString());
+            }
+
+            [Fact]
+            public void Creates_MasterQuery_Expression()
+            {
+                Expression<Func<JObject, RepositoryModel>> expected = data =>
+                    Rewritten.Value.Select(
+                        data["data"]["repository"],
+                        repository => new RepositoryModel
+                        {
+                            Name = repository["name"].ToObject<string>(),
+                            Issues = Rewritten.List.Select(
+                                repository["issues"]["nodes"],
+                                issue => new IssueModel
+                                {
+                                    Number = issue["number"].ToObject<int>(),
+                                }).ToList(),
+                        });
+
+                var master = TestQuery.GetMasterQuery();
+
+                Assert.Equal(expected.ToString(), master.Expression.ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery()
+            {
+                var expected = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    ... on Repository {
+      __typename
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          number
+        }
+      }
+    }
+  }
+}";
+
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+                Assert.Equal(expected.ToString(), subqueries[0].Query.ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery_PageInfo_Selector()
+            {
+                Expression<Func<JObject, JToken>> expected = data =>
+                        data["data"]["node"]["issues"]["pageInfo"];
+
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+                Assert.Equal(expected.ToString(), subqueries[0].PageInfo.ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery_ParentPageInfo_Selector()
+            {
+                Expression<Func<JObject, JToken>> expected = data =>
+                        data["data"]["repository"]["issues"]["pageInfo"];
+
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+                Assert.Equal(expected.ToString(), subqueries[0].ParentPageInfo.ToString());
+            }
+
+            [Fact]
+            public async Task Reads_All_Pages()
+            {
+                int page = 0;
+
+                string Execute(string query)
+                {
+                    switch (page++)
+                    {
+                        case 0:
+                            return @"{
+  data: {
+    ""repository"": {
+      ""name"": ""foo"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": true,
+          ""endCursor"": ""end0""
+        },
+        ""nodes"": [
+          { ""number"": 0 },
+          { ""number"": 1 },
+          { ""number"": 2 },
+        ]
+      }
+    }
+  }
+}";
+                        case 1:
+                            return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""Repository"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": false,
+          ""endCursor"": ""end1""
+        },
+        ""nodes"": [
+          { ""number"": 3 },
+          { ""number"": 4 },
+        ]
+      }
+    }
+  }
+}";
+                        default:
+                            throw new NotSupportedException("Should not get here");
+                    }
+                }
+
+                var connection = new MockConnection(Execute);
+                var result = await connection.Run(TestQuery);
+
+                Assert.Equal(
+                    Enumerable.Range(0, 5).ToList(),
+                    result.Issues.Select(x => x.Number).ToList());
+            }
+        }
+
         public class Repository_Issues_Comments_AllPages
         {
             ICompiledQuery<IEnumerable<IssueModel>> TestQuery { get; } = new Query()
@@ -343,6 +511,12 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(2, subqueries.Count);
                 Assert.Equal(expected.ToString(), subqueries[1].ParentPageInfo.ToString());
             }
+        }
+
+        class RepositoryModel
+        {
+            public string Name { get; set; }
+            public IList<IssueModel> Issues { get; set; }
         }
 
         class IssueModel
