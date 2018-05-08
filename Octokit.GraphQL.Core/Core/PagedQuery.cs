@@ -37,13 +37,14 @@ namespace Octokit.GraphQL.Core
             return Start(connection, variables);
         }
 
-        class Runner : IQueryRunner<TResult>
+        class Runner : IQueryRunner<TResult>, IPagedQueryContext
         {
             readonly PagedQuery<TResult> parent;
             readonly IConnection connection;
             readonly Dictionary<string, object> variables;
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
-            Dictionary<Subquery, IQueryRunner> subqueries;
+            Dictionary<Subquery, IQueryRunner> subqueryRunners;
+            Dictionary<Subquery, IList> subqueryResults;
 
             public Runner(
                 PagedQuery<TResult> parent,
@@ -60,15 +61,18 @@ namespace Octokit.GraphQL.Core
 
             public async Task<bool> RunPage()
             {
-                if (subqueries == null)
+                if (subqueryRunners == null)
                 {
+                    subqueryRunners = new Dictionary<Subquery, IQueryRunner>();
+                    subqueryResults = new Dictionary<Subquery, IList>();
+
                     // This is the first run, so run the master page.
                     var master = parent.MasterQuery;
                     var data = await connection.Run(master.GetPayload(variables));
                     var json = JObject.Parse(data);
 
+                    json.AddAnnotation(this);
                     Result = deserializer.Deserialize(master.CompiledExpression, json);
-                    subqueries = new Dictionary<Subquery, IQueryRunner>();
 
                     // Look through each subquery for any results that have a next page.
                     foreach (var subquery in parent.Subqueries)
@@ -78,20 +82,20 @@ namespace Octokit.GraphQL.Core
 
                         if ((bool)pageInfo["hasNextPage"] == true)
                         {
-                            subqueries.Add(subquery, subquery.Query.Start(connection, variables));
+                            subqueryRunners.Add(subquery, subquery.Query.Start(connection, variables));
                         }
                     }
                 }
                 else
                 {
-                    var item = subqueries.First();
+                    var item = subqueryRunners.First();
                     var subquery = item.Key;
                     var runner = item.Value;
 
                     if (await runner.RunPage() == false)
                     {
-                        var list = (IList)Result;
-                        subqueries.Remove(subquery);
+                        var list = subqueryResults[subquery];
+                        subqueryRunners.Remove(subquery);
 
                         foreach (var i in (IEnumerable)runner.Result)
                         {
@@ -100,7 +104,12 @@ namespace Octokit.GraphQL.Core
                     }
                 }
 
-                return subqueries.Count > 0;
+                return subqueryRunners.Count > 0;
+            }
+
+            public void SetQueryResultSink(Subquery query, IList result)
+            {
+                subqueryResults.Add(query, result);
             }
         }
     }

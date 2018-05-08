@@ -7,6 +7,7 @@ namespace Octokit.GraphQL.Core.Builders
 {
     internal static class JsonMethods
     {
+        public static readonly MethodInfo JTokenAnnotation = GetMethod(typeof(JToken), nameof(JToken.Annotation), new Type[0]);
         public static readonly MethodInfo JTokenIndexer = typeof(JToken).GetTypeInfo().GetDeclaredMethod("get_Item");
         public static readonly MethodInfo JTokenToObject = GetMethod(typeof(JToken), nameof(JToken.ToObject), new Type[0]);
 

@@ -12,6 +12,8 @@ namespace Octokit.GraphQL.Core.UnitTests
 {
     public class PagingTests
     {
+        static readonly Subquery subqueryPlaceholder;
+
         public class Repository_Issues_AllPages
         {
             ICompiledQuery<IEnumerable<int>> TestQuery { get; } = new Query()
@@ -46,14 +48,17 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                Expression<Func<JObject, IEnumerable<int>>> expected = data =>
-                    (IEnumerable<int>)Rewritten.List.Select(
-                        data["data"]["repository"]["issues"]["nodes"],
-                        issue => issue["number"].ToObject<int>()).ToList();
+                var expected = Expected(data =>
+                    (IEnumerable<int>)Rewritten.List.ToSubqueryList(
+                        Rewritten.List.Select(
+                            data["data"]["repository"]["issues"]["nodes"],
+                            issue => issue["number"].ToObject<int>()),
+                        data.Annotation<IPagedQueryContext>(),
+                        subqueryPlaceholder));
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected.ToString(), master.Expression.ToString());
+                Assert.Equal(expected, master.Expression.ToString());
             }
 
             [Fact]
@@ -79,31 +84,27 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected.ToString(), subqueries[0].Query.ToString());
+                Assert.Equal(expected, subqueries[0].Query.ToString());
             }
 
             [Fact]
             public void Creates_Subquery_PageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                        data["data"]["node"]["issues"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected.ToString(), subqueries[0].PageInfo.ToString());
+                Assert.Equal(expected, subqueries[0].PageInfo.ToString());
             }
 
             [Fact]
             public void Creates_Subquery_ParentPageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                        data["data"]["repository"]["issues"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected.ToString(), subqueries[0].ParentPageInfo.ToString());
+                Assert.Equal(expected, subqueries[0].ParentPageInfo.ToString());
             }
 
             [Fact]
@@ -202,23 +203,26 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                Expression<Func<JObject, RepositoryModel>> expected = data =>
+                var expected = Expected(data =>
                     Rewritten.Value.Select(
                         data["data"]["repository"],
                         repository => new RepositoryModel
                         {
                             Name = repository["name"].ToObject<string>(),
-                            Issues = Rewritten.List.Select(
-                                repository["issues"]["nodes"],
-                                issue => new IssueModel
-                                {
-                                    Number = issue["number"].ToObject<int>(),
-                                }).ToList(),
-                        });
+                            Issues = Rewritten.List.ToSubqueryList(
+                                Rewritten.List.Select(
+                                    repository["issues"]["nodes"],
+                                    issue => new IssueModel
+                                    {
+                                        Number = issue["number"].ToObject<int>(),
+                                    }),
+                                data.Annotation<IPagedQueryContext>(),
+                                subqueryPlaceholder),
+                        }));
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected.ToString(), master.Expression.ToString());
+                Assert.Equal(expected, master.Expression.ToString());
             }
 
             [Fact]
@@ -244,31 +248,27 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected.ToString(), subqueries[0].Query.ToString());
+                Assert.Equal(expected, subqueries[0].Query.ToString());
             }
 
             [Fact]
             public void Creates_Subquery_PageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                        data["data"]["node"]["issues"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected.ToString(), subqueries[0].PageInfo.ToString());
+                Assert.Equal(expected, subqueries[0].PageInfo.ToString());
             }
 
             [Fact]
             public void Creates_Subquery_ParentPageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                        data["data"]["repository"]["issues"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected.ToString(), subqueries[0].ParentPageInfo.ToString());
+                Assert.Equal(expected, subqueries[0].ParentPageInfo.ToString());
             }
 
             [Fact]
@@ -381,23 +381,30 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                Expression<Func<JObject, IEnumerable<IssueModel>>> expected = data =>
-                    (IEnumerable<IssueModel>)Rewritten.List.Select(
-                        data["data"]["repository"]["issues"]["nodes"],
-                        issue => new IssueModel
-                        {
-                            Number = issue["number"].ToObject<int>(),
-                            Comments = Rewritten.List.Select(
-                                issue["comments"]["nodes"],
-                                comment => new CommentModel
-                                {
-                                    Body = comment["body"].ToObject<string>(),
-                                }).ToList()
-                        }).ToList();
+                var subquery = new Subquery();
+                var expected = Expected(data =>
+                    (IEnumerable<IssueModel>)Rewritten.List.ToSubqueryList(
+                        Rewritten.List.Select(
+                            data["data"]["repository"]["issues"]["nodes"],
+                            issue => new IssueModel
+                            {
+                                Number = issue["number"].ToObject<int>(),
+                                Comments = Rewritten.List.ToSubqueryList(
+                                    Rewritten.List.Select(
+                                        issue["comments"]["nodes"],
+                                        comment => new CommentModel
+                                        {
+                                            Body = comment["body"].ToObject<string>(),
+                                        }),
+                                    data.Annotation<IPagedQueryContext>(),
+                                    subqueryPlaceholder)
+                            }),
+                        data.Annotation<IPagedQueryContext>(),
+                        subqueryPlaceholder));
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected.ToString(), master.Expression.ToString());
+                Assert.Equal(expected, master.Expression.ToString());
             }
 
             [Fact]
@@ -435,31 +442,27 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.IsType<PagedQuery<IEnumerable<IssueModel>>>(subqueries[0].Query);
 
                 var query = (PagedQuery<IEnumerable<IssueModel>>)subqueries[0].Query;
-                Assert.Equal(expected.ToString(), query.GetMasterQuery().ToString());
+                Assert.Equal(expected, query.GetMasterQuery().ToString());
             }
 
             [Fact]
             public void Creates_Subquery_1_PageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                    data["data"]["node"]["issues"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected.ToString(), subqueries[0].PageInfo.ToString());
+                Assert.Equal(expected, subqueries[0].PageInfo.ToString());
             }
 
             [Fact]
             public void Creates_Subquery_1_ParentPageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                    data["data"]["repository"]["issues"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected.ToString(), subqueries[0].ParentPageInfo.ToString());
+                Assert.Equal(expected, subqueries[0].ParentPageInfo.ToString());
             }
 
             [Fact]
@@ -485,32 +488,39 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected.ToString(), subqueries[1].Query.ToString());
+                Assert.Equal(expected, subqueries[1].Query.ToString());
             }
 
             [Fact]
             public void Creates_Subquery_2_PageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                    data["data"]["node"]["comments"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["node"]["comments"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected.ToString(), subqueries[1].PageInfo.ToString());
+                Assert.Equal(expected, subqueries[1].PageInfo.ToString());
             }
 
             [Fact]
             public void Creates_Subquery_2_ParentPageInfo_Selector()
             {
-                Expression<Func<JObject, JToken>> expected = data =>
-                    data["data"]["repository"]["issues"]["nodes"]["comments"]["pageInfo"];
-
+                var expected = Expected(data => data["data"]["repository"]["issues"]["nodes"]["comments"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
                 Assert.Equal(expected.ToString(), subqueries[1].ParentPageInfo.ToString());
             }
+        }
+
+        private static string Expected<T>(Expression<Func<JObject, T>> expression)
+        {
+            var str = expression.ToString();
+
+            // There's no way to get "value(Octokit.GraphQL.Core.Subquery)" string in an expression
+            // string from a lambda, so put in `subqueryPlaceholder` and replace it.
+            str = str.Replace("PagingTests.subqueryPlaceholder", "value(Octokit.GraphQL.Core.Subquery)");
+
+            return str;
         }
 
         class RepositoryModel

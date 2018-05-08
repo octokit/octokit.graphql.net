@@ -5,15 +5,15 @@ namespace Octokit.GraphQL.Core.Builders
 {
     class SubqueryExpression : Expression
     {
-        public SubqueryExpression(Subquery subQuery, MethodCallExpression methodCall)
+        public SubqueryExpression(Subquery subquery, MethodCallExpression methodCall)
         {
-            SubQuery = subQuery;
+            Subquery = subquery;
             MethodCall = methodCall;
         }
 
         public MethodCallExpression MethodCall { get; }
         public override ExpressionType NodeType => ExpressionType.Extension;
-        public Subquery SubQuery { get; }
+        public Subquery Subquery { get; }
         public override Type Type => MethodCall.Type;
     }
 }

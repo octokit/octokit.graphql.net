@@ -50,6 +50,7 @@ namespace Octokit.GraphQL.Core.Builders
             public static readonly MethodInfo SelectMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(Select));
             public static readonly MethodInfo ToDictionaryMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToDictionary));
             public static readonly MethodInfo ToListMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToList));
+            public static readonly MethodInfo ToSubqueryListMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToSubqueryList));
 
             public static IEnumerable<JToken> OfType(IEnumerable<JToken> source, string typeName)
             {
@@ -74,6 +75,16 @@ namespace Octokit.GraphQL.Core.Builders
             public static List<TResult> ToList<TResult>(IEnumerable<JToken> source)
             {
                 return source.Select(x => x.ToObject<TResult>()).ToList();
+            }
+
+            public static List<T> ToSubqueryList<T>(
+                IEnumerable<T> source,
+                IPagedQueryContext context,
+                Subquery subquery)
+            {
+                var result = source.ToList();
+                context.SetQueryResultSink(subquery, result);
+                return result;
             }
         }
 

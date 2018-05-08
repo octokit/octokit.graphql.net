@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Core.Builders
 
             var returnType = typeof(IEnumerable<TResult>);
             var rewritten = Visit(query.Expression);
-            var toList = rewritten.AddCast(returnType).AddToList();
+            var toList = ToFinalList(rewritten, returnType);
             var lambda = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
                 toList.AddCast(returnType),
                 RootDataParameter);
@@ -55,10 +55,9 @@ namespace Octokit.GraphQL.Core.Builders
         {
             Initialize();
 
-            var itemType = expression.Type.GenericTypeArguments[0];
-            var returnType = typeof(IEnumerable<>).MakeGenericType(itemType);
+            var returnType = typeof(IEnumerable<>).MakeGenericType(expression.Type.GenericTypeArguments[0]);
             var rewritten = Visit(expression);
-            var toList = rewritten.AddCast(returnType).AddToList();
+            var toList = ToFinalList(rewritten, returnType);
             var lambda = Expression.Lambda(
                 toList.AddCast(returnType),
                 RootDataParameter);
@@ -79,6 +78,27 @@ namespace Octokit.GraphQL.Core.Builders
                     .DeclaredConstructors
                     .Single()
                     .Invoke(new object[] { master, subqueries });
+            }
+        }
+
+        private Expression ToFinalList(Expression expression, Type type)
+        {
+            if (expression is MethodCallExpression m)
+            {
+                return m.AddCast(type).AddToList().AddCast(type);
+            }
+            else if (expression is SubqueryExpression s)
+            {
+                return Expression.Call(
+                    Rewritten.List.ToSubqueryListMethod.MakeGenericMethod(type.GenericTypeArguments[0]),
+                        s.MethodCall.AddCast(type),
+                        CreateGetQueryContextExpression(),
+                        Expression.Constant(s.Subquery))
+                    .AddCast(type);
+            }
+            else
+            {
+                throw new NotSupportedException("Unable to transform final expression.");
             }
         }
 
@@ -301,7 +321,7 @@ namespace Octokit.GraphQL.Core.Builders
                     // This signals that a parent query has designated this method call as the
                     // paging method for a subquery. Mark it as such and get the real method call
                     // expression.
-                    subQuery = subQueryExpression.SubQuery;
+                    subQuery = subQueryExpression.Subquery;
                     expression = subQueryExpression.MethodCall;
                 }
 
@@ -477,6 +497,7 @@ namespace Octokit.GraphQL.Core.Builders
                 var selectExpression = expression.Arguments[1];
                 var lambda = selectExpression.GetLambda();
                 var instance = Visit(source);
+                Subquery subquery = null;
 
                 if (instance is AllPagesExpression allPages)
                 {
@@ -491,7 +512,7 @@ namespace Octokit.GraphQL.Core.Builders
                     syntax.Head.Selections.Add(PageInfoSelection());
 
                     // Create the subquery
-                    AddSubquery(allPages.Instance, expression, instance.AddIndexer("pageInfo"));
+                    subquery = AddSubquery(allPages.Instance, expression, instance.AddIndexer("pageInfo"));
 
                     // And continue the query as normal after selecting "nodes".
                     syntax.AddField("nodes");
@@ -499,10 +520,16 @@ namespace Octokit.GraphQL.Core.Builders
                 }
                 
                 var select = (LambdaExpression)Visit(lambda);
-                return Expression.Call(
+                var rewrittenSelect = Expression.Call(
                     Rewritten.List.SelectMethod.MakeGenericMethod(select.ReturnType),
                     instance,
                     select);
+
+                // If the expression was an .AllPages() call then return a SubqueryExpression with
+                // the related SubQuery to the .ToList() or .ToDictionary() method that follows.
+                return subquery == null ?
+                    (Expression)rewrittenSelect : 
+                    new SubqueryExpression(subquery, rewrittenSelect);
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToDictionaryMethod)
             {
@@ -534,7 +561,16 @@ namespace Octokit.GraphQL.Core.Builders
                 var inputType = GetEnumerableItemType(instance.Type);
                 var resultType = GetQueryableListItemType(source.Type);
 
-                if (inputType == typeof(JToken))
+                if (instance is SubqueryExpression subquery)
+                {
+                    instance = subquery.MethodCall;
+                    return Expression.Call(
+                        Rewritten.List.ToSubqueryListMethod.MakeGenericMethod(resultType),
+                        instance,
+                        CreateGetQueryContextExpression(),
+                        Expression.Constant(subquery.Subquery));
+                }
+                else if (inputType == typeof(JToken))
                 {
                     return Expression.Call(
                         Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
@@ -637,7 +673,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private void AddSubquery(
+        private Subquery AddSubquery(
             MethodCallExpression expression,
             MethodCallExpression selector,
             Expression pageInfoSelector)
@@ -656,6 +692,14 @@ namespace Octokit.GraphQL.Core.Builders
             subQuery.ParentPageInfo = CreateSelectorExpression(selections);
             
             subqueries.Add(subQuery);
+            return subQuery;
+        }
+
+        private MethodCallExpression CreateGetQueryContextExpression()
+        {
+            return Expression.Call(
+                RootDataParameter,
+                JsonMethods.JTokenAnnotation.MakeGenericMethod(typeof(IPagedQueryContext)));
         }
 
         private Expression CreateNodeQuery(
