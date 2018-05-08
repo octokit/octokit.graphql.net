@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             return ((PagedQuery<T>)query).MasterQuery;
         }
 
-        public static IReadOnlyList<SubQuery> GetSubqueries<T>(this ICompiledQuery<T> query)
+        public static IReadOnlyList<Subquery> GetSubqueries<T>(this ICompiledQuery<T> query)
         {
             return ((PagedQuery<T>)query).Subqueries;
         }

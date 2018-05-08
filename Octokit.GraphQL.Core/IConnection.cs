@@ -9,5 +9,6 @@ namespace Octokit.GraphQL
         Uri Uri { get; }
 
         Task<T> Run<T>(string query, Func<JObject, T> deserialize);
+        Task<string> Run(string query);
     }
 }

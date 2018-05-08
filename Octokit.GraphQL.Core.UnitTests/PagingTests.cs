@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
@@ -103,6 +104,62 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 Assert.Single(subqueries);
                 Assert.Equal(expected.ToString(), subqueries[0].ParentPageInfo.ToString());
+            }
+
+            [Fact]
+            public async Task Reads_All_Pages()
+            {
+                int page = 0;
+
+                string Execute(string query)
+                {
+                    switch (page++)
+                    {
+                        case 0:
+                            return @"{
+  data: {
+    ""repository"": {
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": true,
+          ""endCursor"": ""end0""
+        },
+        ""nodes"": [
+          { ""number"": 0 },
+          { ""number"": 1 },
+          { ""number"": 2 },
+        ]
+      }
+    }
+  }
+}";
+                        case 1:
+                            return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""Repository"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": false,
+          ""endCursor"": ""end1""
+        },
+        ""nodes"": [
+          { ""number"": 3 },
+          { ""number"": 4 },
+        ]
+      }
+    }
+  }
+}";
+                        default:
+                            throw new NotSupportedException("Should not get here");
+                    }
+                }
+
+                var connection = new MockConnection(Execute);
+                var result = (await connection.Run(TestQuery)).ToList();
+
+                Assert.Equal(Enumerable.Range(0, 5).ToList(), result);
             }
         }
 

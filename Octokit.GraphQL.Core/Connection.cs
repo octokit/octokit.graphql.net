@@ -16,7 +16,6 @@ namespace Octokit.GraphQL
         /// </summary>
         public static readonly Uri GithubApiUri = new Uri("https://api.github.com/graphql");
 
-
         public Connection(ProductHeaderValue productInformation, string token)
             : this(productInformation, GithubApiUri, token)
         {
@@ -50,13 +49,13 @@ namespace Octokit.GraphQL
             return deserializer.Deserialize(deserialize, data);
         }
 
-        protected async Task<string> Run(string payload)
+        public async Task<string> Run(string query)
         {
             var token = await CredentialStore.GetCredentials();
 
             using (var request = new HttpRequestMessage(HttpMethod.Post, Uri))
             {
-                request.Content = new StringContent(payload);
+                request.Content = new StringContent(query);
                 request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
 
                 using (var response = await HttpClient.SendAsync(request))

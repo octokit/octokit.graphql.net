@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Core.Builders
         Expression rootExpression;
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
-        List<SubQuery> subqueries = new List<SubQuery>();
+        List<Subquery> subqueries = new List<Subquery>();
 
         public ICompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
@@ -290,7 +290,7 @@ namespace Octokit.GraphQL.Core.Builders
             else if (IsQueryableValueMember(node.Member))
             {
                 var expression = node.Expression;
-                SubQuery subQuery = null;
+                Subquery subQuery = null;
 
                 if (expression is SubqueryExpression subQueryExpression)
                 {
@@ -638,7 +638,7 @@ namespace Octokit.GraphQL.Core.Builders
             MethodCallExpression selector,
             Expression pageInfoSelector)
         {
-            var subQuery = new SubQuery();
+            var subQuery = new Subquery();
 
             // Create the actual subquery.
             var nodeQuery = CreateNodeQuery(subQuery, expression, selector);
@@ -655,7 +655,7 @@ namespace Octokit.GraphQL.Core.Builders
         }
 
         private Expression CreateNodeQuery(
-            SubQuery subQuery,
+            Subquery subQuery,
             MethodCallExpression expression,
             MethodCallExpression selector)
         {
