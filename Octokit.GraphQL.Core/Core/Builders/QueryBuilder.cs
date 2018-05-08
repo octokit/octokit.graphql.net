@@ -59,11 +59,23 @@ namespace Octokit.GraphQL.Core.Builders
                 rewritten.AddCast(returnType),
                 RootDataParameter);
             var queryType = typeof(CompiledQuery<>).MakeGenericType(returnType);
-            var master = queryType.GetTypeInfo()
+            var master = (ICompiledQuery)queryType.GetTypeInfo()
                 .DeclaredConstructors
                 .Single()
                 .Invoke(new object[] { root, lambda });
-            return (ICompiledQuery)master;
+
+            if (subqueries.Count == 0)
+            {
+                return master;
+            }
+            else
+            {
+                var pagedQueryType = typeof(PagedQuery<>).MakeGenericType(returnType);
+                return (ICompiledQuery)pagedQueryType.GetTypeInfo()
+                    .DeclaredConstructors
+                    .Single()
+                    .Invoke(new object[] { master, subqueries });
+            }
         }
 
         protected override Expression VisitBinary(BinaryExpression node)

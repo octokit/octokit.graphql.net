@@ -207,7 +207,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected.ToString(), subqueries[0].Query.ToString());
+                Assert.IsType<PagedQuery<IEnumerable<IssueModel>>>(subqueries[0].Query);
+
+                var query = (PagedQuery<IEnumerable<IssueModel>>)subqueries[0].Query;
+                Assert.Equal(expected.ToString(), query.GetMasterQuery().ToString());
             }
 
             [Fact]
