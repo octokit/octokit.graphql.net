@@ -60,6 +60,7 @@ namespace Octokit.GraphQL.Core
             {
                 if (subqueries == null)
                 {
+                    // This is the first run, so run the master page.
                     var master = parent.MasterQuery;
                     var data = await connection.Run(master.GetPayload(variables));
                     var json = JObject.Parse(data);
@@ -67,13 +68,15 @@ namespace Octokit.GraphQL.Core
                     Result = deserializer.Deserialize(master.CompiledExpression, json);
                     subqueries = new Dictionary<Subquery, IQueryRunner>();
 
+                    // Look through each subquery for any results that have a next page.
                     foreach (var subquery in parent.Subqueries)
                     {
+                        // TODO: Don't compile every time.
                         var pageInfo = subquery.ParentPageInfo.Compile()(json);
 
                         if ((bool)pageInfo["hasNextPage"] == true)
                         {
-                            subqueries.Add(subquery, null);
+                            subqueries.Add(subquery, subquery.Query.Start(connection, variables));
                         }
                     }
                 }
@@ -83,11 +86,10 @@ namespace Octokit.GraphQL.Core
                     var subquery = item.Key;
                     var runner = item.Value;
 
-                    if (runner == null)
+                    // Run the next subquery, removing it if finished.
+                    if (await runner.RunPage() == false)
                     {
-                        runner = subquery.Query.Start(connection, variables);
-                        subqueries[subquery] = runner;
-                        return await runner.RunPage();
+                        subqueries.Remove(subquery);
                     }
                 }
 
