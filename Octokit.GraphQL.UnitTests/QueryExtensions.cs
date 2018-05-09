@@ -9,12 +9,12 @@ namespace Octokit.GraphQL.UnitTests
     {
         public static Expression GetExpression<T>(this ICompiledQuery<T> query)
         {
-            return ((CompiledQuery<T>)query).Expression;
+            return ((SimpleQuery<T>)query).Expression;
         }
 
         public static T Deserialize<T>(this ICompiledQuery<T> query, string data)
         {
-            var q = (CompiledQuery<T>)query;
+            var q = (SimpleQuery<T>)query;
             return new ResponseDeserializer().Deserialize(q, data);
         }
     }

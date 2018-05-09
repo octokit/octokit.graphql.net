@@ -9,22 +9,22 @@ namespace Octokit.GraphQL.Core.UnitTests
     {
         public static Expression GetExpression<T>(this ICompiledQuery<T> query)
         {
-            return ((CompiledQuery<T>)query).Expression;
+            return ((SimpleQuery<T>)query).Expression;
         }
 
-        public static CompiledQuery<T> GetMasterQuery<T>(this ICompiledQuery<T> query)
+        public static SimpleQuery<T> GetMasterQuery<T>(this ICompiledQuery<T> query)
         {
             return ((PagedQuery<T>)query).MasterQuery;
         }
 
-        public static IReadOnlyList<Subquery> GetSubqueries<T>(this ICompiledQuery<T> query)
+        public static IReadOnlyList<ISubquery> GetSubqueries<T>(this ICompiledQuery<T> query)
         {
             return ((PagedQuery<T>)query).Subqueries;
         }
 
         public static T Deserialize<T>(this ICompiledQuery<T> query, string data)
         {
-            var q = (CompiledQuery<T>)query;
+            var q = (SimpleQuery<T>)query;
             return new ResponseDeserializer().Deserialize(q, data);
         }
     }

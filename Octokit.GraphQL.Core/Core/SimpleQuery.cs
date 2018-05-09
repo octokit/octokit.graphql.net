@@ -7,13 +7,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
-using Octokit.GraphQL.Core;
 
 namespace Octokit.GraphQL.Core
 {
-    public class CompiledQuery<TResult> : ICompiledQuery<TResult>
+    public class SimpleQuery<TResult> : ICompiledQuery<TResult>
     {
-        public CompiledQuery(
+        public SimpleQuery(
             OperationDefinition operationDefinition,
             Expression<Func<JObject, TResult>> expression)
         {
@@ -56,26 +55,26 @@ namespace Octokit.GraphQL.Core
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
-        public IQueryRunner<TResult> Start(IConnection connection, Dictionary<string, object> variables)
+        public IQueryRunner<TResult> Start(IConnection connection, IDictionary<string, object> variables)
         {
             return new Runner(this, connection, variables);
         }
 
-        IQueryRunner ICompiledQuery.Start(IConnection connection, Dictionary<string, object> variables)
+        IQueryRunner ICompiledQuery.Start(IConnection connection, IDictionary<string, object> variables)
         {
             return Start(connection, variables);
         }
 
         class Runner : IQueryRunner<TResult>
         {
-            readonly CompiledQuery<TResult> parent;
+            readonly SimpleQuery<TResult> parent;
             readonly IConnection connection;
-            readonly Dictionary<string, object> variables;
+            readonly IDictionary<string, object> variables;
 
             public Runner(
-                CompiledQuery<TResult> parent,
+                SimpleQuery<TResult> parent,
                 IConnection connection,
-                Dictionary<string, object> variables)
+                IDictionary<string, object> variables)
             {
                 this.parent = parent;
                 this.connection = connection;

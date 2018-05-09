@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -7,12 +6,24 @@ namespace Octokit.GraphQL.Core.Deserializers
 {
     public class ResponseDeserializer
     {
-        public TResult Deserialize<TResult>(CompiledQuery<TResult> query, string data)
+        public JObject Deserialize(string data)
+        {
+            var result = JObject.Parse(data);
+
+            if (result["errors"] != null)
+            {
+                throw DeserializeExceptions((JArray)result["errors"]);
+            }
+
+            return result;
+        }
+
+        public TResult Deserialize<TResult>(SimpleQuery<TResult> query, string data)
         {
             return Deserialize(query, JObject.Parse(data));
         }
 
-        public TResult Deserialize<TResult>(CompiledQuery<TResult> query, JObject data)
+        public TResult Deserialize<TResult>(SimpleQuery<TResult> query, JObject data)
         {
             if (data["errors"] != null)
             {

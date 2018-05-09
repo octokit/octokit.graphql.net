@@ -5,6 +5,6 @@ namespace Octokit.GraphQL.Core
 {
     public interface IPagedQueryContext
     {
-        void SetQueryResultSink(Subquery query, IList result);
+        void SetQueryResultSink(ISubquery query, IList result);
     }
 }

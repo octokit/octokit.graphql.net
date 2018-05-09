@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList()
                 });
 
-            var query = (CompiledQuery<SchemaModel>)expression.Compile();
+            var query = (SimpleQuery<SchemaModel>)expression.Compile();
 
             Assert.Equal(expectedQuery, query.ToString(), ignoreLineEndingDifferences: true);
 

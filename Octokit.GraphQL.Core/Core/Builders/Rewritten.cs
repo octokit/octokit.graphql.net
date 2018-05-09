@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Core.Builders
             public static List<T> ToSubqueryList<T>(
                 IEnumerable<T> source,
                 IPagedQueryContext context,
-                Subquery subquery)
+                ISubquery subquery)
             {
                 var result = source.ToList();
                 context.SetQueryResultSink(subquery, result);
