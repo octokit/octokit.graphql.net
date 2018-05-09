@@ -112,11 +112,12 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 int page = 0;
 
-                string Execute(string query)
+                string Execute(string query, IDictionary<string, string> variables)
                 {
                     switch (page++)
                     {
                         case 0:
+                            Assert.Null(variables);
                             return @"{
   data: {
     ""repository"": {
@@ -135,6 +136,28 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
                         case 1:
+                            Assert.NotNull(variables);
+                            Assert.Equal(variables["__after"], "end0");
+                            return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""Repository"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": true,
+          ""endCursor"": ""end1""
+        },
+        ""nodes"": [
+          { ""number"": 3 },
+          { ""number"": 4 },
+        ]
+      }
+    }
+  }
+}";
+                        case 2:
+                            Assert.NotNull(variables);
+                            Assert.Equal(variables["__after"], "end1");
                             return @"{
   data: {
     ""node"": {
@@ -142,11 +165,10 @@ namespace Octokit.GraphQL.Core.UnitTests
       ""issues"": {
         ""pageInfo"": {
           ""hasNextPage"": false,
-          ""endCursor"": ""end1""
+          ""endCursor"": ""end2""
         },
         ""nodes"": [
-          { ""number"": 3 },
-          { ""number"": 4 },
+          { ""number"": 5 },
         ]
       }
     }
@@ -160,7 +182,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var connection = new MockConnection(Execute);
                 var result = (await connection.Run(TestQuery)).ToList();
 
-                Assert.Equal(Enumerable.Range(0, 5).ToList(), result);
+                Assert.Equal(Enumerable.Range(0, 6).ToList(), result);
             }
         }
 
@@ -276,7 +298,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 int page = 0;
 
-                string Execute(string query)
+                string Execute(string query, IDictionary<string, string> variables)
                 {
                     switch (page++)
                     {
