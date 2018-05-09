@@ -776,22 +776,24 @@ namespace Octokit.GraphQL.Core.Builders
             Expression instance)
         {
             var arguments = new List<Expression>();
+            var i = 0;
 
             foreach (var parameter in methodCall.Method.GetParameters())
             {
-                object value = null;
-
                 switch (parameter.Name)
                 {
                     case "first":
-                        value = new Arg<int>(MaxPageSize);
+                        arguments.Add(Expression.Constant(new Arg<int>(MaxPageSize), parameter.ParameterType));
                         break;
                     case "after":
-                        value = new Arg<string>("__after", true);
+                        arguments.Add(Expression.Constant(new Arg<string>("__after", true), parameter.ParameterType));
+                        break;
+                    default:
+                        arguments.Add(methodCall.Arguments[i]);
                         break;
                 }
 
-                arguments.Add(Expression.Constant(value, parameter.ParameterType));
+                ++i;
             }
 
             return methodCall.Update(

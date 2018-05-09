@@ -193,7 +193,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(repository => new RepositoryModel
                 {
                     Name = repository.Name,
-                    Issues = repository.Issues(null, null, null, null, null).AllPages().Select(issue => new IssueModel
+                    Issues = repository.Issues(null, null, null, null, new[] { "bug" }).AllPages().Select(issue => new IssueModel
                     {
                         Number = issue.Number,
                     }).ToList()
@@ -205,7 +205,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
     name
-    issues(first: 100) {
+    issues(labels: [""bug""], first: 100) {
       pageInfo {
         hasNextPage
         endCursor
@@ -254,7 +254,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   node(id: $__id) {
     ... on Repository {
       __typename
-      issues(first: 100, after: $__after) {
+      issues(first: 100, after: $__after, labels: [""bug""]) {
         pageInfo {
           hasNextPage
           endCursor
