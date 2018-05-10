@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Octokit.GraphQL.Core
 {
-    public interface IPagedQueryContext
+    public interface ISubqueryRunner : IQueryRunner
     {
         void SetQueryResultSink(ISubquery query, IList result);
     }

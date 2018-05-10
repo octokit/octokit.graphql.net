@@ -758,7 +758,7 @@ namespace Octokit.GraphQL.Core.Builders
         {
             return Expression.Call(
                 RootDataParameter,
-                JsonMethods.JTokenAnnotation.MakeGenericMethod(typeof(IPagedQueryContext)));
+                JsonMethods.JTokenAnnotation.MakeGenericMethod(typeof(ISubqueryRunner)));
         }
 
         private Expression CreateNodeQuery(

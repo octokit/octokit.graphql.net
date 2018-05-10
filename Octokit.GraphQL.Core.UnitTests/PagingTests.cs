@@ -59,7 +59,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         Rewritten.List.Select(
                             data["data"]["repository"]["issues"]["nodes"],
                             issue => issue["number"].ToObject<int>()),
-                        data.Annotation<IPagedQueryContext>(),
+                        data.Annotation<ISubqueryRunner>(),
                         subqueryPlaceholder));
 
                 var master = TestQuery.GetMasterQuery();
@@ -268,7 +268,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                                     {
                                         Number = issue["number"].ToObject<int>(),
                                     }),
-                                data.Annotation<IPagedQueryContext>(),
+                                data.Annotation<ISubqueryRunner>(),
                                 subqueryPlaceholder),
                         }));
 
@@ -463,10 +463,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                                         {
                                             Body = comment["body"].ToObject<string>(),
                                         }),
-                                    data.Annotation<IPagedQueryContext>(),
+                                    data.Annotation<ISubqueryRunner>(),
                                     subqueryPlaceholder)
                             }),
-                        data.Annotation<IPagedQueryContext>(),
+                        data.Annotation<ISubqueryRunner>(),
                         subqueryPlaceholder));
 
                 var master = TestQuery.GetMasterQuery();

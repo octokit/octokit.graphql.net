@@ -37,7 +37,7 @@ namespace Octokit.GraphQL.Core
             return Start(connection, variables);
         }
 
-        class Runner : IQueryRunner<TResult>, IPagedQueryContext
+        class Runner : IQueryRunner<TResult>, ISubqueryRunner
         {
             readonly PagedQuery<TResult> owner;
             readonly IConnection connection;
