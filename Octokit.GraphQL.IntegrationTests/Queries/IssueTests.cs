@@ -149,7 +149,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public async Task Can_AutoPage_Issue_Comments_By_Node_Id()
+        public async Task Can_AutoPage_Issue_Comments()
         {
             var query = new Query()
                 .Repository("octokit", "octokit.net")
@@ -163,6 +163,24 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var result = await Connection.Run(query);
 
             Assert.True(result.Comments.Count > 100);
+        }
+
+        [IntegrationTest]
+        public async Task Can_AutoPage_Issues_Comments()
+        {
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .Issues().AllPages()
+                .Select(issue => new
+                {
+                    issue.Id,
+                    Comments = issue.Comments(100, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
+                });
+
+            var result = (await Connection.Run(query)).ToList();
+
+            Assert.True(result.Count > 100);
+            Assert.True(result.Any(x => x.Comments.Count > 100));
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
