@@ -522,7 +522,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(2, subqueries.Count);
 
                 var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentPageInfo);
-                Assert.Equal(expected, expected.ToString());
+                Assert.Equal(expected, actual.ToString());
             }
 
             [Fact]
@@ -560,7 +560,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(2, subqueries.Count);
 
                 var actual = ExpressionCompiler.GetSourceExpression(subqueries[1].PageInfo);
-                Assert.Equal(expected, expected.ToString());
+                Assert.Equal(expected, actual.ToString());
             }
 
             [Fact]
@@ -572,7 +572,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(2, subqueries.Count);
 
                 var actual = ExpressionCompiler.GetSourceExpression(subqueries[1].ParentPageInfo);
-                Assert.Equal(expected.ToString(), expected.ToString());
+                Assert.Equal(expected, actual.ToString());
             }
         }
 
