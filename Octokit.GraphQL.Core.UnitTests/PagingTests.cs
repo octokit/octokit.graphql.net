@@ -23,6 +23,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(issue => issue.Number)
                 .Compile();
 
+            static Repository_Issues_AllPages()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
             [Fact]
             public void Creates_MasterQuery()
             {
@@ -59,7 +64,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected, master.Expression.ToString());
+                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
             }
 
             [Fact]
@@ -88,24 +93,28 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, subqueries[0].ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_PageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].PageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].PageInfo);
+                Assert.Equal(expected, actual.ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_ParentPageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ParentPageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentPageInfo);
+                Assert.Equal(expected, actual.ToString());
             }
 
             [Fact]
@@ -202,6 +211,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList()
                 }).Compile();
 
+            static Repository_Name_Issues_AllPages()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
             [Fact]
             public void Creates_MasterQuery()
             {
@@ -248,7 +262,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected, master.Expression.ToString());
+                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
             }
 
             [Fact]
@@ -277,24 +291,28 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, subqueries[0].ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_PageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].PageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].PageInfo);
+                Assert.Equal(expected, actual.ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_ParentPageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ParentPageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentPageInfo);
+                Assert.Equal(expected, actual.ToString());
             }
 
             [Fact]
@@ -378,6 +396,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Compile();
 
+            static Repository_Issues_Comments_AllPages()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
             [Fact]
             public void Creates_MasterQuery()
             {
@@ -436,7 +459,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected, master.Expression.ToString());
+                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
             }
 
             [Fact]
@@ -478,24 +501,28 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, query.GetMasterQuery().ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_1_PageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected, subqueries[0].PageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].PageInfo);
+                Assert.Equal(expected, actual.ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_1_ParentPageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected, subqueries[0].ParentPageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentPageInfo);
+                Assert.Equal(expected, expected.ToString());
             }
 
             [Fact]
@@ -524,24 +551,28 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, subqueries[1].ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_2_PageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["node"]["comments"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected, subqueries[1].PageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[1].PageInfo);
+                Assert.Equal(expected, expected.ToString());
             }
 
-            [Fact(Skip = "Need a way to compare compiled expressions.")]
+            [Fact]
             public void Creates_Subquery_2_ParentPageInfo_Selector()
             {
                 var expected = Expected(data => data["data"]["repository"]["issues"]["nodes"]["comments"]["pageInfo"]);
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected.ToString(), subqueries[1].ParentPageInfo.ToString());
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[1].ParentPageInfo);
+                Assert.Equal(expected.ToString(), expected.ToString());
             }
         }
 

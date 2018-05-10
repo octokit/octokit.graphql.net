@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.Core.UnitTests
 {
     static class QueryExtensions
     {
-        public static Expression GetExpression<T>(this ICompiledQuery<T> query)
+        public static Expression GetResultBuilderExpression<T>(this ICompiledQuery<T> query)
         {
-            return ((SimpleQuery<T>)query).Expression;
+            return ExpressionCompiler.GetSourceExpression(((SimpleQuery<T>)query).ResultBuilder);
         }
 
         public static SimpleQuery<T> GetMasterQuery<T>(this ICompiledQuery<T> query)

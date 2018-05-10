@@ -12,6 +12,11 @@ namespace Octokit.GraphQL.UnitTests
 {
     public class ExpressionRewiterTests
     {
+        public ExpressionRewiterTests()
+        {
+            ExpressionCompiler.IsUnitTesting = true;
+        }
+
         [Fact]
         public void RepositoryOwner_Repository_Query()
         {
@@ -46,7 +51,7 @@ namespace Octokit.GraphQL.UnitTests
                     });
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
+            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
         }
 
         [Fact]
@@ -87,7 +92,7 @@ namespace Octokit.GraphQL.UnitTests
                         }).ToList();
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
+            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
         }
 
         [Fact]
@@ -130,7 +135,7 @@ namespace Octokit.GraphQL.UnitTests
                             })).ToList();
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
+            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
         }
 
         [Fact]
@@ -158,7 +163,7 @@ namespace Octokit.GraphQL.UnitTests
                     }).ToList();
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
+            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
         }
 
         [Fact(Skip = "Not yet working")]
@@ -175,7 +180,7 @@ namespace Octokit.GraphQL.UnitTests
                     x => x["name"].ToObject<string>());
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetExpression().ToString());
+            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
         }
     }
 }

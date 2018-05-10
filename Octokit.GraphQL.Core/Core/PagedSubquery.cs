@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
+using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core
 {
@@ -16,8 +17,8 @@ namespace Octokit.GraphQL.Core
             Expression<Func<JObject, JToken>> parentPageInfo)
             : base(masterQuery, subqueries)
         {
-            PageInfo = pageInfo.Compile();
-            ParentPageInfo = parentPageInfo.Compile();
+            PageInfo = ExpressionCompiler.Compile(pageInfo);
+            ParentPageInfo = ExpressionCompiler.Compile(parentPageInfo);
         }
 
         public Func<JObject, JToken> ParentId { get; }

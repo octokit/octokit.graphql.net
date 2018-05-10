@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Core.Syntax;
 
@@ -20,9 +21,9 @@ namespace Octokit.GraphQL.Core
             Expression<Func<JObject, JToken>> parentPageInfo)
             : base(operationDefinition, expression)
         {
-            ParentId = parentId.Compile();
-            PageInfo = pageInfo.Compile();
-            ParentPageInfo = parentPageInfo.Compile();
+            ParentId = ExpressionCompiler.Compile(parentId);
+            PageInfo = ExpressionCompiler.Compile(pageInfo);
+            ParentPageInfo = ExpressionCompiler.Compile(parentPageInfo);
         }
 
         public Func<JObject, JToken> ParentId { get; }
@@ -95,7 +96,7 @@ namespace Octokit.GraphQL.Core
                 var json = deserializer.Deserialize(data);
                 var pageInfo = owner.PageInfo(json);
 
-                Result = owner.CompiledExpression(json);
+                Result = owner.ResultBuilder(json);
 
                 if ((bool)pageInfo["hasNextPage"] == true)
                 {

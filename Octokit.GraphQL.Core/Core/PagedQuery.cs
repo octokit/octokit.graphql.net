@@ -71,7 +71,7 @@ namespace Octokit.GraphQL.Core
                     var json = JObject.Parse(data);
 
                     json.AddAnnotation(this);
-                    Result = deserializer.Deserialize(master.CompiledExpression, json);
+                    Result = deserializer.Deserialize(master.ResultBuilder, json);
 
                     // Look through each subquery for any results that have a next page.
                     foreach (var subquery in parent.Subqueries)

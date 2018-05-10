@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
+using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core
 {
@@ -14,22 +15,19 @@ namespace Octokit.GraphQL.Core
     {
         public SimpleQuery(
             OperationDefinition operationDefinition,
-            Expression<Func<JObject, TResult>> expression)
+            Expression<Func<JObject, TResult>> resultBuilder)
         {
             var serializer = new QuerySerializer();
             OperationDefinition = operationDefinition;
             Query = serializer.Serialize(operationDefinition);
-            Expression = expression;
-            CompiledExpression = expression.Compile();
+            ResultBuilder = ExpressionCompiler.Compile(resultBuilder);
         }
 
         public OperationDefinition OperationDefinition { get; }
 
         public string Query { get; }
 
-        public Expression<Func<JObject, TResult>> Expression { get; }
-
-        public Func<JObject, TResult> CompiledExpression { get; }
+        public Func<JObject, TResult> ResultBuilder { get; }
 
         public override string ToString()
         {
@@ -86,7 +84,7 @@ namespace Octokit.GraphQL.Core
 
             public async Task<bool> RunPage()
             {
-                Result = await connection.Run(parent.GetPayload(variables), parent.CompiledExpression);
+                Result = await connection.Run(parent.GetPayload(variables), parent.ResultBuilder);
                 return false;
             }
         }

@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Core.Deserializers
                 throw DeserializeExceptions((JArray)data["errors"]);
             }
 
-            return query.CompiledExpression(data);
+            return query.ResultBuilder(data);
         }
 
         public TResult Deserialize<TResult>(Func<JObject, TResult> deserialize, string data)
