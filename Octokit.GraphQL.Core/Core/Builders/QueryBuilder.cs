@@ -590,23 +590,34 @@ namespace Octokit.GraphQL.Core.Builders
                 if (instance is SubqueryExpression subquery)
                 {
                     instance = subquery.MethodCall;
-                    return Expression.Call(
+
+                    if (inputType == typeof(JToken))
+                    {
+                        instance = Expression.Call(
+                            Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
+                            instance);
+                    }
+
+                    return  Expression.Call(
                         Rewritten.List.ToSubqueryListMethod.MakeGenericMethod(resultType),
                         instance,
                         CreateGetQueryContextExpression(),
                         Expression.Constant(subquery.Subquery));
                 }
-                else if (inputType == typeof(JToken))
-                {
-                    return Expression.Call(
-                        Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
-                        instance);
-                }
                 else
                 {
-                    return Expression.Call(
-                        LinqMethods.ToListMethod.MakeGenericMethod(resultType),
-                        instance);
+                    if (inputType == typeof(JToken))
+                    {
+                        return Expression.Call(
+                            Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
+                            instance);
+                    }
+                    else
+                    {
+                        return Expression.Call(
+                            LinqMethods.ToListMethod.MakeGenericMethod(resultType),
+                            instance);
+                    }
                 }
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.OfTypeMethod)

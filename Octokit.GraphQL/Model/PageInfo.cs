@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Information about pagination in a connection.
     /// </summary>
-    public class PageInfo : QueryableValue<PageInfo>
+    public class PageInfo : QueryableValue<PageInfo>, IPageInfo
     {
         public PageInfo(Expression expression) : base(expression)
         {
