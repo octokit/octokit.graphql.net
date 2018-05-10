@@ -11,8 +11,19 @@ using Octokit.GraphQL.Core.Builders;
 
 namespace Octokit.GraphQL.Core
 {
+    /// <summary>
+    /// A simple GraphQL query with no auto-paging.
+    /// </summary>
+    /// <typeparam name="TResult">The query result type.</typeparam>
     public class SimpleQuery<TResult> : ICompiledQuery<TResult>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleQuery{TResult}"/> class.
+        /// </summary>
+        /// <param name="operationDefinition">The GraphQL operation definition.</param>
+        /// <param name="resultBuilder">
+        /// A function which transforms JSON data into the final result.
+        /// </param>
         public SimpleQuery(
             OperationDefinition operationDefinition,
             Expression<Func<JObject, TResult>> resultBuilder)
@@ -23,22 +34,35 @@ namespace Octokit.GraphQL.Core
             ResultBuilder = ExpressionCompiler.Compile(resultBuilder);
         }
 
+        /// <summary>
+        /// Gets the GraphQL operation definition.
+        /// </summary>
         public OperationDefinition OperationDefinition { get; }
 
+        /// <summary>
+        /// Gets the GraphQL query string.
+        /// </summary>
         public string Query { get; }
 
+        /// <summary>
+        /// Gets a function which transforms JSON data into the final result.
+        /// </summary>
         public Func<JObject, TResult> ResultBuilder { get; }
 
-        public override string ToString()
-        {
-            return ToString(2);
-        }
+        /// <inheritdoc/>
+        public override string ToString() => ToString(2);
 
+        /// <inheritdoc/>
         public string ToString(int indentation)
         {
             return new QuerySerializer(indentation).Serialize(OperationDefinition);
         }
 
+        /// <summary>
+        /// Gets a payload string consisting of the <see cref="Query"/> and any variables.
+        /// </summary>
+        /// <param name="variables">The variables.</param>
+        /// <returns>The payload string.</returns>
         public string GetPayload(IDictionary<string, object> variables)
         {
            var payload = new
@@ -53,11 +77,18 @@ namespace Octokit.GraphQL.Core
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        /// <summary>
+        /// Returns an <see cref="IQueryRunner{TResult}"/> which can be used to run the query on a connection.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="variables">The query variables.</param>
+        /// <returns>A query runner.</returns>
         public IQueryRunner<TResult> Start(IConnection connection, IDictionary<string, object> variables)
         {
             return new Runner(this, connection, variables);
         }
 
+        /// <inheritdoc/>
         IQueryRunner ICompiledQuery.Start(IConnection connection, IDictionary<string, object> variables)
         {
             return Start(connection, variables);

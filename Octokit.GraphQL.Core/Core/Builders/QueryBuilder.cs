@@ -542,7 +542,7 @@ namespace Octokit.GraphQL.Core.Builders
                 {
                     // .AllPages() was called on the instance. The expression is just a marker for
                     // this, the actual instance is in `allPages.Instance`
-                    instance = Visit(allPages.Instance);
+                    instance = Visit(allPages.Method);
 
                     // Select the "id" fields for the subquery.
                     var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
@@ -557,7 +557,7 @@ namespace Octokit.GraphQL.Core.Builders
                     syntax.Head.Selections.Add(PageInfoSelection());
 
                     // Create the subquery
-                    subquery = AddSubquery(allPages.Instance, expression, instance.AddIndexer("pageInfo"));
+                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"));
 
                     // And continue the query as normal after selecting "nodes".
                     syntax.AddField("nodes");

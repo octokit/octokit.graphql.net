@@ -7,8 +7,22 @@ using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.Core
 {
+    /// <summary>
+    /// An auto-paging GraphQL query.
+    /// </summary>
+    /// <typeparam name="TResult">The query result type.</typeparam>
+    /// <remarks>
+    /// A paged query consists of a master query and any number of sub-queries (which may
+    /// themselves be paged queries). When the full set of results cannot be returned by
+    /// the master query, the sub-queries are run on order to page in the additional data.
+    /// </remarks>
     public class PagedQuery<TResult> : ICompiledQuery<TResult>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PagedQuery{TResult}"/> class.
+        /// </summary>
+        /// <param name="masterQuery">The master query.</param>
+        /// <param name="subqueries">The sub-queries.</param>
         public PagedQuery(
             SimpleQuery<TResult> masterQuery,
             IEnumerable<ISubquery> subqueries)
@@ -17,21 +31,34 @@ namespace Octokit.GraphQL.Core
             Subqueries = subqueries.ToList();
         }
 
+        /// <summary>
+        /// Gets the master query.
+        /// </summary>
         public SimpleQuery<TResult> MasterQuery { get; }
+
+        /// <summary>
+        /// Gets the sub-queries.
+        /// </summary>
         public IReadOnlyList<ISubquery> Subqueries { get; }
 
+        /// <summary>
+        /// Returns an <see cref="IQueryRunner{TResult}"/> which can be used to run the query on a connection.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="variables">The query variables.</param>
+        /// <returns>A query runner.</returns>
         public IQueryRunner<TResult> Start(IConnection connection, IDictionary<string, object> variables)
         {
             return new Runner(this, connection, variables);
         }
 
+        /// <inheritdoc/>
         public override string ToString() => ToString(2);
- 
-        public string ToString(int indentation)
-        {
-            return MasterQuery.ToString(indentation);
-        }
 
+        /// <inheritdoc/>
+        public string ToString(int indentation) => MasterQuery.ToString(indentation);
+
+        /// <inheritdoc/>
         IQueryRunner ICompiledQuery.Start(IConnection connection, IDictionary<string, object> variables)
         {
             return Start(connection, variables);

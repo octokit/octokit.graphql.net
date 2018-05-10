@@ -12,25 +12,61 @@ using Octokit.GraphQL.Core.Syntax;
 
 namespace Octokit.GraphQL.Core
 {
+    /// <summary>
+    /// A sub-query of a <see cref="PagedQuery{TResult}"/>.
+    /// </summary>
+    /// <typeparam name="TResult">The query result type.</typeparam>
     public class SimpleSubquery<TResult> : SimpleQuery<TResult>, ISubquery
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleQuery{TResult}"/> class.
+        /// </summary>
+        /// <param name="operationDefinition">The GraphQL operation definition.</param>
+        /// <param name="resultBuilder">
+        /// A function which transforms JSON data into the final result.
+        /// </param>
+        /// <param name="parentIds">
+        /// A function which given the data from the master query, returns the IDs of the
+        /// entities which can be auto-paged.
+        /// </param>
+        /// <param name="pageInfo">
+        /// A function which given the data from the sub-query, returns the paging info.
+        /// </param>
+        /// <param name="parentPageInfo">
+        /// A function which given the data from the master query, returns the paging info
+        /// for all entities which can be auto-paged.
+        /// </param>
         public SimpleSubquery(
             OperationDefinition operationDefinition,
-            Expression<Func<JObject, TResult>> expression,
+            Expression<Func<JObject, TResult>> resultBuilder,
             Expression<Func<JObject, IEnumerable<JToken>>> parentIds,
             Expression<Func<JObject, JToken>> pageInfo,
             Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
-            : base(operationDefinition, expression)
+            : base(operationDefinition, resultBuilder)
         {
             ParentIds = ExpressionCompiler.Compile(parentIds);
             PageInfo = ExpressionCompiler.Compile(pageInfo);
             ParentPageInfo = ExpressionCompiler.Compile(parentPageInfo);
         }
 
+        /// <summary>
+        /// Gets a function which given the data from the master query, returns the IDs of the
+        /// entities which can be auto-paged.
+        /// </summary>
         public Func<JObject, IEnumerable<JToken>> ParentIds { get; }
+
+        /// <summary>
+        /// Gets a function which given the data from the sub-query, returns the paging info.
+        /// </summary>
         public Func<JObject, JToken> PageInfo { get; }
+
+        /// <summary>
+        /// Gets a function which given the data from the master query, returns the paging info
+        /// for all entities which can be auto-paged.
+        /// </summary>
         public Func<JObject, IEnumerable<JToken>> ParentPageInfo { get; }
 
+        /// <inheritdoc/>
         public IQueryRunner Start(
             IConnection connection,
             string id,
@@ -41,7 +77,7 @@ namespace Octokit.GraphQL.Core
             return new Runner(this, connection, id, after, variables, result);
         }
 
-        public static ISubquery Create(
+        internal static ISubquery Create(
             Type resultType,
             OperationDefinition operationDefinition,
             Expression expression,
