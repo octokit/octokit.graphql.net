@@ -68,7 +68,7 @@ namespace Octokit.GraphQL.Core.Builders
         private ISubquery BuildSubquery(
             Expression expression,
             Expression<Func<JObject, JToken>> parentId,
-            Expression<Func<JObject, JToken>> parentPageInfo)
+            Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
         {
             Initialize();
 
@@ -387,22 +387,34 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
+        private Expression<Func<JObject, IEnumerable<JToken>>> CreatePageInfoExpression()
+        {
+            var parameter = Expression.Parameter(typeof(JObject), "data");
+            var path = "$.data";
+
+            foreach (var field in syntax.FieldStack)
+            {
+                path += '.' + field.Name;
+                if (field.Name == "nodes") path += '.';
+            }
+
+            path += ".pageInfo";
+
+            var expression = Expression.Call(
+                parameter,
+                JsonMethods.JTokenSelectTokens,
+                Expression.Constant(path));
+            return Expression.Lambda<Func<JObject, IEnumerable<JToken>>>(expression, parameter);
+        }
+
         private static Expression<Func<JObject, JToken>> CreateSelectorExpression(IEnumerable<string> selectors)
         {
             var parameter = Expression.Parameter(typeof(JObject), "data");
+            var path = "data." + string.Join(".", selectors);
             var expression = Expression.Call(
-                    parameter,
-                    JsonMethods.JTokenIndexer,
-                    Expression.Constant("data"));
-
-            foreach (var s in selectors)
-            {
-                expression = Expression.Call(
-                    expression,
-                    JsonMethods.JTokenIndexer,
-                    Expression.Constant(s));
-            }
-
+                parameter,
+                JsonMethods.JTokenSelectToken,
+                Expression.Constant(path));
             return Expression.Lambda<Func<JObject, JToken>>(expression, parameter);
         }
 
@@ -723,11 +735,8 @@ namespace Octokit.GraphQL.Core.Builders
             MethodCallExpression selector,
             Expression pageInfoSelector)
         {
-            // Create a lambda that selects the "pageInfo" field.
-            var selections = syntax.FieldStack
-                .Select(x => x.Name)
-                .Concat(new[] { "pageInfo" });
-            var parentPageInfo = CreateSelectorExpression(selections);
+            // Create a lambda that selects the "pageInfo" fields.
+            var parentPageInfo = CreatePageInfoExpression();
 
             // Create the actual subquery.
             var nodeQuery = CreateNodeQuery(expression, selector);
@@ -737,6 +746,7 @@ namespace Octokit.GraphQL.Core.Builders
             return subquery;
         }
 
+        
         private MethodCallExpression CreateGetQueryContextExpression()
         {
             return Expression.Call(

@@ -14,7 +14,7 @@ namespace Octokit.GraphQL.Core
             SimpleQuery<TResult> masterQuery,
             IEnumerable<ISubquery> subqueries,
             Expression<Func<JObject, JToken>> pageInfo,
-            Expression<Func<JObject, JToken>> parentPageInfo)
+            Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
             : base(masterQuery, subqueries)
         {
             PageInfo = ExpressionCompiler.Compile(pageInfo);
@@ -25,7 +25,7 @@ namespace Octokit.GraphQL.Core
 
         public Func<JObject, JToken> PageInfo { get; }
 
-        public Func<JObject, JToken> ParentPageInfo { get; }
+        public Func<JObject, IEnumerable<JToken>> ParentPageInfo { get; }
 
         public IQueryRunner Start(
             IConnection connection,
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Core
             ICompiledQuery masterQuery,
             IEnumerable<ISubquery> subqueries,
             Expression<Func<JObject, JToken>> pageInfo,
-            Expression<Func<JObject, JToken>> parentPageInfo)
+            Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
         {
             var ctor = typeof(PagedSubquery<>)
                 .MakeGenericType(resultType)

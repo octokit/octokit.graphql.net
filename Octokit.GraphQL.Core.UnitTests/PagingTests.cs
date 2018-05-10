@@ -96,7 +96,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_PageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
+                var expected = Expected(data => data.SelectToken("data.node.issues.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
@@ -108,7 +108,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_ParentPageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
@@ -294,7 +294,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_PageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
+                var expected = Expected(data => data.SelectToken("data.node.issues.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
@@ -306,7 +306,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_ParentPageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
@@ -504,7 +504,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_1_PageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["node"]["issues"]["pageInfo"]);
+                var expected = Expected(data => data.SelectToken("data.node.issues.pageInfo")); ;
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
@@ -516,7 +516,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_1_ParentPageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["repository"]["issues"]["pageInfo"]);
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
@@ -554,7 +554,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_2_PageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["node"]["comments"]["pageInfo"]);
+                var expected = Expected(data => data.SelectToken("data.node.comments.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
@@ -566,7 +566,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_2_ParentPageInfo_Selector()
             {
-                var expected = Expected(data => data["data"]["repository"]["issues"]["nodes"]["comments"]["pageInfo"]);
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.nodes..comments.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);

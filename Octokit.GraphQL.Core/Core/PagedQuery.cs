@@ -76,14 +76,17 @@ namespace Octokit.GraphQL.Core
                     // Look through each subquery for any results that have a next page.
                     foreach (var subquery in parent.Subqueries)
                     {
-                        var pageInfo = subquery.ParentPageInfo(json);
+                        var pageInfos = subquery.ParentPageInfo(json);
 
-                        if ((bool)pageInfo["hasNextPage"] == true)
+                        foreach (var pageInfo in pageInfos)
                         {
-                            var id = subquery.ParentId(json).ToString();
-                            var after = (string)pageInfo["endCursor"];
-                            var runner = subquery.Start(connection, id, after, variables);
-                            subqueryRunners.Add(subquery, runner);
+                            if ((bool)pageInfo["hasNextPage"] == true)
+                            {
+                                var id = subquery.ParentId(json).ToString();
+                                var after = (string)pageInfo["endCursor"];
+                                var runner = subquery.Start(connection, id, after, variables);
+                                subqueryRunners.Add(subquery, runner);
+                            }
                         }
                     }
                 }
@@ -111,7 +114,7 @@ namespace Octokit.GraphQL.Core
 
             public void SetQueryResultSink(ISubquery query, IList result)
             {
-                subqueryResults.Add(query, result);
+                subqueryResults[query] = result;
             }
         }
     }

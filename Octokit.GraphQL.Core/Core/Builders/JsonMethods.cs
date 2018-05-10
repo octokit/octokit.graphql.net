@@ -9,6 +9,8 @@ namespace Octokit.GraphQL.Core.Builders
     {
         public static readonly MethodInfo JTokenAnnotation = GetMethod(typeof(JToken), nameof(JToken.Annotation), new Type[0]);
         public static readonly MethodInfo JTokenIndexer = typeof(JToken).GetTypeInfo().GetDeclaredMethod("get_Item");
+        public static readonly MethodInfo JTokenSelectToken = GetMethod(typeof(JToken), nameof(JToken.SelectToken), new[] { typeof(string) });
+        public static readonly MethodInfo JTokenSelectTokens = GetMethod(typeof(JToken), nameof(JToken.SelectTokens), new[] { typeof(string) });
         public static readonly MethodInfo JTokenToObject = GetMethod(typeof(JToken), nameof(JToken.ToObject), new Type[0]);
 
         static MethodInfo GetMethod(Type type, string name, params Type[] parameters)

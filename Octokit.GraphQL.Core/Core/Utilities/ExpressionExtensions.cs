@@ -84,7 +84,7 @@ namespace Octokit.GraphQL.Core.Utilities
         /// <param name="expression">The expression.</param>
         /// <param name="fieldName">The field to return.</param>
         /// <returns>A new expression.</returns>
-        public static Expression AddIndexer(this Expression expression, string fieldName)
+        public static MethodCallExpression AddIndexer(this Expression expression, string fieldName)
         {
             if (typeof(JToken).GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
             {
@@ -114,6 +114,7 @@ namespace Octokit.GraphQL.Core.Utilities
                 LinqMethods.ToListMethod.MakeGenericMethod(itemType),
                 expression);
         }
+
 
         private static Expression AddSelectCast(Expression expression, Type type)
         {

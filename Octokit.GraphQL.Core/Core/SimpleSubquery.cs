@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Core
             Expression<Func<JObject, TResult>> expression,
             Expression<Func<JObject, JToken>> parentId,
             Expression<Func<JObject, JToken>> pageInfo,
-            Expression<Func<JObject, JToken>> parentPageInfo)
+            Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
             : base(operationDefinition, expression)
         {
             ParentId = ExpressionCompiler.Compile(parentId);
@@ -28,7 +28,7 @@ namespace Octokit.GraphQL.Core
 
         public Func<JObject, JToken> ParentId { get; }
         public Func<JObject, JToken> PageInfo { get; }
-        public Func<JObject, JToken> ParentPageInfo { get; }
+        public Func<JObject, IEnumerable<JToken>> ParentPageInfo { get; }
 
         public IQueryRunner Start(
             IConnection connection,
@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Core
             Expression expression,
             Expression<Func<JObject, JToken>> parentId,
             Expression<Func<JObject, JToken>> pageInfo,
-            Expression<Func<JObject, JToken>> parentPageInfo)
+            Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
         {
             var ctor = typeof(SimpleSubquery<>)
                 .MakeGenericType(resultType)
