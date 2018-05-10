@@ -64,11 +64,10 @@ namespace Octokit.GraphQL.Core
             return Start(connection, variables);
         }
 
-        class Runner : IQueryRunner<TResult>, ISubqueryRunner
+        protected class Runner : IQueryRunner<TResult>, ISubqueryRunner
         {
             readonly PagedQuery<TResult> owner;
             readonly IConnection connection;
-            readonly IDictionary<string, object> variables;
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
             Dictionary<ISubquery, IQueryRunner> subqueryRunners;
             Dictionary<ISubquery, List<IList>> subqueryResultSinks;
@@ -80,13 +79,14 @@ namespace Octokit.GraphQL.Core
             {
                 this.owner = owner;
                 this.connection = connection;
-                this.variables = variables;
+                this.Variables = variables;
             }
 
             public TResult Result { get; private set; }
             object IQueryRunner.Result => Result;
+            protected IDictionary<string, object> Variables { get; }
 
-            public async Task<bool> RunPage()
+            public virtual async Task<bool> RunPage()
             {
                 if (subqueryRunners == null)
                 {
@@ -95,7 +95,7 @@ namespace Octokit.GraphQL.Core
 
                     // This is the first run, so run the master page.
                     var master = owner.MasterQuery;
-                    var data = await connection.Run(master.GetPayload(variables));
+                    var data = await connection.Run(master.GetPayload(Variables));
                     var json = deserializer.Deserialize(data);
 
                     json.AddAnnotation(this);
@@ -116,7 +116,7 @@ namespace Octokit.GraphQL.Core
                             {
                                 var id = parentIds[i].ToString();
                                 var after = (string)pageInfo["endCursor"];
-                                var runner = subquery.Start(connection, id, after, variables, sinks[i]);
+                                var runner = subquery.Start(connection, id, after, Variables, sinks[i]);
                                 subqueryRunners.Add(subquery, runner);
                             }
                         }

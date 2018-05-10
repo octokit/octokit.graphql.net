@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.Core
 {
@@ -69,7 +71,13 @@ namespace Octokit.GraphQL.Core
             IDictionary<string, object> variables,
             IList result)
         {
-            throw new NotImplementedException();
+            return new SubqueryRunner(
+                this,
+                connection,
+                id,
+                after,
+                variables,
+                result);
         }
 
         internal static ISubquery Create(
@@ -94,6 +102,41 @@ namespace Octokit.GraphQL.Core
                 pageInfo,
                 parentPageInfo
             });
+        }
+
+        class SubqueryRunner : Runner
+        {
+            readonly ResponseDeserializer deserializer = new ResponseDeserializer();
+            IList finalResult;
+
+            public SubqueryRunner(
+                PagedSubquery<TResult> owner,
+                IConnection connection,
+                string id,
+                string after,
+                IDictionary<string, object> variables,
+                IList result)
+                : base(owner, connection, variables ?? new Dictionary<string, object>())
+            {
+                Variables["__id"] = id;
+                Variables["__after"] = after;
+                finalResult = result;
+            }
+
+            public override async Task<bool> RunPage()
+            {
+                var more = await base.RunPage();
+
+                if (!more)
+                {
+                    foreach (var i in (IList)Result)
+                    {
+                        finalResult.Add(i);
+                    }
+                }
+
+                return more;
+            }
         }
     }
 }
