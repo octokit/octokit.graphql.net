@@ -94,6 +94,18 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
 
             [Fact]
+            public void Creates_Subquery_ParentIds_Selector()
+            {
+                var expected = Expected(data => data.SelectTokens("$.data.repository.id"));
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentIds);
+                Assert.Equal(expected, actual.ToString());
+            }
+
+            [Fact]
             public void Creates_Subquery_PageInfo_Selector()
             {
                 var expected = Expected(data => data.SelectToken("data.node.issues.pageInfo"));

@@ -12,7 +12,7 @@ namespace Octokit.GraphQL.Core
         /// <summary>
         /// Gets a method which reads the parent IDs from the master query results.
         /// </summary>
-        Func<JObject, JToken> ParentId { get; }
+        Func<JObject, IEnumerable<JToken>> ParentIds { get; }
 
         /// <summary>
         /// Gets a method which reads the query paging information from the subquery results.

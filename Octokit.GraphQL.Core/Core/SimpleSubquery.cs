@@ -16,17 +16,17 @@ namespace Octokit.GraphQL.Core
         public SimpleSubquery(
             OperationDefinition operationDefinition,
             Expression<Func<JObject, TResult>> expression,
-            Expression<Func<JObject, JToken>> parentId,
+            Expression<Func<JObject, IEnumerable<JToken>>> parentIds,
             Expression<Func<JObject, JToken>> pageInfo,
             Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
             : base(operationDefinition, expression)
         {
-            ParentId = ExpressionCompiler.Compile(parentId);
+            ParentIds = ExpressionCompiler.Compile(parentIds);
             PageInfo = ExpressionCompiler.Compile(pageInfo);
             ParentPageInfo = ExpressionCompiler.Compile(parentPageInfo);
         }
 
-        public Func<JObject, JToken> ParentId { get; }
+        public Func<JObject, IEnumerable<JToken>> ParentIds { get; }
         public Func<JObject, JToken> PageInfo { get; }
         public Func<JObject, IEnumerable<JToken>> ParentPageInfo { get; }
 
@@ -43,7 +43,7 @@ namespace Octokit.GraphQL.Core
             Type resultType,
             OperationDefinition operationDefinition,
             Expression expression,
-            Expression<Func<JObject, JToken>> parentId,
+            Expression<Func<JObject, IEnumerable<JToken>>> parentIds,
             Expression<Func<JObject, JToken>> pageInfo,
             Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
         {
@@ -57,7 +57,7 @@ namespace Octokit.GraphQL.Core
             {
                 operationDefinition,
                 expression,
-                parentId,
+                parentIds,
                 pageInfo,
                 parentPageInfo
             });

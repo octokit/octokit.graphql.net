@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Core.Builders
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
         List<ISubquery> subqueries = new List<ISubquery>();
-        Expression<Func<JObject, JToken>> parentId;
+        Expression<Func<JObject, IEnumerable<JToken>>> parentIds;
         Expression<Func<JObject, JToken>> pageInfo;
 
         public ICompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
@@ -67,7 +67,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private ISubquery BuildSubquery(
             Expression expression,
-            Expression<Func<JObject, JToken>> parentId,
+            Expression<Func<JObject, IEnumerable<JToken>>> parentIds,
             Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
         {
             Initialize();
@@ -82,7 +82,7 @@ namespace Octokit.GraphQL.Core.Builders
                 resultType,
                 root,
                 lambda,
-                parentId,
+                parentIds,
                 pageInfo,
                 parentPageInfo);
 
@@ -96,6 +96,7 @@ namespace Octokit.GraphQL.Core.Builders
                     resultType,
                     (ICompiledQuery)master,
                     subqueries,
+                    parentIds,
                     pageInfo,
                     parentPageInfo);
             }
@@ -367,7 +368,7 @@ namespace Octokit.GraphQL.Core.Builders
                         var selections = syntax.FieldStack
                             .Select(x => x.Name)
                             .Concat(new[] { "pageInfo" });
-                        this.pageInfo = CreateSelectorExpression(selections);
+                        this.pageInfo = CreateSelectTokenExpression(selections);
                     }
 
                     var field = syntax.AddField(node.Member, alias);
@@ -389,25 +390,11 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression<Func<JObject, IEnumerable<JToken>>> CreatePageInfoExpression()
         {
-            var parameter = Expression.Parameter(typeof(JObject), "data");
-            var path = "$.data";
-
-            foreach (var field in syntax.FieldStack)
-            {
-                path += '.' + field.Name;
-                if (field.Name == "nodes") path += '.';
-            }
-
-            path += ".pageInfo";
-
-            var expression = Expression.Call(
-                parameter,
-                JsonMethods.JTokenSelectTokens,
-                Expression.Constant(path));
-            return Expression.Lambda<Func<JObject, IEnumerable<JToken>>>(expression, parameter);
+            return CreateSelectTokensExpression(
+                syntax.FieldStack.Select(x => x.Name).Concat(new[] { "pageInfo" }));
         }
 
-        private static Expression<Func<JObject, JToken>> CreateSelectorExpression(IEnumerable<string> selectors)
+        private static Expression<Func<JObject, JToken>> CreateSelectTokenExpression(IEnumerable<string> selectors)
         {
             var parameter = Expression.Parameter(typeof(JObject), "data");
             var path = "data." + string.Join(".", selectors);
@@ -416,6 +403,26 @@ namespace Octokit.GraphQL.Core.Builders
                 JsonMethods.JTokenSelectToken,
                 Expression.Constant(path));
             return Expression.Lambda<Func<JObject, JToken>>(expression, parameter);
+        }
+
+        private Expression<Func<JObject, IEnumerable<JToken>>> CreateSelectTokensExpression(IEnumerable<string> selectors)
+        {
+            var parameter = Expression.Parameter(typeof(JObject), "data");
+            var path = "$.data";
+            var lastWasNodes = false;
+
+            foreach (var field in selectors)
+            {
+                if (lastWasNodes) path += '.';
+                path += '.' + field;
+                lastWasNodes = field == "nodes";
+            }
+
+            var expression = Expression.Call(
+                parameter,
+                JsonMethods.JTokenSelectTokens,
+                Expression.Constant(path));
+            return Expression.Lambda<Func<JObject, IEnumerable<JToken>>>(expression, parameter);
         }
 
         private IEnumerable<Expression> VisitMethodArguments(MethodInfo method, ReadOnlyCollection<Expression> arguments)
@@ -537,10 +544,10 @@ namespace Octokit.GraphQL.Core.Builders
                     // this, the actual instance is in `allPages.Instance`
                     instance = Visit(allPages.Instance);
 
-                    // Add an "id" selection to the parent.
+                    // Select the "id" fields for the subquery.
                     var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
                     AddIdSelection(parentSelection.Last());
-                    parentId = CreateSelectorExpression(
+                    parentIds = CreateSelectTokensExpression(
                         parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
 
                     // Add a "first: 100" argument to the query field.
@@ -741,7 +748,7 @@ namespace Octokit.GraphQL.Core.Builders
             // Create the actual subquery.
             var nodeQuery = CreateNodeQuery(expression, selector);
             var subqueryBuilder = new QueryBuilder();
-            var subquery = subqueryBuilder.BuildSubquery(nodeQuery, parentId, parentPageInfo);
+            var subquery = subqueryBuilder.BuildSubquery(nodeQuery, parentIds, parentPageInfo);
             subqueries.Add(subquery);
             return subquery;
         }
