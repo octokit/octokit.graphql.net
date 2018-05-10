@@ -586,6 +586,119 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var actual = ExpressionCompiler.GetSourceExpression(subqueries[1].ParentPageInfo);
                 Assert.Equal(expected, actual.ToString());
             }
+
+            [Fact]
+            public async Task Reads_All_Pages()
+            {
+                int page = 0;
+
+                string CreateComment(int index)
+                {
+                    return @"
+                { body: ""comment " + index + "\"}";
+                }
+
+                string CreateIssue(int number, int commentCount, bool hasNextPage)
+                {
+                    return @"
+          {
+            id: ""comment" + number + @""",
+            number: " + number + @",
+            comments: {
+              ""pageInfo"": {
+                ""hasNextPage"": " + hasNextPage.ToString().ToLower() + @",
+                ""endCursor"": """ + "comment_end" + number + @"""
+              },
+              ""nodes"": [" + 
+                string.Join(",", Enumerable.Range(number * 10, commentCount).Select(x => CreateComment(x))) + @"
+              ]
+            }
+          }";
+                }
+
+                string Execute(string query, IDictionary<string, string> variables)
+                {
+                    switch (page++)
+                    {
+                        case 0:
+                            Assert.Null(variables);
+                            return @"{
+  data: {
+    ""repository"": {
+      ""id"": ""repoid"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": true,
+          ""endCursor"": ""issue_end0""
+        },
+        ""nodes"": [" +
+            CreateIssue(1, 1, false) + "," +
+            CreateIssue(2, 3, true) + "," +
+            CreateIssue(3, 0, false) + @"
+        ]
+      }
+    }
+  }
+}";
+                        case 1:
+                            Assert.NotNull(variables);
+                            Assert.Equal("comment2", variables["__id"]);
+                            Assert.Equal("comment_end2", variables["__after"]);
+                            return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""Issue"",
+      ""comments"": {
+        ""pageInfo"": {
+          ""hasNextPage"": false,
+          ""endCursor"": ""comment_end""
+        },
+        ""nodes"": [" +
+            CreateComment(23) + "," +
+            CreateComment(24) + @"
+        ]
+      }
+    }
+  }
+}";
+
+                        case 2:
+                            Assert.NotNull(variables);
+                            Assert.Equal("repoid", variables["__id"]);
+                            Assert.Equal("issue_end0", variables["__after"]);
+                            return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""Repository"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": false,
+          ""endCursor"": ""issue_end1""
+        },
+        ""nodes"": [" +
+            CreateIssue(4, 0, false) + ","  +
+            CreateIssue(5, 0, false) + @"
+        ]
+      }
+    }
+  }
+}";
+
+                        default:
+                            throw new NotSupportedException("Should not get here");
+                    }
+                }
+
+                var connection = new MockConnection(Execute);
+                var result = (await connection.Run(TestQuery)).ToList();
+
+                Assert.Equal(Enumerable.Range(1, 5).ToList(), result.Select(x => x.Number).ToList());
+                Assert.Single(result[0].Comments);
+                Assert.Equal(5, result[1].Comments.Count);
+                Assert.Empty(result[2].Comments);
+                Assert.Empty(result[3].Comments);
+                Assert.Empty(result[4].Comments);
+            }
         }
 
         private static string Expected<T>(Expression<Func<JObject, T>> expression)

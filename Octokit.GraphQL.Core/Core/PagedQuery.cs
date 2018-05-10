@@ -69,7 +69,7 @@ namespace Octokit.GraphQL.Core
             readonly PagedQuery<TResult> owner;
             readonly IConnection connection;
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
-            Dictionary<ISubquery, IQueryRunner> subqueryRunners;
+            Stack<IQueryRunner> subqueryRunners;
             Dictionary<ISubquery, List<IList>> subqueryResultSinks;
 
             public Runner(
@@ -90,7 +90,7 @@ namespace Octokit.GraphQL.Core
             {
                 if (subqueryRunners == null)
                 {
-                    subqueryRunners = new Dictionary<ISubquery, IQueryRunner>();
+                    subqueryRunners = new Stack<IQueryRunner>();
                     subqueryResultSinks = new Dictionary<ISubquery, List<IList>>();
 
                     // This is the first run, so run the master page.
@@ -117,7 +117,7 @@ namespace Octokit.GraphQL.Core
                                 var id = parentIds[i].ToString();
                                 var after = (string)pageInfo["endCursor"];
                                 var runner = subquery.Start(connection, id, after, Variables, sinks[i]);
-                                subqueryRunners.Add(subquery, runner);
+                                subqueryRunners.Push(runner);
                             }
                         }
                     }
@@ -125,14 +125,12 @@ namespace Octokit.GraphQL.Core
                 else
                 {
                     // Get the next subquery runner.
-                    var item = subqueryRunners.First();
-                    var subquery = item.Key;
-                    var runner = item.Value;
+                    var runner = subqueryRunners.Peek();
 
-                    // Run its next page and remove from the active runners if finished.
+                    // Run its next page and pop it from the active runners if finished.
                     if (!await runner.RunPage())
                     {
-                        subqueryRunners.Remove(subquery);
+                        subqueryRunners.Pop();
                     }
                 }
 
