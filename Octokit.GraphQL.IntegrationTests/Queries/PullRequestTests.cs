@@ -75,5 +75,30 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             Assert.Equal("octokit", result);
         }
+
+        [IntegrationTest]
+        public async Task Can_AutoPage_Reviews_Comments()
+        {
+            // nodegit/nodegit#1331 has a review with >100 comments.
+            var query = new Query()
+                .Repository("nodegit", "nodegit")
+                .PullRequest(1331)
+                .Select(pr => new
+                {
+                    pr.Title,
+                    Reviews = pr.Reviews(null, null, null, null, null, null).AllPages().Select(review => new
+                    {
+                        Comments = review.Comments(null, null, null, null).AllPages().Select(comment => new
+                        {
+                            comment.Body,
+                        }).ToList(),
+                    }).ToList(),
+                });
+
+            var result = await Connection.Run(query);
+
+            Assert.True(result.Reviews.Count > 0);
+            Assert.True(result.Reviews[0].Comments.Count > 100);
+        }
     }
 }
