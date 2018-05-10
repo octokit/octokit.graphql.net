@@ -20,11 +20,17 @@ namespace Octokit.GraphQL.Core
             ParentPageInfo = parentPageInfo.Compile();
         }
 
+        public Func<JObject, JToken> ParentId { get; }
+
         public Func<JObject, JToken> PageInfo { get; }
 
         public Func<JObject, JToken> ParentPageInfo { get; }
 
-        public IQueryRunner Start(IConnection connection, string after, IDictionary<string, object> variables)
+        public IQueryRunner Start(
+            IConnection connection,
+            string id,
+            string after,
+            IDictionary<string, object> variables)
         {
             throw new NotImplementedException();
         }

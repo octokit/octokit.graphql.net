@@ -20,6 +20,7 @@ namespace Octokit.GraphQL.Core.Builders
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
         List<ISubquery> subqueries = new List<ISubquery>();
+        Expression<Func<JObject, JToken>> parentId;
         Expression<Func<JObject, JToken>> pageInfo;
 
         public ICompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
@@ -66,6 +67,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private ISubquery BuildSubquery(
             Expression expression,
+            Expression<Func<JObject, JToken>> parentId,
             Expression<Func<JObject, JToken>> parentPageInfo)
         {
             Initialize();
@@ -80,6 +82,7 @@ namespace Octokit.GraphQL.Core.Builders
                 resultType,
                 root,
                 lambda,
+                parentId,
                 pageInfo,
                 parentPageInfo);
 
@@ -522,6 +525,12 @@ namespace Octokit.GraphQL.Core.Builders
                     // this, the actual instance is in `allPages.Instance`
                     instance = Visit(allPages.Instance);
 
+                    // Add an "id" selection to the parent.
+                    var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
+                    AddIdSelection(parentSelection.Last());
+                    parentId = CreateSelectorExpression(
+                        parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
+
                     // Add a "first: 100" argument to the query field.
                     syntax.AddArgument("first", MaxPageSize);
 
@@ -690,6 +699,14 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
+        private void AddIdSelection(ISelectionSet set)
+        {
+            if (!set.Selections.OfType<FieldSelection>().Any(x => x.Name == "id"))
+            {
+                set.Selections.Insert(0, new FieldSelection("id", null));
+            }
+        }
+
         private ISubquery AddSubquery(
             MethodCallExpression expression,
             MethodCallExpression selector,
@@ -704,7 +721,7 @@ namespace Octokit.GraphQL.Core.Builders
             // Create the actual subquery.
             var nodeQuery = CreateNodeQuery(expression, selector);
             var subqueryBuilder = new QueryBuilder();
-            var subquery = subqueryBuilder.BuildSubquery(nodeQuery, parentPageInfo);
+            var subquery = subqueryBuilder.BuildSubquery(nodeQuery, parentId, parentPageInfo);
             subqueries.Add(subquery);
             return subquery;
         }

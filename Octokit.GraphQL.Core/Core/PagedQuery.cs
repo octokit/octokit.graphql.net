@@ -80,8 +80,9 @@ namespace Octokit.GraphQL.Core
 
                         if ((bool)pageInfo["hasNextPage"] == true)
                         {
+                            var id = subquery.ParentId(json).ToString();
                             var after = (string)pageInfo["endCursor"];
-                            var runner = subquery.Start(connection, after, variables);
+                            var runner = subquery.Start(connection, id, after, variables);
                             subqueryRunners.Add(subquery, runner);
                         }
                     }

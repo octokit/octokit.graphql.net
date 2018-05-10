@@ -15,27 +15,34 @@ namespace Octokit.GraphQL.Core
         public SimpleSubquery(
             OperationDefinition operationDefinition,
             Expression<Func<JObject, TResult>> expression,
+            Expression<Func<JObject, JToken>> parentId,
             Expression<Func<JObject, JToken>> pageInfo,
             Expression<Func<JObject, JToken>> parentPageInfo)
             : base(operationDefinition, expression)
         {
+            ParentId = parentId.Compile();
             PageInfo = pageInfo.Compile();
             ParentPageInfo = parentPageInfo.Compile();
         }
 
+        public Func<JObject, JToken> ParentId { get; }
         public Func<JObject, JToken> PageInfo { get; }
-        
         public Func<JObject, JToken> ParentPageInfo { get; }
 
-        public IQueryRunner Start(IConnection connection, string after, IDictionary<string, object> variables)
+        public IQueryRunner Start(
+            IConnection connection,
+            string id,
+            string after,
+            IDictionary<string, object> variables)
         {
-            return new Runner(this, connection, after, variables);
+            return new Runner(this, connection, id, after, variables);
         }
 
         public static ISubquery Create(
             Type resultType,
             OperationDefinition operationDefinition,
             Expression expression,
+            Expression<Func<JObject, JToken>> parentId,
             Expression<Func<JObject, JToken>> pageInfo,
             Expression<Func<JObject, JToken>> parentPageInfo)
         {
@@ -49,6 +56,7 @@ namespace Octokit.GraphQL.Core
             {
                 operationDefinition,
                 expression,
+                parentId,
                 pageInfo,
                 parentPageInfo
             });
@@ -64,6 +72,7 @@ namespace Octokit.GraphQL.Core
             public Runner(
                SimpleSubquery<TResult> owner,
                IConnection connection,
+               string id,
                string after,
                IDictionary<string, object> variables)
             {
@@ -71,6 +80,7 @@ namespace Octokit.GraphQL.Core
                 this.connection = connection;
                 this.variables = variables?.ToDictionary(x => x.Key, x => x.Value) ?? 
                     new Dictionary<string, object>();
+                this.variables["__id"] = id;
                 this.variables["__after"] = after;
             }
 

@@ -10,6 +10,11 @@ namespace Octokit.GraphQL.Core
     public interface ISubquery
     {
         /// <summary>
+        /// Gets a method which reads the parent ID from the master query results.
+        /// </summary>
+        Func<JObject, JToken> ParentId { get; }
+
+        /// <summary>
         /// Gets a method which reads the query paging information from subquery results.
         /// </summary>
         Func<JObject, JToken> PageInfo { get; }
@@ -23,11 +28,13 @@ namespace Octokit.GraphQL.Core
         /// Gets a query runner to run the query to completion.
         /// </summary>
         /// <param name="connection">The connection on which to run the query.</param>
+        /// <param name="id">The ID of the parent object.</param>
         /// <param name="after">The end cursor from the master query.</param>
         /// <param name="variables">The query variables.</param>
         /// <returns>An <see cref="IQueryRunner"/>.</returns>
         IQueryRunner Start(
             IConnection connection,
+            string id,
             string after,
             IDictionary<string, object> variables);
     }

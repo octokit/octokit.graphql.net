@@ -28,6 +28,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
+    id
     issues(first: 100) {
       pageInfo {
         hasNextPage
@@ -121,6 +122,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                             return @"{
   data: {
     ""repository"": {
+      ""id"": ""repoid"",
       ""issues"": {
         ""pageInfo"": {
           ""hasNextPage"": true,
@@ -137,6 +139,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
                         case 1:
                             Assert.NotNull(variables);
+                            Assert.Equal(variables["__id"], "repoid");
                             Assert.Equal(variables["__after"], "end0");
                             return @"{
   data: {
@@ -204,6 +207,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
+    id
     name
     issues(labels: [""bug""], first: 100) {
       pageInfo {
@@ -307,6 +311,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                             return @"{
   data: {
     ""repository"": {
+      ""id"": ""repoid"",
       ""name"": ""foo"",
       ""issues"": {
         ""pageInfo"": {
@@ -324,6 +329,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
                         case 1:
                             Assert.NotNull(variables);
+                            Assert.Equal(variables["__id"], "repoid");
                             Assert.Equal(variables["__after"], "end0");
                             return @"{
   data: {
@@ -377,12 +383,14 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
+    id
     issues(first: 100) {
       pageInfo {
         hasNextPage
         endCursor
       }
       nodes {
+        id
         number
         comments(first: 100) {
           pageInfo {
@@ -444,6 +452,7 @@ namespace Octokit.GraphQL.Core.UnitTests
           endCursor
         }
         nodes {
+          id
           number
           comments(first: 100) {
             pageInfo {
