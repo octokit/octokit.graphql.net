@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.Core
@@ -26,6 +25,8 @@ namespace Octokit.GraphQL.Core
             return new Runner(this, connection, variables);
         }
 
+        public override string ToString() => ToString(2);
+ 
         public string ToString(int indentation)
         {
             return MasterQuery.ToString(indentation);
@@ -38,19 +39,19 @@ namespace Octokit.GraphQL.Core
 
         class Runner : IQueryRunner<TResult>, IPagedQueryContext
         {
-            readonly PagedQuery<TResult> parent;
+            readonly PagedQuery<TResult> owner;
             readonly IConnection connection;
             readonly IDictionary<string, object> variables;
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
             Dictionary<ISubquery, IQueryRunner> subqueryRunners;
-            Dictionary<ISubquery, IList> subqueryResults;
+            Dictionary<ISubquery, List<IList>> subqueryResultSinks;
 
             public Runner(
-                PagedQuery<TResult> parent,
+                PagedQuery<TResult> owner,
                 IConnection connection,
                 IDictionary<string, object> variables)
             {
-                this.parent = parent;
+                this.owner = owner;
                 this.connection = connection;
                 this.variables = variables;
             }
@@ -63,21 +64,22 @@ namespace Octokit.GraphQL.Core
                 if (subqueryRunners == null)
                 {
                     subqueryRunners = new Dictionary<ISubquery, IQueryRunner>();
-                    subqueryResults = new Dictionary<ISubquery, IList>();
+                    subqueryResultSinks = new Dictionary<ISubquery, List<IList>>();
 
                     // This is the first run, so run the master page.
-                    var master = parent.MasterQuery;
+                    var master = owner.MasterQuery;
                     var data = await connection.Run(master.GetPayload(variables));
-                    var json = JObject.Parse(data);
+                    var json = deserializer.Deserialize(data);
 
                     json.AddAnnotation(this);
                     Result = deserializer.Deserialize(master.ResultBuilder, json);
 
                     // Look through each subquery for any results that have a next page.
-                    foreach (var subquery in parent.Subqueries)
+                    foreach (var subquery in owner.Subqueries)
                     {
                         var pageInfos = subquery.ParentPageInfo(json).ToList();
                         var parentIds = subquery.ParentIds(json).ToList();
+                        var sinks = subqueryResultSinks[subquery];
 
                         for (var i = 0; i < pageInfos.Count; ++i)
                         {
@@ -87,21 +89,10 @@ namespace Octokit.GraphQL.Core
                             {
                                 var id = parentIds[i].ToString();
                                 var after = (string)pageInfo["endCursor"];
-                                var runner = subquery.Start(connection, id, after, variables);
+                                var runner = subquery.Start(connection, id, after, variables, sinks[i]);
                                 subqueryRunners.Add(subquery, runner);
                             }
                         }
-
-                        //foreach (var pageInfo in pageInfos)
-                        //{
-                        //    if ((bool)pageInfo["hasNextPage"] == true)
-                        //    {
-                        //        var id = subquery.ParentIds(json).ToString();
-                        //        var after = (string)pageInfo["endCursor"];
-                        //        var runner = subquery.Start(connection, id, after, variables);
-                        //        subqueryRunners.Add(subquery, runner);
-                        //    }
-                        //}
                     }
                 }
                 else
@@ -116,11 +107,6 @@ namespace Octokit.GraphQL.Core
                     {
                         subqueryRunners.Remove(subquery);
                     }
-
-                    // Copy its results to the final results.
-                    var data = (IList)runner.Result;
-                    var results = subqueryResults[subquery];
-                    foreach (var i in data) results.Add(i);
                 }
 
                 return subqueryRunners.Count > 0;
@@ -128,7 +114,13 @@ namespace Octokit.GraphQL.Core
 
             public void SetQueryResultSink(ISubquery query, IList result)
             {
-                subqueryResults[query] = result;
+                if (!subqueryResultSinks.TryGetValue(query, out var value))
+                {
+                    value = new List<IList>();
+                    subqueryResultSinks.Add(query, value);
+                }
+
+                value.Add(result);
             }
         }
     }

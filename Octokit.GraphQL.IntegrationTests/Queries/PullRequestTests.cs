@@ -93,7 +93,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                             comment.Body,
                         }).ToList(),
                     }).ToList(),
-                });
+                }).Compile();
 
             var result = await Connection.Run(query);
 

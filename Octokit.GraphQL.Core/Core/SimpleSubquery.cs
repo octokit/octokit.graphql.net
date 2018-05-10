@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -34,9 +35,10 @@ namespace Octokit.GraphQL.Core
             IConnection connection,
             string id,
             string after,
-            IDictionary<string, object> variables)
+            IDictionary<string, object> variables,
+            IList result)
         {
-            return new Runner(this, connection, id, after, variables);
+            return new Runner(this, connection, id, after, variables, result);
         }
 
         public static ISubquery Create(
@@ -69,13 +71,15 @@ namespace Octokit.GraphQL.Core
             readonly IConnection connection;
             readonly Dictionary<string, object> variables;
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
+            IList finalResult;
 
             public Runner(
                SimpleSubquery<TResult> owner,
                IConnection connection,
                string id,
                string after,
-               IDictionary<string, object> variables)
+               IDictionary<string, object> variables,
+               IList result)
             {
                 this.owner = owner;
                 this.connection = connection;
@@ -83,6 +87,7 @@ namespace Octokit.GraphQL.Core
                     new Dictionary<string, object>();
                 this.variables["__id"] = id;
                 this.variables["__after"] = after;
+                finalResult = result;
             }
 
             public TResult Result { get; private set; }
@@ -97,6 +102,11 @@ namespace Octokit.GraphQL.Core
                 var pageInfo = owner.PageInfo(json);
 
                 Result = owner.ResultBuilder(json);
+
+                foreach (var i in (IList)Result)
+                {
+                    finalResult.Add(i);
+                }
 
                 if ((bool)pageInfo["hasNextPage"] == true)
                 {

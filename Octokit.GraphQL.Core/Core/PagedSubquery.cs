@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -33,7 +34,8 @@ namespace Octokit.GraphQL.Core
             IConnection connection,
             string id,
             string after,
-            IDictionary<string, object> variables)
+            IDictionary<string, object> variables,
+            IList result)
         {
             throw new NotImplementedException();
         }

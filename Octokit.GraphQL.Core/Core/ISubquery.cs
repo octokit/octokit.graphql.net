@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
@@ -25,17 +26,19 @@ namespace Octokit.GraphQL.Core
         Func<JObject, IEnumerable<JToken>> ParentPageInfo { get; }
 
         /// <summary>
-        /// Gets a query runner to run the query to completion.
+        /// Gets a query runner to run the subquery to completion.
         /// </summary>
         /// <param name="connection">The connection on which to run the query.</param>
         /// <param name="id">The ID of the parent object.</param>
         /// <param name="after">The end cursor from the master query.</param>
         /// <param name="variables">The query variables.</param>
+        /// <param name="results">The collection to which to add the results.</param>
         /// <returns>An <see cref="IQueryRunner"/>.</returns>
         IQueryRunner Start(
             IConnection connection,
             string id,
             string after,
-            IDictionary<string, object> variables);
+            IDictionary<string, object> variables,
+            IList results);
     }
 }
