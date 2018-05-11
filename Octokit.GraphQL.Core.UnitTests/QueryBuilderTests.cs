@@ -197,7 +197,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Inline_Fragment()
         {
-            var expected = "query{queryItems{... on NestedData{__typename id nestedItems{name}}}}";
+            var expected = "query{queryItems{__typename ... on NestedData{id nestedItems{name}}}}";
 
             var expression = new TestQuery()
                 .QueryItems
@@ -446,8 +446,8 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             var expected = @"query {
   union {
+    __typename
     ... on Simple {
-      __typename
       name
       description
     }
@@ -473,8 +473,8 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             var expected = @"query {
   union {
+    __typename
     ... on Simple {
-      __typename
       name
     }
   }
@@ -494,8 +494,8 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             var expected = @"query {
   union {
+    __typename
     ... on Simple {
-      __typename
       name
     }
   }
@@ -560,8 +560,8 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             var expected = @"query {
   node(id: 123) {
+    __typename
     ... on Simple {
-      __typename
       name
     }
   }
