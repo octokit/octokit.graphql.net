@@ -63,7 +63,7 @@ namespace PagingDemo
 
             var connection = new DemoConnection();
 
-            // Fetch the master page.
+            // Fetch all results.
             var result = await connection.Run(master);
 
             Console.WriteLine();
