@@ -602,7 +602,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 {
                     return @"
           {
-            id: ""comment" + number + @""",
+            id: ""issue" + number + @""",
             number: " + number + @",
             comments: {
               ""pageInfo"": {
@@ -642,7 +642,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
                         case 1:
                             Assert.NotNull(variables);
-                            Assert.Equal("comment2", variables["__id"]);
+                            Assert.Equal("issue2", variables["__id"]);
                             Assert.Equal("comment_end2", variables["__after"]);
                             return @"{
   data: {
