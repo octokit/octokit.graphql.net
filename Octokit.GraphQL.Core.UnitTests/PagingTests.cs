@@ -403,6 +403,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Number = issue.Number,
                     Comments = issue.Comments(null, null, null, null).AllPages().Select(comment => new CommentModel
                     {
+                        Id = comment.Id.ToString(),
                         Body = comment.Body,
                     }).ToList(),
                 })
@@ -433,6 +434,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             endCursor
           }
           nodes {
+            id
             body
           }
         }
@@ -495,6 +497,7 @@ namespace Octokit.GraphQL.Core.UnitTests
               endCursor
             }
             nodes {
+              id
               body
             }
           }
@@ -550,6 +553,7 @@ namespace Octokit.GraphQL.Core.UnitTests
           endCursor
         }
         nodes {
+          id
           body
         }
       }
@@ -578,7 +582,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_2_ParentPageInfo_Selector()
             {
-                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.nodes..comments.pageInfo"));
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.nodes.[*].comments.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
@@ -595,14 +599,17 @@ namespace Octokit.GraphQL.Core.UnitTests
                 string CreateComment(int index)
                 {
                     return @"
-                { body: ""comment " + index + "\"}";
+                { 
+                  id: ""comment" + index + @""",
+                  body: ""comment " + index + @""" 
+                }";
                 }
 
                 string CreateIssue(int number, int commentCount, bool hasNextPage)
                 {
                     return @"
           {
-            id: ""comment" + number + @""",
+            id: ""issue" + number + @""",
             number: " + number + @",
             comments: {
               ""pageInfo"": {
@@ -642,7 +649,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
                         case 1:
                             Assert.NotNull(variables);
-                            Assert.Equal("comment2", variables["__id"]);
+                            Assert.Equal("issue2", variables["__id"]);
                             Assert.Equal("comment_end2", variables["__after"]);
                             return @"{
   data: {
@@ -726,6 +733,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         class CommentModel
         {
+            public string Id { get; set; }
             public string Body { get; set; }
         }
     }

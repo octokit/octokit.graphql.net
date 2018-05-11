@@ -413,7 +413,7 @@ namespace Octokit.GraphQL.Core.Builders
 
             foreach (var field in selectors)
             {
-                if (lastWasNodes) path += '.';
+                if (lastWasNodes) path += ".[*]";
                 path += '.' + field;
                 lastWasNodes = field == "nodes";
             }
