@@ -26,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{369B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Octokit.GraphQL.IntegrationTests", "Octokit.GraphQL.IntegrationTests\Octokit.GraphQL.IntegrationTests.csproj", "{0F2FA8AF-A3A7-4023-A233-A630CB150224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagingDemo", "PagingDemo\PagingDemo.csproj", "{0E7F847B-CB5F-4938-AFE3-F3481EB2B71D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagingDemo", "PagingDemo\PagingDemo.csproj", "{F134D92A-72B6-4885-9973-086F0C6513AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,10 +66,10 @@ Global
 		{0F2FA8AF-A3A7-4023-A233-A630CB150224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F2FA8AF-A3A7-4023-A233-A630CB150224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F2FA8AF-A3A7-4023-A233-A630CB150224}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E7F847B-CB5F-4938-AFE3-F3481EB2B71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E7F847B-CB5F-4938-AFE3-F3481EB2B71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E7F847B-CB5F-4938-AFE3-F3481EB2B71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E7F847B-CB5F-4938-AFE3-F3481EB2B71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F134D92A-72B6-4885-9973-086F0C6513AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F134D92A-72B6-4885-9973-086F0C6513AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F134D92A-72B6-4885-9973-086F0C6513AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F134D92A-72B6-4885-9973-086F0C6513AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +78,6 @@ Global
 		{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3} = {516AB6AE-153D-4776-B861-DF653A0E54BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6D19DC80-697D-45A1-BF30-A32D37C10BE7}
+		SolutionGuid = {81263BD2-9110-4EE0-8B01-2B67C9716C56}
 	EndGlobalSection
 EndGlobal
