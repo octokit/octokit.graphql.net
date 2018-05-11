@@ -582,7 +582,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_2_ParentPageInfo_Selector()
             {
-                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.nodes..comments.pageInfo"));
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.nodes.[*].comments.pageInfo"));
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
