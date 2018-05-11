@@ -115,6 +115,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     {
                         Comments = review.Comments(null, null, null, null).AllPages().Select(comment => new
                         {
+                            comment.Id,
                             comment.Body,
                         }).ToList(),
                     }).ToList(),

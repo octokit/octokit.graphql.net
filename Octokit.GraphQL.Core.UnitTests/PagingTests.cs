@@ -403,6 +403,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     Number = issue.Number,
                     Comments = issue.Comments(null, null, null, null).AllPages().Select(comment => new CommentModel
                     {
+                        Id = comment.Id.ToString(),
                         Body = comment.Body,
                     }).ToList(),
                 })
@@ -433,6 +434,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             endCursor
           }
           nodes {
+            id
             body
           }
         }
@@ -495,6 +497,7 @@ namespace Octokit.GraphQL.Core.UnitTests
               endCursor
             }
             nodes {
+              id
               body
             }
           }
@@ -550,6 +553,7 @@ namespace Octokit.GraphQL.Core.UnitTests
           endCursor
         }
         nodes {
+          id
           body
         }
       }
@@ -595,7 +599,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                 string CreateComment(int index)
                 {
                     return @"
-                { body: ""comment " + index + "\"}";
+                { 
+                  id: ""comment" + index + @""",
+                  body: ""comment " + index + @""" 
+                }";
                 }
 
                 string CreateIssue(int number, int commentCount, bool hasNextPage)
@@ -726,6 +733,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         class CommentModel
         {
+            public string Id { get; set; }
             public string Body { get; set; }
         }
     }
