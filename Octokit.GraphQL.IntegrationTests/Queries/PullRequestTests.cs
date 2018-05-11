@@ -100,5 +100,30 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.True(result.Reviews.Count > 0);
             Assert.True(result.Reviews[0].Comments.Count > 100);
         }
+
+        [IntegrationTest]
+        public async Task Can_AutoPage_Reviews_Comments_2()
+        {
+            // Microsoft/MixedRealityToolkit-Unity#1884 has >100 reviews, one of which has >100 comments.
+            var query = new Query()
+                .Repository("Microsoft", "MixedRealityToolkit-Unity")
+                .PullRequest(1884)
+                .Select(pr => new
+                {
+                    pr.Title,
+                    Reviews = pr.Reviews(null, null, null, null, null, null).AllPages().Select(review => new
+                    {
+                        Comments = review.Comments(null, null, null, null).AllPages().Select(comment => new
+                        {
+                            comment.Body,
+                        }).ToList(),
+                    }).ToList(),
+                }).Compile();
+
+            var result = await Connection.Run(query);
+
+            Assert.True(result.Reviews.Count > 100);
+            Assert.True(result.Reviews.Any(x => x.Comments.Count > 100));
+        }
     }
 }
