@@ -48,7 +48,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected, master.ToString());
+                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact(Skip = "Need a better way to compare expressions")]
@@ -90,7 +90,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ToString());
+                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -249,7 +249,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected, master.ToString());
+                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact(Skip = "Need a better way to compare expressions")]
@@ -300,7 +300,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ToString());
+                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -443,7 +443,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var master = TestQuery.GetMasterQuery();
 
-                Assert.Equal(expected, master.ToString());
+                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact(Skip = "Need a better way to compare expressions")]
@@ -510,7 +510,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.IsType<PagedSubquery<IEnumerable<IssueModel>>>(subqueries[0]);
 
                 var query = (PagedSubquery<IEnumerable<IssueModel>>)subqueries[0];
-                Assert.Equal(expected, query.GetMasterQuery().ToString());
+                Assert.Equal(expected, query.GetMasterQuery().ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -560,7 +560,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var subqueries = TestQuery.GetSubqueries();
 
                 Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected, subqueries[1].ToString());
+                Assert.Equal(expected, subqueries[1].ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
