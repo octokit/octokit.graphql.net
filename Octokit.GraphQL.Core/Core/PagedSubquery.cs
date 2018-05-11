@@ -106,7 +106,6 @@ namespace Octokit.GraphQL.Core
 
         class SubqueryRunner : Runner
         {
-            readonly ResponseDeserializer deserializer = new ResponseDeserializer();
             IList finalResult;
 
             public SubqueryRunner(

@@ -8,7 +8,7 @@ namespace Octokit.GraphQL.Core
     /// <summary>
     /// Represents a query which fetches subsequent pages of data after a master query has run.
     /// </summary>
-    public interface ISubquery
+    public interface ISubquery : ICompiledQuery
     {
         /// <summary>
         /// Gets a method which reads the parent IDs from the master query results.

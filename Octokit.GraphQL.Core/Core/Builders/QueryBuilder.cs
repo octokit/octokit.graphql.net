@@ -94,7 +94,7 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 return PagedSubquery<object>.Create(
                     resultType,
-                    (ICompiledQuery)master,
+                    master,
                     subqueries,
                     parentIds,
                     pageInfo,
