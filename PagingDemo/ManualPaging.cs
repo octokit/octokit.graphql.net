@@ -137,9 +137,7 @@ namespace PagingDemo
                     }).ToList(),
                 }).Compile();
 
-            var connection = new Connection(
-                new ProductHeaderValue("PagingDemo", "0.0"),
-                Environment.GetEnvironmentVariable("OCTOKIT_GQL_OAUTHTOKEN"));
+            var connection = new DemoConnection();
 
             // Fetch the master page.
             var result = await connection.Run(master);
@@ -185,6 +183,7 @@ namespace PagingDemo
                 }
             }
 
+            Console.WriteLine();
             Console.WriteLine($"Read {result.Reviews.Count} reviews.");
             Console.WriteLine($"Most comments per review was {result.Reviews.Max(x => x.Comments.Count)}.");
         }

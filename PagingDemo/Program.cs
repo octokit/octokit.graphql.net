@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Octokit.GraphQL;
-using PagingDemo.Models;
 
 namespace PagingDemo
 {
@@ -9,7 +7,7 @@ namespace PagingDemo
     {
         static async Task Main(string[] args)
         {
-            await ManualPaging.Run();
+            await AutoPaging.Run();
             Console.ReadKey();
         }
     }

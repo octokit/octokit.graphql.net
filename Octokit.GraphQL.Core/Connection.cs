@@ -39,7 +39,7 @@ namespace Octokit.GraphQL
         protected ICredentialStore CredentialStore { get; }
         protected HttpClient HttpClient { get; }
 
-        public async Task<string> Run(string query)
+        public virtual async Task<string> Run(string query)
         {
             var token = await CredentialStore.GetCredentials();
 
