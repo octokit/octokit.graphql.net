@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.Core
 {
@@ -115,7 +116,9 @@ namespace Octokit.GraphQL.Core
 
             public async Task<bool> RunPage()
             {
-                Result = await connection.Run(parent.GetPayload(variables), parent.ResultBuilder);
+                var deserializer = new ResponseDeserializer();
+                var data = await connection.Run(parent.GetPayload(variables));
+                Result = deserializer.Deserialize(parent.ResultBuilder, data);
                 return false;
             }
         }

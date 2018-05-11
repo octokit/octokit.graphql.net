@@ -42,13 +42,6 @@ namespace Octokit.GraphQL
         protected ICredentialStore CredentialStore { get; }
         protected HttpClient HttpClient { get; }
 
-        public virtual async Task<T> Run<T>(string query, Func<JObject, T> deserialize)
-        {
-            var data = await Run(query);
-            var deserializer = new ResponseDeserializer();
-            return deserializer.Deserialize(deserialize, data);
-        }
-
         public async Task<string> Run(string query)
         {
             var token = await CredentialStore.GetCredentials();
