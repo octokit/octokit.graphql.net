@@ -5,6 +5,11 @@ namespace Octokit.GraphQL.Core
     /// <summary>
     /// Denotes a GraphQL connection entity.
     /// </summary>
+    /// <remarks>
+    /// Note that "connection" here refers to a "cursor connection" as defined by the 
+    /// [Relay Cursor Connections Sepecification](http://facebook.github.io/relay/graphql/connections.htm)
+    /// rather than an <see cref="IConnection"/>.
+    /// </remarks>
     public interface IPagingConnection : IQueryableValue
     {
         /// <summary>
