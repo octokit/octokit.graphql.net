@@ -135,11 +135,9 @@ namespace Octokit.GraphQL.Core.Generation
             if (generate && !string.IsNullOrWhiteSpace(type.Description))
             {
                 var builder = new StringBuilder();
-                builder.AppendLine("/// <summary>");
-                GenerateDocComments(type.Description, 4, builder);
-                builder.AppendLine(@"    /// </summary>");
+                DocCommentGenerator.GenerateSummary(type.Description, 4, builder);
                 builder.Append("    ");
-                return builder.ToString();
+                return builder.ToString().TrimStart();
             }
             else
             {
@@ -151,10 +149,8 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(field.Description))
             {
-                var builder = new StringBuilder($@"        /// <summary>");
-                builder.AppendLine();
-                GenerateDocComments(field.Description, 8, builder);
-                builder.AppendLine(@"        /// </summary>");
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(field.Description, 8, builder);
 
                 if (field.Args != null)
                 {
