@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
@@ -1730,6 +1731,44 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     new TypeModel { Name = "Foo" },
                     new TypeModel { Name = "Bar" },
                 }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
+        public void Adds_IPagingConnection_Interface()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                @"
+        public IQueryableList<Node> Nodes => this.CreateProperty(x => x.Nodes);
+
+        public PageInfo PageInfo => this.CreateProperty(x => x.PageInfo, Test.PageInfo.Create);
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
+",
+                ", IPagingConnection<Node>");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "nodes",
+                        Type = TypeModel.List(TypeModel.Object("Node")),
+                    },
+                    new FieldModel
+                    {
+                        Name = "pageInfo",
+                        Type = TypeModel.NonNull(TypeModel.Object("PageInfo")),
+                    },
+                },
             };
 
             var result = CodeGenerator.Generate(model, "Test", null);
