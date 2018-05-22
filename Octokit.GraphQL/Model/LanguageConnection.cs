@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of languages associated with the parent.
     /// </summary>
-    public class LanguageConnection : QueryableValue<LanguageConnection>
+    public class LanguageConnection : QueryableValue<LanguageConnection>, IPagingConnection<Language>
     {
         public LanguageConnection(Expression expression) : base(expression)
         {
@@ -39,6 +39,8 @@ namespace Octokit.GraphQL.Model
         /// The total size in bytes of files written in that language.
         /// </summary>
         public int TotalSize { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static LanguageConnection Create(Expression expression)
         {

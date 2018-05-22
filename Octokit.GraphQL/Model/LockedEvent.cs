@@ -28,6 +28,11 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Reason that the conversation was locked (optional).
+        /// </summary>
+        public LockReason? LockReason { get; }
+
+        /// <summary>
         /// Object that was locked.
         /// </summary>
         public ILockable Lockable => this.CreateProperty(x => x.Lockable, Octokit.GraphQL.Model.Internal.StubILockable.Create);

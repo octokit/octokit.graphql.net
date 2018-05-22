@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Label.
     /// </summary>
-    public class LabelConnection : QueryableValue<LabelConnection>
+    public class LabelConnection : QueryableValue<LabelConnection>, IPagingConnection<Label>
     {
         public LabelConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static LabelConnection Create(Expression expression)
         {

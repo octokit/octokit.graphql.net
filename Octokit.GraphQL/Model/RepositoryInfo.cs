@@ -195,7 +195,6 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string ShortDescriptionHTML(Arg<int>? limit = null) => null;
 
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
         public DateTimeOffset UpdatedAt { get; }
 
         public string Url { get; }

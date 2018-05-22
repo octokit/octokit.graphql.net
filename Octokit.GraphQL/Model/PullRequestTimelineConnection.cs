@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequestTimelineItem.
     /// </summary>
-    public class PullRequestTimelineConnection : QueryableValue<PullRequestTimelineConnection>
+    public class PullRequestTimelineConnection : QueryableValue<PullRequestTimelineConnection>, IPagingConnection<PullRequestTimelineItem>
     {
         public PullRequestTimelineConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static PullRequestTimelineConnection Create(Expression expression)
         {

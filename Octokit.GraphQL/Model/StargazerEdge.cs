@@ -15,6 +15,9 @@ namespace Octokit.GraphQL.Model
         {
         }
 
+        /// <summary>
+        /// A cursor for use in pagination.
+        /// </summary>
         public string Cursor { get; }
 
         public User Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.User.Create);

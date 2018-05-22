@@ -58,7 +58,6 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -77,6 +76,11 @@ namespace Octokit.GraphQL.Model
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
         public ID Id { get; }
+
+        /// <summary>
+        /// Check if this comment was edited and includes an edit with the creation data
+        /// </summary>
+        public bool IncludesCreatedEdit { get; }
 
         /// <summary>
         /// The moment the editor made the last edit

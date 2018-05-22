@@ -25,6 +25,8 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HowItWorks { get; }
 
+        public ID Id { get; }
+
         /// <summary>
         /// The category's name.
         /// </summary>
