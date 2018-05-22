@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of projects associated with the owner.
     /// </summary>
-    public class ProjectConnection : QueryableValue<ProjectConnection>
+    public class ProjectConnection : QueryableValue<ProjectConnection>, IPagingConnection<Project>
     {
         public ProjectConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static ProjectConnection Create(Expression expression)
         {

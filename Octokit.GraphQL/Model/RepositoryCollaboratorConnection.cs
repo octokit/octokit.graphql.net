@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for User.
     /// </summary>
-    public class RepositoryCollaboratorConnection : QueryableValue<RepositoryCollaboratorConnection>
+    public class RepositoryCollaboratorConnection : QueryableValue<RepositoryCollaboratorConnection>, IPagingConnection<User>
     {
         public RepositoryCollaboratorConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static RepositoryCollaboratorConnection Create(Expression expression)
         {

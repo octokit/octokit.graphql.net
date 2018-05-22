@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequestCommit.
     /// </summary>
-    public class PullRequestCommitConnection : QueryableValue<PullRequestCommitConnection>
+    public class PullRequestCommitConnection : QueryableValue<PullRequestCommitConnection>, IPagingConnection<PullRequestCommit>
     {
         public PullRequestCommitConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static PullRequestCommitConnection Create(Expression expression)
         {

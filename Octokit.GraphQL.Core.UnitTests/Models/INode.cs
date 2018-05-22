@@ -3,8 +3,9 @@ using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    interface INode : IQueryableInterface
+    public interface INode : IQueryableInterface
     {
+        ID Id { get; }
     }
 
     internal class StubINode : QueryableValue<StubINode>, INode
@@ -13,7 +14,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public string Id { get; }
+        public ID Id { get; }
 
         internal static StubINode Create(Expression expression)
         {

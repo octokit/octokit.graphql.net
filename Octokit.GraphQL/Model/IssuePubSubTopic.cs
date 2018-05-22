@@ -22,5 +22,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "MARKASREAD")]
         Markasread,
+
+        /// <summary>
+        /// The channel ID for updating items on the issue timeline.
+        /// </summary>
+        [EnumMember(Value = "TIMELINE")]
+        Timeline,
     }
 }

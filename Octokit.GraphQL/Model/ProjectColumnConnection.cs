@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for ProjectColumn.
     /// </summary>
-    public class ProjectColumnConnection : QueryableValue<ProjectColumnConnection>
+    public class ProjectColumnConnection : QueryableValue<ProjectColumnConnection>, IPagingConnection<ProjectColumn>
     {
         public ProjectColumnConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static ProjectColumnConnection Create(Expression expression)
         {

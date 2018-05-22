@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PushAllowance.
     /// </summary>
-    public class PushAllowanceConnection : QueryableValue<PushAllowanceConnection>
+    public class PushAllowanceConnection : QueryableValue<PushAllowanceConnection>, IPagingConnection<PushAllowance>
     {
         public PushAllowanceConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static PushAllowanceConnection Create(Expression expression)
         {

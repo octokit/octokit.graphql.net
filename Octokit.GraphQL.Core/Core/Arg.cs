@@ -6,14 +6,14 @@ namespace Octokit.GraphQL.Core
     {
         bool isNullableVariable;
 
-        private Arg(T value)
+        public Arg(T value)
         {
             VariableName = null;
             Value = value;
             isNullableVariable = false;
         }
 
-        private Arg(string variableName, bool isNullable)
+        public Arg(string variableName, bool isNullable)
         {
             VariableName = variableName;
             Value = default(T);

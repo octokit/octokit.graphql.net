@@ -8,223 +8,222 @@ namespace Octokit.GraphQL.Core.UnitTests
     public class QueryBuilderTests
     {
         [Fact]
-        public void SimpleQuery_Select_Single_Member()
+        public void Repository_Select_Single_Member()
         {
-            var expected = "query{simple(arg1:\"foo\"){name}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){name}}";
 
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void SimpleQuery_Select_Multiple_Members()
+        public void Repository_Select_Multiple_Members()
         {
-            var expected = "query{simple(arg1:\"foo\",arg2:2){name description}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){name description}}";
 
-            var expression = new TestQuery()
-                .Simple("foo", 2)
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new { x.Name, x.Description });
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void SimpleQuery_Select_Single_Member_Append_String()
+        public void Repository_Select_Single_Member_Append_String()
         {
-            var expected = "query{simple(arg1:\"foo\"){name}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){name}}";
 
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + " World!");
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void SimpleQuery_Select_Append_Two_Members()
+        public void Repository_Select_Append_Two_Members()
         {
-            var expected = "query{simple(arg1:\"foo\"){name description}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){name description}}";
 
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + x.Description);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void SimpleQuery_Select_Append_Two_Identical_Members()
+        public void Repository_Select_Append_Two_Identical_Members()
         {
-            var expected = "query{simple(arg1:\"foo\"){name}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){name}}";
 
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name + x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void SimpleQuery_Cast_Member_To_Enum()
+        public void Repository_Cast_Member_To_Enum()
         {
-            var expected = "query{simple(arg1:\"foo\"){number}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){forkCount}}";
 
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new
                 {
-                    Float = (DayOfWeek)x.Number
+                    Enum = (DayOfWeek)x.ForkCount
                 });
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void SimpleQuery_Cast_Nullable_Member_To_Enum()
+        public void Repository_Cast_Nullable_Member_To_Enum()
         {
-            var expected = "query{simple(arg1:\"foo\"){nullableNumber}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){databaseId}}";
 
-            var expression = new TestQuery()
-                .Simple("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new
                 {
-                    Float = (DayOfWeek)x.NullableNumber.Value
+                    Enum = (DayOfWeek)x.DatabaseId.Value
                 });
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Data_Select_Single_Member()
+        public void Licenses_Select_Single_Member()
         {
-            var expected = "query{queryItems{id}}";
+            var expected = "query{licenses{body}}";
 
-            var expression = new TestQuery()
-                .QueryItems
-                .Select(x => x.Id);
+            var expression = new Query()
+                .Licenses
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Data_Select_Multiple_Members()
+        public void Licenses_Select_Multiple_Members()
         {
-            var expected = "query{queryItems{id name}}";
+            var expected = "query{licenses{body description}}";
 
-            var expression = new TestQuery()
-                .QueryItems
-                .Select(x => new{ x.Id, x.Name});
+            var expression = new Query()
+                .Licenses
+                .Select(x => new{ x.Body, x.Description});
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void NestedQuery_Select_Multiple_Members()
+        public void Repository_Issue_Select_Multiple_Members()
         {
-            var expected = "query{nested(arg1:\"foo\"){simple(arg1:\"bar\"){name description}}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issue(number:1){body closed}}}";
 
-            var expression = new TestQuery()
-                .Nested("foo")
-                .Simple("bar")
-                .Select(x => new { x.Name, x.Description });
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issue(1)
+                .Select(x => new { x.Body, x.Closed });
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Nested_Selects()
+        public void Repository_Licenses_Nested_Selects()
         {
-            var expected = "query{queryItems{id nestedItems{name}}}";
+            var expected = "query{licenses{body conditions{description}}}";
 
-            var expression = new TestQuery()
-                .QueryItems
+            var expression = new Query()
+                .Licenses
                 .Select(x => new
                 {
-                    x.Id,
-                    Items = x.NestedItems.Select(i => i.Name).ToList(),
+                    x.Body,
+                    Items = x.Conditions.Select(i => i.Description).ToList(),
                 });
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Nested_Select_With_Captured_Parameter()
+        public void Repository_Issues_Nested_Select_With_Captured_Parameter()
         {
-            var expected = "query{nested(arg1:\"bar\"){simple(arg1:\"foo\"){name description}}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issues(first:10,after:\"foo\"){totalCount}}}";
 
             var arg1 = "foo";
-            var expression = new TestQuery()
-                .Nested("bar")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new
                 {
-                    Items = x.Simple(arg1).Select(y => new
+                    Items = x.Issues(10, arg1, null, null, null).Select(y => new
                     {
-                        y.Name,
-                        y.Description,
+                        y.TotalCount,
                     }).Single()
                 });
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Inline_Fragment()
+        public void Nodes_Inline_Fragment_Issue_Comments()
         {
-            var expected = "query{queryItems{... on NestedData{__typename id nestedItems{name}}}}";
+            var expected = "query{nodes(ids:[\"123\"]){... on Issue{__typename number comments{nodes{body}}}}}";
 
-            var expression = new TestQuery()
-                .QueryItems
-                .OfType<NestedData>()
+            var expression = new Query()
+                .Nodes(new[] { new ID("123") })
+                .OfType<Issue>()
                 .Select(x => new
                 {
-                    x.Id,
-                    Items = x.NestedItems.Select(i => i.Name).ToList(),
+                    x.Number,
+                    Items = x.Comments(null, null, null, null).Nodes.Select(i => i.Body).ToList(),
                 });
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Field_Aliases()
+        public void Repository_Field_Aliases()
         {
             var expected = @"query {
-  simple(arg1: ""foo"", arg2: 1) {
+  repository(owner: ""foo"", name: ""bar"") {
     foo: name
     bar: description
   }
 }";
 
-            var expression = new TestQuery()
-                .Simple("foo", 1)
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new
                 {
                     Foo = x.Name,
@@ -239,336 +238,209 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Boolean_Parameter()
         {
-            var expected = "query{boolValue(boolean:false){name}}";
+            var expected = "query{rateLimit(dryRun:false){cost}}";
 
-            var expression = new TestQuery()
-                .BoolValue(false)
-                .Select(x => x.Name);
+            var expression = new Query()
+                .RateLimit(false)
+                .Select(x => x.Cost);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Enumerable_Parameter()
         {
-            var expected = "query{enumerableValue(value:[{value1:\"Hello World\",value2:42},{value1:\"Goodbye World\",value2:24}]){name}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issues(labels:[\"baz\",\"qux\"]){totalCount}}}";
 
-            var expression = new TestQuery()
-                .EnumerableValue(new[]
-                {
-                    new SampleObject()
-                    {
-                        Value1 = "Hello World",
-                        Value2 = 42
-                    },
-                    new SampleObject()
-                    {
-                        Value1 = "Goodbye World",
-                        Value2 = 24
-                    },
-                })
-                .Select(x => x.Name);
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issues(labels: new[] { "baz", "qux" })
+                .Select(x => x.TotalCount);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
-        }
-
-        [Fact]
-        public void String_Parameter()
-        {
-            var expected = "query{stringValue(value:\"hello\"){name}}";
-
-            var expression = new TestQuery()
-                .StringValue("hello")
-                .Select(x => x.Name);
-
-            var query = expression.Compile();
-
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Integer_Parameter()
         {
-            var expected = "query{intValue(integer:123){name}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issue(number:5){body}}}";
 
-            var expression = new TestQuery()
-                .IntValue(123)
-                .Select(x => x.Name);
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issue(5)
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Float_Parameter()
         {
-            var expected = "query{floatValue(flt:123.3){name}}";
+            var expected = "query{floatTest(value:123.3){name}}";
 
-            var expression = new TestQuery()
-                .FloatValue(123.3f)
+            var expression = new Query()
+                .FloatTest(123.3f)
                 .Select(x => x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
-        }
-
-        [Fact]
-        public void Object_Null_Parameter()
-        {
-            var expected = "query{objectValue{name}}";
-
-            var expression = new TestQuery()
-                .ObjectValue(null)
-                .Select(x => x.Name);
-
-            var query = expression.Compile();
-
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void ID_Parameter()
         {
-            var expected = "query{idValue(id:\"123\"){name}}";
+            var expected = "query{node(id:\"123\"){... on Repository{__typename name}}}";
 
-            var expression = new TestQuery()
-                .IdValue(new ID("123"))
+            var expression = new Query()
+                .Node(new ID("123"))
+                .Cast<Repository>()
                 .Select(x => x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void InputObject_Parameter()
         {
-            var expected = "query{inputObject(input:{stringValue:\"foo\"}){name}}";
+            var expected = "query{addComment(input:{subjectId:\"x\",body:\"body\",clientMutationId:\"1\"}){body}}";
 
-            var input = new InputObject
+            var input = new AddCommentInput
             {
-                StringValue = "foo",
+                Body = "body",
+                ClientMutationId = "1",
+                SubjectId = new ID("x"),
             };
 
-            var expression = new TestQuery()
-                .InputObject(input)
-                .Select(x => x.Name);
+            var expression = new Query()
+                .AddComment(input)
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void InputObject_Parameter_With_Null_Field()
         {
-            var expected = "query{inputObject(input:{stringValue:null}){name}}";
+            var expected = "query{addComment(input:{subjectId:\"x\",body:null,clientMutationId:\"1\"}){body}}";
 
-            var input = new InputObject
+            var input = new AddCommentInput
             {
-                StringValue = null,
+                Body = null,
+                ClientMutationId = "1",
+                SubjectId = new ID("x"),
             };
 
-            var expression = new TestQuery()
-                .InputObject(input)
-                .Select(x => x.Name);
+            var expression = new Query()
+                .AddComment(input)
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
-        }
-
-        public class SampleObject
-        {
-            public string Value1 { get; set; }
-
-            public int Value2 { get; set; }
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Object_Parameter()
+        public void InputObject_Parameter_Hit_Cache()
         {
-            var expected = "query{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
+            var expected = "query{addComment(input:{subjectId:\"x\",body:\"body\",clientMutationId:\"1\"}){body}}";
 
-            var expression = new TestQuery()
-                .ObjectValue(new SampleObject()
+            var expression = new Query()
+                .AddComment(new AddCommentInput
                 {
-                    Value1 = "Hello World",
-                    Value2 = 42
+                    Body = "body",
+                    ClientMutationId = "1",
+                    SubjectId = new ID("x"),
                 })
-                .Select(x => x.Name);
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
-        }
+            Assert.Equal(expected, query.ToString(0));
 
-        [Fact]
-        public void Object_Parameter_Hit_Cache()
-        {
-            var expected = "query{objectValue(value:{value1:\"Hello World\",value2:42}){name}}";
+            expected = "query{addComment(input:{subjectId:\"x\",body:\"different body\",clientMutationId:\"1\"}){body}}";
 
-            var expression = new TestQuery()
-                .ObjectValue(new SampleObject()
+            expression = new Query()
+                .AddComment(new AddCommentInput
                 {
-                    Value1 = "Hello World",
-                    Value2 = 42
+                    Body = "different body",
+                    ClientMutationId = "1",
+                    SubjectId = new ID("x"),
                 })
-                .Select(x => x.Name);
-
-            var query = expression.Compile();
-
-            Assert.Equal(expected, query.Query);
-
-            expected = "query{objectValue(value:{value1:\"A different answer\",value2:14}){name}}";
-
-            expression = new TestQuery()
-                .ObjectValue(new SampleObject()
-                {
-                    Value1 = "A different answer",
-                    Value2 = 14
-                })
-                .Select(x => x.Name);
+                .Select(x => x.Body);
 
             query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
-        public void Union()
+        public void Repository_Variable()
         {
-            var expected = @"query {
-  union {
-    ... on Simple {
-      __typename
-      name
-      description
-    }
-  }
-}";
+            var expected = "query($var1:String!){repository(owner:\"foo\",name:$var1){name}}";
 
-            var expression = new TestQuery()
-                .Union
-                .Select(x => x.Simple)
-                .Select(x => new
-                {
-                    x.Name,
-                    x.Description,
-                });
-
-            var query = expression.Compile();
-
-            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
-        }
-
-        [Fact]
-        public void Union_Select_Child_Property()
-        {
-            var expected = @"query {
-  union {
-    ... on Simple {
-      __typename
-      name
-    }
-  }
-}";
-
-            var expression = new TestQuery()
-                .Union
-                .Select(x => x.Simple.Name);
-
-            var query = expression.Compile();
-
-            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
-        }
-
-        [Fact]
-        public void Union_Select_Child_Property_To_Class()
-        {
-            var expected = @"query {
-  union {
-    ... on Simple {
-      __typename
-      name
-    }
-  }
-}";
-
-            var expression = new TestQuery()
-                .Union
-                .Select((Union x) => new
-                {
-                    x.Simple.Name,
-                });
-
-            var query = expression.Compile();
-
-            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
-        }
-
-        [Fact]
-        public void SimpleQuery_Variable()
-        {
-            var expected = "query($var1:String!){simple(arg1:$var1){name}}";
-
-            var expression = new TestQuery()
-                .Simple(Var("var1"))
+            var expression = new Query()
+                .Repository("foo", Var("var1"))
                 .Select(x => x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void IntValue_Variable()
         {
-            var expected = "query($var1:Int!){intValue(integer:$var1){name}}";
+            var expected = "query($var1:Int!){repository(owner:\"foo\",name:\"bar\"){issue(number:$var1){body}}}";
 
-            var expression = new TestQuery()
-                .IntValue(Var("var1"))
-                .Select(x => x.Name);
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issue(Var("var1"))
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void InputObject_Variable()
         {
-            var expected = "query($var1:InputObject!){inputObject(input:$var1){name}}";
+            var expected = "query($var1:AddCommentInput!){addComment(input:$var1){body}}";
 
-            var expression = new TestQuery()
-                .InputObject(Var("var1"))
-                .Select(x => x.Name);
+            var expression = new Query()
+                .AddComment(Var("var1"))
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Interface_Cast()
         {
             var expected = @"query {
-  node(id: 123) {
-    ... on Simple {
+  node(id: ""123"") {
+    ... on Repository {
       __typename
       name
     }
   }
 }";
-            var expression = new TestQuery()
-                .Node(123)
-                .Cast<Simple>()
+            var expression = new Query()
+                .Node(new ID("123"))
+                .Cast<Repository>()
                 .Select(x => x.Name);
 
             var query = expression.Compile();
@@ -579,71 +451,71 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Multiple_Variables()
         {
-            var expected = "query($foo:String!,$bar:Int){simple(arg1:$foo,arg2:$bar){name}}";
+            var expected = "query($foo:String!,$bar:String!){repository(owner:$foo,name:$bar){name}}";
 
-            var expression = new TestQuery()
-                .Simple(Var("foo"), Var("bar"))
+            var expression = new Query()
+                .Repository(Var("foo"), Var("bar"))
                 .Select(x => x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Double_Quotes_In_String_Arg_Are_Escaped()
         {
-            var expected = "query{simple(arg1:\"string with \\\"quotes\\\" in it\"){name}}";
+            var expected = "query{repository(owner:\"string with \\\"quotes\\\" in it\",name:\"bar\"){name}}";
 
-            var expression = new TestQuery()
-                .Simple("string with \"quotes\" in it")
+            var expression = new Query()
+                .Repository("string with \"quotes\" in it", "bar")
                 .Select(x => x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Backslash_In_String_Arg_Is_Escaped()
         {
-            var expected = "query{simple(arg1:\"string with \\\\ in it\"){name}}";
+            var expected = "query{repository(owner:\"string with \\\\ in it\",name:\"bar\"){name}}";
 
-            var expression = new TestQuery()
-                .Simple("string with \\ in it")
+            var expression = new Query()
+                .Repository("string with \\ in it", "bar")
                 .Select(x => x.Name);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Double_Quotes_In_InputObject_Arg_Are_Escaped()
         {
-            var expected = "query{inputObject(input:{stringValue:\"string with \\\"quotes\\\" in it\"}){name}}";
+            var expected = "query{addComment(input:{subjectId:\"\",body:null,clientMutationId:\"string with \\\"quotes\\\" in it\"}){body}}";
 
-            var expression = new TestQuery()
-                .InputObject(new InputObject { StringValue = "string with \"quotes\" in it" })
-                .Select(x => x.Name);
+            var expression = new Query()
+                .AddComment(new AddCommentInput { ClientMutationId = "string with \"quotes\" in it" })
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
 
         [Fact]
         public void Backslash_In_InputObject_Arg_Is_Escaped()
         {
-            var expected = "query{inputObject(input:{stringValue:\"string with \\\\ in it\"}){name}}";
+            var expected = "query{addComment(input:{subjectId:\"\",body:null,clientMutationId:\"string with \\\\ in it\"}){body}}";
 
-            var expression = new TestQuery()
-                .InputObject(new InputObject { StringValue = "string with \\ in it" })
-                .Select(x => x.Name);
+            var expression = new Query()
+                .AddComment(new AddCommentInput { ClientMutationId = "string with \\ in it" })
+                .Select(x => x.Body);
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.Query);
+            Assert.Equal(expected, query.ToString(0));
         }
     }
 }

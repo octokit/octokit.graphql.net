@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for User.
     /// </summary>
-    public class StargazerConnection : QueryableValue<StargazerConnection>
+    public class StargazerConnection : QueryableValue<StargazerConnection>, IPagingConnection<User>
     {
         public StargazerConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static StargazerConnection Create(Expression expression)
         {

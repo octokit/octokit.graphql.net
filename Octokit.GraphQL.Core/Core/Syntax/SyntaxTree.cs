@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -6,22 +7,27 @@ namespace Octokit.GraphQL.Core.Syntax
 {
     public class SyntaxTree
     {
-        private OperationDefinition root;
-        private ISelectionSet head;
+        public OperationDefinition Root { get; private set; }
 
-        public OperationDefinition Root => root;
-        public ISelectionSet Head => head;
+        public ISelectionSet Head { get; private set; }
+        public IList<FieldSelection> FieldStack { get; private set; }
 
         public OperationDefinition AddRoot(OperationType type, string name)
         {
-            root = new OperationDefinition(type, name);
-            head = root;
-            return root;
+            Root = new OperationDefinition(type, name);
+            Head = Root;
+            FieldStack = new List<FieldSelection>();
+            return Root;
+        }
+
+        public FieldSelection AddField(string member, string alias = null)
+        {
+            return AddField(Head, new FieldSelection(member, alias));
         }
 
         public FieldSelection AddField(MemberInfo member, MemberInfo alias = null)
         {
-            return AddField(head, member, alias);
+            return AddField(Head, member, alias);
         }
 
         public FieldSelection AddField(ISelectionSet parent, MemberInfo member, MemberInfo alias = null)
@@ -32,7 +38,7 @@ namespace Octokit.GraphQL.Core.Syntax
         public Argument AddArgument(string name, object value)
         {
             var result = new Argument(name, value);
-            ((FieldSelection)head).Arguments.Add(result);
+            ((FieldSelection)Head).Arguments.Add(result);
             return result;
         }
 
@@ -45,14 +51,14 @@ namespace Octokit.GraphQL.Core.Syntax
                 result.Selections.Add(new FieldSelection("__typename", null));
             }
 
-            head.Selections.Add(result);
-            head = result;
+            Head.Selections.Add(result);
+            Head = result;
             return result;
         }
 
         public VariableDefinition AddVariableDefinition(Type type, bool isNullable, string name)
         {
-            var result = root.VariableDefinitions.SingleOrDefault(x => x.Name == name);
+            var result = Root.VariableDefinitions.SingleOrDefault(x => x.Name == name);
 
             if (result != null && result.Type != VariableDefinition.ToTypeName(type, isNullable))
             {
@@ -61,14 +67,20 @@ namespace Octokit.GraphQL.Core.Syntax
             }
 
             result = result ?? new VariableDefinition(type, isNullable, name);
-            root.VariableDefinitions.Add(result);
+            Root.VariableDefinitions.Add(result);
             return result;
         }
 
         public IDisposable Bookmark()
         {
-            var oldHead = head;
-            return Disposable.Create(() => head = oldHead);
+            var oldHead = Head;
+            var oldStack = FieldStack.ToList();
+
+            return Disposable.Create(() =>
+            {
+                Head = oldHead;
+                FieldStack = oldStack;
+            });
         }
 
         private FieldSelection AddField(ISelectionSet parent, FieldSelection field)
@@ -88,7 +100,8 @@ namespace Octokit.GraphQL.Core.Syntax
                 field = existing;
             }
 
-            head = field;
+            Head = field;
+            FieldStack.Add(field);
             return field;
         }
     }

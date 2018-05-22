@@ -120,7 +120,6 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -159,6 +158,11 @@ namespace Octokit.GraphQL.Model
         public IRepositoryOwner HeadRepositoryOwner => this.CreateProperty(x => x.HeadRepositoryOwner, Octokit.GraphQL.Model.Internal.StubIRepositoryOwner.Create);
 
         public ID Id { get; }
+
+        /// <summary>
+        /// Check if this comment was edited and includes an edit with the creation data
+        /// </summary>
+        public bool IncludesCreatedEdit { get; }
 
         /// <summary>
         /// The head and base repositories are different.
@@ -336,7 +340,6 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
         public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
@@ -381,7 +384,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
-        public SubscriptionState ViewerSubscription { get; }
+        public SubscriptionState? ViewerSubscription { get; }
 
         internal static PullRequest Create(Expression expression)
         {

@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for ReviewDismissalAllowance.
     /// </summary>
-    public class ReviewDismissalAllowanceConnection : QueryableValue<ReviewDismissalAllowanceConnection>
+    public class ReviewDismissalAllowanceConnection : QueryableValue<ReviewDismissalAllowanceConnection>, IPagingConnection<ReviewDismissalAllowance>
     {
         public ReviewDismissalAllowanceConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static ReviewDismissalAllowanceConnection Create(Expression expression)
         {

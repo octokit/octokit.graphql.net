@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Commit.
     /// </summary>
-    public class CommitConnection : QueryableValue<CommitConnection>
+    public class CommitConnection : QueryableValue<CommitConnection>, IPagingConnection<Commit>
     {
         public CommitConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static CommitConnection Create(Expression expression)
         {

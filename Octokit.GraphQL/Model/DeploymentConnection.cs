@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Deployment.
     /// </summary>
-    public class DeploymentConnection : QueryableValue<DeploymentConnection>
+    public class DeploymentConnection : QueryableValue<DeploymentConnection>, IPagingConnection<Deployment>
     {
         public DeploymentConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static DeploymentConnection Create(Expression expression)
         {

@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for OrganizationInvitation.
     /// </summary>
-    public class OrganizationInvitationConnection : QueryableValue<OrganizationInvitationConnection>
+    public class OrganizationInvitationConnection : QueryableValue<OrganizationInvitationConnection>, IPagingConnection<OrganizationInvitation>
     {
         public OrganizationInvitationConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static OrganizationInvitationConnection Create(Expression expression)
         {

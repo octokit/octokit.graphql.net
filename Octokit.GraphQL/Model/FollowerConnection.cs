@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for User.
     /// </summary>
-    public class FollowerConnection : QueryableValue<FollowerConnection>
+    public class FollowerConnection : QueryableValue<FollowerConnection>, IPagingConnection<User>
     {
         public FollowerConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static FollowerConnection Create(Expression expression)
         {

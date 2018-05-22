@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Organization.
     /// </summary>
-    public class OrganizationConnection : QueryableValue<OrganizationConnection>
+    public class OrganizationConnection : QueryableValue<OrganizationConnection>, IPagingConnection<Organization>
     {
         public OrganizationConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static OrganizationConnection Create(Expression expression)
         {
