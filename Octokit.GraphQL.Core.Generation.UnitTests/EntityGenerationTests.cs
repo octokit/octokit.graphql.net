@@ -1739,6 +1739,41 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Adds_IPageInfo_Interface_To_PageInfo()
+        {
+            var expected = @"namespace Test
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
+
+    public class PageInfo : QueryableValue<PageInfo>, IPageInfo
+    {
+        public PageInfo(Expression expression) : base(expression)
+        {
+        }
+
+        internal static PageInfo Create(Expression expression)
+        {
+            return new PageInfo(expression);
+        }
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "PageInfo",
+                Kind = TypeKind.Object,
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("PageInfo.cs", expected, result);
+        }
+
+        [Fact]
         public void Adds_IPagingConnection_Interface()
         {
             var expected = string.Format(

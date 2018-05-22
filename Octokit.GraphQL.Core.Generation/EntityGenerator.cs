@@ -305,6 +305,11 @@ namespace Octokit.GraphQL.Core.Generation
         {
             var builder = new StringBuilder();
 
+            if (type.Name == "PageInfo")
+            {
+                builder.Append(", IPageInfo");
+            }
+
             if (pagingConnectionNodeType != null)
             {
                 builder.Append(", IPagingConnection<");
