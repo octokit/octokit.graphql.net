@@ -28,5 +28,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "HEAD_REF")]
         HeadRef,
+
+        /// <summary>
+        /// The channel ID for updating items on the pull request timeline.
+        /// </summary>
+        [EnumMember(Value = "TIMELINE")]
+        Timeline,
     }
 }

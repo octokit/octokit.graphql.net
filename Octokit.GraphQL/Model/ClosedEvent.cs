@@ -43,6 +43,16 @@ namespace Octokit.GraphQL.Model
 
         public ID Id { get; }
 
+        /// <summary>
+        /// The HTTP path for this closed event.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP URL for this closed event.
+        /// </summary>
+        public string Url { get; }
+
         internal static ClosedEvent Create(Expression expression)
         {
             return new ClosedEvent(expression);

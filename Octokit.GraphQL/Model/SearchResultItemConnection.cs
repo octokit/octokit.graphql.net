@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of results that matched against a search query.
     /// </summary>
-    public class SearchResultItemConnection : QueryableValue<SearchResultItemConnection>
+    public class SearchResultItemConnection : QueryableValue<SearchResultItemConnection>, IPagingConnection<SearchResultItem>
     {
         public SearchResultItemConnection(Expression expression) : base(expression)
         {
@@ -54,6 +54,8 @@ namespace Octokit.GraphQL.Model
         /// The number of wiki pages that matched the search query.
         /// </summary>
         public int WikiCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static SearchResultItemConnection Create(Expression expression)
         {

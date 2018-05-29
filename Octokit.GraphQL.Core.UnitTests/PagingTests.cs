@@ -72,8 +72,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Repository {
-      __typename
       issues(first: 100, after: $__after) {
         pageInfo {
           hasNextPage
@@ -282,8 +282,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Repository {
-      __typename
       issues(first: 100, after: $__after, labels: [""bug""]) {
         pageInfo {
           hasNextPage
@@ -481,8 +481,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Repository {
-      __typename
       issues(first: 100, after: $__after) {
         pageInfo {
           hasNextPage
@@ -545,8 +545,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Issue {
-      __typename
       comments(first: 100, after: $__after) {
         pageInfo {
           hasNextPage

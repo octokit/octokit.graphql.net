@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Milestone.
     /// </summary>
-    public class MilestoneConnection : QueryableValue<MilestoneConnection>
+    public class MilestoneConnection : QueryableValue<MilestoneConnection>, IPagingConnection<Milestone>
     {
         public MilestoneConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static MilestoneConnection Create(Expression expression)
         {

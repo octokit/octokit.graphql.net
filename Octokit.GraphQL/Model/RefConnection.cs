@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Ref.
     /// </summary>
-    public class RefConnection : QueryableValue<RefConnection>
+    public class RefConnection : QueryableValue<RefConnection>, IPagingConnection<Ref>
     {
         public RefConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static RefConnection Create(Expression expression)
         {

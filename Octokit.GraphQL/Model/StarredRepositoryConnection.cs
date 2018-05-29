@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for Repository.
     /// </summary>
-    public class StarredRepositoryConnection : QueryableValue<StarredRepositoryConnection>
+    public class StarredRepositoryConnection : QueryableValue<StarredRepositoryConnection>, IPagingConnection<Repository>
     {
         public StarredRepositoryConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static StarredRepositoryConnection Create(Expression expression)
         {

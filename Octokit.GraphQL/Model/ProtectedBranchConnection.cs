@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for ProtectedBranch.
     /// </summary>
-    public class ProtectedBranchConnection : QueryableValue<ProtectedBranchConnection>
+    public class ProtectedBranchConnection : QueryableValue<ProtectedBranchConnection>, IPagingConnection<ProtectedBranch>
     {
         public ProtectedBranchConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static ProtectedBranchConnection Create(Expression expression)
         {
