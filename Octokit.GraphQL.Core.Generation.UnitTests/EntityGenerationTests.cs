@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
@@ -1772,6 +1773,79 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     new TypeModel { Name = "Foo" },
                     new TypeModel { Name = "Bar" },
                 }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
+        public void Adds_IPageInfo_Interface_To_PageInfo()
+        {
+            var expected = @"namespace Test
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
+
+    public class PageInfo : QueryableValue<PageInfo>, IPageInfo
+    {
+        public PageInfo(Expression expression) : base(expression)
+        {
+        }
+
+        internal static PageInfo Create(Expression expression)
+        {
+            return new PageInfo(expression);
+        }
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "PageInfo",
+                Kind = TypeKind.Object,
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("PageInfo.cs", expected, result);
+        }
+
+        [Fact]
+        public void Adds_IPagingConnection_Interface()
+        {
+            var expected = string.Format(
+                MemberTemplate,
+                @"
+        public IQueryableList<Node> Nodes => this.CreateProperty(x => x.Nodes);
+
+        public PageInfo PageInfo => this.CreateProperty(x => x.PageInfo, Test.PageInfo.Create);
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
+",
+                ", IPagingConnection<Node>");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "nodes",
+                        Type = TypeModel.List(TypeModel.Object("Node")),
+                    },
+                    new FieldModel
+                    {
+                        Name = "pageInfo",
+                        Type = TypeModel.NonNull(TypeModel.Object("PageInfo")),
+                    },
+                },
             };
 
             var result = CodeGenerator.Generate(model, "Test", null);
