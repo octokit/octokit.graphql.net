@@ -296,7 +296,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void ID_Parameter()
         {
-            var expected = "query{node(id:\"123\"){... on Repository{__typename name}}}";
+            var expected = "query{node(id:\"123\"){__typename ... on Repository{name}}}";
 
             var expression = new Query()
                 .Node(new ID("123"))
