@@ -134,10 +134,10 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(type.Description))
             {
-                return $@"/// <summary>
-    /// {type.Description}
-    /// </summary>
-    ";
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(type.Description, 4, builder);
+                builder.Append("    ");
+                return builder.ToString().TrimStart();
             }
             else
             {
@@ -149,16 +149,8 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(field.Description))
             {
-                var builder = new StringBuilder($@"        /// <summary>");
-                builder.AppendLine();
-
-                foreach (var line in field.Description.Split('\r', '\n')
-                    .Where(l => !(string.IsNullOrEmpty(l) && string.IsNullOrWhiteSpace(l))))
-                {
-                    builder.AppendLine($"        /// {line}");
-                }
-
-                builder.AppendLine(@"        /// </summary>");
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(field.Description, 8, builder);
 
                 if (field.Args != null)
                 {
@@ -177,6 +169,18 @@ namespace Octokit.GraphQL.Core.Generation
             else
             {
                 return null;
+            }
+        }
+
+        private static void GenerateDocComments(string text, int indentation, StringBuilder builder)
+        {
+            var indent = new string(' ', indentation);
+
+            foreach (var line in text.Split('\r', '\n').Where(l => !string.IsNullOrWhiteSpace(l)))
+            {
+                builder.Append(indent);
+                builder.Append("/// ");
+                builder.AppendLine(line);
             }
         }
 
