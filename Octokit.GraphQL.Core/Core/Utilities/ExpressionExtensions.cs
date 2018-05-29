@@ -41,10 +41,13 @@ namespace Octokit.GraphQL.Core.Utilities
             var sourceType = expression.Type.GetTypeInfo();
             var targetType = type.GetTypeInfo();
 
-            if (targetType.IsAssignableFrom(sourceType))
+            if (targetType == sourceType)
             {
-                // If the sourceType is assignable to the target type, return the source expression.
                 return expression;
+            }
+            else if (targetType.IsAssignableFrom(sourceType))
+            {
+                return Expression.Convert(expression, type);
             }
             else if (typeof(JToken).GetTypeInfo().IsAssignableFrom(sourceType))
             {
@@ -79,11 +82,11 @@ namespace Octokit.GraphQL.Core.Utilities
         /// <see cref="JToken"/>s.
         /// </summary>
         /// <param name="expression">The expression.</param>
-        /// <param name="field">The field to return.</param>
+        /// <param name="fieldName">The field to return.</param>
         /// <returns>A new expression.</returns>
-        public static Expression AddIndexer(this Expression expression, string fieldName)
+        public static MethodCallExpression AddIndexer(this Expression expression, string fieldName)
         {
-            if (expression.Type.GetTypeInfo().IsAssignableFrom(typeof(JToken).GetTypeInfo()))
+            if (typeof(JToken).GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
             {
                 // Returns `expression[fieldName];`
                 return Expression.Call(
@@ -96,6 +99,22 @@ namespace Octokit.GraphQL.Core.Utilities
                 throw new NotSupportedException($"Don't know how to add an indexer to {expression}.");
             }
         }
+
+        public static Expression AddToList(this Expression expression)
+        {
+            var itemType = GetEnumerableItemType(expression.Type);
+
+            if (itemType == null)
+            {
+                throw new NotSupportedException(
+                    $"Don't know how to call ToList on '{expression}' ({expression.Type}).");
+            }
+
+            return Expression.Call(
+                LinqMethods.ToListMethod.MakeGenericMethod(itemType),
+                expression);
+        }
+
 
         private static Expression AddSelectCast(Expression expression, Type type)
         {

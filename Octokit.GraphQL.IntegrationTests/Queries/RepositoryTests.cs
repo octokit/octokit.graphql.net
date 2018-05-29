@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Octokit.GraphQL.Model;
@@ -92,6 +93,29 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var repositoryName = Connection.Run(query, vars).Result;
 
             Assert.Equal("octokit.net", repositoryName);
+        }
+        
+        [IntegrationTest]
+        public async Task Should_Query_Repository_Issues_PullRequests_With_Variables_AutoPaging()
+        {
+            var query = new Query()
+                .Repository(Var("owner"), Var("name"))
+                .Select(repository => new
+                {
+                    Issues = repository.Issues(null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
+                    PullRequests = repository.PullRequests(null, null, null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
+                })
+                .Compile();
+            var vars = new Dictionary<string, object>
+            {
+                { "owner", "octokit" },
+                { "name", "octokit.net" },
+            };
+
+            var result = await Connection.Run(query, vars);
+
+            Assert.True(result.Issues.Count > 500);
+            Assert.True(result.PullRequests.Count > 500);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]

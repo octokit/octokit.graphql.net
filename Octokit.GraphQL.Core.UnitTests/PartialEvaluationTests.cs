@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<string>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Hello World!", result);
@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<string>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Hello5", result);
@@ -67,7 +67,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<string>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Hello World!", result);
@@ -88,7 +88,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<string>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Hello World!", result);
@@ -110,7 +110,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<string>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Wow! Hello World!", result);
@@ -133,7 +133,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<string>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("Hello World!", result);
@@ -155,7 +155,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<string>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal("HelloHello", result);
@@ -176,7 +176,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<float>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.IsType(typeof(float), result);
@@ -198,7 +198,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var query = new QueryBuilder().Build(expression);
+            var query = (SimpleQuery<int>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
             Assert.Equal(12, result);

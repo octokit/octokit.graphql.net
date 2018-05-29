@@ -9,6 +9,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
+        public ID Id { get; set; }
         public string Body { get; }
         public DateTimeOffset? PublishedAt { get; }
 

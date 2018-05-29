@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Octokit.GraphQL.Core.UnitTests.Models
 {
-    public class PageInfo : QueryableValue<PageInfo>
+    public class PageInfo : QueryableValue<PageInfo>, IPageInfo
     {
         public PageInfo(Expression expression) : base(expression)
         {
