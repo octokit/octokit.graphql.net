@@ -12,14 +12,14 @@ namespace Octokit.GraphQL.Core.UnitTests
     public class ResponseDeserializerTests
     {
         [Fact]
-        public void SimpleQuery_Select_Single_Member()
+        public void Repository_Select_Single_Member()
         {
-            var query = new TestQuery()
-                .Simple("foo")
+            var query = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name);
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello World!""
     }
   }
@@ -34,15 +34,15 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void SimpleQuery_Select_Multiple_Members()
+        public void Repository_Select_Multiple_Members()
         {
-            var expression = new TestQuery()
-                .Simple("foo", 2)
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new { x.Name, x.Description });
 
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": ""Hello World!"",
       ""description"": ""Goodbye cruel world""
     }
@@ -57,14 +57,14 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void SimpleQuery_Select_Single_Member_With_Null_Conditional()
+        public void Repository_Select_Single_Member_With_Null_Conditional()
         {
-            var query = new TestQuery()
-                .Simple("foo")
+            var query = new Query()
+                .Repository("foo", "bar")
                 .Select(x => x.Name != null ? x.Name : "It's null!");
             var data = @"{
   ""data"":{
-    ""simple"":{
+    ""repository"":{
       ""name"": null
     }
   }
@@ -79,17 +79,17 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Data_Select_Single_Member()
+        public void Licenses_Select_Single_Member()
         {
-            var expression = new TestQuery()
-                .QueryItems
-                .Select(x => x.Id);
+            var expression = new Query()
+                .Licenses
+                .Select(x => x.Body);
 
             var data = @"{
   ""data"":{
-    ""queryItems"":[
-      { ""id"": ""foo"" },
-      { ""id"": ""bar"" }
+    ""licenses"":[
+      { ""body"": ""foo"" },
+      { ""body"": ""bar"" }
     ]
   }
 }";
@@ -101,19 +101,19 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void NestedQuery_Select_Multiple_Members()
+        public void Repository_Issue_Select_Multiple_Members()
         {
-            var expression = new TestQuery()
-                .Nested("foo")
-                .Simple("bar")
-                .Select(x => new { x.Name, x.Description });
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issue(5)
+                .Select(x => new { x.Title, x.Body });
 
             var data = @"{
     ""data"":{
-        ""nested"": {
-            ""simple"":{
-              ""name"": ""Hello World!"",
-              ""description"": ""Goodbye cruel world""
+        ""repository"": {
+            ""issue"":{
+              ""title"": ""Hello World!"",
+              ""body"": ""Goodbye cruel world""
             }
         }
     }
@@ -122,24 +122,24 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
-            Assert.Equal("Hello World!", result.Name);
-            Assert.Equal("Goodbye cruel world", result.Description);
+            Assert.Equal("Hello World!", result.Title);
+            Assert.Equal("Goodbye cruel world", result.Body);
         }
 
         [Fact]
-        public void NestedQuery_Select_Multiple_Members_As_Ctor_Parameters()
+        public void Repository_Issue_Select_Multiple_Members_As_Ctor_Parameters()
         {
-            var expression = new TestQuery()
-                .Nested("foo")
-                .Simple("bar")
-                .Select(x => new NamedClass(x.Name, x.Description));
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issue(5)
+                .Select(x => new NamedClass(x.Title, x.Body));
 
             var data = @"{
     ""data"":{
-        ""nested"": {
-            ""simple"":{
-              ""name"": ""Hello World!"",
-              ""description"": ""Goodbye cruel world""
+        ""repository"": {
+            ""issue"":{
+              ""title"": ""Hello World!"",
+              ""body"": ""Goodbye cruel world""
             }
         }
     }
@@ -155,23 +155,23 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void NestedQuery_Select_Multiple_Members_To_Named_Class()
+        public void Repository_Issue_Select_Multiple_Members_To_Named_Class()
         {
-            var expression = new TestQuery()
-                .Nested("foo")
-                .Simple("bar")
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issue(5)
                 .Select(x => new NamedClass
                 {
-                    Name = x.Name,
-                    Description = x.Description,
+                    Name = x.Title,
+                    Description = x.Body,
                 });
 
             var data = @"{
     ""data"":{
-        ""nested"": {
-            ""simple"":{
-              ""name"": ""Hello World!"",
-              ""description"": ""Goodbye cruel world""
+        ""repository"": {
+            ""issue"":{
+              ""title"": ""Hello World!"",
+              ""body"": ""Goodbye cruel world""
             }
         }
     }
@@ -187,23 +187,23 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Nested_Selects()
+        public void License_Conditions_Nested_Selects()
         {
-            var expression = new TestQuery()
-                .QueryItems
+            var expression = new Query()
+                .Licenses
                 .Select(x => new
                 {
-                    x.Id,
-                    Items = x.NestedItems.Select(i => i.Name).ToList(),
+                    x.Body,
+                    Items = x.Conditions.Select(i => i.Description).ToList(),
                 });
 
             var data = @"{
     ""data"":{
-        ""queryItems"": [{
-            ""id"": ""foo"",
-            ""nestedItems"": [
-                { ""name"": ""item1"" },
-                { ""name"": ""item2"" }
+        ""licenses"": [{
+            ""body"": ""foo"",
+            ""conditions"": [
+                { ""description"": ""item1"" },
+                { ""description"": ""item2"" }
             ]
         }]
     }
@@ -214,18 +214,20 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("foo", result[0].Id);
+            Assert.Equal("foo", result[0].Body);
             Assert.Equal(new[] { "item1", "item2" }, result[0].Items);
         }
 
         [Fact]
-        public void Field_Alias()
+        public void Licenses_Field_Alias()
         {
-            var expression = new TestQuery().QueryItems.Select(x => new { Foo = x.Id });
+            var expression = new Query()
+                .Licenses
+                .Select(x => new { Foo = x.Body });
 
             var data = @"{
     ""data"":{
-        ""queryItems"": [{
+        ""licenses"": [{
             ""foo"": ""123"",
         }]
     }
@@ -240,23 +242,23 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Select_ToList()
+        public void Licenses_Conditions_Select_ToList()
         {
-            var expression = new TestQuery()
-                .QueryItems
+            var expression = new Query()
+                .Licenses
                 .Select(x => new
                 {
-                    x.Id,
-                    Items = x.NestedItems.Select(i => i.Name).ToList(),
+                    x.Body,
+                    Items = x.Conditions.Select(i => i.Description).ToList(),
                 });
 
             var data = @"{
     ""data"":{
-        ""queryItems"": [{
-            ""id"": ""foo"",
-            ""nestedItems"": [
-                { ""name"": ""item1"" },
-                { ""name"": ""item2"" }
+        ""licenses"": [{
+            ""body"": ""foo"",
+            ""conditions"": [
+                { ""description"": ""item1"" },
+                { ""description"": ""item2"" }
             ]
         }]
     }
@@ -267,32 +269,32 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("foo", result[0].Id);
+            Assert.Equal("foo", result[0].Body);
             Assert.Equal(new[] { "item1", "item2" }, result[0].Items);
         }
 
         [Fact]
-        public void Select_ToDictionary()
+        public void Licenses_Conditions_Select_ToDictionary()
         {
-            var expression = new TestQuery()
-                .QueryItems
+            var expression = new Query()
+                .Licenses
                 .Select(x => new
                 {
-                    x.Id,
-                    Items = x.NestedItems.Select(i => new
+                    x.Body,
+                    Items = x.Conditions.Select(i => new
                     {
-                        i.Name,
+                        i.Key,
                         i.Description,
-                    }).ToDictionary(d => d.Name, d => d.Description),
+                    }).ToDictionary(d => d.Key, d => d.Description),
                 });
 
             var data = @"{
     ""data"":{
-        ""queryItems"": [{
-            ""id"": ""foo"",
-            ""nestedItems"": [
-                { ""name"": ""item1"", ""description"": ""foo"" },
-                { ""name"": ""item2"", ""description"": ""bar"" }
+        ""licenses"": [{
+            ""body"": ""foo"",
+            ""conditions"": [
+                { ""key"": ""item1"", ""description"": ""foo"" },
+                { ""key"": ""item2"", ""description"": ""bar"" }
             ]
         }]
     }
@@ -303,17 +305,17 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
-            Assert.Equal("foo", result[0].Id);
+            Assert.Equal("foo", result[0].Body);
             Assert.Equal(new[] { "item1", "item2" }, result[0].Items.Keys);
             Assert.Equal(new[] { "foo", "bar" }, result[0].Items.Values);
         }
 
         [Fact]
-        public void Fragment()
+        public void Nodes_Repository_Fragment()
         {
-            var expression = new TestQuery()
-                .QueryItems
-                .OfType<Simple>()
+            var expression = new Query()
+                .Nodes(new[] { new ID("123") })
+                .OfType<Repository>()
                 .Select(x => new
                 {
                     x.Name,
@@ -322,9 +324,9 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var data = @"{
     ""data"":{
-        ""queryItems"": [
+        ""nodes"": [
             { 
-                ""__typename"": ""Simple"",
+                ""__typename"": ""Repository"",
                 ""name"": ""foo"",
                 ""description"": ""bar"" 
             },
@@ -340,60 +342,30 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data).ToList();
 
+            Assert.Single(result);
             Assert.Equal("foo", result[0].Name);
             Assert.Equal("bar", result[0].Description);
         }
 
         [Fact]
-        public void Union()
+        public void Repository_Issue_Single()
         {
-            var expression = new TestQuery()
-                .Union
-                .Select(x => x.Simple)
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new
                 {
-                    x.Name,
-                    x.Description,
-                });
-
-            var data = @"{
-    ""data"":{
-        ""union"": { 
-            ""__typename"": ""Simple"",
-            ""name"": ""foo"",
-            ""description"": ""bar"" 
-        }
-    }
-}";
-
-            var foo = JObject.Parse(data);
-
-            var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
-
-            Assert.Equal("foo", result.Name);
-            Assert.Equal("bar", result.Description);
-        }
-
-        [Fact]
-        public void Nested_Select_Value_Single()
-        {
-            var expression = new TestQuery()
-                .Nested("foo")
-                .Select(x => new
-                {
-                    Value = x.Simple("bar").Select(y => new
+                    Value = x.Issue(1).Select(y => new
                     {
-                        y.Name,
+                        y.Title,
                         y.Number,
                     }).Single()
                 });
 
             var data = @"{
     ""data"":{
-        ""nested"": {
-            ""simple"": {
-                ""name"": ""foo"",
+        ""repository"": {
+            ""issue"": {
+                ""title"": ""foo"",
                 ""number"": ""42""
             }
         }
@@ -405,29 +377,29 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
-            Assert.Equal("foo", result.Value.Name);
+            Assert.Equal("foo", result.Value.Title);
             Assert.Equal(42, result.Value.Number);
         }
 
         [Fact]
-        public void Nested_Select_Value_SingleOrDefault()
+        public void Repository_Issue_SingleOrDefault()
         {
-            var expression = new TestQuery()
-                .Nested("foo")
+            var expression = new Query()
+                .Repository("foo", "bar")
                 .Select(x => new
                 {
-                    Value = x.Simple("bar").Select(y => new
+                    Value = x.Issue(1).Select(y => new
                     {
-                        y.Name,
+                        y.Title,
                         y.Number,
                     }).SingleOrDefault()
                 });
 
             var data = @"{
     ""data"":{
-        ""nested"": {
-            ""simple"": {
-                ""name"": ""foo"",
+        ""repository"": {
+            ""issue"": {
+                ""title"": ""foo"",
                 ""number"": ""42""
             }
         }
@@ -439,7 +411,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
-            Assert.Equal("foo", result.Value.Name);
+            Assert.Equal("foo", result.Value.Title);
             Assert.Equal(42, result.Value.Number);
         }
 
