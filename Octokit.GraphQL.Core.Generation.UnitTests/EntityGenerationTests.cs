@@ -1497,6 +1497,48 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Multi_Line_Doc_Comments_For_Class()
+        {
+            var expected = @"namespace Test
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
+
+    /// <summary>
+    /// Testing if doc comments with
+    /// newlines
+    /// are generated.
+    /// </summary>
+    public class Entity : QueryableValue<Entity>
+    {
+        public Entity(Expression expression) : base(expression)
+        {
+        }
+
+        internal static Entity Create(Expression expression)
+        {
+            return new Entity(expression);
+        }
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Description = "Testing if doc comments with\nnewlines\r\nare generated.",
+                Kind = TypeKind.Object,
+                Fields = new FieldModel[0],
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
         public void Generates_Doc_Comments_For_Property()
         {
             var expected = FormatMemberTemplate(@"/// <summary>

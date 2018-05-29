@@ -196,7 +196,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Nodes_Inline_Fragment_Issue_Comments()
         {
-            var expected = "query{nodes(ids:[\"123\"]){... on Issue{__typename number comments{nodes{body}}}}}";
+            var expected = "query{nodes(ids:[\"123\"]){__typename ... on Issue{number comments{nodes{body}}}}}";
 
             var expression = new Query()
                 .Nodes(new[] { new ID("123") })
@@ -296,7 +296,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void ID_Parameter()
         {
-            var expected = "query{node(id:\"123\"){... on Repository{__typename name}}}";
+            var expected = "query{node(id:\"123\"){__typename ... on Repository{name}}}";
 
             var expression = new Query()
                 .Node(new ID("123"))
@@ -432,8 +432,8 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             var expected = @"query {
   node(id: ""123"") {
+    __typename
     ... on Repository {
-      __typename
       name
     }
   }

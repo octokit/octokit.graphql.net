@@ -30,10 +30,10 @@ namespace {entityNamespace}
         {
             if (!string.IsNullOrWhiteSpace(type.Description))
             {
-                return $@"/// <summary>
-    /// {type.Description}
-    /// </summary>
-    ";
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(type.Description, 4, builder);
+                builder.Append("    ");
+                return builder.ToString().TrimStart();
             }
             else
             {
@@ -45,10 +45,9 @@ namespace {entityNamespace}
         {
             if (!string.IsNullOrWhiteSpace(value.Description))
             {
-                return $@"        /// <summary>
-        /// {value.Description}
-        /// </summary>
-";
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(value.Description, 8, builder);
+                return builder.ToString();
             }
             else
             {

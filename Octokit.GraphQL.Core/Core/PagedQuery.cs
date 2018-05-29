@@ -106,18 +106,20 @@ namespace Octokit.GraphQL.Core
                     {
                         var pageInfos = subquery.ParentPageInfo(json).ToList();
                         var parentIds = subquery.ParentIds(json).ToList();
-                        var sinks = subqueryResultSinks[subquery];
 
-                        for (var i = 0; i < pageInfos.Count; ++i)
+                        if (subqueryResultSinks.TryGetValue(subquery, out var sinks))
                         {
-                            var pageInfo = pageInfos[i];
-
-                            if ((bool)pageInfo["hasNextPage"] == true)
+                            for (var i = 0; i < pageInfos.Count; ++i)
                             {
-                                var id = parentIds[i].ToString();
-                                var after = (string)pageInfo["endCursor"];
-                                var runner = subquery.Start(connection, id, after, Variables, sinks[i]);
-                                subqueryRunners.Push(runner);
+                                var pageInfo = pageInfos[i];
+
+                                if ((bool)pageInfo["hasNextPage"] == true)
+                                {
+                                    var id = parentIds[i].ToString();
+                                    var after = (string)pageInfo["endCursor"];
+                                    var runner = subquery.Start(connection, id, after, Variables, sinks[i]);
+                                    subqueryRunners.Push(runner);
+                                }
                             }
                         }
                     }
