@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for IssueComment.
     /// </summary>
-    public class IssueCommentConnection : QueryableValue<IssueCommentConnection>
+    public class IssueCommentConnection : QueryableValue<IssueCommentConnection>, IPagingConnection<IssueComment>
     {
         public IssueCommentConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static IssueCommentConnection Create(Expression expression)
         {

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
-using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Model;
 using Xunit;
 
@@ -46,7 +44,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("1234", result.Id.Value);
             Assert.Equal("Octokit.GraphQL.Core", result.Name);
@@ -109,7 +107,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             var item = result.ElementAt(0);
             Assert.Equal("1234", item.Id.Value);
@@ -139,7 +137,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("grokys@gmail.com", result.Email);
         }
@@ -157,7 +155,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("grokys", result.Login);
             Assert.Equal("grokys@gmail.com", result.Email);
@@ -175,7 +173,7 @@ namespace Octokit.GraphQL.UnitTests
   }
 }";
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data);
+            var result = query.Deserialize(data);
 
             Assert.Equal("https://foo/bar", result.AvatarUrl);
         }
@@ -203,7 +201,7 @@ namespace Octokit.GraphQL.UnitTests
 
             try
             {
-                new ResponseDeserializer().Deserialize(query, data);
+                var result = query.Deserialize(data);
             }
             catch (GraphQLQueryException e)
             {
@@ -243,7 +241,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             Assert.Equal(PullRequestReviewState.ChangesRequested, result[0].State);
         }
@@ -276,7 +274,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
 
             var query = new QueryBuilder().Build(expression);
-            var result = new ResponseDeserializer().Deserialize(query, data).ToList();
+            var result = query.Deserialize(data).ToList();
 
             Assert.Equal(3, result[0].State);
         }

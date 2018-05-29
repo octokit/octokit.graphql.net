@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
 
@@ -20,6 +19,16 @@ namespace Octokit.GraphQL
             IQueryableList<T> expression)
         {
             return connection.Run(expression.Compile());
+        }
+
+        public static async Task<T> Run<T>(
+            this IConnection connection,
+            ICompiledQuery<T> query,
+            Dictionary<string, object> variables = null)
+        {
+            var run = query.Start(connection, variables);
+            while (await run.RunPage()) { }
+            return run.Result;
         }
     }
 }

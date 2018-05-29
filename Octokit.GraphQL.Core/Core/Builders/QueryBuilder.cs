@@ -12,36 +12,115 @@ namespace Octokit.GraphQL.Core.Builders
 {
     public class QueryBuilder : ExpressionVisitor
     {
-        static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JToken), "data");
+        const int MaxPageSize = 100;
+        static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
+        Expression rootExpression;
         SyntaxTree syntax;
         Dictionary<ParameterExpression, LambdaParameter> lambdaParameters;
+        List<ISubquery> subqueries = new List<ISubquery>();
+        Expression<Func<JObject, IEnumerable<JToken>>> parentIds;
+        Expression<Func<JObject, JToken>> pageInfo;
 
-        public CompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
+        public ICompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
-            root = null;
-            syntax = new SyntaxTree();
-            lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+            Initialize();
 
             var rewritten = Visit(query.Expression);
-            var expression = Expression.Lambda<Func<JObject, TResult>>(
+            var lambda = Expression.Lambda<Func<JObject, TResult>>(
                 rewritten.AddCast(typeof(TResult)),
                 RootDataParameter);
-            return new CompiledQuery<TResult>(root, expression);
+            var master = new SimpleQuery<TResult>(root, lambda);
+
+            if (subqueries.Count == 0)
+            {
+                return master;
+            }
+            else
+            {
+                return new PagedQuery<TResult>(master, subqueries);
+            }
         }
 
-        public CompiledQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
+        public ICompiledQuery<IEnumerable<TResult>> Build<TResult>(IQueryableList<TResult> query)
         {
-            root = null;
-            syntax = new SyntaxTree();
-            lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+            Initialize();
 
+            var returnType = typeof(IEnumerable<TResult>);
             var rewritten = Visit(query.Expression);
-            var expression = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
-                rewritten.AddCast(typeof(IEnumerable<TResult>)),
+            var toList = ToFinalList(rewritten, returnType);
+            var lambda = Expression.Lambda<Func<JObject, IEnumerable<TResult>>>(
+                toList.AddCast(returnType),
                 RootDataParameter);
-            return new CompiledQuery<IEnumerable<TResult>>(root, expression);
+            var master = new SimpleQuery<IEnumerable<TResult>>(root, lambda);
+
+            if (subqueries.Count == 0)
+            {
+                return master;
+            }
+            else
+            {
+                return new PagedQuery<IEnumerable<TResult>>(master, subqueries);
+            }
+        }
+
+        private ISubquery BuildSubquery(
+            Expression expression,
+            Expression<Func<JObject, IEnumerable<JToken>>> parentIds,
+            Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
+        {
+            Initialize();
+
+            var resultType = typeof(IEnumerable<>).MakeGenericType(expression.Type.GenericTypeArguments[0]);
+            var rewritten = Visit(expression);
+            var toList = ToFinalList(rewritten, resultType);
+            var lambda = Expression.Lambda(
+                toList.AddCast(resultType),
+                RootDataParameter);
+            var master = SimpleSubquery<object>.Create(
+                resultType,
+                root,
+                lambda,
+                parentIds,
+                pageInfo,
+                parentPageInfo);
+
+            if (subqueries.Count == 0)
+            {
+                return master;
+            }
+            else
+            {
+                return PagedSubquery<object>.Create(
+                    resultType,
+                    master,
+                    subqueries,
+                    parentIds,
+                    pageInfo,
+                    parentPageInfo);
+            }
+        }
+
+        private Expression ToFinalList(Expression expression, Type type)
+        {
+            if (expression is MethodCallExpression m)
+            {
+                return m.AddCast(type).AddToList().AddCast(type);
+            }
+            else if (expression is SubqueryExpression s)
+            {
+                return Expression.Call(
+                    Rewritten.List.ToSubqueryListMethod.MakeGenericMethod(type.GenericTypeArguments[0]),
+                        s.MethodCall.AddCast(type),
+                        CreateGetQueryContextExpression(),
+                        Expression.Constant(s.Subquery))
+                    .AddCast(type);
+            }
+            else
+            {
+                throw new NotSupportedException("Unable to transform final expression.");
+            }
         }
 
         protected override Expression VisitBinary(BinaryExpression node)
@@ -84,6 +163,8 @@ namespace Octokit.GraphQL.Core.Builders
                 var query = node.Value as IQuery;
                 var mutation = node.Value as IMutation;
                 var queryEntity = node.Value as IQueryableValue;
+
+                rootExpression = node;
 
                 if (query != null)
                 {
@@ -233,6 +314,13 @@ namespace Octokit.GraphQL.Core.Builders
             return node.Update(Visit(node.Operand));
         }
 
+        private void Initialize()
+        {
+            root = null;
+            syntax = new SyntaxTree();
+            lambdaParameters = new Dictionary<ParameterExpression, LambdaParameter>();
+        }
+
         private Expression VisitMember(MemberExpression node, MemberInfo alias)
         {
             if (IsUnionMember(node.Member))
@@ -246,9 +334,19 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else if (IsQueryableValueMember(node.Member))
             {
-                var parameterExpression = node.Expression as ParameterExpression;
+                var expression = node.Expression;
+                bool isSubqueryPager = false;
 
-                if (parameterExpression != null)
+                if (expression is SubqueryPagerExpression subqueryPager)
+                {
+                    // This signals that a parent query has designated this method call as the
+                    // paging method for a subquery. Mark it as such and get the real method call
+                    // expression.
+                    isSubqueryPager = true;
+                    expression = subqueryPager.MethodCall;
+                }
+
+                if (expression is ParameterExpression parameterExpression)
                 {
                     var parameter = (ParameterExpression)Visit(parameterExpression);
                     var parentSelection = GetSelectionSet(parameterExpression);
@@ -257,7 +355,22 @@ namespace Octokit.GraphQL.Core.Builders
                 }
                 else
                 {
-                    var instance = Visit(node.Expression);
+                    var instance = Visit(expression);
+
+                    if (isSubqueryPager)
+                    {
+                        // This is the paging method for a subquery: add the required `pageInfo`
+                        // field selections.
+                        var pageInfo = PageInfoSelection();
+                        syntax.Head.Selections.Add(pageInfo);
+
+                        // And store an expression to read the `pageInfo` from the subquery.
+                        var selections = syntax.FieldStack
+                            .Select(x => x.Name)
+                            .Concat(new[] { "pageInfo" });
+                        this.pageInfo = CreateSelectTokenExpression(selections);
+                    }
+
                     var field = syntax.AddField(node.Member, alias);
                     return instance.AddIndexer(field);
                 }
@@ -273,6 +386,43 @@ namespace Octokit.GraphQL.Core.Builders
 
                 return node.Update(instance);
             }
+        }
+
+        private Expression<Func<JObject, IEnumerable<JToken>>> CreatePageInfoExpression()
+        {
+            return CreateSelectTokensExpression(
+                syntax.FieldStack.Select(x => x.Name).Concat(new[] { "pageInfo" }));
+        }
+
+        private static Expression<Func<JObject, JToken>> CreateSelectTokenExpression(IEnumerable<string> selectors)
+        {
+            var parameter = Expression.Parameter(typeof(JObject), "data");
+            var path = "data." + string.Join(".", selectors);
+            var expression = Expression.Call(
+                parameter,
+                JsonMethods.JTokenSelectToken,
+                Expression.Constant(path));
+            return Expression.Lambda<Func<JObject, JToken>>(expression, parameter);
+        }
+
+        private Expression<Func<JObject, IEnumerable<JToken>>> CreateSelectTokensExpression(IEnumerable<string> selectors)
+        {
+            var parameter = Expression.Parameter(typeof(JObject), "data");
+            var path = "$.data";
+            var lastWasNodes = false;
+
+            foreach (var field in selectors)
+            {
+                if (lastWasNodes) path += ".[*]";
+                path += '.' + field;
+                lastWasNodes = field == "nodes";
+            }
+
+            var expression = Expression.Call(
+                parameter,
+                JsonMethods.JTokenSelectTokens,
+                Expression.Constant(path));
+            return Expression.Lambda<Func<JObject, IEnumerable<JToken>>>(expression, parameter);
         }
 
         private IEnumerable<Expression> VisitMethodArguments(MethodInfo method, ReadOnlyCollection<Expression> arguments)
@@ -300,6 +450,10 @@ namespace Octokit.GraphQL.Core.Builders
             else if (node.Method.DeclaringType == typeof(QueryableInterfaceExtensions))
             {
                 return RewriteInterfaceExtension(node);
+            }
+            else if (node.Method.DeclaringType == typeof(PagingConnectionExtensions))
+            {
+                return RewritePagingConnectionExtensions(node);
             }
             else if (IsQueryableValueMember(node.Method))
             {
@@ -382,12 +536,45 @@ namespace Octokit.GraphQL.Core.Builders
                 var selectExpression = expression.Arguments[1];
                 var lambda = selectExpression.GetLambda();
                 var instance = Visit(source);
-                var select = (LambdaExpression)Visit(lambda);
+                ISubquery subquery = null;
 
-                return Expression.Call(
+                if (instance is AllPagesExpression allPages)
+                {
+                    // .AllPages() was called on the instance. The expression is just a marker for
+                    // this, the actual instance is in `allPages.Instance`
+                    instance = Visit(allPages.Method);
+
+                    // Select the "id" fields for the subquery.
+                    var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
+                    AddIdSelection(parentSelection.Last());
+                    parentIds = CreateSelectTokensExpression(
+                        parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
+
+                    // Add a "first: 100" argument to the query field.
+                    syntax.AddArgument("first", MaxPageSize);
+
+                    // Add the required "pageInfo" field selections then select "nodes".
+                    syntax.Head.Selections.Add(PageInfoSelection());
+
+                    // Create the subquery
+                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"));
+
+                    // And continue the query as normal after selecting "nodes".
+                    syntax.AddField("nodes");
+                    instance = instance.AddIndexer("nodes");
+                }
+                
+                var select = (LambdaExpression)Visit(lambda);
+                var rewrittenSelect = Expression.Call(
                     Rewritten.List.SelectMethod.MakeGenericMethod(select.ReturnType),
                     instance,
                     select);
+
+                // If the expression was an .AllPages() call then return a SubqueryExpression with
+                // the related SubQuery to the .ToList() or .ToDictionary() method that follows.
+                return subquery == null ?
+                    (Expression)rewrittenSelect : 
+                    new SubqueryExpression(subquery, rewrittenSelect);
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToDictionaryMethod)
             {
@@ -419,17 +606,37 @@ namespace Octokit.GraphQL.Core.Builders
                 var inputType = GetEnumerableItemType(instance.Type);
                 var resultType = GetQueryableListItemType(source.Type);
 
-                if (inputType == typeof(JToken))
+                if (instance is SubqueryExpression subquery)
                 {
-                    return Expression.Call(
-                        Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
-                        instance);
+                    instance = subquery.MethodCall;
+
+                    if (inputType == typeof(JToken))
+                    {
+                        instance = Expression.Call(
+                            Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
+                            instance);
+                    }
+
+                    return  Expression.Call(
+                        Rewritten.List.ToSubqueryListMethod.MakeGenericMethod(resultType),
+                        instance,
+                        CreateGetQueryContextExpression(),
+                        Expression.Constant(subquery.Subquery));
                 }
                 else
                 {
-                    return Expression.Call(
-                        LinqMethods.ToListMethod.MakeGenericMethod(resultType),
-                        instance);
+                    if (inputType == typeof(JToken))
+                    {
+                        return Expression.Call(
+                            Rewritten.List.ToListMethod.MakeGenericMethod(resultType),
+                            instance);
+                    }
+                    else
+                    {
+                        return Expression.Call(
+                            LinqMethods.ToListMethod.MakeGenericMethod(resultType),
+                            instance);
+                    }
                 }
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.OfTypeMethod)
@@ -463,6 +670,21 @@ namespace Octokit.GraphQL.Core.Builders
                     Rewritten.Interface.CastMethod,
                     instance,
                     Expression.Constant(fragment.TypeCondition.Name));
+            }
+            else
+            {
+                throw new NotSupportedException($"{expression.Method.Name}() is not supported");
+            }
+        }
+
+        private Expression RewritePagingConnectionExtensions(MethodCallExpression expression)
+        {
+            if (expression.Method.GetGenericMethodDefinition() == PagingConnectionExtensions.AllPagesMethod)
+            {
+                // .AllPages() was called on a IPagingConnection. We can't handle this yet -
+                // return an AllPagesExpression so we know to handle it when the containing Select
+                // is visited.
+                return new AllPagesExpression((MethodCallExpression)expression.Arguments[0]);
             }
             else
             {
@@ -505,6 +727,123 @@ namespace Octokit.GraphQL.Core.Builders
                     syntax.AddArgument(parameter.Name, value);
                 }
             }
+        }
+
+        private void AddIdSelection(ISelectionSet set)
+        {
+            if (!set.Selections.OfType<FieldSelection>().Any(x => x.Name == "id"))
+            {
+                set.Selections.Insert(0, new FieldSelection("id", null));
+            }
+        }
+
+        private ISubquery AddSubquery(
+            MethodCallExpression expression,
+            MethodCallExpression selector,
+            Expression pageInfoSelector)
+        {
+            // Create a lambda that selects the "pageInfo" fields.
+            var parentPageInfo = CreatePageInfoExpression();
+
+            // Create the actual subquery.
+            var nodeQuery = CreateNodeQuery(expression, selector);
+            var subqueryBuilder = new QueryBuilder();
+            var subquery = subqueryBuilder.BuildSubquery(nodeQuery, parentIds, parentPageInfo);
+            subqueries.Add(subquery);
+            return subquery;
+        }
+
+        
+        private MethodCallExpression CreateGetQueryContextExpression()
+        {
+            return Expression.Call(
+                RootDataParameter,
+                JsonMethods.JTokenAnnotation.MakeGenericMethod(typeof(ISubqueryRunner)));
+        }
+
+        private Expression CreateNodeQuery(
+            MethodCallExpression expression,
+            MethodCallExpression selector)
+        {
+            // Given an expression such as:
+            //
+            // new Query()
+            //   .Repository("foo", "bar")
+            //   .Issues()
+            //   .AllPages()
+            //   .Select(x => x.Name);
+            //
+            // This method creates a subquery expression that reads:
+            //
+            // new Query()
+            //   .Node(Var("__id"))
+            //   .Cast<Repository>
+            //   .Issues(first: 100, after: Var("__after"))
+            //   .Select(x => x.Name);
+            //
+            // The passed in `expression` parameter is the part before `AllPages()` and the
+            // `selector` parameter is the `x => x.Name` selector.
+
+            // Get the `Repository` type in the example above.
+            var nodeType = expression.Object.Type;
+
+            // First create the expression `new Query().Node(Var("__id"))`
+            Expression rewritten = Expression.Call(
+                rootExpression,
+                "Node",
+                null,
+                Expression.Constant(new Arg<ID>("__id", false)));
+
+            // Add `.Cast<nodeType>`.
+            rewritten = Expression.Call(
+                QueryableInterfaceExtensions.CastMethod.MakeGenericMethod(nodeType),
+                rewritten);
+
+            // Rewrite the method to add the `first: 100` and `after: Var("__after")`
+            // parameters, and make it be called on `rewritten`.
+            var methodCall = RewritePagingMethodCall(expression, rewritten);
+
+            // Wrap this in a SubqueryPagerExpression to instruct the child query builder to
+            // add the paging infrastructure.
+            rewritten = new SubqueryPagerExpression(methodCall);
+
+            // Add "nodes"
+            rewritten = Expression.Property(rewritten, "Nodes");
+
+            // And now add in the selector.
+            return selector.Update(
+                null,
+                new[] { rewritten, selector.Arguments[1] });
+        }
+
+        MethodCallExpression RewritePagingMethodCall(
+            MethodCallExpression methodCall,
+            Expression instance)
+        {
+            var arguments = new List<Expression>();
+            var i = 0;
+
+            foreach (var parameter in methodCall.Method.GetParameters())
+            {
+                switch (parameter.Name)
+                {
+                    case "first":
+                        arguments.Add(Expression.Constant(new Arg<int>(MaxPageSize), parameter.ParameterType));
+                        break;
+                    case "after":
+                        arguments.Add(Expression.Constant(new Arg<string>("__after", true), parameter.ParameterType));
+                        break;
+                    default:
+                        arguments.Add(methodCall.Arguments[i]);
+                        break;
+                }
+
+                ++i;
+            }
+
+            return methodCall.Update(
+                instance,
+                arguments);
         }
 
         private object EvaluateValue(Expression expression)
@@ -573,6 +912,23 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
+        private static Expression GetObject(Expression expression)
+        {
+            if (expression is MemberExpression member)
+            {
+                return member.Expression;
+            }
+            else if (expression is MethodCallExpression method)
+            {
+                return method.Object;
+            }
+            else
+            {
+                throw new NotImplementedException(
+                    "Don't know how to get the object expression from " + expression);
+            }
+        }
+
         private static Type GetQueryableListItemType(Type type)
         {
             var ti = type.GetTypeInfo();
@@ -631,6 +987,14 @@ namespace Octokit.GraphQL.Core.Builders
         private static bool IsUnionMember(MemberInfo member)
         {
             return member is PropertyInfo && IsUnion(member.DeclaringType);
+        }
+
+        private static FieldSelection PageInfoSelection()
+        {
+            var result = new FieldSelection("pageInfo", null);
+            result.Selections.Add(new FieldSelection("hasNextPage", null));
+            result.Selections.Add(new FieldSelection("endCursor", null));
+            return result;
         }
 
         private class LambdaParameter

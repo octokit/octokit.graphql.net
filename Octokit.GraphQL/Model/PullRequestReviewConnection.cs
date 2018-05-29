@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for PullRequestReview.
     /// </summary>
-    public class PullRequestReviewConnection : QueryableValue<PullRequestReviewConnection>
+    public class PullRequestReviewConnection : QueryableValue<PullRequestReviewConnection>, IPagingConnection<PullRequestReview>
     {
         public PullRequestReviewConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static PullRequestReviewConnection Create(Expression expression)
         {
