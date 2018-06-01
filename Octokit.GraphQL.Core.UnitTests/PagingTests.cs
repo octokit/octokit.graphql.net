@@ -211,6 +211,202 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
         }
 
+        public class Repository_Select_Issues_AllPages
+        {
+            ICompiledQuery<IEnumerable<IssueModel>> TestQuery { get; } = new Query()
+                .Repository("owner", "name")
+                .Select(x => x.Issues(null, null, null, null, null).AllPages().Select(issue => new IssueModel
+                {
+                    Number = issue.Number,
+                })).Compile();
+
+            static Repository_Select_Issues_AllPages()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
+            [Fact]
+            public void Creates_MasterQuery()
+            {
+                var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    id
+    issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        number
+      }
+    }
+  }
+}";
+
+                var master = TestQuery.GetMasterQuery();
+
+                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+            }
+
+            [Fact(Skip = "Need a better way to compare expressions")]
+            public void Creates_MasterQuery_Expression()
+            {
+                var expected = Expected(data =>
+                    (IEnumerable<int>)Rewritten.List.ToSubqueryList(
+                        Rewritten.List.Select(
+                            data["data"]["repository"]["issues"]["nodes"],
+                            issue => issue["number"].ToObject<int>()),
+                        data.Annotation<ISubqueryRunner>(),
+                        subqueryPlaceholder));
+
+                var master = TestQuery.GetMasterQuery();
+
+                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery()
+            {
+                var expected = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          number
+        }
+      }
+    }
+  }
+}";
+
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+            }
+
+            [Fact]
+            public void Creates_Subquery_ParentIds_Selector()
+            {
+                var expected = Expected(data => data.SelectTokens("$.data.repository.id"));
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentIds);
+                Assert.Equal(expected, actual.ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery_PageInfo_Selector()
+            {
+                var expected = Expected(data => data.SelectToken("data.node.issues.pageInfo"));
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].PageInfo);
+                Assert.Equal(expected, actual.ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery_ParentPageInfo_Selector()
+            {
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentPageInfo);
+                Assert.Equal(expected, actual.ToString());
+            }
+
+            [Fact]
+            public async Task Reads_All_Pages()
+            {
+                int page = 0;
+
+                string Execute(string query, IDictionary<string, string> variables)
+                {
+                    switch (page++)
+                    {
+                        case 0:
+                            Assert.Null(variables);
+                            return @"{
+  data: {
+    ""repository"": {
+      ""id"": ""repoid"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": true,
+          ""endCursor"": ""end0""
+        },
+        ""nodes"": [
+          { ""number"": 0 },
+          { ""number"": 1 },
+          { ""number"": 2 },
+        ]
+      }
+    }
+  }
+}";
+                        case 1:
+                            Assert.NotNull(variables);
+                            Assert.Equal(variables["__id"], "repoid");
+                            Assert.Equal(variables["__after"], "end0");
+                            return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""Repository"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": true,
+          ""endCursor"": ""end1""
+        },
+        ""nodes"": [
+          { ""number"": 3 },
+          { ""number"": 4 },
+        ]
+      }
+    }
+  }
+}";
+                        case 2:
+                            Assert.NotNull(variables);
+                            Assert.Equal(variables["__after"], "end1");
+                            return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""Repository"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": false,
+          ""endCursor"": ""end2""
+        },
+        ""nodes"": [
+          { ""number"": 5 },
+        ]
+      }
+    }
+  }
+}";
+                        default:
+                            throw new NotSupportedException("Should not get here");
+                    }
+                }
+
+                var connection = new MockConnection(Execute);
+                var result = (await connection.Run(TestQuery)).ToList();
+
+                Assert.Equal(Enumerable.Range(0, 6).ToList(), result.Select(x => x.Number).ToList());
+            }
+        }
+
         public class Repository_Name_Issues_AllPages
         {
             ICompiledQuery<RepositoryModel> TestQuery { get; } = new Query()
