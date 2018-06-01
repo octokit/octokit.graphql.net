@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
+using static Octokit.GraphQL.Variable;
 
 namespace Octokit.GraphQL.Core.UnitTests
 {
@@ -744,6 +745,122 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
         }
 
+        public class AddComment_Reactions
+        {
+            ICompiledQuery<IEnumerable<ReactionModel>> TestQuery { get; } = new Mutation()
+                .AddComment(Var("input"))
+                .Select(x => x.CommentEdge.Node.Reactions(null, null, null, null).AllPages().Select(reaction => new ReactionModel
+                {
+                    Id = reaction.Id.Value,
+                })).Compile();
+
+            static AddComment_Reactions()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
+            [Fact]
+            public void Creates_MasterQuery()
+            {
+                var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    id
+    issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        number
+      }
+    }
+  }
+}";
+
+                var master = TestQuery.GetMasterQuery();
+
+                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+            }
+
+            [Fact(Skip = "Need a better way to compare expressions")]
+            public void Creates_MasterQuery_Expression()
+            {
+                var expected = Expected(data =>
+                    (IEnumerable<int>)Rewritten.List.ToSubqueryList(
+                        Rewritten.List.Select(
+                            data["data"]["repository"]["issues"]["nodes"],
+                            issue => issue["number"].ToObject<int>()),
+                        data.Annotation<ISubqueryRunner>(),
+                        subqueryPlaceholder));
+
+                var master = TestQuery.GetMasterQuery();
+
+                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery()
+            {
+                var expected = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          number
+        }
+      }
+    }
+  }
+}";
+
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+            }
+
+            [Fact]
+            public void Creates_Subquery_ParentIds_Selector()
+            {
+                var expected = Expected(data => data.SelectTokens("$.data.repository.id"));
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentIds);
+                Assert.Equal(expected, actual.ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery_PageInfo_Selector()
+            {
+                var expected = Expected(data => data.SelectToken("data.node.issues.pageInfo"));
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].PageInfo);
+                Assert.Equal(expected, actual.ToString());
+            }
+
+            [Fact]
+            public void Creates_Subquery_ParentPageInfo_Selector()
+            {
+                var expected = Expected(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
+                var subqueries = TestQuery.GetSubqueries();
+
+                Assert.Single(subqueries);
+
+                var actual = ExpressionCompiler.GetSourceExpression(subqueries[0].ParentPageInfo);
+                Assert.Equal(expected, actual.ToString());
+            }
+        }
+
         private static string Expected<T>(Expression<Func<JObject, T>> expression)
         {
             var str = expression.ToString();
@@ -771,6 +888,11 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             public string Id { get; set; }
             public string Body { get; set; }
+        }
+
+        class ReactionModel
+        {
+            public string Id { get; set; }
         }
     }
 }

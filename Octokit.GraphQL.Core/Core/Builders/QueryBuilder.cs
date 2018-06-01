@@ -789,7 +789,7 @@ namespace Octokit.GraphQL.Core.Builders
 
             // First create the expression `new Query().Node(Var("__id"))`
             Expression rewritten = Expression.Call(
-                rootExpression,
+                GetRootQueryExpression(),
                 "Node",
                 null,
                 Expression.Constant(new Arg<ID>("__id", false)));
@@ -814,6 +814,28 @@ namespace Octokit.GraphQL.Core.Builders
             return selector.Update(
                 null,
                 new[] { rewritten, selector.Arguments[1] });
+        }
+
+        Expression GetRootQueryExpression()
+        {
+            if (rootExpression.Type.GetTypeInfo().ImplementedInterfaces.Any(x => x == typeof(IMutation)))
+            {
+                var associatedQueryAttribute = rootExpression.Type.GetTypeInfo()
+                    .GetCustomAttribute<AssociatedQueryAttribute>();
+
+                if (associatedQueryAttribute != null)
+                {
+                    var type = associatedQueryAttribute.Type;
+                    var instance = Activator.CreateInstance(type);
+                    return Expression.Constant(instance);
+                }
+
+                throw new InvalidOperationException("Could not find associated query for mutation.");
+            }
+            else
+            {
+                return rootExpression;
+            }
         }
 
         MethodCallExpression RewritePagingMethodCall(
