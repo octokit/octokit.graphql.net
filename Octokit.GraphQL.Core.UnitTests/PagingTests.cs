@@ -214,7 +214,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public class Repository_Select_Issues_AllPages
         {
             ICompiledQuery<IEnumerable<IssueModel>> TestQuery { get; } = new Query()
-                .Repository("owner", "name")
+                .Repository("foo", "bar")
                 .Select(x => x.Issues(null, null, null, null, null).AllPages().Select(issue => new IssueModel
                 {
                     Number = issue.Number,
@@ -945,10 +945,12 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             ICompiledQuery<IEnumerable<ReactionModel>> TestQuery { get; } = new Mutation()
                 .AddComment(Var("input"))
-                .Select(x => x.CommentEdge.Node.Reactions(null, null, null, null).AllPages().Select(reaction => new ReactionModel
+                .CommentEdge
+                .Node
+                .Reactions(null, null, null, null).AllPages().Select(reaction => new ReactionModel
                 {
                     Id = reaction.Id.Value,
-                })).Compile();
+                }).Compile();
 
             static AddComment_Reactions()
             {

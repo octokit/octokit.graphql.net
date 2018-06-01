@@ -498,11 +498,25 @@ namespace Octokit.GraphQL.Core.Builders
                 var itemType = select.ReturnType == typeof(JToken) ?
                     select.ReturnType :
                     GetEnumerableItemType(select.ReturnType);
+                var subquery = select.Body as SubqueryExpression; ;
 
-                return Expression.Call(
+                if (subquery != null)
+                {
+                    // The select body is a subquery expression, unwrap it.
+                    select = Expression.Lambda(
+                        subquery.MethodCall,
+                        select.Parameters);
+                }
+
+                var result = Expression.Call(
                     Rewritten.Value.SelectListMethod.MakeGenericMethod(itemType),
                     instance,
                     select);
+
+                // If the select body was wrapped in a subquery expression, wrap the result in a subquery expression.
+                return subquery != null ?
+                    new SubqueryExpression(subquery.Subquery, result) :
+                    (Expression)result;
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SingleMethod)
             {
