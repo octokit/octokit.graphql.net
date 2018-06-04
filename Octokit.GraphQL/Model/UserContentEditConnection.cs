@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of edits to content.
     /// </summary>
-    public class UserContentEditConnection : QueryableValue<UserContentEditConnection>
+    public class UserContentEditConnection : QueryableValue<UserContentEditConnection>, IPagingConnection<UserContentEdit>
     {
         public UserContentEditConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static UserContentEditConnection Create(Expression expression)
         {

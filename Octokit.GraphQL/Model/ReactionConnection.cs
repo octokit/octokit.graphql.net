@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A list of reactions that have been left on the subject.
     /// </summary>
-    public class ReactionConnection : QueryableValue<ReactionConnection>
+    public class ReactionConnection : QueryableValue<ReactionConnection>, IPagingConnection<Reaction>
     {
         public ReactionConnection(Expression expression) : base(expression)
         {
@@ -39,6 +39,8 @@ namespace Octokit.GraphQL.Model
         /// Whether or not the authenticated user has left a reaction on the subject.
         /// </summary>
         public bool ViewerHasReacted { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static ReactionConnection Create(Expression expression)
         {

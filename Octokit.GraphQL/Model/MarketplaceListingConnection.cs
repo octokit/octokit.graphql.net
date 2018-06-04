@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Look up Marketplace Listings
     /// </summary>
-    public class MarketplaceListingConnection : QueryableValue<MarketplaceListingConnection>
+    public class MarketplaceListingConnection : QueryableValue<MarketplaceListingConnection>, IPagingConnection<MarketplaceListing>
     {
         public MarketplaceListingConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static MarketplaceListingConnection Create(Expression expression)
         {

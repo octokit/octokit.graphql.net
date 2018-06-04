@@ -72,8 +72,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Repository {
-      __typename
       issues(first: 100, after: $__after) {
         pageInfo {
           hasNextPage
@@ -282,8 +282,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Repository {
-      __typename
       issues(first: 100, after: $__after, labels: [""bug""]) {
         pageInfo {
           hasNextPage
@@ -481,8 +481,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Repository {
-      __typename
       issues(first: 100, after: $__after) {
         pageInfo {
           hasNextPage
@@ -545,8 +545,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
+    __typename
     ... on Issue {
-      __typename
       comments(first: 100, after: $__after) {
         pageInfo {
           hasNextPage
@@ -705,6 +705,42 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Empty(result[2].Comments);
                 Assert.Empty(result[3].Comments);
                 Assert.Empty(result[4].Comments);
+            }
+
+            [Fact]
+            public async Task Handles_Empty_Nodes()
+            {
+                int page = 0;
+
+                string Execute(string query, IDictionary<string, string> variables)
+                {
+                    switch (page++)
+                    {
+                        case 0:
+                            Assert.Null(variables);
+                            return @"{
+  data: {
+    ""repository"": {
+      ""id"": ""repoid"",
+      ""issues"": {
+        ""pageInfo"": {
+          ""hasNextPage"": false,
+          ""endCursor"": ""issue_end0""
+        },
+        ""nodes"": []
+      }
+    }
+  }
+}";
+                        default:
+                            throw new NotSupportedException("Should not get here");
+                    }
+                }
+
+                var connection = new MockConnection(Execute);
+                var result = (await connection.Run(TestQuery)).ToList();
+
+                Assert.Empty(result);
             }
         }
 

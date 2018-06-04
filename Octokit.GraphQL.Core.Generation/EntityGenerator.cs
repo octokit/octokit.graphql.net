@@ -19,6 +19,7 @@ namespace Octokit.GraphQL.Core.Generation
             string entityNamespace = null)
         {
             var className = TypeUtilities.GetClassName(type);
+            var pagingConnectionNodeType = GetPagingConnectionNodeType(type);
 
             return $@"namespace {rootNamespace}
 {{
@@ -28,11 +29,11 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type)}
+    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type, pagingConnectionNodeType)}
     {{
         public {className}(Expression expression) : base(expression)
         {{
-        }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType)}
+        }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType, pagingConnectionNodeType != null)}
 
         internal static {className} Create(Expression expression)
         {{
@@ -65,7 +66,7 @@ namespace Octokit.GraphQL.Core.Generation
 
         public {className}(Expression expression) : base(expression)
         {{
-        }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType)}
+        }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType, false)}
 
         internal static {className} Create(Expression expression)
         {{
@@ -75,14 +76,13 @@ namespace Octokit.GraphQL.Core.Generation
 }}";
         }
 
-        private static string GenerateFields(TypeModel type, bool generateDocComments, string rootNamespace, string entityNamespace, string queryType)
+        private static string GenerateFields(TypeModel type, bool generateDocComments, string rootNamespace, string entityNamespace, string queryType, bool isPagingConnection)
         {
             var builder = new StringBuilder();
+            var first = true;
 
             if (type.Fields?.Count > 0)
             {
-                var first = true;
-
                 builder.AppendLine();
 
                 foreach (var field in type.Fields)
@@ -97,6 +97,17 @@ namespace Octokit.GraphQL.Core.Generation
 
                     first = false;
                 }
+            }
+
+            if (isPagingConnection)
+            {
+                if (!first)
+                {
+                    builder.AppendLine();
+                }
+
+                builder.AppendLine();
+                builder.Append($"        IPageInfo IPagingConnection.PageInfo => PageInfo;");
             }
 
             return builder.ToString();
@@ -134,10 +145,10 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(type.Description))
             {
-                return $@"/// <summary>
-    /// {type.Description}
-    /// </summary>
-    ";
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(type.Description, 4, builder);
+                builder.Append("    ");
+                return builder.ToString().TrimStart();
             }
             else
             {
@@ -149,16 +160,8 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (generate && !string.IsNullOrWhiteSpace(field.Description))
             {
-                var builder = new StringBuilder($@"        /// <summary>");
-                builder.AppendLine();
-
-                foreach (var line in field.Description.Split('\r', '\n')
-                    .Where(l => !(string.IsNullOrEmpty(l) && string.IsNullOrWhiteSpace(l))))
-                {
-                    builder.AppendLine($"        /// {line}");
-                }
-
-                builder.AppendLine(@"        /// </summary>");
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(field.Description, 8, builder);
 
                 if (field.Args != null)
                 {
@@ -177,6 +180,18 @@ namespace Octokit.GraphQL.Core.Generation
             else
             {
                 return null;
+            }
+        }
+
+        private static void GenerateDocComments(string text, int indentation, StringBuilder builder)
+        {
+            var indent = new string(' ', indentation);
+
+            foreach (var line in text.Split('\r', '\n').Where(l => !string.IsNullOrWhiteSpace(l)))
+            {
+                builder.Append(indent);
+                builder.Append("/// ");
+                builder.AppendLine(line);
             }
         }
 
@@ -290,9 +305,21 @@ namespace Octokit.GraphQL.Core.Generation
             parameters = paramBuilder.ToString();
         }
 
-        private static string GenerateImplementedInterfaces(TypeModel type)
+        private static string GenerateImplementedInterfaces(TypeModel type, TypeModel pagingConnectionNodeType)
         {
             var builder = new StringBuilder();
+
+            if (type.Name == "PageInfo")
+            {
+                builder.Append(", IPageInfo");
+            }
+
+            if (pagingConnectionNodeType != null)
+            {
+                builder.Append(", IPagingConnection<");
+                builder.Append(pagingConnectionNodeType.Name);
+                builder.Append('>');
+            }
 
             if (type.Interfaces != null)
             {
@@ -306,7 +333,26 @@ namespace Octokit.GraphQL.Core.Generation
             return builder.ToString();
         }
 
-        private static object GetEntityImplementationName(TypeModel type, string entityNamespace)
+        private static TypeModel GetPagingConnectionNodeType(TypeModel type)
+        {
+            var nodes = type.Fields?.FirstOrDefault(x =>
+                x.Name == "nodes" &&
+                x.Type.Kind == TypeKind.List);
+            var pageInfo = type.Fields?.FirstOrDefault(x => 
+                x.Name == "pageInfo" &&
+                x.Type.Kind == TypeKind.NonNull &&
+                x.Type.OfType.Kind == TypeKind.Object &&
+                x.Type.OfType.Name == "PageInfo");
+
+            if (nodes != null && pageInfo != null)
+            {
+                return nodes.Type.OfType;
+            }
+
+            return null;
+        }
+
+        private static string GetEntityImplementationName(TypeModel type, string entityNamespace)
         {
             switch (type.Kind)
             {

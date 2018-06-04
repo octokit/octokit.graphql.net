@@ -145,8 +145,8 @@ namespace Octokit.GraphQL.UnitTests
     userCount
     edges {
       node {
+        __typename
         ... on User {
-          __typename
           id
           login
           avatarUrl
@@ -240,8 +240,8 @@ namespace Octokit.GraphQL.UnitTests
             var expected = @"query {
   search(query: ""foo"", type: USER, first: 30) {
     nodes {
+      __typename
       ... on User {
-        __typename
         name
       }
     }
@@ -264,8 +264,8 @@ namespace Octokit.GraphQL.UnitTests
             var expected = @"query {
   search(query: ""foo"", type: USER, first: 30) {
     nodes {
+      __typename
       ... on User {
-        __typename
         name
         login
       }

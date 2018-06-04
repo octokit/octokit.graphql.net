@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for RepositoryTopic.
     /// </summary>
-    public class RepositoryTopicConnection : QueryableValue<RepositoryTopicConnection>
+    public class RepositoryTopicConnection : QueryableValue<RepositoryTopicConnection>, IPagingConnection<RepositoryTopic>
     {
         public RepositoryTopicConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static RepositoryTopicConnection Create(Expression expression)
         {

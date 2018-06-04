@@ -203,7 +203,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
-        public SubscriptionState ViewerSubscription { get; }
+        public SubscriptionState? ViewerSubscription { get; }
 
         /// <summary>
         /// Returns a URL to download a zipball archive for a repository.

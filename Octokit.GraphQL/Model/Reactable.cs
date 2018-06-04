@@ -57,7 +57,6 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        [Obsolete(@"Exposed database IDs will eventually be removed in favor of global Relay IDs. Use `Node.id` instead. Removal on 2018-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         public ID Id { get; }

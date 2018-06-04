@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// The connection type for User.
     /// </summary>
-    public class TeamMemberConnection : QueryableValue<TeamMemberConnection>
+    public class TeamMemberConnection : QueryableValue<TeamMemberConnection>, IPagingConnection<User>
     {
         public TeamMemberConnection(Expression expression) : base(expression)
         {
@@ -34,6 +34,8 @@ namespace Octokit.GraphQL.Model
         /// Identifies the total count of items in the connection.
         /// </summary>
         public int TotalCount { get; }
+
+        IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static TeamMemberConnection Create(Expression expression)
         {

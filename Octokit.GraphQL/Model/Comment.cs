@@ -56,6 +56,11 @@ namespace Octokit.GraphQL.Model
         ID Id { get; }
 
         /// <summary>
+        /// Check if this comment was edited and includes an edit with the creation data
+        /// </summary>
+        bool IncludesCreatedEdit { get; }
+
+        /// <summary>
         /// The moment the editor made the last edit
         /// </summary>
         DateTimeOffset? LastEditedAt { get; }
@@ -118,11 +123,12 @@ namespace Octokit.GraphQL.Model.Internal
 
         public ID Id { get; }
 
+        public bool IncludesCreatedEdit { get; }
+
         public DateTimeOffset? LastEditedAt { get; }
 
         public DateTimeOffset? PublishedAt { get; }
 
-        [Obsolete(@"General type updated timestamps will eventually be replaced by other field specific timestamps. Removal on 2018-07-01 UTC.")]
         public DateTimeOffset UpdatedAt { get; }
 
         public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);

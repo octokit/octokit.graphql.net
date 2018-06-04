@@ -74,10 +74,10 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (!string.IsNullOrWhiteSpace(type.Description))
             {
-                return $@"/// <summary>
-    /// {type.Description}
-    /// </summary>
-    ";
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(type.Description, 4, builder);
+                builder.Append("    ");
+                return builder.ToString().TrimStart();
             }
             else
             {
@@ -89,10 +89,9 @@ namespace Octokit.GraphQL.Core.Generation
         {
             if (!string.IsNullOrWhiteSpace(possibleType.Description))
             {
-                return $@"        /// <summary>
-        /// {possibleType.Description}
-        /// </summary>
-";
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSummary(possibleType.Description, 8, builder);
+                return builder.ToString();
             }
             else
             {

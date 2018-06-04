@@ -48,7 +48,7 @@ namespace Octokit.GraphQL.Core.Syntax
 
             if (selectTypeName)
             {
-                result.Selections.Add(new FieldSelection("__typename", null));
+                Head.Selections.Add(new FieldSelection("__typename", null));
             }
 
             Head.Selections.Add(result);
