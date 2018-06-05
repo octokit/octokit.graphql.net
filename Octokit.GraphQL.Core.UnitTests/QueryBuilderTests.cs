@@ -517,5 +517,20 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, query.ToString(0));
         }
+
+        [Fact]
+        public void Can_Select_To_New_Array()
+        {
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issue(number:5){title body}}}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issue(5)
+                .Select(x => new[] { x.Title, x.Body });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(0));
+        }
     }
 }

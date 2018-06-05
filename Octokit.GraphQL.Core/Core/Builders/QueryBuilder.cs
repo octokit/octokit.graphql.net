@@ -277,6 +277,15 @@ namespace Octokit.GraphQL.Core.Builders
                 Expression.New(node.Constructor, newArguments);
         }
 
+        protected override Expression VisitNewArray(NewArrayExpression node)
+        {
+            var type = node.Type.GetElementType();
+            var initializers = node.Expressions.Select(x => Visit(x).AddCast(type));
+            return Expression.NewArrayInit(
+                type,
+                initializers);
+        }
+
         protected override Expression VisitParameter(ParameterExpression node)
         {
             if (IsQueryableValue(node.Type))
