@@ -23,6 +23,9 @@ namespace Octokit.GraphQL.Core.Builders
         Expression<Func<JObject, IEnumerable<JToken>>> parentIds;
         Expression<Func<JObject, JToken>> pageInfo;
 
+        FragmentDefinition currentFragment;
+        Dictionary<string, LambdaExpression> fragmentExpressions = new Dictionary<string, LambdaExpression>();
+
         public ICompiledQuery<TResult> Build<TResult>(IQueryableValue<TResult> query)
         {
             Initialize();
@@ -497,6 +500,20 @@ namespace Octokit.GraphQL.Core.Builders
                     instance,
                     select);
             }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SelectFragmentMethod)
+            {
+                var source = expression.Arguments[0];
+                var fragmentExpression = (ConstantExpression) expression.Arguments[1];
+                var fragment = (IFragment)fragmentExpression.Value;
+                var instance = Visit(source);
+                var select = (LambdaExpression)VisitFragment(fragment);
+                syntax.AddFragmentUse(fragment.Name);
+
+                return Expression.Call(
+                    Rewritten.Value.SelectFragmentMethod.MakeGenericMethod(fragment.ReturnType),
+                    instance,
+                    select);
+            }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SelectListMethod)
             {
                 var source = expression.Arguments[0];
@@ -535,6 +552,30 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 throw new NotSupportedException($"{expression.Method.Name}() is not supported");
             }
+        }
+
+        private LambdaExpression VisitFragment(IFragment fragment)
+        {
+            LambdaExpression lambda;
+            if (!syntax.Root.FragmentDefinitions.ContainsKey(fragment.Name))
+            {
+                currentFragment = syntax.AddFragment(fragment);
+                using (syntax.Bookmark())
+                {
+                    var fragmentExpressionLambda = Visit(fragment.Expression).GetLambda();
+                    var castedFragmentExpression = fragmentExpressionLambda.Body.AddCast(fragment.ReturnType);
+                    lambda = Expression.Lambda(castedFragmentExpression, fragmentExpressionLambda.Parameters);
+                }
+
+                currentFragment = null;
+                fragmentExpressions.Add(fragment.Name, lambda);
+            }
+            else
+            {
+                lambda = fragmentExpressions[fragment.Name];
+            }
+
+            return lambda;
         }
 
         private Expression RewriteListExtension(MethodCallExpression expression)
@@ -886,7 +927,7 @@ namespace Octokit.GraphQL.Core.Builders
                     var p = new LambdaParameter(
                         parameter,
                         rewritten,
-                        syntax.Head);
+                        currentFragment ?? syntax.Head);
                     lambdaParameters.Add(parameter, p);
                     result.Add(rewritten);
                 }

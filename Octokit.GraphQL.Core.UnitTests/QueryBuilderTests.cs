@@ -22,6 +22,29 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Repository_Select_Simple_Fragment()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  name
+}";
+
+            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(fragment);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2));
+        }
+
+        [Fact]
         public void Repository_Select_Multiple_Members()
         {
             var expected = "query{repository(owner:\"foo\",name:\"bar\"){name description}}";
