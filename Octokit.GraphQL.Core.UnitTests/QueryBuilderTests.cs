@@ -532,5 +532,29 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, query.ToString(0));
         }
+
+        [Fact]
+        public void Can_Select_Repo_Twice()
+        {
+            var expected = @"query {
+  repo1: repository(owner: ""foo"", name: ""bar"") {
+    name
+  }
+  repo2: repository(owner: ""foo"", name: ""bar"") {
+    name
+  }
+}";
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }),
+                    repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name })
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2));
+        }
     }
 }
