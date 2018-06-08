@@ -503,10 +503,29 @@ namespace Octokit.GraphQL.Core.Builders
             else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SelectFragmentMethod)
             {
                 var source = expression.Arguments[0];
-                var fragmentExpression = (ConstantExpression) expression.Arguments[1];
-                var fragment = (IFragment)fragmentExpression.Value;
+
+                IFragment fragment = null;
+
+                if (expression.Arguments[1] is ConstantExpression constantExpression1)
+                {
+                    fragment = (IFragment)constantExpression1.Value;
+                }
+                else
+                {
+                    if (expression.Arguments[1] is MemberExpression memberExpression)
+                    {
+                        var memberExpressionMember = (FieldInfo) memberExpression.Member;
+                        fragment = (IFragment) memberExpressionMember.GetValue(((ConstantExpression)memberExpression.Expression).Value);
+                    }
+                }
+
+                if (fragment == null)
+                {
+                    throw new InvalidOperationException("Fragment instance cannot be found");
+                }
+
                 var instance = Visit(source);
-                var select = (LambdaExpression)VisitFragment(fragment);
+                var select = VisitFragment(fragment);
                 syntax.AddFragmentUse(fragment.Name);
 
                 return Expression.Call(
