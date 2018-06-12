@@ -1,4 +1,5 @@
 ﻿using System;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 using static Octokit.GraphQL.Variable;
@@ -546,6 +547,24 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(0));
+        }
+
+        [Fact]
+        public void Cannot_Select_QueryableValue()
+        {
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }),
+                    repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name })
+                });
+
+            var exception = Assert.Throws<GraphQLException>(() =>
+            {
+                expression.Compile();
+            });
+
+            Assert.Equal(QueryBuilder.CannotSelectIQueryableValueUseExceptionMessage, exception.Message);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Octokit.GraphQL.Core.Builders
     public class QueryBuilder : ExpressionVisitor
     {
         const int MaxPageSize = 100;
+        public const string CannotSelectIQueryableValueUseExceptionMessage = "Cannot directly select \'IQueryableValue<>\'. Use Single() or SingleOrDefault() to unwrap the value.";
         static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
@@ -248,6 +249,11 @@ namespace Octokit.GraphQL.Core.Builders
 
             foreach (var arg in node.Arguments)
             {
+                if (arg.Type.IsConstructedGenericType && typeof(IQueryableValue<>) == arg.Type.GetGenericTypeDefinition())
+                {
+                    throw new GraphQLException(CannotSelectIQueryableValueUseExceptionMessage);
+                }
+
                 using (syntax.Bookmark())
                 {
                     var alias = node.Members?[index];
