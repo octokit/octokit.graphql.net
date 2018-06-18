@@ -610,7 +610,8 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToDictionaryMethod)
             {
-                var instance = Visit(expression.Arguments[0]);
+                var source = expression.Arguments[0];
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 var keySelect = expression.Arguments[1].GetLambda();
                 var valueSelect = expression.Arguments[2].GetLambda();
                 var inputType = GetEnumerableItemType(instance.Type);

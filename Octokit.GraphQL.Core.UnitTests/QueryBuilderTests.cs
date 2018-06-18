@@ -173,6 +173,28 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Repository_Licenses_Conditions_Select_ToDictionary()
+        {
+            var expected = "query{licenses{body items: conditions{key description}}}";
+
+            var expression = new Query()
+                .Licenses
+                .Select(x => new
+                {
+                    x.Body,
+                    Items = x.Conditions.Select(i => new
+                    {
+                        i.Key,
+                        i.Description,
+                    }).ToDictionary(d => d.Key, d => d.Description),
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(0));
+        }
+
+        [Fact]
         public void Repository_Issues_Nested_Select_With_Captured_Parameter()
         {
             var expected = @"query {
