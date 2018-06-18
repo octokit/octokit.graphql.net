@@ -115,7 +115,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     {
                         Value = Rewritten.Value.Single(
                             Rewritten.Value.Select(
-                                x["milestone"],
+                                x["value"],
                                 y => new
                                 {
                                     Closed = y["closed"].ToObject<bool>(),
@@ -149,7 +149,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     {
                         Value = Rewritten.Value.SingleOrDefault(
                             Rewritten.Value.Select(
-                                x["milestone"],
+                                x["value"],
                                 y => new
                                 {
                                     Closed = y["closed"].ToObject<bool>(),
