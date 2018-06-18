@@ -279,6 +279,10 @@ namespace Octokit.GraphQL.Core.Builders
                     {
                         rewritten = VisitMethodCall(call, alias);
                     }
+                    else if (arg is UnaryExpression unary)
+                    {
+                        rewritten = VisitUnary(unary, alias);
+                    }
                     else
                     {
                         rewritten = Visit(arg);
@@ -326,19 +330,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override Expression VisitUnary(UnaryExpression node)
         {
-            if (node.NodeType == ExpressionType.Convert)
-            {
-                var rewritten = Visit(node.Operand);
-
-                if (rewritten.Type == typeof(JToken))
-                {
-                    return Expression.Convert(
-                        rewritten.AddCast(node.Operand.Type),
-                        node.Type);
-                }
-            }
-
-            return node.Update(Visit(node.Operand));
+            return VisitUnary(node, null);
         }
 
         private void Initialize()
@@ -413,6 +405,23 @@ namespace Octokit.GraphQL.Core.Builders
 
                 return node.Update(instance);
             }
+        }
+
+        private Expression VisitUnary(UnaryExpression node, MemberInfo alias)
+        {
+            if (node.NodeType == ExpressionType.Convert)
+            {
+                var rewritten = Visit(node.Operand);
+
+                if (rewritten.Type == typeof(JToken))
+                {
+                    return Expression.Convert(
+                        rewritten.AddCast(node.Operand.Type),
+                        node.Type);
+                }
+            }
+
+            return node.Update(Visit(node.Operand));
         }
 
         private Expression<Func<JObject, IEnumerable<JToken>>> CreatePageInfoExpression()
