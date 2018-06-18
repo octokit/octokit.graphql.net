@@ -161,7 +161,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Licenses_Nested_Selects()
         {
-            var expected = "query{licenses{body items:conditions{description}}}";
+            var expected = "query{licenses{body items: conditions{description}}}";
 
             var expression = new Query()
                 .Licenses

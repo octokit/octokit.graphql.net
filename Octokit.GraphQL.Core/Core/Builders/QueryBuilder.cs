@@ -396,7 +396,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else
             {
-                var instance = Visit(node.Expression);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(node.Expression, alias));
 
                 if (ExpressionWasRewritten(node.Expression, instance))
                 {
