@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Cast_Member_To_Enum()
         {
-            var expected = "query{repository(owner:\"foo\",name:\"bar\"){forkCount}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){enum:forkCount}}";
 
             var expression = new Query()
                 .Repository("foo", "bar")
@@ -97,7 +97,11 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Cast_Nullable_Member_To_Enum()
         {
-            var expected = "query{repository(owner:\"foo\",name:\"bar\"){databaseId}}";
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    enum: databaseId
+  }
+}";
 
             var expression = new Query()
                 .Repository("foo", "bar")
@@ -108,7 +112,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString(0));
+            Assert.Equal(expected, query.ToString(2));
         }
 
         [Fact]
@@ -175,7 +179,13 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Issues_Nested_Select_With_Captured_Parameter()
         {
-            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issues(first:10,after:\"foo\"){totalCount}}}";
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    items: issues(first: 10, after: ""foo"") {
+      totalCount
+    }
+  }
+}";
 
             var arg1 = "foo";
             var expression = new Query()
@@ -190,7 +200,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString(0));
+            Assert.Equal(expected, query.ToString(2));
         }
 
         [Fact]
