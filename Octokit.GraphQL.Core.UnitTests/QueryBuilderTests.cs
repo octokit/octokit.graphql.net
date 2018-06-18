@@ -161,7 +161,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Licenses_Nested_Selects()
         {
-            var expected = "query{licenses{body conditions{description}}}";
+            var expected = "query{licenses{body items:conditions{description}}}";
 
             var expression = new Query()
                 .Licenses
@@ -206,7 +206,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Nodes_Inline_Fragment_Issue_Comments()
         {
-            var expected = "query{nodes(ids:[\"123\"]){__typename ... on Issue{number comments{nodes{body}}}}}";
+            var expected = "query{nodes(ids:[\"123\"]){__typename ... on Issue{number items:comments{nodes{body}}}}}";
 
             var expression = new Query()
                 .Nodes(new[] { new ID("123") })
