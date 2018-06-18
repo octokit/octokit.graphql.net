@@ -558,8 +558,8 @@ namespace Octokit.GraphQL.Core.UnitTests
             var expression = new Query()
                 .Select(q => new
                 {
-                    repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }),
-                    repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name })
+                    repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }).Single(),
+                    repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name }).Single()
                 });
 
             var query = expression.Compile();
