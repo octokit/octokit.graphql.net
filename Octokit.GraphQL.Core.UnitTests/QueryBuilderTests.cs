@@ -80,7 +80,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Cast_Member_To_Enum()
         {
-            var expected = "query{repository(owner:\"foo\",name:\"bar\"){enum:forkCount}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){enum: forkCount}}";
 
             var expression = new Query()
                 .Repository("foo", "bar")
