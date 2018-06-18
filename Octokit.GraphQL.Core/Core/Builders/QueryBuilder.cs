@@ -412,13 +412,9 @@ namespace Octokit.GraphQL.Core.Builders
             if (node.NodeType == ExpressionType.Convert)
             {
                 var rewritten = Visit(AliasedExpression.WrapIfNeeded(node.Operand, alias));
-
-                if (rewritten.Type == typeof(JToken))
-                {
-                    return Expression.Convert(
-                        rewritten.AddCast(node.Operand.Type),
-                        node.Type);
-                }
+                return Expression.Convert(
+                    rewritten.AddCast(node.Operand.Type),
+                    node.Type);
             }
 
             return node.Update(Visit(node.Operand));
