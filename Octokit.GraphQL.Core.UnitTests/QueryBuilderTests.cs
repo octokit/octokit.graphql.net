@@ -477,6 +477,21 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Enumerable_Variable()
+        {
+            var expected = "query($var1:[String!]){repository(owner:\"foo\",name:\"bar\"){issues(labels:$var1){totalCount}}}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Issues(labels: Var("var1"))
+                .Select(x => x.TotalCount);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(0));
+        }
+
+        [Fact]
         public void Multiple_Variables()
         {
             var expected = "query($foo:String!,$bar:String!){repository(owner:$foo,name:$bar){name}}";
