@@ -86,7 +86,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x => new
                     {
                         Body = x["body"].ToObject<string>(),
-                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["conditions"], i => i["description"]))
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["items"], i => i["description"]))
                     }).ToList();
 
             var query = expression.Compile();
