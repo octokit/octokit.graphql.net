@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReopenedEvent : QueryableValue<ReopenedEvent>
     {
+        /// <inheritdoc />
         public ReopenedEvent(Expression expression) : base(expression)
         {
         }

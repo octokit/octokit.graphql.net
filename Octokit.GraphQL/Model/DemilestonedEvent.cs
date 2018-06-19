@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DemilestonedEvent : QueryableValue<DemilestonedEvent>
     {
+        /// <inheritdoc />
         public DemilestonedEvent(Expression expression) : base(expression)
         {
         }

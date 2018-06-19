@@ -146,6 +146,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIRepositoryInfo : QueryableValue<StubIRepositoryInfo>, IRepositoryInfo
     {
+        /// <inheritdoc />
         public StubIRepositoryInfo(Expression expression) : base(expression)
         {
         }

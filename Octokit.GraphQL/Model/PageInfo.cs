@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PageInfo : QueryableValue<PageInfo>, IPageInfo
     {
+        /// <inheritdoc />
         public PageInfo(Expression expression) : base(expression)
         {
         }

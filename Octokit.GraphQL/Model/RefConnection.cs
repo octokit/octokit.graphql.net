@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RefConnection : QueryableValue<RefConnection>, IPagingConnection<Ref>
     {
+        /// <inheritdoc />
         public RefConnection(Expression expression) : base(expression)
         {
         }

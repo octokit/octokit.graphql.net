@@ -53,6 +53,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIReactable : QueryableValue<StubIReactable>, IReactable
     {
+        /// <inheritdoc />
         public StubIReactable(Expression expression) : base(expression)
         {
         }

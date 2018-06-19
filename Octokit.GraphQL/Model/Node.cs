@@ -30,6 +30,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubINode : QueryableValue<StubINode>, INode
     {
+        /// <inheritdoc />
         public StubINode(Expression expression) : base(expression)
         {
         }

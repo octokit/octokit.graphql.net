@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReactionConnection : QueryableValue<ReactionConnection>, IPagingConnection<Reaction>
     {
+        /// <inheritdoc />
         public ReactionConnection(Expression expression) : base(expression)
         {
         }

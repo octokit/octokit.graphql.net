@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ExternalIdentityConnection : QueryableValue<ExternalIdentityConnection>, IPagingConnection<ExternalIdentity>
     {
+        /// <inheritdoc />
         public ExternalIdentityConnection(Expression expression) : base(expression)
         {
         }

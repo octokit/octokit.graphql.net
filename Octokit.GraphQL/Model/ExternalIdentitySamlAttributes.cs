@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ExternalIdentitySamlAttributes : QueryableValue<ExternalIdentitySamlAttributes>
     {
+        /// <inheritdoc />
         public ExternalIdentitySamlAttributes(Expression expression) : base(expression)
         {
         }

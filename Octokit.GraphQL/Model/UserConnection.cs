@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UserConnection : QueryableValue<UserConnection>, IPagingConnection<User>
     {
+        /// <inheritdoc />
         public UserConnection(Expression expression) : base(expression)
         {
         }

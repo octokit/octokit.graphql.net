@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SearchResultItemConnection : QueryableValue<SearchResultItemConnection>, IPagingConnection<SearchResultItem>
     {
+        /// <inheritdoc />
         public SearchResultItemConnection(Expression expression) : base(expression)
         {
         }

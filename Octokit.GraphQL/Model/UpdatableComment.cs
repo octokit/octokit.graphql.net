@@ -30,6 +30,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIUpdatableComment : QueryableValue<StubIUpdatableComment>, IUpdatableComment
     {
+        /// <inheritdoc />
         public StubIUpdatableComment(Expression expression) : base(expression)
         {
         }

@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RenamedTitleEvent : QueryableValue<RenamedTitleEvent>
     {
+        /// <inheritdoc />
         public RenamedTitleEvent(Expression expression) : base(expression)
         {
         }

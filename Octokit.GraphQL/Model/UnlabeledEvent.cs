@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnlabeledEvent : QueryableValue<UnlabeledEvent>
     {
+        /// <inheritdoc />
         public UnlabeledEvent(Expression expression) : base(expression)
         {
         }

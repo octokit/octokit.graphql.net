@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProjectCardEdge : QueryableValue<ProjectCardEdge>
     {
+        /// <inheritdoc />
         public ProjectCardEdge(Expression expression) : base(expression)
         {
         }

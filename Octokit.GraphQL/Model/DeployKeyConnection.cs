@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeployKeyConnection : QueryableValue<DeployKeyConnection>, IPagingConnection<DeployKey>
     {
+        /// <inheritdoc />
         public DeployKeyConnection(Expression expression) : base(expression)
         {
         }

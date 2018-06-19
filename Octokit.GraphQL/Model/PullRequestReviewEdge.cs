@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestReviewEdge : QueryableValue<PullRequestReviewEdge>
     {
+        /// <inheritdoc />
         public PullRequestReviewEdge(Expression expression) : base(expression)
         {
         }

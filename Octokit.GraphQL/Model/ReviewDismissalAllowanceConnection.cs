@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewDismissalAllowanceConnection : QueryableValue<ReviewDismissalAllowanceConnection>, IPagingConnection<ReviewDismissalAllowance>
     {
+        /// <inheritdoc />
         public ReviewDismissalAllowanceConnection(Expression expression) : base(expression)
         {
         }

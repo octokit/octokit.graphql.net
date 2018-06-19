@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MentionedEvent : QueryableValue<MentionedEvent>
     {
+        /// <inheritdoc />
         public MentionedEvent(Expression expression) : base(expression)
         {
         }

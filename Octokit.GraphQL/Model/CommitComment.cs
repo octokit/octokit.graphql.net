@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommitComment : QueryableValue<CommitComment>
     {
+        /// <inheritdoc />
         public CommitComment(Expression expression) : base(expression)
         {
         }

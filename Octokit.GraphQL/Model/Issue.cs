@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Issue : QueryableValue<Issue>
     {
+        /// <inheritdoc />
         public Issue(Expression expression) : base(expression)
         {
         }

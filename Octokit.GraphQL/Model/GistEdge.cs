@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class GistEdge : QueryableValue<GistEdge>
     {
+        /// <inheritdoc />
         public GistEdge(Expression expression) : base(expression)
         {
         }

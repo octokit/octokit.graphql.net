@@ -31,6 +31,7 @@ namespace Octokit.GraphQL.Core.Generation
 
     {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type, pagingConnectionNodeType)}
     {{
+        /// <inheritdoc />
         public {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType, pagingConnectionNodeType != null)}

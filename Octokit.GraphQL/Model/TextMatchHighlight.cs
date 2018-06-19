@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TextMatchHighlight : QueryableValue<TextMatchHighlight>
     {
+        /// <inheritdoc />
         public TextMatchHighlight(Expression expression) : base(expression)
         {
         }

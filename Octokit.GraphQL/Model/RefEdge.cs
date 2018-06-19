@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RefEdge : QueryableValue<RefEdge>
     {
+        /// <inheritdoc />
         public RefEdge(Expression expression) : base(expression)
         {
         }

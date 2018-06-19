@@ -34,6 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubILabelable : QueryableValue<StubILabelable>, ILabelable
     {
+        /// <inheritdoc />
         public StubILabelable(Expression expression) : base(expression)
         {
         }
