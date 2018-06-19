@@ -31,6 +31,11 @@ namespace Octokit.GraphQL.Core.Syntax
             {
                 name = "Boolean";
             }
+            else if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
+                var inner = ToTypeName(type.GenericTypeArguments[0], false);
+                name = '[' + inner + ']';
+            }
 
             return name + (isNullable ? "" : "!");
         }
