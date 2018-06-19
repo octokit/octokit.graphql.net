@@ -218,7 +218,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString(2));
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
