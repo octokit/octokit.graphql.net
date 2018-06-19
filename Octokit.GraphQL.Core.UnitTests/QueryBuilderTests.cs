@@ -45,35 +45,6 @@ fragment repositoryName on Repository {
         }
 
         [Fact]
-        public void Repository_Select_Use_Fragment_Twice()
-        {
-            var expected = @"query {
-  repo1: repository(owner: ""foo"", name: ""bar"") {
-    ...repositoryName
-  }
-  repo2: repository(owner: ""foo"", name: ""bar"") {
-    ...repositoryName
-  }
-}
-fragment repositoryName on Repository {
-  name
-}";
-
-            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
-
-            var expression = new Query()
-                .Select(q => new
-                {
-                    repo1 = q.Repository("foo", "bar").Select(fragment),
-                    repo2 = q.Repository("foo", "bar").Select(fragment)
-                });
-
-            var query = expression.Compile();
-
-            Assert.Equal(expected, query.ToString(2));
-        }
-
-        [Fact]
         public void Repository_Select_Multiple_Members()
         {
             var expected = "query{repository(owner:\"foo\",name:\"bar\"){name description}}";
@@ -650,6 +621,35 @@ fragment repositoryName on Repository {
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_Select_Use_Fragment_Twice()
+        {
+            var expected = @"query {
+  repo1: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+  repo2: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  name
+}";
+
+            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault(),
+                    repo2 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault()
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2));
         }
     }
 }

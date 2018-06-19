@@ -547,7 +547,7 @@ namespace Octokit.GraphQL.Core.Builders
                     throw new InvalidOperationException("Fragment instance cannot be found");
                 }
 
-                var instance = Visit(source);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 var select = VisitFragment(fragment);
                 syntax.AddFragmentUse(fragment.Name);
 
