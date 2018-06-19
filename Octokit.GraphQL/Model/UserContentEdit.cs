@@ -36,6 +36,11 @@ namespace Octokit.GraphQL.Model
         public string Diff { get; }
 
         /// <summary>
+        /// When this content was edited
+        /// </summary>
+        public DateTimeOffset EditedAt { get; }
+
+        /// <summary>
         /// The actor who edited this content
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);

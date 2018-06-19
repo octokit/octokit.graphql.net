@@ -24,9 +24,9 @@ namespace Octokit.GraphQL.Model
         /// A list of Users assigned to this object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserConnection Assignees(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace Octokit.GraphQL.Model
         /// A list of comments associated with the Issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public IssueCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.IssueCommentConnection.Create);
 
         /// <summary>
@@ -104,9 +104,9 @@ namespace Octokit.GraphQL.Model
         /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octokit.GraphQL.Model.LabelConnection.Create);
 
         /// <summary>
@@ -133,18 +133,18 @@ namespace Octokit.GraphQL.Model
         /// A list of Users that are participating in the Issue conversation.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserConnection Participants(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
         /// List of project cards associated with this issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ProjectCardConnection ProjectCards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ProjectCards(first, after, last, before), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>
@@ -161,9 +161,9 @@ namespace Octokit.GraphQL.Model
         /// A list of Reactions left on the Issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
         public ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
@@ -187,9 +187,9 @@ namespace Octokit.GraphQL.Model
         /// A list of events, comments, commits, etc. associated with the issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="since">Allows filtering timeline events by a `since` timestamp.</param>
         public IssueTimelineConnection Timeline(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<DateTimeOffset>? since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.Model.IssueTimelineConnection.Create);
 
@@ -212,9 +212,9 @@ namespace Octokit.GraphQL.Model
         /// A list of edits to this content.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 
         /// <summary>
