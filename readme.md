@@ -125,8 +125,5 @@ var query = new Query()
 
 There's a lot left to do:
 
-- Mutations
-- Work out a better way to handle paging
 - More documentation
-- API Deprecation support
 - Unions don't work properly
