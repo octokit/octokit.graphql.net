@@ -12,10 +12,12 @@ namespace Octokit.GraphQL
     /// </summary>
     public class Query : QueryableValue<Query>, IQuery
     {
+        /// <inheritdoc />
         public Query() : base(null)
         {
         }
 
+        /// <inheritdoc />
         public Query(Expression expression) : base(expression)
         {
         }

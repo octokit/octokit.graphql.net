@@ -12,10 +12,12 @@ namespace Octokit.GraphQL
     /// </summary>
     public class Mutation : QueryableValue<Mutation>, IMutation
     {
+        /// <inheritdoc />
         public Mutation() : base(null)
         {
         }
 
+        /// <inheritdoc />
         public Mutation(Expression expression) : base(expression)
         {
         }
