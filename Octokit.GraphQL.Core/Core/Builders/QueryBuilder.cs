@@ -374,7 +374,7 @@ namespace Octokit.GraphQL.Core.Builders
                 }
                 else
                 {
-                    var instance = Visit(expression);
+                    var instance = Visit(AliasedExpression.WrapIfNeeded(expression, alias));
 
                     if (isSubqueryPager)
                     {
@@ -390,7 +390,7 @@ namespace Octokit.GraphQL.Core.Builders
                         this.pageInfo = CreateSelectTokenExpression(selections);
                     }
 
-                    var field = syntax.AddField(node.Member, alias);
+                    var field = syntax.AddField(node.Member);
                     return instance.AddIndexer(field);
                 }
             }
