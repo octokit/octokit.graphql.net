@@ -139,6 +139,7 @@ namespace Octokit.GraphQL.Core
                 return subqueryRunners.Count > 0;
             }
 
+            /// <inheritdoc />
             public void SetQueryResultSink(ISubquery query, IList result)
             {
                 if (!subqueryResultSinks.TryGetValue(query, out var value))
