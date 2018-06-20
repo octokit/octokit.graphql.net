@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnassignedEvent : QueryableValue<UnassignedEvent>
     {
+        /// <inheritdoc />
         public UnassignedEvent(Expression expression) : base(expression)
         {
         }

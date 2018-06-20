@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ExternalIdentity : QueryableValue<ExternalIdentity>
     {
+        /// <inheritdoc />
         public ExternalIdentity(Expression expression) : base(expression)
         {
         }

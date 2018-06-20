@@ -46,6 +46,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIActor : QueryableValue<StubIActor>, IActor
     {
+        /// <inheritdoc />
         public StubIActor(Expression expression) : base(expression)
         {
         }

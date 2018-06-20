@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AcceptTopicSuggestionPayload : QueryableValue<AcceptTopicSuggestionPayload>
     {
+        /// <inheritdoc />
         public AcceptTopicSuggestionPayload(Expression expression) : base(expression)
         {
         }

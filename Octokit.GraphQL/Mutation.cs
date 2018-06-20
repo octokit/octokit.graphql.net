@@ -12,10 +12,12 @@ namespace Octokit.GraphQL
     /// </summary>
     public class Mutation : QueryableValue<Mutation>, IMutation
     {
+        /// <inheritdoc />
         public Mutation() : base(null)
         {
         }
 
+        /// <inheritdoc />
         public Mutation(Expression expression) : base(expression)
         {
         }
@@ -134,6 +136,11 @@ namespace Octokit.GraphQL
         /// Submits a pending pull request review.
         /// </summary>
         public SubmitPullRequestReviewPayload SubmitPullRequestReview(Arg<SubmitPullRequestReviewInput> input) => this.CreateMethodCall(x => x.SubmitPullRequestReview(input), Octokit.GraphQL.Model.SubmitPullRequestReviewPayload.Create);
+
+        /// <summary>
+        /// Unlock a lockable object
+        /// </summary>
+        public UnlockLockablePayload UnlockLockable(Arg<UnlockLockableInput> input) => this.CreateMethodCall(x => x.UnlockLockable(input), Octokit.GraphQL.Model.UnlockLockablePayload.Create);
 
         /// <summary>
         /// Updates an existing project.

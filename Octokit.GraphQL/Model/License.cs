@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class License : QueryableValue<License>
     {
+        /// <inheritdoc />
         public License(Expression expression) : base(expression)
         {
         }

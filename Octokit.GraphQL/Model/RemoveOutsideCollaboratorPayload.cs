@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveOutsideCollaboratorPayload : QueryableValue<RemoveOutsideCollaboratorPayload>
     {
+        /// <inheritdoc />
         public RemoveOutsideCollaboratorPayload(Expression expression) : base(expression)
         {
         }

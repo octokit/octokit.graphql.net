@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProjectCardConnection : QueryableValue<ProjectCardConnection>, IPagingConnection<ProjectCard>
     {
+        /// <inheritdoc />
         public ProjectCardConnection(Expression expression) : base(expression)
         {
         }

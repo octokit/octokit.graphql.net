@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class GitHubMetadata : QueryableValue<GitHubMetadata>
     {
+        /// <inheritdoc />
         public GitHubMetadata(Expression expression) : base(expression)
         {
         }

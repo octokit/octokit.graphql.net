@@ -29,9 +29,9 @@ namespace Octokit.GraphQL.Model
         /// A list of Reactions left on the Issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
         ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null);
@@ -53,6 +53,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIReactable : QueryableValue<StubIReactable>, IReactable
     {
+        /// <inheritdoc />
         public StubIReactable(Expression expression) : base(expression)
         {
         }

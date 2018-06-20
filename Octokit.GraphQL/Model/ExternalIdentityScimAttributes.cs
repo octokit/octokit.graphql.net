@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ExternalIdentityScimAttributes : QueryableValue<ExternalIdentityScimAttributes>
     {
+        /// <inheritdoc />
         public ExternalIdentityScimAttributes(Expression expression) : base(expression)
         {
         }

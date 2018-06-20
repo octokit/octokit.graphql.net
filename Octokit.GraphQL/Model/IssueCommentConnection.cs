@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueCommentConnection : QueryableValue<IssueCommentConnection>, IPagingConnection<IssueComment>
     {
+        /// <inheritdoc />
         public IssueCommentConnection(Expression expression) : base(expression)
         {
         }

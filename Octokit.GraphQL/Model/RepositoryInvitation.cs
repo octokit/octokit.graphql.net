@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RepositoryInvitation : QueryableValue<RepositoryInvitation>
     {
+        /// <inheritdoc />
         public RepositoryInvitation(Expression expression) : base(expression)
         {
         }

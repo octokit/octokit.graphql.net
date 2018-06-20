@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LabelConnection : QueryableValue<LabelConnection>, IPagingConnection<Label>
     {
+        /// <inheritdoc />
         public LabelConnection(Expression expression) : base(expression)
         {
         }

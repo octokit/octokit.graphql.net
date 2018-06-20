@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UserContentEdit : QueryableValue<UserContentEdit>
     {
+        /// <inheritdoc />
         public UserContentEdit(Expression expression) : base(expression)
         {
         }
@@ -34,6 +35,11 @@ namespace Octokit.GraphQL.Model
         /// A summary of the changes for this edit
         /// </summary>
         public string Diff { get; }
+
+        /// <summary>
+        /// When this content was edited
+        /// </summary>
+        public DateTimeOffset EditedAt { get; }
 
         /// <summary>
         /// The actor who edited this content

@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RepositoryTopicConnection : QueryableValue<RepositoryTopicConnection>, IPagingConnection<RepositoryTopic>
     {
+        /// <inheritdoc />
         public RepositoryTopicConnection(Expression expression) : base(expression)
         {
         }

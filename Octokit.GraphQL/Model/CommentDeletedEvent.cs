@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommentDeletedEvent : QueryableValue<CommentDeletedEvent>
     {
+        /// <inheritdoc />
         public CommentDeletedEvent(Expression expression) : base(expression)
         {
         }

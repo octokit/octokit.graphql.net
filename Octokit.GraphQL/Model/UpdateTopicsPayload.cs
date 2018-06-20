@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateTopicsPayload : QueryableValue<UpdateTopicsPayload>
     {
+        /// <inheritdoc />
         public UpdateTopicsPayload(Expression expression) : base(expression)
         {
         }

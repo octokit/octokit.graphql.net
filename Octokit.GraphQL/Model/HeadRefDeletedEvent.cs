@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class HeadRefDeletedEvent : QueryableValue<HeadRefDeletedEvent>
     {
+        /// <inheritdoc />
         public HeadRefDeletedEvent(Expression expression) : base(expression)
         {
         }

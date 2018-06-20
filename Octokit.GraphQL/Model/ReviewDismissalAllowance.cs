@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewDismissalAllowance : QueryableValue<ReviewDismissalAllowance>
     {
+        /// <inheritdoc />
         public ReviewDismissalAllowance(Expression expression) : base(expression)
         {
         }

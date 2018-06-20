@@ -12,10 +12,12 @@ namespace Octokit.GraphQL
     /// </summary>
     public class Query : QueryableValue<Query>, IQuery
     {
+        /// <inheritdoc />
         public Query() : base(null)
         {
         }
 
+        /// <inheritdoc />
         public Query(Expression expression) : base(expression)
         {
         }
@@ -65,9 +67,9 @@ namespace Octokit.GraphQL
         /// Look up Marketplace listings
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="categorySlug">Select only listings with the given category.</param>
         /// <param name="viewerCanAdmin">Select listings to which user has admin access. If omitted, listings visible to the viewer are returned.</param>
         /// <param name="adminId">Select listings that can be administered by the specified user.</param>
@@ -135,9 +137,9 @@ namespace Octokit.GraphQL
         /// Perform a search across resources.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="query">The search string to look for.</param>
         /// <param name="type">The types of search items to search within.</param>
         public SearchResultItemConnection Search(Arg<string> query, Arg<SearchType> type, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octokit.GraphQL.Model.SearchResultItemConnection.Create);

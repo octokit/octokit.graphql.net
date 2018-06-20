@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveStarPayload : QueryableValue<RemoveStarPayload>
     {
+        /// <inheritdoc />
         public RemoveStarPayload(Expression expression) : base(expression)
         {
         }

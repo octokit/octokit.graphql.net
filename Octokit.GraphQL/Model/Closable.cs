@@ -35,6 +35,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIClosable : QueryableValue<StubIClosable>, IClosable
     {
+        /// <inheritdoc />
         public StubIClosable(Expression expression) : base(expression)
         {
         }

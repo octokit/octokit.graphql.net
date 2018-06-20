@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeploymentStatus : QueryableValue<DeploymentStatus>
     {
+        /// <inheritdoc />
         public DeploymentStatus(Expression expression) : base(expression)
         {
         }

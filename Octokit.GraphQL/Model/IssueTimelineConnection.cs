@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueTimelineConnection : QueryableValue<IssueTimelineConnection>, IPagingConnection<IssueTimelineItem>
     {
+        /// <inheritdoc />
         public IssueTimelineConnection(Expression expression) : base(expression)
         {
         }

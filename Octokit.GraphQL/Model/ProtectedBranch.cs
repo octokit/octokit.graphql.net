@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProtectedBranch : QueryableValue<ProtectedBranch>
     {
+        /// <inheritdoc />
         public ProtectedBranch(Expression expression) : base(expression)
         {
         }
@@ -66,9 +67,9 @@ namespace Octokit.GraphQL.Model
         /// A list push allowances for this protected branch.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public PushAllowanceConnection PushAllowances(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PushAllowances(first, after, last, before), Octokit.GraphQL.Model.PushAllowanceConnection.Create);
 
         /// <summary>
@@ -85,9 +86,9 @@ namespace Octokit.GraphQL.Model
         /// A list review dismissal allowances for this protected branch.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ReviewDismissalAllowanceConnection ReviewDismissalAllowances(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ReviewDismissalAllowances(first, after, last, before), Octokit.GraphQL.Model.ReviewDismissalAllowanceConnection.Create);
 
         internal static ProtectedBranch Create(Expression expression)
