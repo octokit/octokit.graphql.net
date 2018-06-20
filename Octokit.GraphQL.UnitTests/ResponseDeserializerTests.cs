@@ -2,6 +2,7 @@
 using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Model;
 using Xunit;
 
@@ -203,7 +204,7 @@ namespace Octokit.GraphQL.UnitTests
             {
                 var result = query.Deserialize(data);
             }
-            catch (GraphQLQueryException e)
+            catch (ResponseDeserializerException e)
             {
                 thrown = e.Message == "Error message." &&
                          e.Line == 5 &&
