@@ -30,5 +30,45 @@ namespace Octokit.GraphQL
             while (await run.RunPage()) { }
             return run.Result;
         }
+
+        public static async Task<TResult> Run<T1, TResult>(
+            this Connection connection,
+            Func<Arg<T1>, IQueryableValue<TResult>> queryMethod,
+            T1 arg1)
+        {
+            var method = Compile(queryMethod);
+            return await method(connection, arg1);
+        }
+
+        static Func<Connection, T1, Task<TResult>> Compile<T1, TResult>(
+            Func<Arg<T1>, IQueryableValue<TResult>> queryMethod)
+        {
+            var arg1 = new Variable("arg1");
+            var compiledQuery = CachingCompile(queryMethod, arg1);
+
+            return async (connection, arg) =>
+            {
+                var vars = new Dictionary<string, object> { { "arg1", arg } };
+                return await connection.Run(compiledQuery, vars);
+            };
+        }
+
+        static ICompiledQuery<TResult> CachingCompile<T1, TResult>(Func<Arg<T1>, IQueryableValue<TResult>> queryMethod, Variable arg1)
+        {
+            ICompiledQuery<TResult> compiledQuery;
+            if (CompiledQueryCache.TryGetValue(queryMethod, out object cachedCompiledQuery))
+            {
+                compiledQuery = (ICompiledQuery<TResult>)cachedCompiledQuery;
+            }
+            else
+            {
+                var query = queryMethod(arg1);
+                CompiledQueryCache[queryMethod] = compiledQuery = query.Compile();
+            }
+
+            return compiledQuery;
+        }
+
+        static IDictionary<Delegate, object> CompiledQueryCache { get; } = new Dictionary<Delegate, object>();
     }
 }
