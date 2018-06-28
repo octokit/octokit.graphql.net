@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A respository's open source license
+    /// A repository's open source license
     /// </summary>
     public class License : QueryableValue<License>
     {
