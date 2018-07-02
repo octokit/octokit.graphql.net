@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Octokit.GraphQL.Model;
 using Xunit;
@@ -93,6 +92,21 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var repositoryName = Connection.Run(query, vars).Result;
 
             Assert.Equal("octokit.net", repositoryName);
+        }
+
+        [IntegrationTest]
+        public void Query_Repository_Select_Use_Fragment()
+        {
+            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
+
+            var query = new Query()
+                .Select(q => new
+                {
+                    repo = q.Repository("foo", "bar").Select(fragment).SingleOrDefault<string>()
+                });
+
+
+            var repositoryName = Connection.Run(query).Result;
         }
         
         [IntegrationTest]
