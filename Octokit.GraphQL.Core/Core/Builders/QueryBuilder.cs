@@ -22,7 +22,6 @@ namespace Octokit.GraphQL.Core.Builders
         List<ISubquery> subqueries = new List<ISubquery>();
         Expression<Func<JObject, IEnumerable<JToken>>> parentIds;
         Expression<Func<JObject, JToken>> pageInfo;
-
         FragmentDefinition currentFragment;
         Dictionary<string, LambdaExpression> fragmentExpressions = new Dictionary<string, LambdaExpression>();
 
