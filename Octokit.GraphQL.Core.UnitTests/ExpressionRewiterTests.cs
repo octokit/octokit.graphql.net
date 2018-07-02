@@ -86,11 +86,45 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x => new
                     {
                         Body = x["body"].ToObject<string>(),
-                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["conditions"], i => i["description"]))
+                        Items = Rewritten.List.ToList<string>(Rewritten.List.Select(x["items"], i => i["description"]))
                     }).ToList();
 
             var query = expression.Compile();
             Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+        }
+
+        [Fact]
+        public void Licenses_Conditions_Select_ToDictionary()
+        {
+            var expression = new Query()
+                .Licenses
+                .Select(x => new
+                {
+                    x.Body,
+                    Items = x.Conditions.Select(i => new
+                    {
+                        i.Key,
+                        i.Description,
+                    }).ToDictionary(d => d.Key, d => d.Description),
+                });
+
+            Expression<Func<JObject, object>> expected = data =>
+                (IEnumerable) Rewritten.List.Select(
+                    data["data"]["licenses"],
+                    x => new
+                    {
+                        Body = x["body"].ToObject<string>(),
+                        Items = (IEnumerable) Rewritten.List.Select(x["items"], i => new
+                        {
+                            Key = i["key"].ToObject<string>(),
+                            Description = i["description"].ToObject<string>()
+                        }).ToDictionary(d => d.Key, d => d.Description)
+                    }).ToList();
+
+            var query = expression.Compile();
+            var expectedString = expected.ToString();
+            var actual = query.GetResultBuilderExpression().ToString();
+            Assert.Equal(expectedString, actual);
         }
 
         [Fact]
@@ -115,7 +149,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     {
                         Value = Rewritten.Value.Single(
                             Rewritten.Value.Select(
-                                x["milestone"],
+                                x["value"],
                                 y => new
                                 {
                                     Closed = y["closed"].ToObject<bool>(),
@@ -149,7 +183,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     {
                         Value = Rewritten.Value.SingleOrDefault(
                             Rewritten.Value.Select(
-                                x["milestone"],
+                                x["value"],
                                 y => new
                                 {
                                     Closed = y["closed"].ToObject<bool>(),
