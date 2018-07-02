@@ -201,7 +201,7 @@ namespace Octokit.GraphQL.Core.UnitTests
     ""data"":{
         ""licenses"": [{
             ""body"": ""foo"",
-            ""conditions"": [
+            ""items"": [
                 { ""description"": ""item1"" },
                 { ""description"": ""item2"" }
             ]
@@ -256,7 +256,7 @@ namespace Octokit.GraphQL.Core.UnitTests
     ""data"":{
         ""licenses"": [{
             ""body"": ""foo"",
-            ""conditions"": [
+            ""items"": [
                 { ""description"": ""item1"" },
                 { ""description"": ""item2"" }
             ]
@@ -292,7 +292,7 @@ namespace Octokit.GraphQL.Core.UnitTests
     ""data"":{
         ""licenses"": [{
             ""body"": ""foo"",
-            ""conditions"": [
+            ""items"": [
                 { ""key"": ""item1"", ""description"": ""foo"" },
                 { ""key"": ""item2"", ""description"": ""bar"" }
             ]
@@ -364,7 +364,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var data = @"{
     ""data"":{
         ""repository"": {
-            ""issue"": {
+            ""value"": {
                 ""title"": ""foo"",
                 ""number"": ""42""
             }
@@ -398,7 +398,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var data = @"{
     ""data"":{
         ""repository"": {
-            ""issue"": {
+            ""value"": {
                 ""title"": ""foo"",
                 ""number"": ""42""
             }
