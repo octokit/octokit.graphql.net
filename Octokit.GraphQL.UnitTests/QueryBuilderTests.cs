@@ -106,8 +106,10 @@ namespace Octokit.GraphQL.UnitTests
       }
     }
   }
-  viewer {
+  login: viewer {
     login
+  }
+  email: viewer {
     email
   }
 }";
