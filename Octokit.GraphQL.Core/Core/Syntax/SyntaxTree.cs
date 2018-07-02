@@ -63,11 +63,11 @@ namespace Octokit.GraphQL.Core.Syntax
             return result;
         }
 
-        public FragmentUsage AddFragmentUse(string name)
+        public FragmentSpread AddFragmentSpread(string name)
         {
-            var fragmentUsage = new FragmentUsage(name);
-            Head.Selections.Add(fragmentUsage);
-            return fragmentUsage;
+            var fragmentSpread = new FragmentSpread(name);
+            Head.Selections.Add(fragmentSpread);
+            return fragmentSpread;
         }
 
         public VariableDefinition AddVariableDefinition(Type type, bool isNullable, string name)

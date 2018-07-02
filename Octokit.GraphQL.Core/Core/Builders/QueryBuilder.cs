@@ -548,7 +548,7 @@ namespace Octokit.GraphQL.Core.Builders
 
                 var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 var select = VisitFragment(fragment);
-                syntax.AddFragmentUse(fragment.Name);
+                syntax.AddFragmentSpread(fragment.Name);
 
                 return Expression.Call(
                     Rewritten.Value.SelectFragmentMethod.MakeGenericMethod(fragment.ReturnType),

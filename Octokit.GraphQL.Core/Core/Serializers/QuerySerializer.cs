@@ -132,10 +132,10 @@ namespace Octokit.GraphQL.Core.Serializers
             }
         }
 
-        private void Serialize(FragmentUsage fragmentUse, StringBuilder builder)
+        private void Serialize(FragmentSpread fragmentSpread, StringBuilder builder)
         {
             builder.Append("...");
-            builder.Append(fragmentUse.Name);
+            builder.Append(fragmentSpread.Name);
         }
 
         private void SerializeSelections(ISelectionSet selectionSet, StringBuilder builder)
@@ -152,7 +152,7 @@ namespace Octokit.GraphQL.Core.Serializers
 
                     var field = s as FieldSelection;
                     var fragment = s as InlineFragment;
-                    var fragmentUse = s as FragmentUsage;
+                    var fragmentSpread = s as FragmentSpread;
 
                     if (field != null)
                     {
@@ -162,9 +162,9 @@ namespace Octokit.GraphQL.Core.Serializers
                     {
                         Serialize(fragment, builder);
                     }
-                    else if (fragmentUse != null)
+                    else if (fragmentSpread != null)
                     {
-                        Serialize(fragmentUse, builder);
+                        Serialize(fragmentSpread, builder);
                     }
 
                     first = false;
