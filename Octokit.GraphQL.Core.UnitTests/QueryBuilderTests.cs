@@ -564,7 +564,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 expression.Compile();
             });
 
-            Assert.Equal(QueryBuilder.CannotSelectIQueryableValueUseExceptionMessage, exception.Message);
+            Assert.Equal(QueryBuilder.CannotSelectIQueryableValueExceptionMessage, exception.Message);
         }
     }
 }
