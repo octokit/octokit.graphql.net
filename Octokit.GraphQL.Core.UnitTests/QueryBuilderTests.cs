@@ -1,4 +1,5 @@
 ﻿using System;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 using static Octokit.GraphQL.Variable;
@@ -80,7 +81,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Cast_Member_To_Enum()
         {
-            var expected = "query{repository(owner:\"foo\",name:\"bar\"){forkCount}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){enum: forkCount}}";
 
             var expression = new Query()
                 .Repository("foo", "bar")
@@ -97,7 +98,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Cast_Nullable_Member_To_Enum()
         {
-            var expected = "query{repository(owner:\"foo\",name:\"bar\"){databaseId}}";
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){enum: databaseId}}";
 
             var expression = new Query()
                 .Repository("foo", "bar")
@@ -157,7 +158,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Licenses_Nested_Selects()
         {
-            var expected = "query{licenses{body conditions{description}}}";
+            var expected = "query{licenses{body items: conditions{description}}}";
 
             var expression = new Query()
                 .Licenses
@@ -173,9 +174,37 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void Repository_Licenses_Conditions_Select_ToDictionary()
+        {
+            var expected = "query{licenses{body items: conditions{key description}}}";
+
+            var expression = new Query()
+                .Licenses
+                .Select(x => new
+                {
+                    x.Body,
+                    Items = x.Conditions.Select(i => new
+                    {
+                        i.Key,
+                        i.Description,
+                    }).ToDictionary(d => d.Key, d => d.Description),
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(0));
+        }
+
+        [Fact]
         public void Repository_Issues_Nested_Select_With_Captured_Parameter()
         {
-            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issues(first:10,after:\"foo\"){totalCount}}}";
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    items: issues(first: 10, after: ""foo"") {
+      totalCount
+    }
+  }
+}";
 
             var arg1 = "foo";
             var expression = new Query()
@@ -190,13 +219,13 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var query = expression.Compile();
 
-            Assert.Equal(expected, query.ToString(0));
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
         public void Nodes_Inline_Fragment_Issue_Comments()
         {
-            var expected = "query{nodes(ids:[\"123\"]){__typename ... on Issue{number comments{nodes{body}}}}}";
+            var expected = "query{nodes(ids:[\"123\"]){__typename ... on Issue{number items: comments{nodes{body}}}}}";
 
             var expression = new Query()
                 .Nodes(new[] { new ID("123") })
@@ -546,6 +575,69 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(0));
+        }
+
+        [Fact]
+        public void Can_Select_Repo_Twice()
+        {
+            var expected = @"query {
+  repo1: repository(owner: ""foo"", name: ""bar"") {
+    name
+  }
+  repo2: repository(owner: ""foo"", name: ""bar"") {
+    name
+  }
+}";
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }).Single(),
+                    repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name }).Single()
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Cannot_Select_QueryableValue()
+        {
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }),
+                    repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name })
+                });
+
+            var exception = Assert.Throws<GraphQLException>(() =>
+            {
+                expression.Compile();
+            });
+
+            Assert.Equal(
+                "Cannot directly select \'IQueryableValue<>\'. Use Single() or SingleOrDefault() to unwrap the value.",
+                exception.Message);
+        }
+
+        [Fact]
+        public void Cannot_Select_QueryableList()
+        {
+            var expression = new Query()
+                .Select(x => new
+                {
+                    x.Licenses,
+                });
+
+            var exception = Assert.Throws<GraphQLException>(() =>
+            {
+                expression.Compile();
+            });
+
+            Assert.Equal(
+                "Cannot directly select \'IQueryableList<>\'. Use ToList() to unwrap the value.",
+                exception.Message);
         }
     }
 }
