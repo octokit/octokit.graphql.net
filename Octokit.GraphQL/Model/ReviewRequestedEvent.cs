@@ -37,12 +37,6 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RequestedReviewer RequestedReviewer => this.CreateProperty(x => x.RequestedReviewer, Octokit.GraphQL.Model.RequestedReviewer.Create);
 
-        /// <summary>
-        /// Identifies the user whose review was requested.
-        /// </summary>
-        [Obsolete(@"`subject` will be renamed. Use `ReviewRequestedEvent.requestedReviewer` instead. Removal on 2018-07-01 UTC.")]
-        public User Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.User.Create);
-
         internal static ReviewRequestedEvent Create(Expression expression)
         {
             return new ReviewRequestedEvent(expression);

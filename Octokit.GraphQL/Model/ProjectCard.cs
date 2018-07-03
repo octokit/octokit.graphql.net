@@ -56,12 +56,6 @@ namespace Octokit.GraphQL.Model
         public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Model.Project.Create);
 
         /// <summary>
-        /// The column that contains this card.
-        /// </summary>
-        [Obsolete(@"The associated column may be null if the card is in a pending state. Use `ProjectCard.column` instead. Removal on 2018-07-01 UTC.")]
-        public ProjectColumn ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octokit.GraphQL.Model.ProjectColumn.Create);
-
-        /// <summary>
         /// The HTTP path for this card
         /// </summary>
         public string ResourcePath { get; }
