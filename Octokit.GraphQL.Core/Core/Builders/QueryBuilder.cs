@@ -13,6 +13,9 @@ namespace Octokit.GraphQL.Core.Builders
     public class QueryBuilder : ExpressionVisitor
     {
         const int MaxPageSize = 100;
+        const string CannotSelectIQueryableListExceptionMessage = "Cannot directly select \'IQueryableList<>\'. Use ToList() to unwrap the value.";
+        const string CannotSelectIQueryableValueExceptionMessage = "Cannot directly select \'IQueryableValue<>\'. Use Single() or SingleOrDefault() to unwrap the value.";
+
         static readonly ParameterExpression RootDataParameter = Expression.Parameter(typeof(JObject), "data");
 
         OperationDefinition root;
@@ -218,6 +221,24 @@ namespace Octokit.GraphQL.Core.Builders
                 !IsNullConstant(ifTrue) ? ifTrue.Type : ifFalse.Type);
         }
 
+        protected override Expression VisitExtension(Expression node)
+        {
+            if (node is AliasedExpression aliased)
+            {
+                switch (aliased.Inner)
+                {
+                    case MethodCallExpression methodCall:
+                        return VisitMethodCall(methodCall, aliased.Alias);
+                    case MemberExpression member:
+                        return VisitMember(member, aliased.Alias);
+                    default:
+                        return Visit(aliased.Inner);
+                }
+            }
+
+            return base.VisitExtension(node);
+        }
+
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
             var parameters = RewriteParameters(node.Parameters);
@@ -248,6 +269,20 @@ namespace Octokit.GraphQL.Core.Builders
 
             foreach (var arg in node.Arguments)
             {
+                if (arg.Type.IsConstructedGenericType)
+                {
+                    var genericTypeDefinition = arg.Type.GetGenericTypeDefinition();
+
+                    if (genericTypeDefinition == typeof(IQueryableValue<>))
+                    {
+                        throw new GraphQLException(CannotSelectIQueryableValueExceptionMessage);
+                    }
+                    else if (genericTypeDefinition == typeof(IQueryableList<>))
+                    {
+                        throw new GraphQLException(CannotSelectIQueryableListExceptionMessage);
+                    }
+                }
+
                 using (syntax.Bookmark())
                 {
                     var alias = node.Members?[index];
@@ -260,6 +295,10 @@ namespace Octokit.GraphQL.Core.Builders
                     else if (arg is MethodCallExpression call)
                     {
                         rewritten = VisitMethodCall(call, alias);
+                    }
+                    else if (arg is UnaryExpression unary)
+                    {
+                        rewritten = VisitUnary(unary, alias);
                     }
                     else
                     {
@@ -308,19 +347,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override Expression VisitUnary(UnaryExpression node)
         {
-            if (node.NodeType == ExpressionType.Convert)
-            {
-                var rewritten = Visit(node.Operand);
-
-                if (rewritten.Type == typeof(JToken))
-                {
-                    return Expression.Convert(
-                        rewritten.AddCast(node.Operand.Type),
-                        node.Type);
-                }
-            }
-
-            return node.Update(Visit(node.Operand));
+            return VisitUnary(node, null);
         }
 
         private void Initialize()
@@ -364,7 +391,7 @@ namespace Octokit.GraphQL.Core.Builders
                 }
                 else
                 {
-                    var instance = Visit(expression);
+                    var instance = Visit(AliasedExpression.WrapIfNeeded(expression, alias));
 
                     if (isSubqueryPager)
                     {
@@ -380,13 +407,13 @@ namespace Octokit.GraphQL.Core.Builders
                         this.pageInfo = CreateSelectTokenExpression(selections);
                     }
 
-                    var field = syntax.AddField(node.Member, alias);
+                    var field = syntax.AddField(node.Member);
                     return instance.AddIndexer(field);
                 }
             }
             else
             {
-                var instance = Visit(node.Expression);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(node.Expression, alias));
 
                 if (ExpressionWasRewritten(node.Expression, instance))
                 {
@@ -395,6 +422,19 @@ namespace Octokit.GraphQL.Core.Builders
 
                 return node.Update(instance);
             }
+        }
+
+        private Expression VisitUnary(UnaryExpression node, MemberInfo alias)
+        {
+            if (node.NodeType == ExpressionType.Convert)
+            {
+                var rewritten = Visit(AliasedExpression.WrapIfNeeded(node.Operand, alias));
+                return Expression.Convert(
+                    rewritten.AddCast(node.Operand.Type),
+                    node.Type);
+            }
+
+            return node.Update(Visit(node.Operand));
         }
 
         private Expression<Func<JObject, IEnumerable<JToken>>> CreatePageInfoExpression()
@@ -450,15 +490,15 @@ namespace Octokit.GraphQL.Core.Builders
         {
             if (node.Method.DeclaringType == typeof(QueryableValueExtensions))
             {
-                return RewriteValueExtension(node);
+                return RewriteValueExtension(node, alias);
             }
             else if (node.Method.DeclaringType == typeof(QueryableListExtensions))
             {
-                return RewriteListExtension(node);
+                return RewriteListExtension(node, alias);
             }
             else if (node.Method.DeclaringType == typeof(QueryableInterfaceExtensions))
             {
-                return RewriteInterfaceExtension(node);
+                return RewriteInterfaceExtension(node, alias);
             }
             else if (node.Method.DeclaringType == typeof(PagingConnectionExtensions))
             {
@@ -482,14 +522,14 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private Expression RewriteValueExtension(MethodCallExpression expression)
+        private Expression RewriteValueExtension(MethodCallExpression expression, MemberInfo alias)
         {
             if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SelectMethod)
             {
                 var source = expression.Arguments[0];
                 var selectExpression = expression.Arguments[1];
                 var lambda = selectExpression.GetLambda();
-                var instance = Visit(source);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 var select = (LambdaExpression)Visit(lambda);
 
                 return Expression.Call(
@@ -516,7 +556,7 @@ namespace Octokit.GraphQL.Core.Builders
             else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SingleMethod)
             {
                 var source = expression.Arguments[0];
-                var instance = Visit(source);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
 
                 return Expression.Call(
                     Rewritten.Value.SingleMethod.MakeGenericMethod(instance.Type),
@@ -525,7 +565,7 @@ namespace Octokit.GraphQL.Core.Builders
             else if (expression.Method.GetGenericMethodDefinition() == QueryableValueExtensions.SingleOrDefaultMethod)
             {
                 var source = expression.Arguments[0];
-                var instance = Visit(source);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
 
                 return Expression.Call(
                     Rewritten.Value.SingleOrDefaultMethod.MakeGenericMethod(instance.Type),
@@ -537,14 +577,14 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private Expression RewriteListExtension(MethodCallExpression expression)
+        private Expression RewriteListExtension(MethodCallExpression expression, MemberInfo alias)
         {
             if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.SelectMethod)
             {
                 var source = expression.Arguments[0];
                 var selectExpression = expression.Arguments[1];
                 var lambda = selectExpression.GetLambda();
-                var instance = Visit(source);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 ISubquery subquery = null;
 
                 if (instance is AllPagesExpression allPages)
@@ -587,7 +627,8 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToDictionaryMethod)
             {
-                var instance = Visit(expression.Arguments[0]);
+                var source = expression.Arguments[0];
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 var keySelect = expression.Arguments[1].GetLambda();
                 var valueSelect = expression.Arguments[2].GetLambda();
                 var inputType = GetEnumerableItemType(instance.Type);
@@ -611,7 +652,7 @@ namespace Octokit.GraphQL.Core.Builders
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToListMethod)
             {
                 var source = expression.Arguments[0];
-                var instance = Visit(source);
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 var inputType = GetEnumerableItemType(instance.Type);
                 var resultType = GetQueryableListItemType(source.Type);
 
@@ -666,7 +707,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private Expression RewriteInterfaceExtension(MethodCallExpression expression)
+        private Expression RewriteInterfaceExtension(MethodCallExpression expression, MemberInfo alias)
         {
             if (expression.Method.GetGenericMethodDefinition() == QueryableInterfaceExtensions.CastMethod)
             {
