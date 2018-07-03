@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MilestoneConnection : QueryableValue<MilestoneConnection>, IPagingConnection<Milestone>
     {
-        /// <inheritdoc />
         public MilestoneConnection(Expression expression) : base(expression)
         {
         }

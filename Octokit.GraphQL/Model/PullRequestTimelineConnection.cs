@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestTimelineConnection : QueryableValue<PullRequestTimelineConnection>, IPagingConnection<PullRequestTimelineItem>
     {
-        /// <inheritdoc />
         public PullRequestTimelineConnection(Expression expression) : base(expression)
         {
         }

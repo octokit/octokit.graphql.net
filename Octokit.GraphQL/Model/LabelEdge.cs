@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LabelEdge : QueryableValue<LabelEdge>
     {
-        /// <inheritdoc />
         public LabelEdge(Expression expression) : base(expression)
         {
         }

@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class StarredRepositoryConnection : QueryableValue<StarredRepositoryConnection>, IPagingConnection<Repository>
     {
-        /// <inheritdoc />
         public StarredRepositoryConnection(Expression expression) : base(expression)
         {
         }

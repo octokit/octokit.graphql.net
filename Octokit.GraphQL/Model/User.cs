@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class User : QueryableValue<User>
     {
-        /// <inheritdoc />
         public User(Expression expression) : base(expression)
         {
         }
@@ -50,19 +49,6 @@ namespace Octokit.GraphQL.Model
         /// The user's public profile company as HTML.
         /// </summary>
         public string CompanyHTML { get; }
-
-        /// <summary>
-        /// A list of repositories that the user recently contributed to.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="privacy">If non-null, filters repositories according to privacy</param>
-        /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
-        /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
-        /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection ContributedRepositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RepositoryPrivacy>? privacy = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null) => this.CreateMethodCall(x => x.ContributedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.

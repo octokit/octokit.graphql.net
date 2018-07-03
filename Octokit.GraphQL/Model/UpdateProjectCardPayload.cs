@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateProjectCardPayload : QueryableValue<UpdateProjectCardPayload>
     {
-        /// <inheritdoc />
         public UpdateProjectCardPayload(Expression expression) : base(expression)
         {
         }

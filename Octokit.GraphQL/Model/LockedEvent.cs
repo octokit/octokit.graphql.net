@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LockedEvent : QueryableValue<LockedEvent>
     {
-        /// <inheritdoc />
         public LockedEvent(Expression expression) : base(expression)
         {
         }

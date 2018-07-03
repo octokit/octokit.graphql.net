@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class GitActor : QueryableValue<GitActor>
     {
-        /// <inheritdoc />
         public GitActor(Expression expression) : base(expression)
         {
         }

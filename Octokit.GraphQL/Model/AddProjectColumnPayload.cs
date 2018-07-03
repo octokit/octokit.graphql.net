@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddProjectColumnPayload : QueryableValue<AddProjectColumnPayload>
     {
-        /// <inheritdoc />
         public AddProjectColumnPayload(Expression expression) : base(expression)
         {
         }

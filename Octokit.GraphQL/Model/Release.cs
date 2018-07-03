@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Release : QueryableValue<Release>
     {
-        /// <inheritdoc />
         public Release(Expression expression) : base(expression)
         {
         }

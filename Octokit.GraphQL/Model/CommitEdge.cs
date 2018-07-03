@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommitEdge : QueryableValue<CommitEdge>
     {
-        /// <inheritdoc />
         public CommitEdge(Expression expression) : base(expression)
         {
         }

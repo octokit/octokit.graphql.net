@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReleaseConnection : QueryableValue<ReleaseConnection>, IPagingConnection<Release>
     {
-        /// <inheritdoc />
         public ReleaseConnection(Expression expression) : base(expression)
         {
         }

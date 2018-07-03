@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProtectedBranch : QueryableValue<ProtectedBranch>
     {
-        /// <inheritdoc />
         public ProtectedBranch(Expression expression) : base(expression)
         {
         }

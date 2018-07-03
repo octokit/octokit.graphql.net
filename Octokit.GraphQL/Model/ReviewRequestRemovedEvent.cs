@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewRequestRemovedEvent : QueryableValue<ReviewRequestRemovedEvent>
     {
-        /// <inheritdoc />
         public ReviewRequestRemovedEvent(Expression expression) : base(expression)
         {
         }
@@ -37,12 +36,6 @@ namespace Octokit.GraphQL.Model
         /// Identifies the reviewer whose review request was removed.
         /// </summary>
         public RequestedReviewer RequestedReviewer => this.CreateProperty(x => x.RequestedReviewer, Octokit.GraphQL.Model.RequestedReviewer.Create);
-
-        /// <summary>
-        /// Identifies the user whose review request was removed.
-        /// </summary>
-        [Obsolete(@"`subject` will be renamed. Use `ReviewRequestRemovedEvent.requestedReviewer` instead. Removal on 2018-07-01 UTC.")]
-        public User Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.User.Create);
 
         internal static ReviewRequestRemovedEvent Create(Expression expression)
         {

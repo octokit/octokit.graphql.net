@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MergedEvent : QueryableValue<MergedEvent>
     {
-        /// <inheritdoc />
         public MergedEvent(Expression expression) : base(expression)
         {
         }

@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class BaseRefForcePushedEvent : QueryableValue<BaseRefForcePushedEvent>
     {
-        /// <inheritdoc />
         public BaseRefForcePushedEvent(Expression expression) : base(expression)
         {
         }

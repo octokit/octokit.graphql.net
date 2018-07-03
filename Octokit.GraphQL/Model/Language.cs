@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Language : QueryableValue<Language>
     {
-        /// <inheritdoc />
         public Language(Expression expression) : base(expression)
         {
         }

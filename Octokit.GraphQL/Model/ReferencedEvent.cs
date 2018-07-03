@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReferencedEvent : QueryableValue<ReferencedEvent>
     {
-        /// <inheritdoc />
         public ReferencedEvent(Expression expression) : base(expression)
         {
         }
@@ -37,12 +36,6 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset CreatedAt { get; }
 
         public ID Id { get; }
-
-        /// <summary>
-        /// Reference originated in a different repository.
-        /// </summary>
-        [Obsolete(@"`isCrossReference` will be renamed. Use `ReferencedEvent.isCrossRepository` instead. Removal on 2018-07-01 UTC.")]
-        public bool IsCrossReference { get; }
 
         /// <summary>
         /// Reference originated in a different repository.

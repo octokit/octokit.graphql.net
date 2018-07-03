@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class BlameRange : QueryableValue<BlameRange>
     {
-        /// <inheritdoc />
         public BlameRange(Expression expression) : base(expression)
         {
         }

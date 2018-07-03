@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class StarredRepositoryEdge : QueryableValue<StarredRepositoryEdge>
     {
-        /// <inheritdoc />
         public StarredRepositoryEdge(Expression expression) : base(expression)
         {
         }

@@ -76,11 +76,6 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The license associated with the repository
         /// </summary>
-        string License { get; }
-
-        /// <summary>
-        /// The license associated with the repository
-        /// </summary>
         License LicenseInfo { get; }
 
         /// <summary>
@@ -146,7 +141,6 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIRepositoryInfo : QueryableValue<StubIRepositoryInfo>, IRepositoryInfo
     {
-        /// <inheritdoc />
         public StubIRepositoryInfo(Expression expression) : base(expression)
         {
         }
@@ -174,9 +168,6 @@ namespace Octokit.GraphQL.Model.Internal
         public bool IsMirror { get; }
 
         public bool IsPrivate { get; }
-
-        [Obsolete(@"Field `license` will be replaced by a more detailed license object. Use `Repository.licenseInfo` instead. Removal on 2018-07-01 UTC.")]
-        public string License { get; }
 
         public License LicenseInfo => this.CreateProperty(x => x.LicenseInfo, Octokit.GraphQL.Model.License.Create);
 

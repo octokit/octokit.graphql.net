@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PushAllowanceConnection : QueryableValue<PushAllowanceConnection>, IPagingConnection<PushAllowance>
     {
-        /// <inheritdoc />
         public PushAllowanceConnection(Expression expression) : base(expression)
         {
         }

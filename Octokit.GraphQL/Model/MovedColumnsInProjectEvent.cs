@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MovedColumnsInProjectEvent : QueryableValue<MovedColumnsInProjectEvent>
     {
-        /// <inheritdoc />
         public MovedColumnsInProjectEvent(Expression expression) : base(expression)
         {
         }

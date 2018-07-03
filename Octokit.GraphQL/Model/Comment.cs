@@ -101,7 +101,6 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIComment : QueryableValue<StubIComment>, IComment
     {
-        /// <inheritdoc />
         public StubIComment(Expression expression) : base(expression)
         {
         }

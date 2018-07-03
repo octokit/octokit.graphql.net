@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueEdge : QueryableValue<IssueEdge>
     {
-        /// <inheritdoc />
         public IssueEdge(Expression expression) : base(expression)
         {
         }

@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MilestonedEvent : QueryableValue<MilestonedEvent>
     {
-        /// <inheritdoc />
         public MilestonedEvent(Expression expression) : base(expression)
         {
         }

@@ -52,7 +52,6 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIGitObject : QueryableValue<StubIGitObject>, IGitObject
     {
-        /// <inheritdoc />
         public StubIGitObject(Expression expression) : base(expression)
         {
         }

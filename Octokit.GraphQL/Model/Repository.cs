@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Repository : QueryableValue<Repository>
     {
-        /// <inheritdoc />
         public Repository(Expression expression) : base(expression)
         {
         }
@@ -207,12 +206,6 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Order for connection</param>
         public LanguageConnection Languages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<LanguageOrder>? orderBy = null) => this.CreateMethodCall(x => x.Languages(first, after, last, before, orderBy), Octokit.GraphQL.Model.LanguageConnection.Create);
-
-        /// <summary>
-        /// The license associated with the repository
-        /// </summary>
-        [Obsolete(@"Field `license` will be replaced by a more detailed license object. Use `Repository.licenseInfo` instead. Removal on 2018-07-01 UTC.")]
-        public string License { get; }
 
         /// <summary>
         /// The license associated with the repository

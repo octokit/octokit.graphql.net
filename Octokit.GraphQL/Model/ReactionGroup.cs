@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReactionGroup : QueryableValue<ReactionGroup>
     {
-        /// <inheritdoc />
         public ReactionGroup(Expression expression) : base(expression)
         {
         }

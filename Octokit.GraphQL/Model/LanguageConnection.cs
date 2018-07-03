@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LanguageConnection : QueryableValue<LanguageConnection>, IPagingConnection<Language>
     {
-        /// <inheritdoc />
         public LanguageConnection(Expression expression) : base(expression)
         {
         }

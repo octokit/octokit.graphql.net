@@ -35,7 +35,6 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIUniformResourceLocatable : QueryableValue<StubIUniformResourceLocatable>, IUniformResourceLocatable
     {
-        /// <inheritdoc />
         public StubIUniformResourceLocatable(Expression expression) : base(expression)
         {
         }

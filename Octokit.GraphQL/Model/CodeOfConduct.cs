@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CodeOfConduct : QueryableValue<CodeOfConduct>
     {
-        /// <inheritdoc />
         public CodeOfConduct(Expression expression) : base(expression)
         {
         }

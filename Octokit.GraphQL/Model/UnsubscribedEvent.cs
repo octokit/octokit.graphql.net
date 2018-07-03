@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnsubscribedEvent : QueryableValue<UnsubscribedEvent>
     {
-        /// <inheritdoc />
         public UnsubscribedEvent(Expression expression) : base(expression)
         {
         }

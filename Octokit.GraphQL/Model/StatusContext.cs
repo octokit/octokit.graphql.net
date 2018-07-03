@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class StatusContext : QueryableValue<StatusContext>
     {
-        /// <inheritdoc />
         public StatusContext(Expression expression) : base(expression)
         {
         }

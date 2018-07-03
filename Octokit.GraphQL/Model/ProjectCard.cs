@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProjectCard : QueryableValue<ProjectCard>
     {
-        /// <inheritdoc />
         public ProjectCard(Expression expression) : base(expression)
         {
         }
@@ -55,12 +54,6 @@ namespace Octokit.GraphQL.Model
         /// The project that contains this card.
         /// </summary>
         public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Model.Project.Create);
-
-        /// <summary>
-        /// The column that contains this card.
-        /// </summary>
-        [Obsolete(@"The associated column may be null if the card is in a pending state. Use `ProjectCard.column` instead. Removal on 2018-07-01 UTC.")]
-        public ProjectColumn ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octokit.GraphQL.Model.ProjectColumn.Create);
 
         /// <summary>
         /// The HTTP path for this card

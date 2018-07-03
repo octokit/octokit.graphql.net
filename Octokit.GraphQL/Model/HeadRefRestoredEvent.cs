@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class HeadRefRestoredEvent : QueryableValue<HeadRefRestoredEvent>
     {
-        /// <inheritdoc />
         public HeadRefRestoredEvent(Expression expression) : base(expression)
         {
         }

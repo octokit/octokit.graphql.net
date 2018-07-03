@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class OrganizationInvitationEdge : QueryableValue<OrganizationInvitationEdge>
     {
-        /// <inheritdoc />
         public OrganizationInvitationEdge(Expression expression) : base(expression)
         {
         }

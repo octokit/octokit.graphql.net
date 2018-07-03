@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Ref : QueryableValue<Ref>
     {
-        /// <inheritdoc />
         public Ref(Expression expression) : base(expression)
         {
         }

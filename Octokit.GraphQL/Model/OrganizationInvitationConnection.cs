@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class OrganizationInvitationConnection : QueryableValue<OrganizationInvitationConnection>, IPagingConnection<OrganizationInvitation>
     {
-        /// <inheritdoc />
         public OrganizationInvitationConnection(Expression expression) : base(expression)
         {
         }

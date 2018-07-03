@@ -30,7 +30,6 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIRepositoryNode : QueryableValue<StubIRepositoryNode>, IRepositoryNode
     {
-        /// <inheritdoc />
         public StubIRepositoryNode(Expression expression) : base(expression)
         {
         }

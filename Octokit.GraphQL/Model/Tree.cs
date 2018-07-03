@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Tree : QueryableValue<Tree>
     {
-        /// <inheritdoc />
         public Tree(Expression expression) : base(expression)
         {
         }

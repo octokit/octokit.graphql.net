@@ -9,13 +9,10 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// An object with an ID.
+    /// Represents an owner of a registry package.
     /// </summary>
-    public interface INode : IQueryableValue<INode>, IQueryableInterface
+    public interface IRegistryPackageOwner : IQueryableValue<IRegistryPackageOwner>, IQueryableInterface
     {
-        /// <summary>
-        /// ID of the object.
-        /// </summary>
         ID Id { get; }
     }
 }
@@ -28,17 +25,17 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    internal class StubINode : QueryableValue<StubINode>, INode
+    internal class StubIRegistryPackageOwner : QueryableValue<StubIRegistryPackageOwner>, IRegistryPackageOwner
     {
-        public StubINode(Expression expression) : base(expression)
+        public StubIRegistryPackageOwner(Expression expression) : base(expression)
         {
         }
 
         public ID Id { get; }
 
-        internal static StubINode Create(Expression expression)
+        internal static StubIRegistryPackageOwner Create(Expression expression)
         {
-            return new StubINode(expression);
+            return new StubIRegistryPackageOwner(expression);
         }
     }
 }

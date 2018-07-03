@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ClosedEvent : QueryableValue<ClosedEvent>
     {
-        /// <inheritdoc />
         public ClosedEvent(Expression expression) : base(expression)
         {
         }
@@ -30,12 +29,6 @@ namespace Octokit.GraphQL.Model
         /// Object which triggered the creation of this event.
         /// </summary>
         public Closer Closer => this.CreateProperty(x => x.Closer, Octokit.GraphQL.Model.Closer.Create);
-
-        /// <summary>
-        /// Identifies the commit associated with the 'closed' event.
-        /// </summary>
-        [Obsolete(@"`ClosedEvent` may be associated with other objects than a commit. Use ClosedEvent.closer instead. Removal on 2018-07-01 UTC.")]
-        public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.

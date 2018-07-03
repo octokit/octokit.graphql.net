@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ConvertedNoteToIssueEvent : QueryableValue<ConvertedNoteToIssueEvent>
     {
-        /// <inheritdoc />
         public ConvertedNoteToIssueEvent(Expression expression) : base(expression)
         {
         }

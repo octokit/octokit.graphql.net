@@ -11,7 +11,6 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class StargazerConnection : QueryableValue<StargazerConnection>, IPagingConnection<User>
     {
-        /// <inheritdoc />
         public StargazerConnection(Expression expression) : base(expression)
         {
         }
