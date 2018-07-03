@@ -616,7 +616,28 @@ namespace Octokit.GraphQL.Core.UnitTests
                 expression.Compile();
             });
 
-            Assert.Equal(QueryBuilder.CannotSelectIQueryableValueExceptionMessage, exception.Message);
+            Assert.Equal(
+                "Cannot directly select \'IQueryableValue<>\'. Use Single() or SingleOrDefault() to unwrap the value.",
+                exception.Message);
+        }
+
+        [Fact]
+        public void Cannot_Select_QueryableList()
+        {
+            var expression = new Query()
+                .Select(x => new
+                {
+                    x.Licenses,
+                });
+
+            var exception = Assert.Throws<GraphQLException>(() =>
+            {
+                expression.Compile();
+            });
+
+            Assert.Equal(
+                "Cannot directly select \'IQueryableList<>\'. Use ToList() to unwrap the value.",
+                exception.Message);
         }
     }
 }
