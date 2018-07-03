@@ -34,7 +34,6 @@ namespace Test.Internal
 
     internal class StubIEntity : QueryableValue<StubIEntity>, IEntity
     {{
-        /// <inheritdoc />
         public StubIEntity(Expression expression) : base(expression)
         {{
         }}
@@ -710,7 +709,6 @@ namespace Test.Internal
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        /// <inheritdoc />
         public Entity(Expression expression) : base(expression)
         {
         }

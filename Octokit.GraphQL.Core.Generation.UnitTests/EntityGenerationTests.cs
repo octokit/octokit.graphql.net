@@ -19,7 +19,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class Entity : QueryableValue<Entity>{1}
     {{
-        /// <inheritdoc />
         public Entity(Expression expression) : base(expression)
         {{
         }}
@@ -1473,7 +1472,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        /// <inheritdoc />
         public Entity(Expression expression) : base(expression)
         {
         }
@@ -1516,7 +1514,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        /// <inheritdoc />
         public Entity(Expression expression) : base(expression)
         {
         }
@@ -1674,12 +1671,10 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class Entity : QueryableValue<Entity>, IQuery
     {
-        /// <inheritdoc />
         public Entity() : base(null)
         {
         }
 
-        /// <inheritdoc />
         public Entity(Expression expression) : base(expression)
         {
         }
@@ -1725,12 +1720,10 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class Mutation : QueryableValue<Mutation>, IMutation
     {
-        /// <inheritdoc />
         public Mutation() : base(null)
         {
         }
 
-        /// <inheritdoc />
         public Mutation(Expression expression) : base(expression)
         {
         }
@@ -1800,7 +1793,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class PageInfo : QueryableValue<PageInfo>, IPageInfo
     {
-        /// <inheritdoc />
         public PageInfo(Expression expression) : base(expression)
         {
         }
