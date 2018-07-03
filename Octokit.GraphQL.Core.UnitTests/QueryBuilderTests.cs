@@ -1,4 +1,5 @@
 ﻿using System;
+using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 using static Octokit.GraphQL.Variable;
@@ -598,6 +599,45 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Cannot_Select_QueryableValue()
+        {
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }),
+                    repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name })
+                });
+
+            var exception = Assert.Throws<GraphQLException>(() =>
+            {
+                expression.Compile();
+            });
+
+            Assert.Equal(
+                "Cannot directly select \'IQueryableValue<>\'. Use Single() or SingleOrDefault() to unwrap the value.",
+                exception.Message);
+        }
+
+        [Fact]
+        public void Cannot_Select_QueryableList()
+        {
+            var expression = new Query()
+                .Select(x => new
+                {
+                    x.Licenses,
+                });
+
+            var exception = Assert.Throws<GraphQLException>(() =>
+            {
+                expression.Compile();
+            });
+
+            Assert.Equal(
+                "Cannot directly select \'IQueryableList<>\'. Use ToList() to unwrap the value.",
+                exception.Message);
         }
     }
 }
