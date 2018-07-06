@@ -80,12 +80,7 @@ var query = new Query()
         issue.Title,
     }).Compile();
 
-var vars = new Dictionary<string, object>
-{
-    { "after", null },
-};
-
-var result = await Connection.Run(query, vars);
+var result = await Connection.Run(query);
 ```
 
 To enable auto-paging, you simply call `.AllPages()` where you would usually call `.Nodes`.
