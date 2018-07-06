@@ -97,7 +97,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public void Query_Repository_Select_Use_Fragment()
         {
-            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
+            var fragment = new Fragment<Model.Repository, string>("repositoryName", repository => repository.Name);
 
             var query = new Query()
                 .Select(q => new
