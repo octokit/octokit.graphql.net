@@ -95,20 +95,36 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Query_Repository_Select_Use_Fragment()
+        public void Query_Repository_Select_Fragment()
         {
-            var fragment = new Fragment<Model.Repository, string>("repositoryName", repository => repository.Name);
+            var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
+
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .Select(fragment);
+
+            var repositoryName = Connection.Run(query).Result;
+
+            Assert.Equal("octokit.net", repositoryName);
+        }
+
+        [IntegrationTest]
+        public void Query_Repository_Select_Inner_Fragment()
+        {
+            var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
 
             var query = new Query()
                 .Select(q => new
                 {
-                    repo = q.Repository("foo", "bar").Select(fragment).SingleOrDefault<string>()
+                    Name = q.Repository("octokit", "octokit.net").Select(fragment).SingleOrDefault()
                 });
 
 
-            var repositoryName = Connection.Run(query).Result;
+            var repository = Connection.Run(query).Result;
+
+            Assert.Equal("octokit.net", repository.Name);
         }
-        
+
         [IntegrationTest]
         public async Task Should_Query_Repository_Issues_PullRequests_With_Variables_AutoPaging()
         {
