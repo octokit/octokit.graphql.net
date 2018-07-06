@@ -104,7 +104,7 @@ var query = new Query()
 ```
 
 Notice that here, `Repository.Parent` may be null, so it makes sense to use the `SingleOrDefault`
-operator.
+operator, especially as the `?.` operator isn't supported in C# expressions.
 
 ## Selecting Sub-fields Directly
 
@@ -130,3 +130,35 @@ var query = new Query()
     });
 ```
 
+## Selecting into Named Classes
+
+In the above examples, we've been selecting into anonymous classes. This has been for illustration
+purposes only; in an actual application you would most likely be selecting into named model classes:
+
+```csharp
+class RepositoryModel
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public List<IssueModel> Issues { get; set; }
+}
+
+class IssueModel
+{
+    public int Number { get;set; }
+    public string Title { get; set; }
+}
+
+var query = new Query()
+    .Repository("octokit", "octokit.net")
+    .Select(r => new RepositoryModel
+    {
+        r.Name,
+        r.Description,
+        Issues = r.Issues(100, null, null, null, null, null, null).Select(i => new IssueModel
+        {
+            i.Number,
+            i.Title,
+        }).ToList(),
+    });
+```
