@@ -96,7 +96,14 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     }).ToList(),
                 }).Compile();
 
-            var results = Connection.Run(query).Result;
+            var vars = new Dictionary<string, object>
+            {
+                { "after", null }
+            };
+
+            var results = Connection.Run(query, vars).Result;
+
+            Assert.Equal(100, results.Items.Count);
         }
 
         [IntegrationTest]
