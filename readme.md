@@ -37,5 +37,5 @@ var vars = new Dictionary<string, object>
 
 var result =  await Connection.Run(query, vars);
 
-Console.WriteLine(result.Owner + " & " + result.Name + " Rocks!");
+Console.WriteLine(result.Login + " & " + result.Name + " Rocks!");
 ```
