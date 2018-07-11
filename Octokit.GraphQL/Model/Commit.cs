@@ -52,6 +52,16 @@ namespace Octokit.GraphQL.Model
         public int ChangedFiles { get; }
 
         /// <summary>
+        /// The check suites associated with a commit.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="filterBy">Filters the check suites by this type.</param>
+        public CheckSuiteConnection CheckSuites(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<CheckSuiteFilter>? filterBy = null) => this.CreateMethodCall(x => x.CheckSuites(first, after, last, before, filterBy), Octokit.GraphQL.Model.CheckSuiteConnection.Create);
+
+        /// <summary>
         /// Comments made on the commit.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
