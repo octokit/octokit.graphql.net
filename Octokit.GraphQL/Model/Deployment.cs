@@ -36,6 +36,11 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
+        /// The deployment description.
+        /// </summary>
+        public string Description { get; }
+
+        /// <summary>
         /// The environment to which this deployment was made.
         /// </summary>
         public string Environment { get; }
@@ -70,6 +75,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public DeploymentStatusConnection Statuses(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Statuses(first, after, last, before), Octokit.GraphQL.Model.DeploymentStatusConnection.Create);
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public DateTimeOffset UpdatedAt { get; }
 
         internal static Deployment Create(Expression expression)
         {
