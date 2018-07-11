@@ -27,9 +27,7 @@ var query = new Query()
         repo.Owner.Login,
         repo.IsFork,
         repo.IsPrivate,
-    });
-
-var compiledQuery = query.Compile();
+    }).Compile();
 
 var vars = new Dictionary<string, object>
 {
@@ -37,7 +35,7 @@ var vars = new Dictionary<string, object>
     { "name", "octokit.graphql.net" },
 };
 
-var result =  await Connection.Run(compiledQuery, vars);
+var result =  await Connection.Run(query, vars);
 
 Console.WriteLine(result.Owner + " & " + result.Name + " Rocks!");
 ```

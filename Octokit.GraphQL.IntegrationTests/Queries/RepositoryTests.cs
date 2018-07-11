@@ -38,9 +38,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     repo.Owner.Login,
                     repo.IsFork,
                     repo.IsPrivate,
-                });
-
-            var compiledQuery = query.Compile();
+                }).Compile();
 
             var vars = new Dictionary<string, object>
             {
@@ -48,7 +46,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 { "name", "octokit.graphql.net" },
             };
 
-            var result = Connection.Run(compiledQuery, vars).Result;
+            var result = Connection.Run(query, vars).Result;
             Assert.Equal(result.Login, "octokit");
             Assert.Equal(result.Name, "octokit.graphql.net");
         }
