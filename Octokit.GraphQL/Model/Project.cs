@@ -39,9 +39,9 @@ namespace Octokit.GraphQL.Model
         /// List of columns in the project
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ProjectColumnConnection Columns(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Columns(first, after, last, before), Octokit.GraphQL.Model.ProjectColumnConnection.Create);
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace Octokit.GraphQL.Model
         /// List of pending cards in this project
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ProjectCardConnection PendingCards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PendingCards(first, after, last, before), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>

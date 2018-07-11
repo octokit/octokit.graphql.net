@@ -25,6 +25,32 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
+        public void Should_Run_Readme_Query()
+        {
+            var query = new Query()
+                .RepositoryOwner(Var("owner"))
+                .Repository(Var("name"))
+                .Select(repo => new
+                {
+                    repo.Id,
+                    repo.Name,
+                    repo.Owner.Login,
+                    repo.IsFork,
+                    repo.IsPrivate,
+                }).Compile();
+
+            var vars = new Dictionary<string, object>
+            {
+                { "owner", "octokit" },
+                { "name", "octokit.graphql.net" },
+            };
+
+            var result = Connection.Run(query, vars).Result;
+            Assert.Equal(result.Login, "octokit");
+            Assert.Equal(result.Name, "octokit.graphql.net");
+        }
+
+        [IntegrationTest]
         public void Should_Query_Repository_ByName()
         {
             var query = new Query().Repository("octokit", "octokit.net").Select(r => new

@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
+using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
 
@@ -44,7 +45,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     RepositoryName = i.Repository.Name,
                 });
 
-            var ex = await Assert.ThrowsAnyAsync<GraphQLQueryException>(async () => await Connection.Run(query));
+            var ex = await Assert.ThrowsAnyAsync<ResponseDeserializerException>(async () => await Connection.Run(query));
             Assert.Equal("Could not resolve to a Repository with the name 'bad_repository'.", ex.Message);
             Assert.Equal(1, ex.Line);
             Assert.Equal(7, ex.Column);

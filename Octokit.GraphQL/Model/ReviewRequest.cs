@@ -32,12 +32,6 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RequestedReviewer RequestedReviewer => this.CreateProperty(x => x.RequestedReviewer, Octokit.GraphQL.Model.RequestedReviewer.Create);
 
-        /// <summary>
-        /// Identifies the author associated with this review request.
-        /// </summary>
-        [Obsolete(@"Field `reviewer` will be changed in favor of returning a union type. Use `ReviewRequest.requestedReviewer` instead. Removal on 2018-07-01 UTC.")]
-        public User Reviewer => this.CreateProperty(x => x.Reviewer, Octokit.GraphQL.Model.User.Create);
-
         internal static ReviewRequest Create(Expression expression)
         {
             return new ReviewRequest(expression);

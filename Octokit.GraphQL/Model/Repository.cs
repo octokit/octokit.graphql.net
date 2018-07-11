@@ -19,9 +19,9 @@ namespace Octokit.GraphQL.Model
         /// A list of users that can be assigned to issues in this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserConnection AssignableUsers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.AssignableUsers(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace Octokit.GraphQL.Model
         /// A list of collaborators associated with the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="affiliation">Collaborators affiliation level with a repository.</param>
         public RepositoryCollaboratorConnection Collaborators(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<CollaboratorAffiliation>? affiliation = null) => this.CreateMethodCall(x => x.Collaborators(first, after, last, before, affiliation), Octokit.GraphQL.Model.RepositoryCollaboratorConnection.Create);
 
@@ -43,9 +43,9 @@ namespace Octokit.GraphQL.Model
         /// A list of commit comments associated with the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public CommitCommentConnection CommitComments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.CommitComments(first, after, last, before), Octokit.GraphQL.Model.CommitCommentConnection.Create);
 
         /// <summary>
@@ -67,18 +67,18 @@ namespace Octokit.GraphQL.Model
         /// A list of deploy keys that are on this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public DeployKeyConnection DeployKeys(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.DeployKeys(first, after, last, before), Octokit.GraphQL.Model.DeployKeyConnection.Create);
 
         /// <summary>
         /// Deployments associated with the repository
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="environments">Environments to list deployments for</param>
         public DeploymentConnection Deployments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? environments = null) => this.CreateMethodCall(x => x.Deployments(first, after, last, before, environments), Octokit.GraphQL.Model.DeploymentConnection.Create);
 
@@ -106,9 +106,9 @@ namespace Octokit.GraphQL.Model
         /// A list of direct forked repositories.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="privacy">If non-null, filters repositories according to privacy</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
@@ -173,9 +173,9 @@ namespace Octokit.GraphQL.Model
         /// A list of issues that have been opened in the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
         /// <param name="states">A list of states to filter the issues by.</param>
@@ -191,9 +191,9 @@ namespace Octokit.GraphQL.Model
         /// A list of labels associated with the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="query">If provided, searches labels by name and description.</param>
         public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before, query), Octokit.GraphQL.Model.LabelConnection.Create);
 
@@ -201,17 +201,11 @@ namespace Octokit.GraphQL.Model
         /// A list containing a breakdown of the language composition of the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Order for connection</param>
         public LanguageConnection Languages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<LanguageOrder>? orderBy = null) => this.CreateMethodCall(x => x.Languages(first, after, last, before, orderBy), Octokit.GraphQL.Model.LanguageConnection.Create);
-
-        /// <summary>
-        /// The license associated with the repository
-        /// </summary>
-        [Obsolete(@"Field `license` will be replaced by a more detailed license object. Use `Repository.licenseInfo` instead. Removal on 2018-07-01 UTC.")]
-        public string License { get; }
 
         /// <summary>
         /// The license associated with the repository
@@ -227,9 +221,9 @@ namespace Octokit.GraphQL.Model
         /// A list of Users that can be mentioned in the context of the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserConnection MentionableUsers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.MentionableUsers(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
@@ -247,9 +241,9 @@ namespace Octokit.GraphQL.Model
         /// A list of milestones associated with the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="states">Filter by the state of the milestones.</param>
         /// <param name="orderBy">Ordering options for milestones.</param>
         public MilestoneConnection Milestones(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<MilestoneState>>? states = null, Arg<MilestoneOrder>? orderBy = null) => this.CreateMethodCall(x => x.Milestones(first, after, last, before, states, orderBy), Octokit.GraphQL.Model.MilestoneConnection.Create);
@@ -301,9 +295,9 @@ namespace Octokit.GraphQL.Model
         /// A list of projects under the owner.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for projects returned from the connection</param>
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
@@ -323,9 +317,9 @@ namespace Octokit.GraphQL.Model
         /// A list of protected branches that are on this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ProtectedBranchConnection ProtectedBranches(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ProtectedBranches(first, after, last, before), Octokit.GraphQL.Model.ProtectedBranchConnection.Create);
 
         /// <summary>
@@ -338,9 +332,9 @@ namespace Octokit.GraphQL.Model
         /// A list of pull requests that have been opened in the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="states">A list of states to filter the pull requests by.</param>
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
@@ -368,9 +362,9 @@ namespace Octokit.GraphQL.Model
         /// Fetch a list of refs from the repository
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="refPrefix">A ref name prefix like `refs/heads/`, `refs/tags/`, etc.</param>
         /// <param name="direction">DEPRECATED: use orderBy. The ordering direction.</param>
         /// <param name="orderBy">Ordering options for refs returned from the connection.</param>
@@ -386,9 +380,9 @@ namespace Octokit.GraphQL.Model
         /// List of releases which are dependent on this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Order for connection</param>
         public ReleaseConnection Releases(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReleaseOrder>? orderBy = null) => this.CreateMethodCall(x => x.Releases(first, after, last, before, orderBy), Octokit.GraphQL.Model.ReleaseConnection.Create);
 
@@ -396,9 +390,9 @@ namespace Octokit.GraphQL.Model
         /// A list of applied repository-topic associations for this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public RepositoryTopicConnection RepositoryTopics(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.RepositoryTopics(first, after, last, before), Octokit.GraphQL.Model.RepositoryTopicConnection.Create);
 
         /// <summary>
@@ -426,9 +420,9 @@ namespace Octokit.GraphQL.Model
         /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Order for connection</param>
         public StargazerConnection Stargazers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<StarOrder>? orderBy = null) => this.CreateMethodCall(x => x.Stargazers(first, after, last, before, orderBy), Octokit.GraphQL.Model.StargazerConnection.Create);
 
@@ -481,9 +475,9 @@ namespace Octokit.GraphQL.Model
         /// A list of users watching the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserConnection Watchers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Watchers(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         internal static Repository Create(Expression expression)
