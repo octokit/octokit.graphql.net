@@ -10,7 +10,7 @@ To define a variable, you should:
 For example:
 
 ```
-using static Octokit.GraphQL.Variable
+using static Octokit.GraphQL.Variable;
 
 var query = new Query()
     .Repository(Var("owner"), Var("name"))
@@ -26,8 +26,8 @@ You can now use those variables by passing an `IDictionary<string, object>` into
 ```
 var vars = new Dictionary<string, object>
 {
-    { "owner": "octokit" },
-    { "name": "Octokit.GraphQL.net" },
+    { "owner", "octokit" },
+    { "name", "Octokit.GraphQL.net" },
 };
 
 var result = await connection.Run(query, vars);
