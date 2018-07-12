@@ -6,7 +6,7 @@ namespace Octokit.GraphQL
     /// <summary>
     /// Represents a GraphQL fragment.
     /// </summary>
-    /// <see cref="Fragment{TInput, TOutput}"/>.
+    /// <see cref="Fragment{TValue, TResult}"/>.
     public interface IFragment
     {
         /// <summary>
@@ -30,7 +30,7 @@ namespace Octokit.GraphQL
         Type ReturnType { get; }
     }
 
-    public interface IFragment<TInput, out TResult> : IFragment
+    public interface IFragment<TValue, out TResult> : IFragment
     {
     }
 }

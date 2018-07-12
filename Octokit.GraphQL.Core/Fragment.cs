@@ -15,7 +15,7 @@ namespace Octokit.GraphQL
     public class Fragment<TValue, TResult> : IFragment<TValue, TResult>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Fragment{TInput, TOutput}"/> class.
+        /// Initializes a new instance of the <see cref="Fragment{TValue, TResult}"/> class.
         /// </summary>
         /// <param name="name">The name of the fragment.</param>
         /// <param name="expression">The fragment selector expression.</param>
