@@ -639,7 +639,6 @@ namespace Octokit.GraphQL.Core.UnitTests
                 "Cannot directly select \'IQueryableList<>\'. Use ToList() to unwrap the value.",
                 exception.Message);
         }
-    }
 
         [Fact]
         public void Repository_Select_Simple_Fragment()
