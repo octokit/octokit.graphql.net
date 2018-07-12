@@ -8,6 +8,12 @@ Octokit.GraphQL gives you access to the GitHub GraphQL API from .NET. It exposes
 
 You can find our documentation [here](docs/readme.md).
 
+## Installing from Nuget 
+
+```
+Install-Package Octokit.GraphQL -IncludePrerelease
+```
+
 ## Usage Example
 
 ```csharp
