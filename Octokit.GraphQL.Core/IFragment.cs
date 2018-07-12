@@ -29,4 +29,8 @@ namespace Octokit.GraphQL
         /// </summary>
         Type ReturnType { get; }
     }
+
+    public interface IFragment<TInput, out TResult> : IFragment
+    {
+    }
 }

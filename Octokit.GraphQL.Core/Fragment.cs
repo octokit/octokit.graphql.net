@@ -12,7 +12,7 @@ namespace Octokit.GraphQL
     /// Fragments allow you to share field selections between multiple queries and within the same
     /// query: https://graphql.org/learn/queries/#fragments
     /// </remarks>
-    public class Fragment<TValue, TResult> : IFragment
+    public class Fragment<TValue, TResult> : IFragment<TValue, TResult>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Fragment{TInput, TOutput}"/> class.

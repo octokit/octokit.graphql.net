@@ -151,21 +151,21 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Equal("octokit.net", repository.Name);
         }
 
-        //[IntegrationTest]
-        //public void Query_Organization_Repositories_Select_Fragment()
-        //{
-        //    var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
+        [IntegrationTest]
+        public void Query_Organization_Repositories_Select_Fragment()
+        {
+            var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
 
-        //    var query = new Query()
-        //        .Organization("octokit")
-        //        .Repositories(first: 100)
-        //        .Nodes
-        //        .Select(fragment);
+            var query = new Query()
+                .Organization("octokit")
+                .Repositories(first: 100)
+                .Nodes
+                .Select(fragment);
 
-        //    var repositoryName = Connection.Run(query).Result;
+            var repositoryName = Connection.Run(query).Result.OrderByDescending(s => s).First();
 
-        //    Assert.Equal("octokit.net", repositoryName);
-        //}
+            Assert.Equal("webhooks.js", repositoryName);
+        }
 
         [IntegrationTest]
         public async Task Should_Query_Repository_Issues_PullRequests_With_Variables_AutoPaging()
