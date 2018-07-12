@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Octokit.GraphQL</id>
-    <version>0.0.2-alpha</version>
+    <version>0.1.0-beta</version>
     <authors>GitHub</authors>
     <owners>GitHub</owners>
     <licenseUrl>https://github.com/grokys/octokit.graphql/blob/master/LICENSE.txt</licenseUrl>
