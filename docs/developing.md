@@ -1,25 +1,15 @@
-## Compiling Queries
+## Updating the schema
 
-In the [quickstart](quickstart.md) we created a query and ran it directly on the connection:
+1. Delete the `Model` folder from `Octokit.GraphQL`
+2. Set the Application arguments for the `Tools\Generate` project to `[OAuth Token] [Octokit.GraphQL Project Path]`
+3. Build and run the `Tools\Generate` project
 
-```csharp
-var query = new Query().Viewer.Select(x => x.Login);
-var connection = new Connection("https://api.github.com/graphql", YOUR_OAUTH_TOKEN);
-var result = await connection.Run(query);
-```
+It will recreate the `Model` folder in `Octokit.GraphQL`
 
-This is fine for queries you only want to run once, but each time this query is run, the query
-expression needs to be parsed and the GraphQL query created. If you're going to be re-using a
-query it is better to compile the query and store it somewhere:
 
-```csharp
-class MyService
-{
-    static readonly ICompiledQuery<string> myQuery = new Query()
-        .Viewer
-        .Select(x => x.Login)
-        .Compile();
-}
-```
+## Running Integration Tests
 
-If you need to pass parameters to a compiled query, you can use [variables](variables.md).
+Integration tests in the project `Octokit.GraphQL.IntegrationTests` requires that an OAuth token.
+The OAuth token and corresponding username should be set as the following two environment variables.
+- OCTOKIT_GQL_OAUTHTOKEN
+- OCTOKIT_GQL_GITHUBUSERNAME
