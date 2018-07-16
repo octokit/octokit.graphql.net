@@ -157,5 +157,21 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var result = Connection.Run(query).Result;
         }
+
+        [IntegrationTest]
+        public void Should_Handle_Null_Repository_Parent()
+        {
+            var query = new Query().Repository("octokit", "octokit.net")
+                .Select(repository => new
+                {
+                    Name = repository.Name,
+                    ParentName = repository.Parent.Name
+                });
+
+            var result = Connection.Run(query).Result;
+
+            Assert.NotNull(result.Name);
+            Assert.Null(result.ParentName);
+        }
     }
 }

@@ -415,6 +415,28 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal(42, result.Value.Number);
         }
 
+        [Fact]
+        public void Should_Handle_Null_Repository_Parent()
+        {
+            var expression = new Query()
+                .Repository("octokit", "octokit.net")
+                .Select(repository => new
+                {
+                    Name = repository.Name,
+                    ParentName = repository.Parent.Name
+                });
+
+            var data = @"{""data"":{""repository"":{""name"":""octokit.net"",""parentName"":null}}}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = query.Deserialize(data);
+
+            Assert.Equal("octokit.net", result.Name);
+            Assert.Null(result.ParentName);
+        }
+
         private class NamedClass
         {
             public NamedClass()
