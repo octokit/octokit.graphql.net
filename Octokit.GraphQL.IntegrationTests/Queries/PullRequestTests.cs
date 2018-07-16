@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Octokit.GraphQL.IntegrationTests.Utilities;
+using Octokit.GraphQL.Model;
 using Xunit;
 using static Octokit.GraphQL.Variable;
 
@@ -125,6 +126,28 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             Assert.True(result.Reviews.Count > 100);
             Assert.True(result.Reviews.Any(x => x.Comments.Count > 100));
+        }
+
+        [IntegrationTest]
+        public async Task PullRequest_Status_Context_CanBeNull()
+        {
+            var query = new Query()
+            .Repository("StanleyGoldman", "ConsoleCoreAppWithYamlForNoReason")
+            .PullRequests(1)
+            .Select(page => new 
+            {
+                Items = page.Nodes.Select(pr => new 
+                {
+                    Id = pr.Id.Value,
+                    LastCommit = pr.Commits(null, null, 1, null).Nodes.Select(commit => new
+                    {
+                        commit.Id,
+                        Statuses = commit.Commit.Status.Contexts.Select(status => status.State).ToList()
+                    }).ToList().FirstOrDefault(),
+                }).ToList(),
+            }).Compile();
+
+            var result = await Connection.Run(query);
         }
     }
 }
