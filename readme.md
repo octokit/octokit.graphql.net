@@ -8,7 +8,7 @@ Octokit.GraphQL gives you access to the GitHub GraphQL API from .NET. It exposes
 
 You can find our documentation [here](docs/readme.md).
 
-## Installing from Nuget 
+## Installing from Nuget
 
 ```
 Install-Package Octokit.GraphQL -IncludePrerelease
@@ -18,10 +18,12 @@ Install-Package Octokit.GraphQL -IncludePrerelease
 
 ```csharp
 using Octokit.GraphQL;
-using Octokit.GraphQL.Core;
 using static Octokit.GraphQL.Variable;
 
-var connection = new Connection("https://api.github.com/graphql", YOUR_OAUTH_TOKEN); 
+var connection = new Connection(
+    new ProductHeaderValue("YOUR_PRODUCT_NAME", "YOUR_PRODUCT_VERSION"),
+    Connection.GithubApiUri,
+    YOUR_OAUTH_TOKEN);
 
 var query = new Query()
     .RepositoryOwner(Var("owner"))
@@ -41,7 +43,7 @@ var vars = new Dictionary<string, object>
     { "name", "octokit.graphql.net" },
 };
 
-var result =  await Connection.Run(query, vars);
+var result =  await connection.Run(query, vars);
 
 Console.WriteLine(result.Login + " & " + result.Name + " Rocks!");
 ```
