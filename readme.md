@@ -22,7 +22,6 @@ using static Octokit.GraphQL.Variable;
 
 var connection = new Connection(
     new ProductHeaderValue("YOUR_PRODUCT_NAME", "YOUR_PRODUCT_VERSION"),
-    Connection.GithubApiUri,
     YOUR_OAUTH_TOKEN);
 
 var query = new Query()

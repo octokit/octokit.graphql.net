@@ -11,7 +11,7 @@ For more information on creating personal access tokens, see
 using Octokit.GraphQL;
 
 var productInformation = new ProductHeaderValue("YOUR_PRODUCT_NAME", "YOUR_PRODUCT_VERSION");
-var connection = new Connection(productInformation, Connection.GithubApiUri, YOUR_OAUTH_TOKEN);
+var connection = new Connection(productInformation, YOUR_OAUTH_TOKEN);
 ```
 
 ## Showing the Viewer's Username

@@ -5,7 +5,7 @@ In the [quickstart](quickstart.md) we created a query and ran it directly on the
 ```csharp
 var query = new Query().Viewer.Select(x => x.Login);
 var productInformation = new ProductHeaderValue("YOUR_PRODUCT_NAME", "YOUR_PRODUCT_VERSION");
-var connection = new Connection(productInformation, Connection.GithubApiUri, YOUR_OAUTH_TOKEN);
+var connection = new Connection(productInformation, YOUR_OAUTH_TOKEN);
 var result = await connection.Run(query);
 ```
 
