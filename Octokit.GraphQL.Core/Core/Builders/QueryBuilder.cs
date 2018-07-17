@@ -740,9 +740,6 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else if (expression.Method.GetGenericMethodDefinition() == PagingConnectionExtensions.AllPagesCustomSizeMethod)
             {
-                // .AllPages() was called on a IPagingConnection. We can't handle this yet -
-                // return an AllPagesExpression so we know to handle it when the containing Select
-                // is visited.
                 return new AllPagesExpression((MethodCallExpression)expression.Arguments[0], (ConstantExpression)expression.Arguments[1]);
             }
             else
@@ -798,7 +795,8 @@ namespace Octokit.GraphQL.Core.Builders
 
         private ISubquery AddSubquery(MethodCallExpression expression,
             MethodCallExpression selector,
-            Expression pageInfoSelector, int pageSize)
+            Expression pageInfoSelector,
+            int pageSize)
         {
             // Create a lambda that selects the "pageInfo" fields.
             var parentPageInfo = CreatePageInfoExpression();
@@ -820,7 +818,8 @@ namespace Octokit.GraphQL.Core.Builders
         }
 
         private Expression CreateNodeQuery(MethodCallExpression expression,
-            MethodCallExpression selector, int pageSize)
+            MethodCallExpression selector,
+            int pageSize)
         {
             // Given an expression such as:
             //
@@ -874,7 +873,8 @@ namespace Octokit.GraphQL.Core.Builders
         }
 
         MethodCallExpression RewritePagingMethodCall(MethodCallExpression methodCall,
-            Expression instance, int pageSize)
+            Expression instance, 
+            int pageSize)
         {
             var arguments = new List<Expression>();
             var i = 0;
