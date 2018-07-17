@@ -599,7 +599,7 @@ namespace Octokit.GraphQL.Core.Builders
                     parentIds = CreateSelectTokensExpression(
                         parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
 
-                    var pageSize = (int?)allPages.Constant?.Value ?? MaxPageSize;
+                    var pageSize = (int?)allPages.PageSize?.Value ?? MaxPageSize;
 
                     // Add a "first: pageSize" argument to the query field.
                     syntax.AddArgument("first", pageSize);
