@@ -23,13 +23,6 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(issue => issue.Number)
                 .Compile();
 
-            ICompiledQuery<IEnumerable<int>> TestQueryCustomSize { get; } = new Query()
-                .Repository("foo", "bar")
-                .Issues()
-                .AllPages()
-                .Select(issue => issue.Number)
-                .Compile();
-
             static Repository_Issues_AllPages()
             {
                 ExpressionCompiler.IsUnitTesting = true;
@@ -76,7 +69,14 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var master = TestQueryCustomSize.GetMasterQuery();
+                var testQueryCustomSize = new Query()
+                    .Repository("foo", "bar")
+                    .Issues()
+                    .AllPages(10)
+                    .Select(issue => issue.Number)
+                    .Compile();
+
+                var master = testQueryCustomSize.GetMasterQuery();
 
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
