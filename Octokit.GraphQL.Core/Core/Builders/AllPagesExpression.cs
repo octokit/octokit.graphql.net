@@ -12,12 +12,20 @@ namespace Octokit.GraphQL.Core.Builders
         /// Initializes a new instance of the <see cref="AllPagesExpression"/> class.
         /// </summary>
         /// <param name="method">The method that AllPages() was called on.</param>
-        public AllPagesExpression(MethodCallExpression method) => Method = method;
+        /// <param name="constant">The constant expression that AllPages was given for
+        /// </param>
+        public AllPagesExpression(MethodCallExpression method, ConstantExpression constant = null)
+        {
+            Method = method;
+            Constant = constant;
+        }
 
         /// <summary>
         /// Gets the method that AllPages() was called on.
         /// </summary>
         public MethodCallExpression Method { get; }
+
+        public ConstantExpression Constant { get; }
 
         /// <inheritdoc/>
         public override ExpressionType NodeType => ExpressionType.Extension;

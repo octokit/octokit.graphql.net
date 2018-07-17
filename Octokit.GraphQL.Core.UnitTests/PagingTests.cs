@@ -16,13 +16,6 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         public class Repository_Issues_AllPages
         {
-            ICompiledQuery<IEnumerable<int>> TestQuery { get; } = new Query()
-                .Repository("foo", "bar")
-                .Issues()
-                .AllPages()
-                .Select(issue => issue.Number)
-                .Compile();
-
             static Repository_Issues_AllPages()
             {
                 ExpressionCompiler.IsUnitTesting = true;
@@ -46,7 +39,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var master = TestQuery.GetMasterQuery();
+                var master = GetTestQuery().GetMasterQuery();
 
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
@@ -69,14 +62,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var testQueryCustomSize = new Query()
-                    .Repository("foo", "bar")
-                    .Issues()
-                    .AllPages(10)
-                    .Select(issue => issue.Number)
-                    .Compile();
-
-                var master = testQueryCustomSize.GetMasterQuery();
+                var master = GetTestQueryCustomSize().GetMasterQuery();
 
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
@@ -92,7 +78,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         data.Annotation<ISubqueryRunner>(),
                         subqueryPlaceholder));
 
-                var master = TestQuery.GetMasterQuery();
+                var master = GetTestQuery().GetMasterQuery();
 
                 Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
             }
@@ -117,7 +103,33 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var subqueries = TestQuery.GetSubqueries();
+                var subqueries = GetTestQuery().GetSubqueries();
+
+                Assert.Single(subqueries);
+                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+            }
+
+            [Fact]
+            public void Creates_Subquery_CustomPageSize()
+            {
+                var expected = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 10, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          number
+        }
+      }
+    }
+  }
+}";
+
+                var subqueries = GetTestQueryCustomSize().GetSubqueries();
 
                 Assert.Single(subqueries);
                 Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
@@ -127,7 +139,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             public void Creates_Subquery_ParentIds_Selector()
             {
                 var expected = Expected(data => data.SelectTokens("$.data.repository.id"));
-                var subqueries = TestQuery.GetSubqueries();
+                var subqueries = GetTestQuery().GetSubqueries();
 
                 Assert.Single(subqueries);
 
@@ -139,7 +151,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             public void Creates_Subquery_PageInfo_Selector()
             {
                 var expected = Expected(data => data.SelectToken("data.node.issues.pageInfo"));
-                var subqueries = TestQuery.GetSubqueries();
+                var subqueries = GetTestQuery().GetSubqueries();
 
                 Assert.Single(subqueries);
 
@@ -151,7 +163,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             public void Creates_Subquery_ParentPageInfo_Selector()
             {
                 var expected = Expected(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
-                var subqueries = TestQuery.GetSubqueries();
+                var subqueries = GetTestQuery().GetSubqueries();
 
                 Assert.Single(subqueries);
 
@@ -234,9 +246,30 @@ namespace Octokit.GraphQL.Core.UnitTests
                 }
 
                 var connection = new MockConnection(Execute);
-                var result = (await connection.Run(TestQuery)).ToList();
+                var result = (await connection.Run(GetTestQuery())).ToList();
 
                 Assert.Equal(Enumerable.Range(0, 6).ToList(), result);
+            }
+
+            private ICompiledQuery<IEnumerable<int>> GetTestQuery()
+            {
+                return new Query()
+                    .Repository("foo", "bar")
+                    .Issues()
+                    .AllPages()
+                    .Select(issue => issue.Number)
+                    .Compile();
+            }
+
+            private static ICompiledQuery<IEnumerable<int>> GetTestQueryCustomSize()
+            {
+                var testQueryCustomSize = new Query()
+                    .Repository("foo", "bar")
+                    .Issues()
+                    .AllPages(10)
+                    .Select(issue => issue.Number)
+                    .Compile();
+                return testQueryCustomSize;
             }
         }
 

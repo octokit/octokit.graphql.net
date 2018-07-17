@@ -23,15 +23,14 @@ namespace Octokit.GraphQL
                     new Expression[] { source.Expression }));
         }
 
-        [MethodId(nameof(AllPagesCustomSizeMethod))]
+        [MethodId(nameof(AllPages))]
         public static IQueryableList<TResult> AllPages<TResult>(this IPagingConnection<TResult> source, int pageSize)
             where TResult : IQueryableValue
         {
-            return new QueryableList<TResult>(
-                Expression.Call(
-                    null,
-                    GetMethodInfoOf(() => AllPages<TResult>(default, pageSize)),
-                    new Expression[] { source.Expression }));
+            return new QueryableList<TResult>(Expression.Call(
+                null,
+                GetMethodInfoOf(() => AllPages<TResult>(default, pageSize)), 
+                new Expression[]{ source.Expression, Expression.Constant(pageSize) }));
         }
 
         private static MethodInfo GetMethodInfo(string id, int parameterCount)
