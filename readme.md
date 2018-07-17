@@ -19,10 +19,9 @@ Install-Package Octokit.GraphQL -IncludePrerelease
 ```csharp
 using Octokit.GraphQL;
 using static Octokit.GraphQL.Variable;
-
-var connection = new Connection(
-    new ProductHeaderValue("YOUR_PRODUCT_NAME", "YOUR_PRODUCT_VERSION"),
-    YOUR_OAUTH_TOKEN);
+   
+var productInformation = new ProductHeaderValue("YOUR_PRODUCT_NAME", "YOUR_PRODUCT_VERSION");
+var connection = new Connection(productInformation, YOUR_OAUTH_TOKEN);
 
 var query = new Query()
     .RepositoryOwner(Var("owner"))
