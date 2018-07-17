@@ -13,7 +13,7 @@ Many GraphQL fields can be paged. These fields typically define at least four pa
 |`last`|Pages backwards N results at a time|
 |`before`|The start cursor of the previous page|
 
-In addition, these fields produce a `Connection` object which contains a list of `edges` and 
+In addition, these fields produce a `Connection` object which contains a list of `edges` and
 `nodes`, toegther with a `totalCount` and a `pageInfo` object.
 
 To run a paged query, you would write code like this:
@@ -42,7 +42,7 @@ var vars = new Dictionary<string, object>
 };
 
 // Read the first page.
-var result = await Connection.Run(query, vars);
+var result = await connection.Run(query, vars);
 
 // If there are more pages, set `after` to the end cursor.
 vars["after"] = result.HasNextPage ? result.EndCursor : null;
@@ -50,7 +50,7 @@ vars["after"] = result.HasNextPage ? result.EndCursor : null;
 while (vars["after"] != null)
 {
     // Read the next page.
-    var page = await Connection.Run(query, vars);
+    var page = await connection.Run(query, vars);
 
     // Add the results from the page to the result.
     result.Items.AddRange(page.Items);
@@ -80,7 +80,7 @@ var query = new Query()
         issue.Title,
     }).Compile();
 
-var result = await Connection.Run(query);
+var result = await connection.Run(query);
 ```
 
 To enable auto-paging, you simply call `.AllPages()` where you would usually call `.Nodes`.
