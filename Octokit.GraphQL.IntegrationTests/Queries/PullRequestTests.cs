@@ -134,20 +134,22 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var query = new Query()
             .Repository("StanleyGoldman", "ConsoleCoreAppWithYamlForNoReason")
             .PullRequests(1)
-            .Select(page => new 
-            {
-                Items = page.Nodes.Select(pr => new 
+            .Select(page => 
+                page.Nodes.Select(pr => new 
                 {
                     Id = pr.Id.Value,
                     LastCommit = pr.Commits(null, null, 1, null).Nodes.Select(commit => new
                     {
                         commit.Id,
-                        Statuses = commit.Commit.Status.Contexts.Select(status => status.State).ToList()
+                        Statuses = commit.Commit.Status
+                            .Select(status => status.Contexts.Select(context => context.State).ToList())
+                            .SingleOrDefault()
                     }).ToList().FirstOrDefault(),
-                }).ToList(),
-            }).Compile();
+                }).ToList().First()
+            ).Compile();
 
             var result = await Connection.Run(query);
+            Assert.Null(result.LastCommit.Statuses);
         }
     }
 }
