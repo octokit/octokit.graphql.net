@@ -7,3 +7,4 @@
 3. [Compiling Queries](compiling-queries.md)
 4. [Variables](variables.md)
 5. [Paging](paging.md)
+6. [Contributing](contributing.md)
