@@ -2,28 +2,65 @@
 
 Fragments can be used to define a selection set of data.
 
-For example:
+Fragments can be reused multiple times within the same query or different queries.
+
+_*Note*_: Fragments cannot select anonymous types.
+
+#### Example:
+
+Fragments can select fields and be reused in different queries.
 
 ```
-using static Octokit.GraphQL.Variable;
+var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
+
+var query1 = new Query()
+    .Repository("octokit", "octokit.net")
+    .Select(fragment);
+
+var repositoryName = Connection.Run(query1).Result;
+
+Assert.Equal("octokit.net", repositoryName);
+
+var query2 = new Query()
+    .Organization("octokit")
+    .Repositories(first: 100)
+    .Nodes
+    .Select(fragment);
+
+var repositoryName = Connection.Run(query2).Result.OrderByDescending(s => s).First();
+
+Assert.Equal("webhooks.js", repositoryName);
+```
+
+#### Example:
+Fragments can select objects and be reused multiple times in the same query
+
+```
+public class RepositoryModel
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public int ForkCount { get; set; }
+}
+```
+
+```
+var fragment = new Fragment<Model.Repository, RepositoryModel>("repositoryName", repo => new TestModelObject
+{
+    Name = repo.Name,
+    Description = repo.Description
+    ForkCount = repo.ForkCount,
+});
 
 var query = new Query()
-    .Repository(Var("owner"), Var("name"))
-    .Select(repository => new RepositoryModel
+    .Select(q => new
     {
-        Name = repository.Name,
-        Description = repository.Name,
-    }).Compile();
-```
+        repo1 = q.Repository("octokit", "octokit.net").Select(fragment).Single(),
+        repo2 = q.Repository("octokit", "octokit.graphql.net").Select(fragment).Single(),
+    });
 
-You can now use those variables by passing an `IDictionary<string, object>` into `Connection.Run`:
+var result = Connection.Run(query).Result;
 
-```
-var vars = new Dictionary<string, object>
-{
-    { "owner", "octokit" },
-    { "name", "Octokit.GraphQL.net" },
-};
-
-var result = await connection.Run(query, vars);
+Assert.Equal("octokit.net", result.repo1.StringField1);
+Assert.Equal("octokit.graphql.net", result.repo2.StringField1);
 ```
