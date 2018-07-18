@@ -663,6 +663,37 @@ fragment repositoryName on Repository {
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
+
+        [Fact]
+        public void Repository_Select_Object_Fragment()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  intField1: forkCount
+  stringField1: name
+  stringField2: description
+}";
+
+            var fragment = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject()
+            {
+                IntField1 = repository.ForkCount,
+                StringField1 = repository.Name,
+                StringField2 = repository.Description
+            });
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(fragment);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
         [Fact]
         public void Repository_Select_Use_Fragment_Twice()
         {
@@ -757,6 +788,14 @@ fragment issueTitle on Issue {
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        class TestModelObject
+        {
+            public string StringField1 { get; set; }
+            public string StringField2 { get; set; }
+            public int IntField1 { get; set; }
+            public int IntField2 { get; set; }
         }
     }
 }
