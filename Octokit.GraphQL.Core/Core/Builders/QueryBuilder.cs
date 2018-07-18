@@ -599,7 +599,7 @@ namespace Octokit.GraphQL.Core.Builders
                     parentIds = CreateSelectTokensExpression(
                         parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
 
-                    var pageSize = (int?)allPages.PageSize?.Value ?? MaxPageSize;
+                    var pageSize = allPages.PageSize ?? MaxPageSize;
 
                     // Add a "first: pageSize" argument to the query field.
                     syntax.AddArgument("first", pageSize);
@@ -740,7 +740,29 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else if (expression.Method.GetGenericMethodDefinition() == PagingConnectionExtensions.AllPagesCustomSizeMethod)
             {
-                return new AllPagesExpression((MethodCallExpression)expression.Arguments[0], (ConstantExpression)expression.Arguments[1]);
+                int? allPagesValue = null;
+                if(expression.Arguments[1] is ConstantExpression constantExpression)
+                {
+                    allPagesValue = (int) constantExpression.Value;
+                }
+                else if (expression.Arguments[1] is MemberExpression memberExpression)
+                {
+                    if (memberExpression.Expression is ConstantExpression memberConstantExpression)
+                    {
+                        var memberExpressionMember = (FieldInfo)memberExpression.Member;
+                        allPagesValue = (int) memberExpressionMember.GetValue(memberConstantExpression.Value);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                return new AllPagesExpression((MethodCallExpression)expression.Arguments[0], allPagesValue);
             }
             else
             {

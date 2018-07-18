@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.Core.Builders
         /// </summary>
         /// <param name="method">The method that AllPages() was called on.</param>
         /// <param name="pageSize">The ConstantExpression that AllPages was sent</param>
-        public AllPagesExpression(MethodCallExpression method, ConstantExpression pageSize = null)
+        public AllPagesExpression(MethodCallExpression method, int? pageSize = null)
         {
             Method = method;
             PageSize = pageSize;
@@ -25,9 +25,9 @@ namespace Octokit.GraphQL.Core.Builders
         public MethodCallExpression Method { get; }
 
         /// <summary>
-        /// Gets the constant value that was sent to AllPages
+        /// Gets the value that was sent to AllPages
         /// </summary>
-        public ConstantExpression PageSize { get; }
+        public int? PageSize { get; }
 
         /// <inheritdoc/>
         public override ExpressionType NodeType => ExpressionType.Extension;

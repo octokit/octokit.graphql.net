@@ -67,6 +67,34 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
+            [Fact]
+            public void Creates_MasterQuery_CustomPageSize_Expression()
+            {
+                var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    id
+    issues(first: 10) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        title
+      }
+    }
+  }
+}";
+
+                var pageSize = 10;
+                var master = new Query()
+                    .Select(query => query.Repository("foo", "bar")
+                        .Issues(null, null, null, null, null)
+                        .AllPages(pageSize).Select(issue => issue.Title).ToList())
+                    .Compile().GetMasterQuery();
+
+                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+            }
+
             [Fact(Skip = "Need a better way to compare expressions")]
             public void Creates_MasterQuery_Expression()
             {
