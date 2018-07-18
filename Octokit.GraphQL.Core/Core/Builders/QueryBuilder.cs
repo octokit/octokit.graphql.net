@@ -684,6 +684,74 @@ namespace Octokit.GraphQL.Core.Builders
                     (Expression)rewrittenSelect : 
                     new SubqueryExpression(subquery, rewrittenSelect);
             }
+            else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.SelectFragmentMethod)
+            {
+                var source = expression.Arguments[0];
+
+                IFragment fragment = null;
+
+                if (expression.Arguments[1] is ConstantExpression constantExpression1)
+                {
+                    fragment = (IFragment)constantExpression1.Value;
+                }
+                else
+                {
+                    if (expression.Arguments[1] is MemberExpression memberExpression)
+                    {
+                        var memberExpressionMember = (FieldInfo)memberExpression.Member;
+                        fragment = (IFragment)memberExpressionMember.GetValue(((ConstantExpression)memberExpression.Expression)
+                            .Value);
+                    }
+                }
+
+                if (fragment == null)
+                {
+                    throw new InvalidOperationException("Fragment instance cannot be found");
+                }
+
+                var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
+
+                ISubquery subquery = null;
+                if (instance is AllPagesExpression allPages)
+                {
+                    // .AllPages() was called on the instance. The expression is just a marker for
+                    // this, the actual instance is in `allPages.Instance`
+                    instance = Visit(allPages.Method);
+
+                    // Select the "id" fields for the subquery.
+                    var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
+                    AddIdSelection(parentSelection.Last());
+                    parentIds = CreateSelectTokensExpression(
+                        parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
+
+                    // Add a "first: 100" argument to the query field.
+                    syntax.AddArgument("first", MaxPageSize);
+
+                    // Add the required "pageInfo" field selections then select "nodes".
+                    syntax.Head.Selections.Add(PageInfoSelection());
+
+                    // Create the subquery
+                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"));
+
+                    // And continue the query as normal after selecting "nodes".
+                    syntax.AddField("nodes");
+                    instance = instance.AddIndexer("nodes");
+                }
+
+                var @select = VisitFragment(fragment);
+                syntax.AddFragmentSpread(fragment.Name);
+
+                var rewrittenSelect = Expression.Call(
+                    Rewritten.List.SelectMethod.MakeGenericMethod(@select.ReturnType),
+                    instance,
+                    @select);
+
+                // If the expression was an .AllPages() call then return a SubqueryExpression with
+                // the related SubQuery to the .ToList() or .ToDictionary() method that follows.
+                return subquery == null ?
+                    (Expression)rewrittenSelect :
+                    new SubqueryExpression(subquery, rewrittenSelect);
+            }
             else if (expression.Method.GetGenericMethodDefinition() == QueryableListExtensions.ToDictionaryMethod)
             {
                 var source = expression.Arguments[0];

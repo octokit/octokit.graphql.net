@@ -691,5 +691,72 @@ fragment repositoryName on Repository {
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
+
+        [Fact]
+        public void Issue_Select_Use_Fragment_With_Nodes_List()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    repos: issues {
+      nodes {
+        ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var fragment = new Fragment<Issue, string>("issueTitle", repo => repo.Title);
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(org => new
+                {
+                    Repos = org.Issues(null, null, null, null, null)
+                        .Nodes.Select(fragment).ToList(),
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Use_Fragment_With_AllPages_List()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    id
+    issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var fragment = new Fragment<Issue, string>("issueTitle", repo => repo.Title);
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(org => new
+                {
+                    Repos = org.Issues(null, null, null, null, null)
+                        .AllPages().Select(fragment).ToList(),
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
     }
 }
