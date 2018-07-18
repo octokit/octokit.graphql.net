@@ -254,6 +254,31 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
+        public void Query_Organization_Repositories_Select_Multiple_Object_Fragments()
+        {
+            var fragment = new Fragment<Model.User, TestModelObject>("repositoryName", repo => new TestModelObject
+            {
+                StringField1 = repo.Login,
+                StringField2 = repo.Url
+            });
+
+            var query = new Query().Organization("octokit")
+                .Select(organization => new
+                {
+                    Member = organization.Members(10, null, null, null).Nodes
+                        .Select(fragment).ToList().OrderBy(o => o.StringField1).First(),
+
+                    MentionableUser = organization.Repository("octokit.net")
+                        .MentionableUsers(10, null, null, null).Nodes
+                        .Select(fragment).ToList().OrderBy(o => o.StringField1).First()
+                });
+
+            var testModelObject = Connection.Run(query).Result;
+            Assert.Equal("alanjrogers", testModelObject.Member.StringField1);
+            Assert.Equal("bkeepers", testModelObject.MentionableUser.StringField1);
+        }
+
+        [IntegrationTest]
         public async Task Should_Query_Repository_Issues_PullRequests_With_Variables_AutoPaging()
         {
             var query = new Query()
