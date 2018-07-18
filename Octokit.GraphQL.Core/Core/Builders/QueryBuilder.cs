@@ -793,7 +793,8 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private ISubquery AddSubquery(MethodCallExpression expression,
+        private ISubquery AddSubquery(
+            MethodCallExpression expression,
             MethodCallExpression selector,
             Expression pageInfoSelector,
             int pageSize)
@@ -817,7 +818,8 @@ namespace Octokit.GraphQL.Core.Builders
                 JsonMethods.JTokenAnnotation.MakeGenericMethod(typeof(ISubqueryRunner)));
         }
 
-        private Expression CreateNodeQuery(MethodCallExpression expression,
+        private Expression CreateNodeQuery(
+            MethodCallExpression expression,
             MethodCallExpression selector,
             int pageSize)
         {
@@ -872,7 +874,8 @@ namespace Octokit.GraphQL.Core.Builders
                 new[] { rewritten, selector.Arguments[1] });
         }
 
-        MethodCallExpression RewritePagingMethodCall(MethodCallExpression methodCall,
+        MethodCallExpression RewritePagingMethodCall(
+            MethodCallExpression methodCall,
             Expression instance, 
             int pageSize)
         {
