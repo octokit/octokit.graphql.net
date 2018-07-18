@@ -187,6 +187,29 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
+        public void Query_Repository_Select_Object_Fragment_Twice()
+        {
+            var fragment = new Fragment<Model.Repository, TestModelObject>("repositoryName", repo => new TestModelObject
+            {
+                IntField1 = repo.ForkCount,
+                StringField1 = repo.Name,
+                StringField2 = repo.Description
+            });
+
+            var query = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("octokit", "octokit.net").Select(fragment).Single(),
+                    repo2 = q.Repository("octokit", "octokit.graphql.net").Select(fragment).Single(),
+                });
+
+            var result = Connection.Run(query).Result;
+
+            Assert.Equal("octokit.net", result.repo1.StringField1);
+            Assert.Equal("octokit.graphql.net", result.repo2.StringField1);
+        }
+
+        [IntegrationTest]
         public void Query_Repository_Select_Inner_Object_Fragment()
         {
             var fragment = new Fragment<Model.Repository, TestModelObject>("repositoryName", repo => new TestModelObject

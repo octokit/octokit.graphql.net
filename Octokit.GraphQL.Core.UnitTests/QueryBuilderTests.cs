@@ -663,6 +663,57 @@ fragment repositoryName on Repository {
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
+        [Fact]
+        public void Repository_Select_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    forkCount
+    name
+    description
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(repository => new TestModelObject
+                {
+                    IntField1 = repository.ForkCount,
+                    StringField1 = repository.Name,
+                    StringField2 = repository.Description
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+
+        [Fact]
+        public void Repository_Select_Anon_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    intField1: forkCount
+    stringField1: name
+    stringField2: description
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(repository => new
+                {
+                    IntField1 = repository.ForkCount,
+                    StringField1 = repository.Name,
+                    StringField2 = repository.Description
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
 
         [Fact]
         public void Repository_Select_Object_Fragment()
@@ -695,7 +746,7 @@ fragment repositoryName on Repository {
         }
 
         [Fact]
-        public void Repository_Select_Use_Fragment_Twice()
+        public void Repository_Select_Use_Simple_Fragment_Twice()
         {
             var expected = @"query {
   repo1: repository(owner: ""foo"", name: ""bar"") {
@@ -724,7 +775,43 @@ fragment repositoryName on Repository {
         }
 
         [Fact]
-        public void Issue_Select_Use_Fragment_With_Nodes_List()
+        public void Repository_Select_Use_Object_Fragment_Twice()
+        {
+            var expected = @"query {
+  repo1: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+  repo2: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  forkCount
+  name
+  description
+}";
+
+            var repositoryName = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
+            {
+                IntField1 = repository.ForkCount,
+                StringField1 = repository.Name,
+                StringField2 = repository.Description
+            });
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(repositoryName).SingleOrDefault(),
+                    repo2 = q.Repository("foo", "bar").Select(repositoryName).SingleOrDefault()
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Use_Simple_Fragment_With_Nodes_List()
         {
             var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
@@ -755,7 +842,7 @@ fragment issueTitle on Issue {
         }
 
         [Fact]
-        public void Issue_Select_Use_Fragment_With_AllPages_List()
+        public void Issue_Select_Use_Simple_Fragment_With_AllPages_List()
         {
             var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
