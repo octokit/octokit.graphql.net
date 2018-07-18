@@ -121,7 +121,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Query_Repository_Select_Fragment()
+        public void Query_Repository_Select_Simple_Fragment()
         {
             var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
 
@@ -135,7 +135,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Query_Repository_Select_Inner_Fragment()
+        public void Query_Repository_Select_Inner_Simple_Fragment()
         {
             var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
 
@@ -152,7 +152,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Query_Organization_Repositories_Select_Fragment()
+        public void Query_Organization_Repositories_Select_Simple_Fragment()
         {
             var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
 
@@ -165,6 +165,68 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var repositoryName = Connection.Run(query).Result.OrderByDescending(s => s).First();
 
             Assert.Equal("webhooks.js", repositoryName);
+        }
+
+        [IntegrationTest]
+        public void Query_Repository_Select_Object_Fragment()
+        {
+            var fragment = new Fragment<Model.Repository, TestModelObject>("repositoryName", repo => new TestModelObject
+            {
+                IntField1 = repo.ForkCount,
+                StringField1 = repo.Name,
+                StringField2 = repo.Description
+            });
+
+            var query = new Query()
+                .Repository("octokit", "octokit.net")
+                .Select(fragment);
+
+            var testModelObject = Connection.Run(query).Result;
+
+            Assert.Equal("octokit.net", testModelObject.StringField1);
+        }
+
+        [IntegrationTest]
+        public void Query_Repository_Select_Inner_Object_Fragment()
+        {
+            var fragment = new Fragment<Model.Repository, TestModelObject>("repositoryName", repo => new TestModelObject
+            {
+                IntField1 = repo.ForkCount,
+                StringField1 = repo.Name,
+                StringField2 = repo.Description
+            });
+
+            var query = new Query()
+                .Select(q => new
+                {
+                    TestModel = q.Repository("octokit", "octokit.net").Select(fragment).SingleOrDefault()
+                });
+
+
+            var result = Connection.Run(query).Result;
+
+            Assert.Equal("octokit.net", result.TestModel.StringField1);
+        }
+
+        [IntegrationTest]
+        public void Query_Organization_Repositories_Select_Object_Fragment()
+        {
+            var fragment = new Fragment<Model.Repository, TestModelObject>("repositoryName", repo => new TestModelObject
+            {
+                IntField1 = repo.ForkCount,
+                StringField1 = repo.Name,
+                StringField2 = repo.Description
+            });
+
+            var query = new Query()
+                .Organization("octokit")
+                .Repositories(first: 100)
+                .Nodes
+                .Select(fragment);
+
+            var testModelObject = Connection.Run(query).Result.OrderByDescending(s => s.StringField1).First();
+
+            Assert.Equal("webhooks.js", testModelObject.StringField1);
         }
 
         [IntegrationTest]
@@ -202,6 +264,14 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 });
 
             var result = Connection.Run(query).Result;
+        }
+
+        class TestModelObject
+        {
+            public string StringField1;
+            public string StringField2;
+            public int IntField1;
+            public int IntField2;
         }
     }
 }

@@ -673,12 +673,12 @@ fragment repositoryName on Repository {
   }
 }
 fragment repositoryName on Repository {
-  intField1: forkCount
-  stringField1: name
-  stringField2: description
+  forkCount
+  name
+  description
 }";
 
-            var fragment = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject()
+            var fragment = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
             {
                 IntField1 = repository.ForkCount,
                 StringField1 = repository.Name,
@@ -792,10 +792,10 @@ fragment issueTitle on Issue {
 
         class TestModelObject
         {
-            public string StringField1 { get; set; }
-            public string StringField2 { get; set; }
-            public int IntField1 { get; set; }
-            public int IntField2 { get; set; }
+            public string StringField1;
+            public string StringField2;
+            public int IntField1;
+            public int IntField2;
         }
     }
 }
