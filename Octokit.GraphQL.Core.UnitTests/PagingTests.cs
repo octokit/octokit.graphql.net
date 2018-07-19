@@ -279,7 +279,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(Enumerable.Range(0, 6).ToList(), result);
             }
 
-            private ICompiledQuery<IEnumerable<int>> GetTestQuery()
+            private static ICompiledQuery<IEnumerable<int>> GetTestQuery()
             {
                 return new Query()
                     .Repository("foo", "bar")
