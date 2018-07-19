@@ -63,10 +63,11 @@ namespace Octokit.GraphQL
 
         private HttpClient CreateHttpClient(ProductHeaderValue header)
         {
-            var result = new HttpClient();
+            var httpClient = new HttpClient();
             var userAgent = new ProductInfoHeaderValue(header.Name, header.Version);
-            result.DefaultRequestHeaders.UserAgent.Add(userAgent);
-            return result;
+            httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.antiope-preview+json"));
+            return httpClient;
         }
     }
 }

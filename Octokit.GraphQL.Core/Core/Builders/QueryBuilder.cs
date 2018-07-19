@@ -658,14 +658,16 @@ namespace Octokit.GraphQL.Core.Builders
                     parentIds = CreateSelectTokensExpression(
                         parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
 
-                    // Add a "first: 100" argument to the query field.
-                    syntax.AddArgument("first", MaxPageSize);
+                    var pageSize = allPages.PageSize ?? MaxPageSize;
+
+                    // Add a "first: pageSize" argument to the query field.
+                    syntax.AddArgument("first", pageSize);
 
                     // Add the required "pageInfo" field selections then select "nodes".
                     syntax.Head.Selections.Add(PageInfoSelection());
 
                     // Create the subquery
-                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"));
+                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"), pageSize);
 
                     // And continue the query as normal after selecting "nodes".
                     syntax.AddField("nodes");
@@ -863,6 +865,32 @@ namespace Octokit.GraphQL.Core.Builders
                 // is visited.
                 return new AllPagesExpression((MethodCallExpression)expression.Arguments[0]);
             }
+            else if (expression.Method.GetGenericMethodDefinition() == PagingConnectionExtensions.AllPagesCustomSizeMethod)
+            {
+                int? allPagesValue = null;
+                if(expression.Arguments[1] is ConstantExpression constantExpression)
+                {
+                    allPagesValue = (int) constantExpression.Value;
+                }
+                else if (expression.Arguments[1] is MemberExpression memberExpression)
+                {
+                    if (memberExpression.Expression is ConstantExpression memberConstantExpression)
+                    {
+                        var memberExpressionMember = (FieldInfo)memberExpression.Member;
+                        allPagesValue = (int) memberExpressionMember.GetValue(memberConstantExpression.Value);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                return new AllPagesExpression((MethodCallExpression)expression.Arguments[0], allPagesValue);
+            }
             else
             {
                 throw new NotSupportedException($"{expression.Method.Name}() is not supported");
@@ -917,13 +945,14 @@ namespace Octokit.GraphQL.Core.Builders
         private ISubquery AddSubquery(
             MethodCallExpression expression,
             MethodCallExpression selector,
-            Expression pageInfoSelector)
+            Expression pageInfoSelector,
+            int pageSize)
         {
             // Create a lambda that selects the "pageInfo" fields.
             var parentPageInfo = CreatePageInfoExpression();
 
             // Create the actual subquery.
-            var nodeQuery = CreateNodeQuery(expression, selector);
+            var nodeQuery = CreateNodeQuery(expression, selector, pageSize);
             var subqueryBuilder = new QueryBuilder();
             var subquery = subqueryBuilder.BuildSubquery(nodeQuery, parentIds, parentPageInfo);
             subqueries.Add(subquery);
@@ -940,7 +969,8 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression CreateNodeQuery(
             MethodCallExpression expression,
-            MethodCallExpression selector)
+            MethodCallExpression selector,
+            int pageSize)
         {
             // Given an expression such as:
             //
@@ -976,9 +1006,9 @@ namespace Octokit.GraphQL.Core.Builders
                 QueryableInterfaceExtensions.CastMethod.MakeGenericMethod(nodeType),
                 rewritten);
 
-            // Rewrite the method to add the `first: 100` and `after: Var("__after")`
+            // Rewrite the method to add the `first: pageSize` and `after: Var("__after")`
             // parameters, and make it be called on `rewritten`.
-            var methodCall = RewritePagingMethodCall(expression, rewritten);
+            var methodCall = RewritePagingMethodCall(expression, rewritten, pageSize);
 
             // Wrap this in a SubqueryPagerExpression to instruct the child query builder to
             // add the paging infrastructure.
@@ -995,7 +1025,8 @@ namespace Octokit.GraphQL.Core.Builders
 
         MethodCallExpression RewritePagingMethodCall(
             MethodCallExpression methodCall,
-            Expression instance)
+            Expression instance, 
+            int pageSize)
         {
             var arguments = new List<Expression>();
             var i = 0;
@@ -1005,7 +1036,7 @@ namespace Octokit.GraphQL.Core.Builders
                 switch (parameter.Name)
                 {
                     case "first":
-                        arguments.Add(Expression.Constant(new Arg<int>(MaxPageSize), parameter.ParameterType));
+                        arguments.Add(Expression.Constant(new Arg<int>(pageSize), parameter.ParameterType));
                         break;
                     case "after":
                         arguments.Add(Expression.Constant(new Arg<string>("__after", true), parameter.ParameterType));
