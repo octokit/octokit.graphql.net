@@ -726,14 +726,16 @@ namespace Octokit.GraphQL.Core.Builders
                     parentIds = CreateSelectTokensExpression(
                         parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
 
-                    // Add a "first: 100" argument to the query field.
-                    syntax.AddArgument("first", MaxPageSize);
+                    var pageSize = allPages.PageSize ?? MaxPageSize;
+
+                    // Add a "first: pageSize" argument to the query field.
+                    syntax.AddArgument("first", pageSize);
 
                     // Add the required "pageInfo" field selections then select "nodes".
                     syntax.Head.Selections.Add(PageInfoSelection());
 
                     // Create the subquery
-                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"));
+                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"), pageSize);
 
                     // And continue the query as normal after selecting "nodes".
                     syntax.AddField("nodes");
