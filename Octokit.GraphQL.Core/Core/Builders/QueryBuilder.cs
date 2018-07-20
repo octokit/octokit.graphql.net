@@ -639,6 +639,22 @@ namespace Octokit.GraphQL.Core.Builders
                 {
                     throw new NotImplementedException();
                 }
+
+                if (instance is SubqueryExpression subquery)
+                {
+                    instance = subquery.MethodCall;
+
+                    return Expression.Call(
+                        Rewritten.List.ToSubqueryDictionaryMethod.MakeGenericMethod(
+                            inputType,
+                            keySelect.ReturnType,
+                            valueSelect.ReturnType),
+                        instance,
+                        CreateGetQueryContextExpression(),
+                        Expression.Constant(subquery.Subquery),
+                        keySelect,
+                        valueSelect);
+                }
                 else
                 {
                     return Expression.Call(

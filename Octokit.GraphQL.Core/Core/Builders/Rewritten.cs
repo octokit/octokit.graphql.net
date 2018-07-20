@@ -51,6 +51,7 @@ namespace Octokit.GraphQL.Core.Builders
             public static readonly MethodInfo ToDictionaryMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToDictionary));
             public static readonly MethodInfo ToListMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToList));
             public static readonly MethodInfo ToSubqueryListMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToSubqueryList));
+            public static readonly MethodInfo ToSubqueryDictionaryMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToSubqueryDictionary));
 
             public static IEnumerable<JToken> OfType(IEnumerable<JToken> source, string typeName)
             {
@@ -83,7 +84,21 @@ namespace Octokit.GraphQL.Core.Builders
                 ISubquery subquery)
             {
                 var result = source.ToList();
-                context.SetQueryResultSink(subquery, result);
+                context.SetQueryResultSink(subquery, x => result.Add((T)x));
+                return result;
+            }
+
+            public static Dictionary<TKey, TElement> ToSubqueryDictionary<TSource, TKey, TElement>(
+                IEnumerable<TSource> source,
+                ISubqueryRunner context,
+                ISubquery subquery,
+                Func<TSource, TKey> keySelector,
+                Func<TSource, TElement> elementSelector)
+            {
+                var result = source.ToDictionary(keySelector, elementSelector);
+                context.SetQueryResultSink(
+                    subquery,
+                    x => result.Add(keySelector((TSource)x), elementSelector((TSource)x)));
                 return result;
             }
         }
