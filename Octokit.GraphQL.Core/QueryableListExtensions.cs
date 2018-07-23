@@ -13,6 +13,7 @@ namespace Octokit.GraphQL
     {
         public static readonly MethodInfo OfTypeMethod = GetMethodInfo(nameof(OfTypeMethod));
         public static readonly MethodInfo SelectMethod = GetMethodInfo(nameof(SelectMethod));
+        public static readonly MethodInfo SelectFragmentMethod = GetMethodInfo(nameof(SelectFragmentMethod));
         public static readonly MethodInfo ToDictionaryMethod = GetMethodInfo(nameof(ToDictionaryMethod));
         public static readonly MethodInfo ToListMethod = GetMethodInfo(nameof(ToListMethod));
 
@@ -40,6 +41,21 @@ namespace Octokit.GraphQL
                         default(IQueryableList<TValue>),
                         default(Expression<Func<TValue, TResult>>))),
                     new Expression[] { source.Expression, Expression.Quote(selector) }));
+        }
+
+        [MethodId(nameof(SelectFragmentMethod))]
+        public static IQueryableList<TResult> Select<TValue, TResult>(
+            this IQueryableList<TValue> source,
+            IFragment<TValue, TResult> fragment)
+                where TValue : IQueryableValue
+        {
+            return new QueryableList<TResult>(
+                Expression.Call(
+                    null,
+                    GetMethodInfoOf(() => Select(
+                        default(IQueryableList<TValue>),
+                        default(Expression<Func<TValue, TResult>>))),
+                    new Expression[] { source.Expression, Expression.Quote(fragment.Expression) }));
         }
 
         [MethodId(nameof(ToDictionaryMethod))]

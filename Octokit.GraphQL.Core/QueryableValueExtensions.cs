@@ -11,6 +11,7 @@ namespace Octokit.GraphQL
     public static class QueryableValueExtensions
     {
         public static readonly MethodInfo SelectMethod = GetMethodInfo(nameof(SelectMethod));
+        public static readonly MethodInfo SelectFragmentMethod = GetMethodInfo(nameof(SelectFragmentMethod));
         public static readonly MethodInfo SelectListMethod = GetMethodInfo(nameof(SelectListMethod));
         public static readonly MethodInfo SingleMethod = GetMethodInfo(nameof(SingleMethod));
         public static readonly MethodInfo SingleOrDefaultMethod = GetMethodInfo(nameof(SingleOrDefaultMethod));
@@ -28,6 +29,21 @@ namespace Octokit.GraphQL
                         default(IQueryableValue<TValue>),
                         default(Expression<Func<TValue, TResult>>))),
                     new Expression[] { source.Expression, Expression.Quote(selector) }));
+        }
+
+        [MethodId(nameof(SelectFragmentMethod))]
+        public static IQueryableValue<TResult> Select<TValue, TResult>(
+            this IQueryableValue<TValue> source,
+            Fragment<TValue, TResult> fragment)
+                where TValue : IQueryableValue
+        {
+            return new QueryableValue<TResult>(
+                Expression.Call(
+                    null,
+                    GetMethodInfoOf(() => Select(
+                        default(IQueryableValue<TValue>),
+                        default(Fragment<TValue, TResult>))),
+                    new Expression[] { source.Expression, Expression.Constant(fragment) }));
         }
 
         [MethodId(nameof(SelectListMethod))]
