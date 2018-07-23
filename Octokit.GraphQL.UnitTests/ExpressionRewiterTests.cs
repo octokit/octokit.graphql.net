@@ -55,6 +55,37 @@ namespace Octokit.GraphQL.UnitTests
         }
 
         [Fact]
+        public void Repository_Select_Use_Fragment_Twice()
+        {
+            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault(),
+                    repo2 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault()
+                });
+
+            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
+                Rewritten.List.Select(
+                    data["data"],
+                    q => new
+                    {
+                        repo1 = Rewritten.Value.SingleOrDefault(
+                            Rewritten.Value.SelectFragment(
+                                q["repo1"],
+                                repository => repository["name"].ToObject<string>())),
+                        repo2 = Rewritten.Value.SingleOrDefault(
+                            Rewritten.Value.SelectFragment(
+                                q["repo2"],
+                                repository => repository["name"].ToObject<string>())),
+                    });
+
+            var query = new QueryBuilder().Build(expression);
+            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+        }
+
+        [Fact]
         public void RepositoryOwner_Repositories_Query()
         {
             var expression = new Query()

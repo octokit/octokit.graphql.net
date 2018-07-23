@@ -70,7 +70,23 @@ namespace Octokit.GraphQL.Core.Serializers
             }
 
             SerializeSelections(operation, builder);
+
+            foreach (var fragment in operation.FragmentDefinitions.Values)
+            {
+                builder.Append(Environment.NewLine);
+                SerializeFragment(fragment, builder);
+            }
+
             return builder.ToString();
+        }
+
+        private void SerializeFragment(FragmentDefinition fragment, StringBuilder builder)
+        {
+            builder.Append("fragment ");
+            builder.Append(fragment.Name);
+            builder.Append(" on ");
+            builder.Append(fragment.Type);
+            SerializeSelections(fragment, builder);
         }
 
         private void Serialize(FieldSelection field, StringBuilder builder)
@@ -116,6 +132,12 @@ namespace Octokit.GraphQL.Core.Serializers
             }
         }
 
+        private void Serialize(FragmentSpread fragmentSpread, StringBuilder builder)
+        {
+            builder.Append("...");
+            builder.Append(fragmentSpread.Name);
+        }
+
         private void SerializeSelections(ISelectionSet selectionSet, StringBuilder builder)
         {
             OpenBrace(builder);
@@ -130,6 +152,7 @@ namespace Octokit.GraphQL.Core.Serializers
 
                     var field = s as FieldSelection;
                     var fragment = s as InlineFragment;
+                    var fragmentSpread = s as FragmentSpread;
 
                     if (field != null)
                     {
@@ -138,6 +161,10 @@ namespace Octokit.GraphQL.Core.Serializers
                     else if (fragment != null)
                     {
                         Serialize(fragment, builder);
+                    }
+                    else if (fragmentSpread != null)
+                    {
+                        Serialize(fragmentSpread, builder);
                     }
 
                     first = false;
