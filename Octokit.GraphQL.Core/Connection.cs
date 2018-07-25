@@ -14,25 +14,21 @@ namespace Octokit.GraphQL
         /// </summary>
         public static readonly Uri GithubApiUri = new Uri("https://api.github.com/graphql");
 
-        /// <inheritdoc />
         public Connection(ProductHeaderValue productInformation, string token)
             : this(productInformation, GithubApiUri, token)
         {
         }
 
-        /// <inheritdoc />
         public Connection(ProductHeaderValue productInformation, Uri uri, string token)
             : this(productInformation, uri, new InMemoryCredentialStore(token))
         {
         }
 
-        /// <inheritdoc />
         public Connection(ProductHeaderValue productInformation, ICredentialStore credentialStore)
             : this(productInformation, GithubApiUri, credentialStore)
         {
         }
 
-        /// <inheritdoc />
         public Connection(ProductHeaderValue productInformation, Uri uri, ICredentialStore credentialStore)
         {
             Uri = uri;
