@@ -187,7 +187,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var result = (await Connection.Run(query)).ToList();
 
             Assert.True(result.Count > 100);
-            Assert.True(result.Any(x => x.Comments.Count > 100));
+            Assert.Contains(result, x => x.Comments.Count > 100);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
@@ -213,7 +213,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     UnsubscribedEventId = issueTimelineItem.UnsubscribedEvent.Id,
                 });
 
-            Assert.NotNull(Connection.Run(query).Result.Last().ClosedEventId);
+            Assert.NotEqual(default(ID), Connection.Run(query).Result.Last().ClosedEventId);
         }
 
         class ActorModel

@@ -179,7 +179,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = (SimpleQuery<float>)new QueryBuilder().Build(expression);
             var result = new ResponseDeserializer().Deserialize(query, data);
 
-            Assert.IsType(typeof(float), result);
+            Assert.IsType<float>(result);
             Assert.Equal(12, result);
         }
 

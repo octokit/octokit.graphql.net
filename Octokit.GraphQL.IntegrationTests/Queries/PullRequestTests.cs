@@ -22,7 +22,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var results = Enumerable.ToArray(Connection.Run(query).Result);
 
-            Assert.Equal(1, results.Length);
+            Assert.Single(results);
             Assert.Equal("MDY6Q29tbWl0NzUyODY3OTpkYWZhYjhhZjA0ODM5NDU1ODM4Y2QzZmRlMTFkMTM5MTc0MTYyZmFh", results[0].Id.Value);
             var expectedMessage = "Adding README, CONTRIBUTING, LICENSE\n\nWe plan to release this code under the MIT license so might as well get\nthe right things in place early.";
             Assert.Equal(expectedMessage, results[0].Message);
@@ -124,7 +124,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var result = await Connection.Run(query);
 
             Assert.True(result.Reviews.Count > 100);
-            Assert.True(result.Reviews.Any(x => x.Comments.Count > 100));
+            Assert.Contains(result.Reviews, x => x.Comments.Count > 100);
         }
     }
 }
