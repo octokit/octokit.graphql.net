@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Octokit.GraphQL.IntegrationTests.Utilities;
@@ -31,24 +30,29 @@ namespace Octokit.GraphQL.IntegrationTests.Configuration
                 .AddPolicyRegistry()
                 .Add(policy.PolicyKey, policy.AsAsyncPolicy<HttpResponseMessage>());
 
+            // Register a credential store so we can make a connection, as
+            // well as a custom typed client that performs queries with Connections.
+            services.AddSingleton<ICredentialStore, InMemoryCredentialStore>((_) => new InMemoryCredentialStore(Helper.OAuthToken));
+            services.AddSingleton<MyQueryService>();
+
             // Register a typed HTTP client for use with the GitHub GraphQL API
             // that also configures Polly usage when performing HTTP calls.
             services
-                .AddHttpClient<Connection>("Octokit.GraphQL")
+                .AddHttpClient("Octokit.GraphQL")
+                .AddTypedClient((httpClient, serviceProvider) =>
+                {
+                    // Configure a connection using the HttpClient
+                    var productInformation = new ProductHeaderValue("OctokitTests", "1.2.3");
+                    var credentialStore = serviceProvider.GetRequiredService<ICredentialStore>();
+
+                    return new Connection(productInformation, credentialStore, httpClient);
+                })
                 .ConfigureHttpClient((httpClient) =>
                 {
                     // Apply user-configuration to HttpClient
-                    httpClient.BaseAddress = Connection.GithubApiUri;
-                    httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("OctokitTests", "1.2.3"));
-                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.antiope-preview+json"));
                     httpClient.Timeout = TimeSpan.FromSeconds(10);
                 })
                 .AddPolicyHandlerFromRegistry(policy.PolicyKey);
-
-            // Register a credential store so we can make a connection, as
-            // well as a custom typed client that performs queries with Connections.
-            services.AddSingleton(new InMemoryCredentialStore(Helper.OAuthToken) as ICredentialStore);
-            services.AddSingleton<MyQueryService>();
 
             // Create the service provider for the registered services
             using (var provider = services.BuildServiceProvider())
