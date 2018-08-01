@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace Octokit.GraphQL.Core.Builders
 {
@@ -17,7 +18,8 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 if (sourceExpression == null)
                 {
-                    sourceExpression = new ConcurrentDictionary<object, Expression>();
+                    var candidate = new ConcurrentDictionary<object, Expression>();
+                    Interlocked.CompareExchange(ref sourceExpression, candidate, null);
                 }
 
                 sourceExpression[compiled] = expression;
