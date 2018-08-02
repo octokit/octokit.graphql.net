@@ -70,7 +70,7 @@ namespace Octokit.GraphQL.Core
             readonly IConnection connection;
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
             Stack<IQueryRunner> subqueryRunners;
-            Dictionary<ISubquery, List<IList>> subqueryResultSinks;
+            Dictionary<ISubquery, List<Action<object>>> subqueryResultSinks;
 
             public Runner(
                 PagedQuery<TResult> owner,
@@ -91,7 +91,7 @@ namespace Octokit.GraphQL.Core
                 if (subqueryRunners == null)
                 {
                     subqueryRunners = new Stack<IQueryRunner>();
-                    subqueryResultSinks = new Dictionary<ISubquery, List<IList>>();
+                    subqueryResultSinks = new Dictionary<ISubquery, List<Action<object>>>();
 
                     // This is the first run, so run the master page.
                     var master = owner.MasterQuery;
@@ -140,15 +140,15 @@ namespace Octokit.GraphQL.Core
             }
 
             /// <inheritdoc />
-            public void SetQueryResultSink(ISubquery query, IList result)
+            public void SetQueryResultSink(ISubquery query, Action<object> add)
             {
                 if (!subqueryResultSinks.TryGetValue(query, out var value))
                 {
-                    value = new List<IList>();
+                    value = new List<Action<object>>();
                     subqueryResultSinks.Add(query, value);
                 }
 
-                value.Add(result);
+                value.Add(add);
             }
         }
     }

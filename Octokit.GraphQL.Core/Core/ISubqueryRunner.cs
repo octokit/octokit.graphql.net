@@ -12,7 +12,7 @@ namespace Octokit.GraphQL.Core
         /// Called to tell the runner where a specified subquery should store its results.
         /// </summary>
         /// <param name="query">The subquery.</param>
-        /// <param name="result">The target collection.</param>
-        void SetQueryResultSink(ISubquery query, IList result);
+        /// <param name="add">The method to call to add an item to the target collection.</param>
+        void SetQueryResultSink(ISubquery query, Action<object> add);
     }
 }
