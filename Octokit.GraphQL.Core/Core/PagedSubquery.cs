@@ -69,7 +69,7 @@ namespace Octokit.GraphQL.Core
             string id,
             string after,
             IDictionary<string, object> variables,
-            IList result)
+            Action<object> addResult)
         {
             return new SubqueryRunner(
                 this,
@@ -77,7 +77,7 @@ namespace Octokit.GraphQL.Core
                 id,
                 after,
                 variables,
-                result);
+                addResult);
         }
 
         internal static ISubquery Create(
@@ -106,7 +106,7 @@ namespace Octokit.GraphQL.Core
 
         class SubqueryRunner : Runner
         {
-            IList finalResult;
+            readonly Action<object> addResult;
 
             public SubqueryRunner(
                 PagedSubquery<TResult> owner,
@@ -114,12 +114,12 @@ namespace Octokit.GraphQL.Core
                 string id,
                 string after,
                 IDictionary<string, object> variables,
-                IList result)
+                Action<object> addResult)
                 : base(owner, connection, variables ?? new Dictionary<string, object>())
             {
                 Variables["__id"] = id;
                 Variables["__after"] = after;
-                finalResult = result;
+                this.addResult = addResult;
             }
 
             public override async Task<bool> RunPage()
@@ -130,7 +130,7 @@ namespace Octokit.GraphQL.Core
                 {
                     foreach (var i in (IList)Result)
                     {
-                        finalResult.Add(i);
+                        addResult(i);
                     }
                 }
 
