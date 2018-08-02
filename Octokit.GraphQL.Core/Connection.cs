@@ -36,6 +36,20 @@ namespace Octokit.GraphQL
             HttpClient = CreateHttpClient(productInformation);
         }
 
+        /// <inheritdoc />
+        public Connection(HttpClient httpClient, ICredentialStore credentialStore)
+        {
+            HttpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            CredentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
+
+            if (httpClient.BaseAddress == null)
+            {
+                httpClient.BaseAddress = GithubApiUri;
+            }
+
+            Uri = httpClient.BaseAddress;
+        }
+
         public Uri Uri { get; }
         protected ICredentialStore CredentialStore { get; }
         protected HttpClient HttpClient { get; }
@@ -57,12 +71,26 @@ namespace Octokit.GraphQL
             }
         }
 
-        private HttpClient CreateHttpClient(ProductHeaderValue header)
+        private static void ConfigureHttpClient(HttpClient httpClient, ProductHeaderValue header)
+        {
+            if (httpClient.DefaultRequestHeaders.UserAgent.Count == 0)
+            {
+                var userAgent = new ProductInfoHeaderValue(header.Name, header.Version);
+                httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
+            }
+
+            if (httpClient.DefaultRequestHeaders.Accept.Count == 0)
+            {
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.antiope-preview+json"));
+            }
+        }
+
+        private static HttpClient CreateHttpClient(ProductHeaderValue header)
         {
             var httpClient = new HttpClient();
-            var userAgent = new ProductInfoHeaderValue(header.Name, header.Version);
-            httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.antiope-preview+json"));
+
+            ConfigureHttpClient(httpClient, header);
+
             return httpClient;
         }
     }
