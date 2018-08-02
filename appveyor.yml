@@ -4,8 +4,19 @@ configuration: Release
 before_build:
   - nuget restore
 
-build:
-  parallel: true
+build_script:
+- ps: >-
+    Import-Module .\Scripts\MSBLOC.Posh\MSBuildLogOctokitChecker.psm1
+
+    msbuild Octokit.GraphQL.sln --% /bl:output.binlog
+    
+    if (! $?) {
+      echo "Build Error"
+      Send-MsbuildLogAppveyor output.binlog
+      exit -1
+    }
+    
+    Send-MsbuildLogAppveyor output.binlog
 
 after_build:
   - nuget pack
