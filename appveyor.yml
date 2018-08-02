@@ -12,6 +12,7 @@ build_script:
     
     if (! $?) {
       echo "Build Error"
+      Push-AppveyorArtifact output.binlog -Type log
       Send-MsbuildLogAppveyor output.binlog
       exit -1
     }
@@ -23,3 +24,5 @@ after_build:
 
 artifacts:
   - path: '*.nupkg'
+  - path: output.binlog
+    name: log
