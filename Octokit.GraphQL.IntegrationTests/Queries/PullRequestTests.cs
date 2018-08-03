@@ -10,7 +10,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
     public class PullRequestTests : IntegrationTestBase
     {
         [IntegrationTest]
-        public void Should_Query_Commits()
+        public async Task Should_Query_Commits()
         {
             var query = new GraphQL.Query().Repository("octokit", "octokit.net").PullRequest(1).Commits(3).Nodes
                 .Select(pullRequestCommit => new
@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     pullRequestCommit.Commit.Author.Name
                 });
 
-            var results = Enumerable.ToArray(Connection.Run(query).Result);
+            var results = (await Connection.Run(query)).ToArray();
 
             Assert.Single(results);
             Assert.Equal("MDY6Q29tbWl0NzUyODY3OTpkYWZhYjhhZjA0ODM5NDU1ODM4Y2QzZmRlMTFkMTM5MTc0MTYyZmFh", results[0].Id.Value);

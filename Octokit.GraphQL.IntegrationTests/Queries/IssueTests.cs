@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
     public class IssueTests : IntegrationTestBase
     {
         [IntegrationTest]
-        public void Should_Query_Issues_By_Repository()
+        public async Task Should_Query_Issues_By_Repository()
         {
             var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3).Nodes.Select(i => new
             {
@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 RepositoryName = i.Repository.Name,
             });
 
-            var results = Connection.Run(query).Result;
+            var results = await Connection.Run(query);
             foreach (var result in results)
             {
                 Assert.Equal("octokit.net", result.RepositoryName);
@@ -27,7 +27,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Should_Query_Issues_By_State_And_Repository()
+        public async Task Should_Query_Issues_By_State_And_Repository()
         {
             var openState = new[] { IssueState.Closed };
             var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => new
@@ -37,7 +37,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 RepositoryName = i.Repository.Name,
             });
 
-            var results = Connection.Run(query).Result.ToArray();
+            var results = (await Connection.Run(query)).ToArray();
             foreach (var result in results)
             {
                 Assert.Equal("octokit.net", result.RepositoryName);
@@ -46,7 +46,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Should_Query_Issues_With_Variable()
+        public async Task Should_Query_Issues_With_Variable()
         {
             var openState = new[] { IssueState.Closed };
             var query = new Query()
@@ -66,12 +66,12 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             };
 
             var compiled = query.Compile();
-            var results = Connection.Run(compiled, vars).Result.ToArray();
+            var results = (await Connection.Run(query)).ToArray();
             Assert.Equal(3, results.Length);
         }
 
         [IntegrationTest]
-        public void Should_Query_Issue_Page_With_Author_Model()
+        public async Task Should_Query_Issue_Page_With_Author_Model()
         {
             var openState = new[] { IssueState.Closed };
             var query = new Query()
@@ -101,7 +101,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 { "after", null }
             };
 
-            var results = Connection.Run(query, vars).Result;
+            var results = await Connection.Run(query, vars);
 
             Assert.Equal(100, results.Items.Count);
         }
@@ -191,7 +191,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
-        public void Should_Query_Union_Issue_Or_PullRequest2()
+        public async Task Should_Query_Union_Issue_Or_PullRequest2()
         {
             var query = new Query().Repository("octokit", "octokit.net").Issue(23)
                 .Timeline(first: 30).Nodes
@@ -213,7 +213,9 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     UnsubscribedEventId = issueTimelineItem.UnsubscribedEvent.Id,
                 });
 
-            Assert.NotEqual(default(ID), Connection.Run(query).Result.Last().ClosedEventId);
+            var result = (await Connection.Run(query)).Last();
+
+            Assert.NotEqual(default(ID), result.ClosedEventId);
         }
 
         class ActorModel
