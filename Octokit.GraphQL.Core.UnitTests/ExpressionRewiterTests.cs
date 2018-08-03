@@ -81,7 +81,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                (IEnumerable)Rewritten.List.Select(
+                (IEnumerable<object>)Rewritten.List.Select(
                     data["data"]["licenses"],
                     x => new
                     {
@@ -109,12 +109,12 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                (IEnumerable) Rewritten.List.Select(
+                (IEnumerable<object>) Rewritten.List.Select(
                     data["data"]["licenses"],
                     x => new
                     {
                         Body = x["body"].ToObject<string>(),
-                        Items = (IEnumerable) Rewritten.List.Select(x["items"], i => new
+                        Items = (IDictionary<string, object>) Rewritten.List.Select(x["items"], i => new
                         {
                             Key = i["key"].ToObject<string>(),
                             Description = i["description"].ToObject<string>()
@@ -207,7 +207,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                (IEnumerable)Rewritten.List.Select(
+                (IEnumerable<object>)Rewritten.List.Select(
                     Rewritten.List.OfType(data["data"]["nodes"], "Issue"),
                     x => new
                     {
