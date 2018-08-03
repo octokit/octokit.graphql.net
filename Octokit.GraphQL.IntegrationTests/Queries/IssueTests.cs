@@ -187,7 +187,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var result = (await Connection.Run(query)).ToList();
 
             Assert.True(result.Count > 100);
-            Assert.True(result.Any(x => x.Comments.Count > 100));
+            Assert.Contains(result, x => x.Comments.Count > 100);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
@@ -215,7 +215,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var result = (await Connection.Run(query)).Last();
 
-            Assert.NotNull(result.ClosedEventId);
+            Assert.NotEqual(default(ID), result.ClosedEventId);
         }
 
         class ActorModel

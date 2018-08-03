@@ -50,8 +50,8 @@ namespace Octokit.GraphQL.UnitTests
             Assert.Equal("1234", result.Id.Value);
             Assert.Equal("Octokit.GraphQL.Core", result.Name);
             Assert.Equal("grokys", result.Owner.Login);
-            Assert.Equal(false, result.IsFork);
-            Assert.Equal(false, result.IsPrivate);
+            Assert.False(result.IsFork);
+            Assert.False(result.IsPrivate);
         }
 
 
