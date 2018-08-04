@@ -206,7 +206,7 @@ namespace Octokit.GraphQL
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous operation that returns the result of the GraphQL query.
         /// </returns>
-        public async Task<string> Run(string query, CancellationToken cancellationToken = default)
+        public virtual async Task<string> Run(string query, CancellationToken cancellationToken = default)
         {
             if (query == null)
             {
