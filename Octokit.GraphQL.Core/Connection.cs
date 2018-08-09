@@ -173,9 +173,7 @@ namespace Octokit.GraphQL
             UserAgent = new ProductInfoHeaderValue(productInformation.Name, productInformation.Version);
         }
 
-        /// <summary>
-        /// Gets the base URI for the connection.
-        /// </summary>
+        /// <inheritdoc />
         public Uri Uri { get; }
 
         /// <summary>
@@ -198,14 +196,7 @@ namespace Octokit.GraphQL
         /// </summary>
         private ProductInfoHeaderValue UserAgent { get; }
 
-        /// <summary>
-        /// Runs the specified GraphQL query as an asynchronous operation.
-        /// </summary>
-        /// <param name="query">The GraphQL query to run.</param>
-        /// <param name="cancellationToken">The optional cancellation token to use.</param>
-        /// <returns>
-        /// A <see cref="Task{TResult}"/> representing the asynchronous operation that returns the result of the GraphQL query.
-        /// </returns>
+        /// <inheritdoc />
         public virtual async Task<string> Run(string query, CancellationToken cancellationToken = default)
         {
             if (query == null)
