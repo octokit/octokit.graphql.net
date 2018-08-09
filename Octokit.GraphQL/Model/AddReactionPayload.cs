@@ -22,11 +22,17 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The reaction object.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `reaction` will change from `Reaction!` to `Reaction`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public Reaction Reaction => this.CreateProperty(x => x.Reaction, Octokit.GraphQL.Model.Reaction.Create);
 
         /// <summary>
         /// The reactable subject.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `subject` will change from `Reactable!` to `Reactable`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public IReactable Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.Internal.StubIReactable.Create);
 

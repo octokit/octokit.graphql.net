@@ -77,6 +77,11 @@ namespace Octokit.GraphQL.Model
         public DeploymentStatusConnection Statuses(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Statuses(first, after, last, before), Octokit.GraphQL.Model.DeploymentStatusConnection.Create);
 
         /// <summary>
+        /// The deployment task.
+        /// </summary>
+        public string Task { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }

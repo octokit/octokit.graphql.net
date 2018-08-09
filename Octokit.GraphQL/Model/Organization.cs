@@ -39,6 +39,11 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether the organization has verified its profile email and website.
+        /// </summary>
+        public bool IsVerified { get; }
+
+        /// <summary>
         /// The organization's public profile location.
         /// </summary>
         public string Location { get; }

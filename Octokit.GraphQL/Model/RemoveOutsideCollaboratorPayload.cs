@@ -22,6 +22,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The user that was removed as an outside collaborator.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `removedUser` will change from `User!` to `User`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public User RemovedUser => this.CreateProperty(x => x.RemovedUser, Octokit.GraphQL.Model.User.Create);
 

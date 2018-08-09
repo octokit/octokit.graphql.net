@@ -22,6 +22,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The repository or organization the project was removed from.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `owner` will change from `ProjectOwner!` to `ProjectOwner`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public IProjectOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Model.Internal.StubIProjectOwner.Create);
 

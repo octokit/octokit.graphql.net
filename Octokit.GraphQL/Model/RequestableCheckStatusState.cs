@@ -6,10 +6,10 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// The possible states for a check suite or run status.
+    /// The possible states that can be requested when creating a check run.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum CheckStatusState
+    public enum RequestableCheckStatusState
     {
         /// <summary>
         /// The check suite or run has been queued.
@@ -28,11 +28,5 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "COMPLETED")]
         Completed,
-
-        /// <summary>
-        /// The check suite or run has been requested.
-        /// </summary>
-        [EnumMember(Value = "REQUESTED")]
-        Requested,
     }
 }

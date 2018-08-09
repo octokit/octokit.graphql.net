@@ -22,6 +22,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The updated comment.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `pullRequestReviewComment` will change from `PullRequestReviewComment!` to `PullRequestReviewComment`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public PullRequestReviewComment PullRequestReviewComment => this.CreateProperty(x => x.PullRequestReviewComment, Octokit.GraphQL.Model.PullRequestReviewComment.Create);
 
