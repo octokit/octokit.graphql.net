@@ -32,7 +32,7 @@ namespace Octokit.GraphQL.IntegrationTests.Configuration
 
             // Register a credential store so we can make a connection, as
             // well as a custom typed client that performs queries with Connections.
-            services.AddSingleton<ICredentialStore, InMemoryCredentialStore>((_) => new InMemoryCredentialStore(Helper.OAuthToken));
+            services.AddSingleton<ICredentialStore, InMemoryCredentialStore>((_) => new InMemoryCredentialStore(Helper.OAuthToken ?? " "));
             services.AddSingleton<MyQueryService>();
 
             // Register a typed HTTP client for use with the GitHub GraphQL API
