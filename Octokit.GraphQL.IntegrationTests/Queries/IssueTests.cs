@@ -29,8 +29,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public async Task Should_Query_Issues_By_State_And_Repository()
         {
-            var openState = new[] { IssueState.Closed };
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => new
+            var states = new[] { IssueState.Closed };
+            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: states).Nodes.Select(i => new
             {
                 i.Title,
                 i.State,
@@ -48,10 +48,10 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public async Task Should_Query_Issues_With_Variable()
         {
-            var openState = new[] { IssueState.Closed };
+            var states = new[] { IssueState.Closed };
             var query = new Query()
                 .Repository("octokit", "octokit.net")
-                .Issues(Var("first"), states: openState)
+                .Issues(Var("first"), states: states)
                 .Nodes
                 .Select(i => new
             {
@@ -66,14 +66,13 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             };
 
             var compiled = query.Compile();
-            var results = (await Connection.Run(query)).ToArray();
+            var results = (await Connection.Run(compiled, vars)).ToArray();
             Assert.Equal(3, results.Length);
         }
 
         [IntegrationTest]
         public async Task Should_Query_Issue_Page_With_Author_Model()
         {
-            var openState = new[] { IssueState.Closed };
             var query = new Query()
                 .Repository("octokit", "octokit.net")
                 .Issues(first: 100, after: Var("after"))
