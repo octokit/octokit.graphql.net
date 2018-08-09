@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
-using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.Core
 {
@@ -122,9 +122,10 @@ namespace Octokit.GraphQL.Core
                 this.addResult = addResult;
             }
 
-            public override async Task<bool> RunPage()
+            /// <inheritdoc/>
+            public override async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
-                var more = await base.RunPage();
+                var more = await base.RunPage(cancellationToken);
 
                 if (!more)
                 {
