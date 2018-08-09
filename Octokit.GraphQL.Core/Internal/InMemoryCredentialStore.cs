@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Octokit.GraphQL.Internal
 {
@@ -6,6 +7,6 @@ namespace Octokit.GraphQL.Internal
     {
         readonly string token;
         public InMemoryCredentialStore(string token) => this.token = token;
-        public Task<string> GetCredentials() => Task.FromResult(token);
+        public Task<string> GetCredentials(CancellationToken cancellationToken = default) => Task.FromResult(token);
     }
 }

@@ -160,7 +160,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         private sealed class MockCredentialStore : ICredentialStore
         {
-            public Task<string> GetCredentials() => Task.FromResult("my-token");
+            public Task<string> GetCredentials(CancellationToken cancellationToken) => Task.FromResult("my-token");
         }
     }
 }

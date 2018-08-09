@@ -213,8 +213,7 @@ namespace Octokit.GraphQL
                 throw new ArgumentNullException(nameof(query));
             }
 
-            // TODO Pass through cancellationToken here too?
-            var token = await CredentialStore.GetCredentials().ConfigureAwait(false);
+            var token = await CredentialStore.GetCredentials(cancellationToken).ConfigureAwait(false);
 
             using (var request = CreateRequest(token, query))
             {
