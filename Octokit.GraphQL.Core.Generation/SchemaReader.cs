@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Octokit.GraphQL.Core.Generation.Models;
 using Octokit.GraphQL.Core.Introspection;
 
@@ -131,7 +129,7 @@ namespace Octokit.GraphQL.Core.Generation
                     }).ToList()
                 });
 
-            return await connection.Run(query);
+            return await connection.Run(query).ConfigureAwait(false);
         }
     }
 }

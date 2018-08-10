@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core.Deserializers;
 
@@ -82,11 +82,16 @@ namespace Octokit.GraphQL.Core
                 this.Variables = variables;
             }
 
+            /// <inheritdoc />
             public TResult Result { get; private set; }
+
+            /// <inheritdoc />
             object IQueryRunner.Result => Result;
+
             protected IDictionary<string, object> Variables { get; }
 
-            public virtual async Task<bool> RunPage()
+            /// <inheritdoc />
+            public virtual async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
                 if (subqueryRunners == null)
                 {
@@ -95,7 +100,7 @@ namespace Octokit.GraphQL.Core
 
                     // This is the first run, so run the master page.
                     var master = owner.MasterQuery;
-                    var data = await connection.Run(master.GetPayload(Variables));
+                    var data = await connection.Run(master.GetPayload(Variables), cancellationToken).ConfigureAwait(false);
                     var json = deserializer.Deserialize(data);
 
                     json.AddAnnotation(this);
@@ -130,7 +135,7 @@ namespace Octokit.GraphQL.Core
                     var runner = subqueryRunners.Peek();
 
                     // Run its next page and pop it from the active runners if finished.
-                    if (!await runner.RunPage())
+                    if (!await runner.RunPage(cancellationToken).ConfigureAwait(false))
                     {
                         subqueryRunners.Pop();
                     }
