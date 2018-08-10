@@ -27,6 +27,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The updated repository.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `repository` will change from `Repository!` to `Repository`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 

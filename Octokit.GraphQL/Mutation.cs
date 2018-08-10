@@ -61,6 +61,16 @@ namespace Octokit.GraphQL
         public AddStarPayload AddStar(Arg<AddStarInput> input) => this.CreateMethodCall(x => x.AddStar(input), Octokit.GraphQL.Model.AddStarPayload.Create);
 
         /// <summary>
+        /// Create a check run.
+        /// </summary>
+        public CreateCheckRunPayload CreateCheckRun(Arg<CreateCheckRunInput> input) => this.CreateMethodCall(x => x.CreateCheckRun(input), Octokit.GraphQL.Model.CreateCheckRunPayload.Create);
+
+        /// <summary>
+        /// Create a check suite
+        /// </summary>
+        public CreateCheckSuitePayload CreateCheckSuite(Arg<CreateCheckSuiteInput> input) => this.CreateMethodCall(x => x.CreateCheckSuite(input), Octokit.GraphQL.Model.CreateCheckSuitePayload.Create);
+
+        /// <summary>
         /// Creates a new project.
         /// </summary>
         public CreateProjectPayload CreateProject(Arg<CreateProjectInput> input) => this.CreateMethodCall(x => x.CreateProject(input), Octokit.GraphQL.Model.CreateProjectPayload.Create);
@@ -131,6 +141,11 @@ namespace Octokit.GraphQL
         public RequestReviewsPayload RequestReviews(Arg<RequestReviewsInput> input) => this.CreateMethodCall(x => x.RequestReviews(input), Octokit.GraphQL.Model.RequestReviewsPayload.Create);
 
         /// <summary>
+        /// Rerequests an existing check suite.
+        /// </summary>
+        public RerequestCheckSuitePayload RerequestCheckSuite(Arg<RerequestCheckSuiteInput> input) => this.CreateMethodCall(x => x.RerequestCheckSuite(input), Octokit.GraphQL.Model.RerequestCheckSuitePayload.Create);
+
+        /// <summary>
         /// Submits a pending pull request review.
         /// </summary>
         public SubmitPullRequestReviewPayload SubmitPullRequestReview(Arg<SubmitPullRequestReviewInput> input) => this.CreateMethodCall(x => x.SubmitPullRequestReview(input), Octokit.GraphQL.Model.SubmitPullRequestReviewPayload.Create);
@@ -139,6 +154,16 @@ namespace Octokit.GraphQL
         /// Unlock a lockable object
         /// </summary>
         public UnlockLockablePayload UnlockLockable(Arg<UnlockLockableInput> input) => this.CreateMethodCall(x => x.UnlockLockable(input), Octokit.GraphQL.Model.UnlockLockablePayload.Create);
+
+        /// <summary>
+        /// Update a check run
+        /// </summary>
+        public UpdateCheckRunPayload UpdateCheckRun(Arg<UpdateCheckRunInput> input) => this.CreateMethodCall(x => x.UpdateCheckRun(input), Octokit.GraphQL.Model.UpdateCheckRunPayload.Create);
+
+        /// <summary>
+        /// Modifies the settings of an existing check suite
+        /// </summary>
+        public UpdateCheckSuitePreferencesPayload UpdateCheckSuitePreferences(Arg<UpdateCheckSuitePreferencesInput> input) => this.CreateMethodCall(x => x.UpdateCheckSuitePreferences(input), Octokit.GraphQL.Model.UpdateCheckSuitePreferencesPayload.Create);
 
         /// <summary>
         /// Updates an existing project.

@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The GitHub App this listing represents.
+        /// </summary>
+        public App App => this.CreateProperty(x => x.App, Octokit.GraphQL.Model.App.Create);
+
+        /// <summary>
         /// URL to the listing owner's company site.
         /// </summary>
         public string CompanyUrl { get; }

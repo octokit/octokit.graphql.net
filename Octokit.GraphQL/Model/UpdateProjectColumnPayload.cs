@@ -22,6 +22,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The updated project column.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `projectColumn` will change from `ProjectColumn!` to `ProjectColumn`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public ProjectColumn ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octokit.GraphQL.Model.ProjectColumn.Create);
 
