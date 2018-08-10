@@ -100,7 +100,7 @@ namespace Octokit.GraphQL.Core
 
                     // This is the first run, so run the master page.
                     var master = owner.MasterQuery;
-                    var data = await connection.Run(master.GetPayload(Variables), cancellationToken);
+                    var data = await connection.Run(master.GetPayload(Variables), cancellationToken).ConfigureAwait(false);
                     var json = deserializer.Deserialize(data);
 
                     json.AddAnnotation(this);
@@ -135,7 +135,7 @@ namespace Octokit.GraphQL.Core
                     var runner = subqueryRunners.Peek();
 
                     // Run its next page and pop it from the active runners if finished.
-                    if (!await runner.RunPage(cancellationToken))
+                    if (!await runner.RunPage(cancellationToken).ConfigureAwait(false))
                     {
                         subqueryRunners.Pop();
                     }

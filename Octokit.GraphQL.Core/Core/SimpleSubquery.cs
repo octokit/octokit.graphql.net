@@ -137,7 +137,7 @@ namespace Octokit.GraphQL.Core
             public async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
                 var payload = owner.GetPayload(variables);
-                var data = await connection.Run(payload, cancellationToken);
+                var data = await connection.Run(payload, cancellationToken).ConfigureAwait(false);
                 var json = deserializer.Deserialize(data);
                 var pageInfo = owner.PageInfo(json);
 

@@ -122,7 +122,7 @@ namespace Octokit.GraphQL.Core
             public async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
                 var deserializer = new ResponseDeserializer();
-                var data = await connection.Run(parent.GetPayload(variables), cancellationToken);
+                var data = await connection.Run(parent.GetPayload(variables), cancellationToken).ConfigureAwait(false);
                 Result = deserializer.Deserialize(parent.ResultBuilder, data);
                 return false;
             }

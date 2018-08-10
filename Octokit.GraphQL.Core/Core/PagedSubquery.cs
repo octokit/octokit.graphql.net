@@ -125,7 +125,7 @@ namespace Octokit.GraphQL.Core
             /// <inheritdoc/>
             public override async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
-                var more = await base.RunPage(cancellationToken);
+                var more = await base.RunPage(cancellationToken).ConfigureAwait(false);
 
                 if (!more)
                 {

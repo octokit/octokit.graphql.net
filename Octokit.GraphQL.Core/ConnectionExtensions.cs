@@ -30,7 +30,7 @@ namespace Octokit.GraphQL
             CancellationToken cancellationToken = default)
         {
             var run = query.Start(connection, variables);
-            while (await run.RunPage(cancellationToken)) { }
+            while (await run.RunPage(cancellationToken).ConfigureAwait(false)) { }
             return run.Result;
         }
     }
