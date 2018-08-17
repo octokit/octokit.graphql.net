@@ -10,7 +10,7 @@ _*Note*_: Fragments cannot select anonymous types.
 
 Fragments can select fields and be reused in different queries.
 
-```
+```csharp
 var fragment = new Fragment<Model.Repository, string>("repositoryName", repo => repo.Name);
 
 var query1 = new Query()
@@ -35,7 +35,7 @@ Assert.Equal("webhooks.js", repositoryName);
 #### Example:
 Fragments can select objects and be reused multiple times in the same query
 
-```
+```csharp
 public class RepositoryModel
 {
     public string Name { get; set; }
@@ -44,7 +44,7 @@ public class RepositoryModel
 }
 ```
 
-```
+```csharp
 var fragment = new Fragment<Model.Repository, RepositoryModel>("repositoryName", repo => new TestModelObject
 {
     Name = repo.Name,
