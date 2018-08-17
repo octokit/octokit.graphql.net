@@ -9,7 +9,7 @@ To define a variable, you should:
 
 For example:
 
-```
+```csharp
 using static Octokit.GraphQL.Variable;
 
 var query = new Query()
@@ -23,7 +23,7 @@ var query = new Query()
 
 You can now use those variables by passing an `IDictionary<string, object>` into `Connection.Run`:
 
-```
+```csharp
 var vars = new Dictionary<string, object>
 {
     { "owner", "octokit" },
