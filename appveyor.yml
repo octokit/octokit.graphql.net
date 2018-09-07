@@ -9,13 +9,15 @@ build:
   parallel: true
 
 after_build:
-  - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
-  - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
-  - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
+  - nuget pack
+
+after_test:
+  - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.Model.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
+  - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.Model.*" .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
+  - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.Model.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
   - '%USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f .\Octokit.GraphQL.UnitTests\coverage.opencover.xml'
   - '%USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f .\Octokit.GraphQL.Core.UnitTests\coverage.opencover.xml'
   - '%USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f .\Octokit.GraphQL.Core.Generation.UnitTests\coverage.opencover.xml'
-  - nuget pack
 
 artifacts:
   - path: '*.nupkg'
