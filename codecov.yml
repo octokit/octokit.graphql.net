@@ -27,6 +27,3 @@ comment:
   
 fixes:
   - "/C/projects/octokit-graphql/::"
-
-ignore:
-  - "Octokit.GraphQL/Octokit.GraphQL/*"
