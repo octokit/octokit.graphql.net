@@ -5,16 +5,16 @@ before_build:
   - nuget restore
 
 build:
+  verbosity: minimal
   parallel: true
-
 
 after_build:
   - cmd: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
   - cmd: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
   - cmd: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
-  - cmd: '%USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f ".\Octokit.GraphQL.UnitTests\coverage.opencover.xml"'
-  - cmd: '%USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f ".\Octokit.GraphQL.Core.UnitTests\coverage.opencover.xml"'
-  - cmd: '%USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f ".\Octokit.GraphQL.Core.Generation.UnitTests\coverage.opencover.xml"'
+  - cmd: %USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f .\Octokit.GraphQL.UnitTests\coverage.opencover.xml
+  - cmd: %USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f .\Octokit.GraphQL.Core.UnitTests\coverage.opencover.xml
+  - cmd: %USERPROFILE%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f .\Octokit.GraphQL.Core.Generation.UnitTests\coverage.opencover.xml
   - cmd: nuget pack
 
 artifacts:
