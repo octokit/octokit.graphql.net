@@ -22,7 +22,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ProjectCardConnection Cards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Cards(first, after, last, before), Octokit.GraphQL.Model.ProjectCardConnection.Create);
+        /// <param name="archivedStates">A list of archived states to filter the cards by</param>
+        public ProjectCardConnection Cards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null) => this.CreateMethodCall(x => x.Cards(first, after, last, before, archivedStates), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -45,6 +46,11 @@ namespace Octokit.GraphQL.Model
         /// The project that contains this column.
         /// </summary>
         public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Model.Project.Create);
+
+        /// <summary>
+        /// The semantic purpose of the column
+        /// </summary>
+        public ProjectColumnPurpose? Purpose { get; }
 
         /// <summary>
         /// The HTTP path for this project column

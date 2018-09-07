@@ -144,7 +144,12 @@ namespace Octokit.GraphQL.Model
         public Repository Repository(Arg<string> name) => this.CreateMethodCall(x => x.Repository(name), Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
-        /// The HTTP path for this user
+        /// When true the organization requires all members, billing managers, and outside collaborators to enable two-factor authentication.
+        /// </summary>
+        public bool? RequiresTwoFactorAuthentication { get; }
+
+        /// <summary>
+        /// The HTTP path for this organization.
         /// </summary>
         public string ResourcePath { get; }
 
@@ -186,7 +191,7 @@ namespace Octokit.GraphQL.Model
         public string TeamsUrl { get; }
 
         /// <summary>
-        /// The HTTP URL for this user
+        /// The HTTP URL for this organization.
         /// </summary>
         public string Url { get; }
 
