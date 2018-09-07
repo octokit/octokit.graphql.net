@@ -11,9 +11,9 @@ after_build:
   - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
   - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
   - dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
-  - codecov -f ".\Octokit.GraphQL.UnitTests\coverage.opencover.xml"
-  - codecov -f ".\Octokit.GraphQL.Core.UnitTests\coverage.opencover.xml"
-  - codecov -f ".\Octokit.GraphQL.Core.Generation.UnitTests\coverage.opencover.xml"
+  - %userprofile%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f ".\Octokit.GraphQL.UnitTests\coverage.opencover.xml"
+  - %userprofile%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f ".\Octokit.GraphQL.Core.UnitTests\coverage.opencover.xml"
+  - %userprofile%\.nuget\packages\codecov\1.0.5\tools\codecov.exe -f ".\Octokit.GraphQL.Core.Generation.UnitTests\coverage.opencover.xml"
   - nuget pack
 
 artifacts:
