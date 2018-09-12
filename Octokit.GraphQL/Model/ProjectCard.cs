@@ -46,6 +46,11 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether the card is archived
+        /// </summary>
+        public bool IsArchived { get; }
+
+        /// <summary>
         /// The card note
         /// </summary>
         public string Note { get; }

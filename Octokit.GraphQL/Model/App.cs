@@ -33,6 +33,11 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// The hex color code, without the leading '#', for the logo background.
+        /// </summary>
+        public string LogoBackgroundColor { get; }
+
+        /// <summary>
         /// A URL pointing to the app's logo.
         /// </summary>
         /// <param name="size">The size of the resulting image.</param>
