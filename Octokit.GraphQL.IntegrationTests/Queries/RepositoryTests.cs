@@ -301,6 +301,29 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.True(result.PullRequests.Count > 500);
         }
 
+        [IntegrationTest]
+        public async Task Should_Query_Repository_Issues_PullRequests_To_Object_AutoPaging()
+        {
+            var query = new Query()
+                .Repository(Var("owner"), Var("name"))
+                .Select(repository => new 
+                {
+                    StringList1 = repository.Issues(null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
+                    StringList2 = repository.Issues(null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
+                })
+                .Compile();
+            var vars = new Dictionary<string, object>
+            {
+                { "owner", "octokit" },
+                { "name", "octokit.net" },
+            };
+
+            var result = await Connection.Run(query, vars);
+
+            Assert.True(result.StringList1.Count > 500);
+            Assert.True(result.StringList2.Count > 500);
+        }
+
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
         public async Task Should_Query_Union_Issue_Or_PullRequest()
         {

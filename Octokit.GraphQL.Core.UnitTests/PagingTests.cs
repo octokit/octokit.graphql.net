@@ -1120,6 +1120,75 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
         }
 
+        public class Repository_Issues_ComplexQuery_AllPages
+        {
+            [Fact]
+            public void Creates_MasterQuery()
+            {
+                var masterQuery = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    id
+    stringList1: issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        number
+      }
+    }
+    stringList2: issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        number
+      }
+    }
+  }
+}";
+
+                var subQuery = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          number
+        }
+      }
+    }
+  }
+}";
+
+                var compiledQuery = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        StringList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        StringList2 = repository.Issues(null, null, null, null, null).AllPages().Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var master = compiledQuery.GetMasterQuery();
+
+                Assert.Equal(masterQuery, master.ToString(), ignoreLineEndingDifferences: true);
+
+                var subqueries = compiledQuery.GetSubqueries();
+
+                Assert.Equal(subQuery, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(subQuery, subqueries[1].ToString(), ignoreLineEndingDifferences: true);
+            }
+        }
+
         class RepositoryModel
         {
             public string Name { get; set; }
