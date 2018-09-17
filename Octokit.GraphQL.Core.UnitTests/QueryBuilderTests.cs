@@ -688,7 +688,6 @@ fragment repositoryName on Repository {
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
-
         [Fact]
         public void Repository_Select_Anon_Object()
         {
@@ -713,7 +712,6 @@ fragment repositoryName on Repository {
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
-
 
         [Fact]
         public void Repository_Select_Object_Fragment()

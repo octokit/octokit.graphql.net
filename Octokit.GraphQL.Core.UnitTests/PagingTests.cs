@@ -1019,6 +1019,11 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         public class Repository_Issues_ComplexQuery_AllPages
         {
+            static Repository_Issues_ComplexQuery_AllPages()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
             [Fact]
             public void Creates_MasterQuery()
             {
