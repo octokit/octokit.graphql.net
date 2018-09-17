@@ -1174,7 +1174,9 @@ namespace Octokit.GraphQL.Core.UnitTests
                             .AllPages()
                             .Select(issue => issue.Number)
                             .ToList(),
-                        StringList2 = repository.Issues(null, null, null, null, null).AllPages().Select(issue => issue.Number)
+                        StringList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
                             .ToList()
                     }).Compile();
 

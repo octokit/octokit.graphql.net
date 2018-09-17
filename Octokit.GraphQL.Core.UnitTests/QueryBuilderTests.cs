@@ -827,11 +827,18 @@ fragment issueTitle on Issue {
   title
 }";
 
-            var subQuery = @"query {
-  repository(owner: ""foo"", name: ""bar"") {
-    repos: issues {
-      nodes {
-        ...issueTitle
+            var subQuery = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          ...issueTitle
+        }
       }
     }
   }
@@ -877,16 +884,18 @@ fragment issueTitle on Issue {
   title
 }";
 
-            var subQuery = @"query {
-  repository(owner: ""foo"", name: ""bar"") {
-    id
-    repos: issues(first: 100) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        ...issueTitle
+            var subQuery = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          ...issueTitle
+        }
       }
     }
   }
