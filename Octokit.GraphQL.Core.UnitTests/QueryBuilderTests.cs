@@ -814,7 +814,20 @@ fragment repositoryName on Repository {
         [Fact]
         public void Issue_Select_Use_Simple_Fragment_With_Nodes_List()
         {
-            var expected = @"query {
+            var masterQuery = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    repos: issues {
+      nodes {
+        ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var subQuery = @"query {
   repository(owner: ""foo"", name: ""bar"") {
     repos: issues {
       nodes {
@@ -837,18 +850,37 @@ fragment issueTitle on Issue {
                         .Nodes.Select(fragment).ToList(),
                 });
 
-            var query = expression.Compile();
+            var compiledQuery = expression.Compile();
 
-            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+            Assert.Equal(masterQuery, compiledQuery.GetMasterQuery().ToString(2), ignoreLineEndingDifferences: true);
+            Assert.Equal(subQuery, compiledQuery.GetSubqueries()[0].ToString(2), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
         public void Issue_Select_Use_Simple_Fragment_With_AllPages_List()
         {
-            var expected = @"query {
+            var masterQuery = @"query {
   repository(owner: ""foo"", name: ""bar"") {
     id
-    issues(first: 100) {
+    repos: issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var subQuery = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    id
+    repos: issues(first: 100) {
       pageInfo {
         hasNextPage
         endCursor
@@ -873,9 +905,11 @@ fragment issueTitle on Issue {
                         .AllPages().Select(fragment).ToList(),
                 });
 
-            var query = expression.Compile();
+            var compiledQuery = expression.Compile();
 
-            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+            Assert.Equal(masterQuery, compiledQuery.GetMasterQuery().ToString(2), ignoreLineEndingDifferences: true);
+
+            Assert.Equal(subQuery, compiledQuery.GetSubqueries()[0].ToString(2), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
