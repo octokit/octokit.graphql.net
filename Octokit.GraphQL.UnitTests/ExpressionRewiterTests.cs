@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using AgileObjects.ReadableExpressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests;

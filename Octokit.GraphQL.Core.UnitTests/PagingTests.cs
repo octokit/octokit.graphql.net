@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AgileObjects.ReadableExpressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Syntax;
@@ -101,18 +100,16 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                Expression<Func<JObject, IEnumerable<int>>> expression = data =>
+                Expression<Func<JObject, IEnumerable<int>>> expected = data =>
                     (IEnumerable<int>)Rewritten.List.ToSubqueryList(
                         Rewritten.List.Select(
                             data["data"]["repository"]["issues"]["nodes"],
                             issue => issue["number"].ToObject<int>()),
                         data.Annotation<ISubqueryRunner>(), subqueryPlaceholder);
 
-                var master = GetTestQuery().GetMasterQuery();
+                var query = GetTestQuery().GetMasterQuery();
 
-                Assert.Equal(
-                    expression.ToReadableString().Replace("PagingTests.subqueryPlaceholder", "SimpleSubquery<IEnumerable<int>>"),
-                    master.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query, "IEnumerable<int>");
             }
 
             [Fact]
@@ -350,7 +347,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                Expression<Func<JObject, RepositoryModel>> expression = data =>
+                Expression<Func<JObject, RepositoryModel>> expected = data =>
                     Rewritten.Value.Select(
                         data["data"]["repository"],
                         repository => new RepositoryModel
@@ -367,11 +364,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                                 subqueryPlaceholder),
                         });
 
-                var master = TestQuery.GetMasterQuery();
-                Assert.Equal(
-                    expression.ToReadableString().Replace("PagingTests.subqueryPlaceholder", "SimpleSubquery<IEnumerable<PagingTests.IssueModel>>"),
-                    master.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
-
+                var query = TestQuery.GetMasterQuery();
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query, "IEnumerable<PagingTests.IssueModel>");
             }
 
             [Fact]

@@ -4,6 +4,7 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AgileObjects.ReadableExpressions" Version="1.12.1" />
     <PackageReference Include="coverlet.msbuild" Version="2.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -14,7 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Octokit.GraphQL.Core\Octokit.GraphQL.Core.csproj" />
-    <ProjectReference Include="..\submodules\readableexpressions\ReadableExpressions\ReadableExpressions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
