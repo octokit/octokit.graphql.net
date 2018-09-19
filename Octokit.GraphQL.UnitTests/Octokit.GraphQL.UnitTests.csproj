@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Octokit.GraphQL\Octokit.GraphQL.csproj" />
+    <ProjectReference Include="..\submodules\readableexpressions\ReadableExpressions\ReadableExpressions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using AgileObjects.ReadableExpressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Model;
@@ -25,7 +26,7 @@ namespace Octokit.GraphQL.UnitTests
                 .Repository("bar")
                 .Select((Repository x) => new
                 {
-                    x.Id,
+                    Id = x.Id.ToString(),
                     x.Name,
                     Owner = x.Owner.Select(o => new
                     {
@@ -35,30 +36,31 @@ namespace Octokit.GraphQL.UnitTests
                     x.IsPrivate,
                 });
 
-            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.List.Select(
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
                     data["data"]["repositoryOwner"]["repository"],
                     x => new
                     {
-                        Id = x["id"].ToObject<string>(),
+                        Id = x["id"].ToString(),
                         Name = x["name"].ToObject<string>(),
                         Owner = Rewritten.Value.Single(
                             Rewritten.Value.Select(
                                 x["owner"],
                                 o => new { Login = o["login"].ToObject<string>() })),
-                        IsFork = x["isFork"].ToObject<string>(),
-                        IsPrivate = x["isPrivate"].ToObject<string>(),
+                        IsFork = x["isFork"].ToObject<bool>(),
+                        IsPrivate = x["isPrivate"].ToObject<bool>(),
                     });
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            var resultBuilderExpression = query.GetResultBuilderExpression();
+            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
         public void Repository_Select_Use_Fragment_Twice()
         {
             var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
-
+            
             var expression = new Query()
                 .Select(q => new
                 {
@@ -66,8 +68,8 @@ namespace Octokit.GraphQL.UnitTests
                     repo2 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault()
                 });
 
-            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.List.Select(
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
                     data["data"],
                     q => new
                     {
@@ -82,7 +84,8 @@ namespace Octokit.GraphQL.UnitTests
                     });
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            var resultBuilderExpression = query.GetResultBuilderExpression();
+            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -95,7 +98,7 @@ namespace Octokit.GraphQL.UnitTests
                 .Select(x => x.Node)
                 .Select(x => new
                 {
-                    x.Id,
+                    Id = x.Id.ToString(),
                     x.Name,
                     Owner = x.Owner.Select(o => new
                     {
@@ -112,18 +115,19 @@ namespace Octokit.GraphQL.UnitTests
                         x => x["node"]),
                         x => new
                         {
-                            Id = x["id"].ToObject<string>(),
+                            Id = x["id"].ToString(),
                             Name = x["name"].ToObject<string>(),
                             Owner = Rewritten.Value.Single(
                                 Rewritten.Value.Select(
                                     x["owner"],
                                     o => new { Login = o["login"].ToObject<string>() })),
-                            IsFork = x["isFork"].ToObject<string>(),
-                            IsPrivate = x["isPrivate"].ToObject<string>(),
+                            IsFork = x["isFork"].ToObject<bool>(),
+                            IsPrivate = x["isPrivate"].ToObject<bool>(),
                         }).ToList();
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            var resultBuilderExpression = query.GetResultBuilderExpression();
+            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -155,7 +159,7 @@ namespace Octokit.GraphQL.UnitTests
                             z => new
                             {
                                 Name = z["name"].ToObject<string>(),
-                                IsPrivate = z["isPrivate"].ToObject<string>(),
+                                IsPrivate = z["isPrivate"].ToObject<bool>(),
                                 Viewer = Rewritten.Value.Single(
                                     Rewritten.Value.Select(
                                         x["viewer"],
@@ -166,7 +170,8 @@ namespace Octokit.GraphQL.UnitTests
                             })).ToList();
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            var resultBuilderExpression = query.GetResultBuilderExpression();
+            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -194,10 +199,11 @@ namespace Octokit.GraphQL.UnitTests
                     }).ToList();
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            var resultBuilderExpression = query.GetResultBuilderExpression();
+            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
-        [Fact(Skip = "Not yet working")]
+        [Fact]
         public void Search_User_Name_Via_Edges()
         {
             var expression = new Query()
@@ -205,13 +211,23 @@ namespace Octokit.GraphQL.UnitTests
                 .Edges.Select(x => x.Node)
                 .Select(x => x.User.Name);
 
-            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
+            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
+                (IEnumerable<string>)
                 Rewritten.List.Select(
-                    Rewritten.Value.OfType(data["data"]["search"]["edges"], "User"),
-                    x => x["name"].ToObject<string>());
+                    Rewritten.List.Select(data["data"]["search"]["edges"], x => x["node"]),
+                    x => Rewritten.Value.OfType(x, "User")["name"].ToObject<string>()).ToList();
 
             var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            var resultBuilderExpression = query.GetResultBuilderExpression();
+            Assert.Equal(expected.ToReadableString().RemoveWhitespace(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject).RemoveWhitespace());
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static string RemoveWhitespace(this string str)
+        {
+            return string.Join(string.Empty, str.Split(new []{" ", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }

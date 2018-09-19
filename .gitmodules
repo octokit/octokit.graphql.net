@@ -1,0 +1,3 @@
+[submodule "submodules/readableexpressions"]
+	path = submodules/readableexpressions
+	url = https://github.com/StanleyGoldman/ReadableExpressions.git

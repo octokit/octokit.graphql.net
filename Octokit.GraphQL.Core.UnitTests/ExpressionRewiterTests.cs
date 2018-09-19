@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using AgileObjects.ReadableExpressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
@@ -20,15 +21,14 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Repository_Select_Single_Member()
         {
-            var expression = new Query()
+            var query = new Query()
                 .Repository("foo", "bar")
                 .Select(x => x.Name);
 
             Expression<Func<JObject, string>> expected = data =>
                 Rewritten.Value.Select(data["data"]["repository"], x => x["name"]).ToObject<string>();
 
-            var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.Compile().GetResultBuilderExpression().ToReadableString());
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString());
         }
 
         [Fact]
@@ -66,7 +66,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                 }).ToList();
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            var readableString = expected.ToReadableString();
+            Assert.Equal(readableString, query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -90,7 +91,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList();
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -114,7 +115,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x => new
                     {
                         Body = x["body"].ToObject<string>(),
-                        Items = (IDictionary<string, object>) Rewritten.List.Select(x["items"], i => new
+                        Items = (IDictionary<string, string>) Rewritten.List.Select(x["items"], i => new
                         {
                             Key = i["key"].ToObject<string>(),
                             Description = i["description"].ToObject<string>()
@@ -122,9 +123,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList();
 
             var query = expression.Compile();
-            var expectedString = expected.ToString();
-            var actual = query.GetResultBuilderExpression().ToString();
-            Assert.Equal(expectedString, actual);
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -143,7 +142,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                Rewritten.List.Select(
+                Rewritten.Value.Select(
                     data["data"]["repository"]["issue"],
                     x => new
                     {
@@ -158,7 +157,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     });
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -177,7 +176,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 });
 
             Expression<Func<JObject, object>> expected = data =>
-                Rewritten.List.Select(
+                Rewritten.Value.Select(
                     data["data"]["repository"]["issue"],
                     x => new
                     {
@@ -192,7 +191,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     });
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -215,7 +214,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList();
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -232,7 +231,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x => x["body"]).ToObject<string>();
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -248,7 +247,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     x => !string.IsNullOrWhiteSpace(x["name"].ToObject<string>()) ? x["name"].ToObject<string>() : null);
 
             var query = expression.Compile();
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            Assert.Equal(expected.ToReadableString(), query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
         }
 
         [Fact]
@@ -258,18 +257,15 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Repository("foo", "bar")
                 .Select(x => x.Name != null ? x.Name : null);
 
-            // C# inserts a Convert() around the comparison in the following expression, making the test fail.
-            //
-            // Expression<Func<JObject, object>> expected = data =>
-            //     Rewritten.Value.Select(
-            //         data["data"]["repository"],
-            //         x => x["name"].Type != JTokenType.Null ? x["name"] : null).ToObject<string>();
-            //
-            // Just hardcode the expected output.
-            var expected = "data => Select(data.get_Item(\"data\").get_Item(\"repository\"), x => IIF((x.get_Item(\"name\").Type != Null), x.get_Item(\"name\").ToObject(), null))";
-
+             Expression<Func<JObject, object>> expected = data =>
+                 Rewritten.Value.Select(
+                     data["data"]["repository"],
+                     x => (Equals(x["name"].Type != JTokenType.Null)) ? x["name"].ToObject<string>() : null);
+            
             var query = expression.Compile();
-            Assert.Equal(expected, query.GetResultBuilderExpression().ToString());
+            var readableString = "data => Rewritten.Value.Select(\r\n    data[\"data\"][\"repository\"],\r\n    x => (x[\"name\"].Type != JTokenType.Null) ? x[\"name\"].ToObject<string>() : null)";
+            var actual = query.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject);
+            Assert.Equal(readableString, actual);
         }
     }
 }

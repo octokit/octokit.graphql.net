@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AgileObjects.ReadableExpressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Syntax;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
 
@@ -68,7 +70,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
 
             [Fact]
-            public void Creates_MasterQuery_CustomPageSize_Expression()
+            public void Creates_MasterQuery_CustomPageSize_PageSize_Capture_Query()
             {
                 var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
@@ -86,6 +88,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 }";
 
                 var pageSize = 10;
+
                 var master = new Query()
                     .Select(query => query.Repository("foo", "bar")
                         .Issues(null, null, null, null, null)
@@ -95,20 +98,21 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
-            [Fact(Skip = "Need a better way to compare expressions")]
+            [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                var expected = Expected(data =>
+                Expression<Func<JObject, IEnumerable<int>>> expression = data =>
                     (IEnumerable<int>)Rewritten.List.ToSubqueryList(
                         Rewritten.List.Select(
                             data["data"]["repository"]["issues"]["nodes"],
                             issue => issue["number"].ToObject<int>()),
-                        data.Annotation<ISubqueryRunner>(),
-                        subqueryPlaceholder));
+                        data.Annotation<ISubqueryRunner>(), subqueryPlaceholder);
 
                 var master = GetTestQuery().GetMasterQuery();
 
-                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
+                Assert.Equal(
+                    expression.ToReadableString().Replace("PagingTests.subqueryPlaceholder", "SimpleSubquery<IEnumerable<int>>"),
+                    master.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
             }
 
             [Fact]
@@ -343,10 +347,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
-            [Fact(Skip = "Need a better way to compare expressions")]
+            [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                var expected = Expected(data =>
+                Expression<Func<JObject, RepositoryModel>> expression = data =>
                     Rewritten.Value.Select(
                         data["data"]["repository"],
                         repository => new RepositoryModel
@@ -361,11 +365,13 @@ namespace Octokit.GraphQL.Core.UnitTests
                                     }),
                                 data.Annotation<ISubqueryRunner>(),
                                 subqueryPlaceholder),
-                        }));
+                        });
 
                 var master = TestQuery.GetMasterQuery();
+                Assert.Equal(
+                    expression.ToReadableString().Replace("PagingTests.subqueryPlaceholder", "SimpleSubquery<IEnumerable<PagingTests.IssueModel>>"),
+                    master.GetResultBuilderExpression().ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
 
-                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
             }
 
             [Fact]
