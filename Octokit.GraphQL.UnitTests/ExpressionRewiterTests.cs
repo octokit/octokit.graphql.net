@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using AgileObjects.ReadableExpressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.UnitTests;
 using Octokit.GraphQL.Model;
 using Xunit;
 
@@ -21,7 +22,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void RepositoryOwner_Repository_Query()
         {
-            var expression = new Query()
+            var query = new Query()
                 .RepositoryOwner("foo")
                 .Repository("bar")
                 .Select((Repository x) => new
@@ -51,9 +52,7 @@ namespace Octokit.GraphQL.UnitTests
                         IsPrivate = x["isPrivate"].ToObject<bool>(),
                     });
 
-            var query = new QueryBuilder().Build(expression);
-            var resultBuilderExpression = query.GetResultBuilderExpression();
-            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
@@ -61,7 +60,7 @@ namespace Octokit.GraphQL.UnitTests
         {
             var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
             
-            var expression = new Query()
+            var query = new Query()
                 .Select(q => new
                 {
                     repo1 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault(),
@@ -83,15 +82,13 @@ namespace Octokit.GraphQL.UnitTests
                                 repository => repository["name"].ToObject<string>())),
                     });
 
-            var query = new QueryBuilder().Build(expression);
-            var resultBuilderExpression = query.GetResultBuilderExpression();
-            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void RepositoryOwner_Repositories_Query()
         {
-            var expression = new Query()
+            var query = new Query()
                 .RepositoryOwner(login: "foo")
                 .Repositories(first: 30)
                 .Edges
@@ -125,15 +122,13 @@ namespace Octokit.GraphQL.UnitTests
                             IsPrivate = x["isPrivate"].ToObject<bool>(),
                         }).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            var resultBuilderExpression = query.GetResultBuilderExpression();
-            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void Repository_Details_With_Viewer()
         {
-            var expression = new Query()
+            var query = new Query()
                 .Select(x => x.RepositoryOwner("foo")
                               .Repositories(30, null, null, null, null, null, null, null, null)
                               .Edges
@@ -169,15 +164,13 @@ namespace Octokit.GraphQL.UnitTests
                                         }))
                             })).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            var resultBuilderExpression = query.GetResultBuilderExpression();
-            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void Issues_Select_Nodes()
         {
-            var expression = new Query()
+            var query = new Query()
                 .Repository("github", "VisualStudio")
                 .Issues(first: 30, labels: new[] { "bug" }, states: new[] { IssueState.Closed })
                 .Select(x => x.Nodes)
@@ -198,15 +191,13 @@ namespace Octokit.GraphQL.UnitTests
                         Title = x["title"].ToObject<string>(),
                     }).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            var resultBuilderExpression = query.GetResultBuilderExpression();
-            Assert.Equal(expected.ToReadableString(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject));
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void Search_User_Name_Via_Edges()
         {
-            var expression = new Query()
+            var query = new Query()
                 .Search("foo", SearchType.User, 30)
                 .Edges.Select(x => x.Node)
                 .Select(x => x.User.Name);
@@ -217,9 +208,7 @@ namespace Octokit.GraphQL.UnitTests
                     Rewritten.List.Select(data["data"]["search"]["edges"], x => x["node"]),
                     x => Rewritten.Value.OfType(x, "User")["name"].ToObject<string>()).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            var resultBuilderExpression = query.GetResultBuilderExpression();
-            Assert.Equal(expected.ToReadableString().RemoveWhitespace(), resultBuilderExpression.ToReadableString(settings => settings.SerializeAnonymousTypesAsObject).RemoveWhitespace());
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
     }
 
