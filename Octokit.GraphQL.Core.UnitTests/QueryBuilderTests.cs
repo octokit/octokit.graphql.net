@@ -811,31 +811,11 @@ fragment repositoryName on Repository {
         [Fact]
         public void Issue_Select_Use_Simple_Fragment_With_Nodes_List()
         {
-            var masterQuery = @"query {
+            var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
     repos: issues {
       nodes {
         ...issueTitle
-      }
-    }
-  }
-}
-fragment issueTitle on Issue {
-  title
-}";
-
-            var subQuery = @"query($__id: ID!, $__after: String) {
-  node(id: $__id) {
-    __typename
-    ... on Repository {
-      issues(first: 100, after: $__after) {
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-        nodes {
-          ...issueTitle
-        }
       }
     }
   }
@@ -854,10 +834,9 @@ fragment issueTitle on Issue {
                         .Nodes.Select(fragment).ToList(),
                 });
 
-            var compiledQuery = expression.Compile();
+            var query = expression.Compile();
 
-            Assert.Equal(masterQuery, compiledQuery.GetMasterQuery().ToString(2), ignoreLineEndingDifferences: true);
-            Assert.Equal(subQuery, compiledQuery.GetSubqueries()[0].ToString(2), ignoreLineEndingDifferences: true);
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
         [Fact]
