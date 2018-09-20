@@ -624,7 +624,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ParentIds);
                 var actualString = actual.ToReadableString();
 
-                Expression<Func<JObject, IEnumerable<JToken>>> expected = (Expression<Func<JObject, IEnumerable<JToken>>>)(data => data.SelectTokens("$.data.repository.id"));
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.id");
                 var expectedString = expected.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -636,7 +636,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ParentPageInfo);
                 var actualString = actual.ToReadableString();
 
-                Expression<Func<JObject, IEnumerable<JToken>>> expected = (Expression<Func<JObject, IEnumerable<JToken>>>)(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
                 var expectedString = expected.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
