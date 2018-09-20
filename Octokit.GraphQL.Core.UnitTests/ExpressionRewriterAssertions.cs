@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using AgileObjects.ReadableExpressions;
 using Xunit;
 
@@ -83,21 +84,21 @@ namespace Octokit.GraphQL.Core.UnitTests
             AssertCompiledQueryExpressionEqual(expectedString, actualCompiledQuery);
         }
 
-        public static void AssertCompiledQueryExpressionEqual<T>(Expression expected, ICompiledQuery<T> actualCompiledQuery, string subqueryPlaceholderReplacement = null)
+        public static void AssertCompiledQueryExpressionEqual<T>(Expression expected, ICompiledQuery<T> actualCompiledQuery, params string[] subqueryPlaceholderReplacements)
         {
             var expectedString = expected.ToReadableString();
-            AssertCompiledQueryExpressionEqual(expectedString, actualCompiledQuery, subqueryPlaceholderReplacement);
+            AssertCompiledQueryExpressionEqual(expectedString, actualCompiledQuery, subqueryPlaceholderReplacements);
         }
 
-        public static void AssertCompiledQueryExpressionEqual<T>(string expectedString, ICompiledQuery<T> actualCompiledQuery, string subqueryPlaceholderReplacement = null)
+        public static void AssertCompiledQueryExpressionEqual<T>(string expectedString, ICompiledQuery<T> actualCompiledQuery, params string[] subqueryPlaceholderReplacements)
         {
             var actualResultExpression = actualCompiledQuery.GetResultBuilderExpression();
             var actualString = actualResultExpression.ToReadableString();
 
-            if (subqueryPlaceholderReplacement != null)
+            foreach (var subqueryPlaceholderReplacement in subqueryPlaceholderReplacements)
             {
-                expectedString = expectedString.Replace("PagingTests.subqueryPlaceholder",
-                    $"SimpleSubquery<{subqueryPlaceholderReplacement}>");
+                var regex = new Regex("PagingTests.subqueryPlaceholder");
+                expectedString = regex.Replace(expectedString, subqueryPlaceholderReplacement, 1);
             }
 
             actualString = ExtractAnonymousTypeDeclarations(actualString);

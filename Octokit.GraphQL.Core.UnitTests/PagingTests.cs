@@ -109,7 +109,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var query = GetTestQuery().GetMasterQuery();
 
-                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query, "IEnumerable<int>");
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query, "SimpleSubquery<IEnumerable<int>>");
             }
 
             [Fact]
@@ -365,7 +365,8 @@ namespace Octokit.GraphQL.Core.UnitTests
                         });
 
                 var query = TestQuery.GetMasterQuery();
-                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query, "IEnumerable<PagingTests.IssueModel>");
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query,
+                    "SimpleSubquery<IEnumerable<PagingTests.IssueModel>>");
             }
 
             [Fact]
@@ -525,29 +526,31 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
-            [Fact(Skip = "Need a better way to compare expressions")]
+            [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                var expected = Expected(data =>
+                Expression<Func<JObject, RepositoryModelWithDictionary>> expected = data =>
                     Rewritten.Value.Select(
                         data["data"]["repository"],
-                        repository => new RepositoryModel
+                        repository => new RepositoryModelWithDictionary
                         {
                             Name = repository["name"].ToObject<string>(),
-                            Issues = Rewritten.List.ToSubqueryList(
+                            Issues = (IDictionary<int, PagingTests.IssueModel>)Rewritten.List.ToSubqueryDictionary(
                                 Rewritten.List.Select(
                                     repository["issues"]["nodes"],
-                                    issue => new IssueModel
+                                    issue => new PagingTests.IssueModel
                                     {
-                                        Number = issue["number"].ToObject<int>(),
+                                        Number = issue["number"].ToObject<int>()
                                     }),
                                 data.Annotation<ISubqueryRunner>(),
-                                subqueryPlaceholder),
-                        }));
+                                subqueryPlaceholder,
+                                x => x.Number,
+                                x => x)
+                        });
 
-                var master = TestQuery.GetMasterQuery();
-
-                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
+                var query = TestQuery.GetMasterQuery();
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query,
+                    "SimpleSubquery<IEnumerable<PagingTests.IssueModel>>");
             }
 
             [Fact]
@@ -721,10 +724,10 @@ namespace Octokit.GraphQL.Core.UnitTests
                 Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
             }
 
-            [Fact(Skip = "Need a better way to compare expressions")]
+            [Fact]
             public void Creates_MasterQuery_Expression()
             {
-                var expected = Expected(data =>
+                Expression<Func<JObject, IEnumerable<IssueModel>>> expected = data =>
                     (IEnumerable<IssueModel>)Rewritten.List.ToSubqueryList(
                         Rewritten.List.Select(
                             data["data"]["repository"]["issues"]["nodes"],
@@ -736,17 +739,19 @@ namespace Octokit.GraphQL.Core.UnitTests
                                         issue["comments"]["nodes"],
                                         comment => new CommentModel
                                         {
+                                            Id = comment["id"].ToString(),
                                             Body = comment["body"].ToObject<string>(),
                                         }),
                                     data.Annotation<ISubqueryRunner>(),
                                     subqueryPlaceholder)
                             }),
                         data.Annotation<ISubqueryRunner>(),
-                        subqueryPlaceholder));
+                        subqueryPlaceholder);
 
-                var master = TestQuery.GetMasterQuery();
-
-                Assert.Equal(expected, master.GetResultBuilderExpression().ToString());
+                var query = TestQuery.GetMasterQuery();
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query,
+                    "SimpleSubquery<IEnumerable<PagingTests.CommentModel>>",
+                    "PagedSubquery<IEnumerable<PagingTests.IssueModel>>");
             }
 
             [Fact]
