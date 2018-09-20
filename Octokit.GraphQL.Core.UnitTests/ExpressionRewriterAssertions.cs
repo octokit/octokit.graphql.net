@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using AgileObjects.ReadableExpressions;
+using Newtonsoft.Json.Linq;
+using Octokit.GraphQL.Core.Builders;
 using Xunit;
 
 namespace Octokit.GraphQL.Core.UnitTests
@@ -101,9 +104,28 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal(StripWhitespace(expectedString), StripWhitespace(actualString));
         }
 
-        private static string StripWhitespace(string x)
+        public static string StripWhitespace(string x)
         {
             return x.Replace(" ", string.Empty).Replace("\r", string.Empty).Replace("\n", string.Empty);
+        }
+
+        public static void AssertSubqueryEqual<T>(Expression<Func<JObject, T>> expectedResultExpression,
+            Expression<Func<JObject, JToken>> expectedPageInfoExpression,
+            Expression<Func<JObject, IEnumerable<JToken>>> expectedParentIdExpression,
+            Expression<Func<JObject, IEnumerable<JToken>>> expectedParentPageInfoExpression,
+            PagedSubquery<T> subquery)
+        {
+            var resultExpression = ExpressionCompiler.GetSourceExpression(subquery.MasterQuery.ResultBuilder);
+            Assert.Equal(StripWhitespace(expectedResultExpression.ToReadableString()), StripWhitespace(resultExpression.ToReadableString()));
+
+            var pageInfoExpression = ExpressionCompiler.GetSourceExpression(subquery.PageInfo);
+            Assert.Equal(StripWhitespace(expectedPageInfoExpression.ToReadableString()), StripWhitespace(pageInfoExpression.ToReadableString()));
+
+            var parentIdExpression = ExpressionCompiler.GetSourceExpression(subquery.ParentIds);
+            Assert.Equal(StripWhitespace(expectedParentIdExpression.ToReadableString()), StripWhitespace(parentIdExpression.ToReadableString()));
+
+            var parentPageInfoExpression = ExpressionCompiler.GetSourceExpression(subquery.ParentPageInfo);
+            Assert.Equal(StripWhitespace(expectedParentPageInfoExpression.ToReadableString()), StripWhitespace(parentPageInfoExpression.ToReadableString()));
         }
     }
 
