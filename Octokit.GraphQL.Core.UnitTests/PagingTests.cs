@@ -23,6 +23,27 @@ namespace Octokit.GraphQL.Core.UnitTests
                 ExpressionCompiler.IsUnitTesting = true;
             }
 
+            private ICompiledQuery<IEnumerable<int>> TestQuery(int? allPages = null) =>
+                allPages.HasValue ? 
+                    new Query()
+                        .Repository("foo", "bar")
+                        .Issues()
+                        .AllPages(allPages.Value)
+                        .Select(issue => issue.Number)
+                        .Compile() :
+                    new Query()
+                        .Repository("foo", "bar")
+                        .Issues()
+                        .AllPages()
+                        .Select(issue => issue.Number)
+                        .Compile();
+
+            private SimpleQuery<IEnumerable<int>> TestMasterQuery(int? allPages = null) => TestQuery(allPages).GetMasterQuery();
+
+            private IReadOnlyList<ISubquery> TestQuerySubqueries(int? allPages = null) => TestQuery(allPages).GetSubqueries();
+
+            private SimpleSubquery<IEnumerable<int>> TestQueryFirstSubquery(int? allPages = null) => (SimpleSubquery<IEnumerable<int>>)TestQuerySubqueries(allPages).First();
+
             [Fact]
             public void Creates_MasterQuery()
             {
@@ -41,9 +62,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var master = TestQuery.GetMasterQuery();
-
-                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(expected, TestMasterQuery().ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -64,38 +83,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var master = TestQueryCustomSize.GetMasterQuery();
-
-                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
-            }
-
-            [Fact]
-            public void Creates_MasterQuery_CustomPageSize_PageSize_Capture_Query()
-            {
-                var expected = @"query {
-  repository(owner: ""foo"", name: ""bar"") {
-    id
-    issues(first: 10) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        title
-      }
-    }
-  }
-}";
-
-                var pageSize = 10;
-
-                var master = new Query()
-                    .Select(query => query.Repository("foo", "bar")
-                        .Issues(null, null, null, null, null)
-                        .AllPages(pageSize).Select(issue => issue.Title).ToList())
-                    .Compile().GetMasterQuery();
-
-                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(expected, TestMasterQuery(10).ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -108,9 +96,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                             issue => issue["number"].ToObject<int>()),
                         data.Annotation<ISubqueryRunner>(), subqueryPlaceholder);
 
-                var query = TestQuery.GetMasterQuery();
-
-                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query, "SimpleSubquery<IEnumerable<int>>");
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, TestMasterQuery(10), "SimpleSubquery<IEnumerable<int>>");
             }
 
             [Fact]
@@ -133,10 +119,8 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var subqueries = TestQuery.GetSubqueries();
-
-                Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+                Assert.Single(TestQuerySubqueries());
+                Assert.Equal(expected, TestQueryFirstSubquery().ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -159,25 +143,20 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var subqueries = TestQueryCustomSize.GetSubqueries();
-
-                Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+                Assert.Single(TestQuerySubqueries(10));
+                Assert.Equal(expected, TestQueryFirstSubquery(10).ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
             public void Creates_Subquery_Expression()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[0];
-
                 Expression<Func<JObject, IEnumerable<int>>> expected =
                     data => (IEnumerable<int>)Rewritten.List.Select(
                         Rewritten.Interface.Cast(data["data"]["node"], "Repository")["issues"]["nodes"],
                         issue => issue["number"].ToObject<int>()).ToList();
                 var expectedString = expected.ToReadableString();
 
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.ResultBuilder);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery().ResultBuilder);
                 var actualString = actual.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -186,13 +165,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_PageInfo()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[0];
-
                 Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.issues.pageInfo");
                 var expectedString = expected.ToReadableString();
 
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.PageInfo);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery().PageInfo);
                 var actualString = actual.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -201,13 +177,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_ParentId()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[0];
-
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.id");
                 var expectedString = expected.ToReadableString();
 
-                var actualExpression = ExpressionCompiler.GetSourceExpression(simpleSubquery.ParentIds);
+                var actualExpression = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery().ParentIds);
                 var actualString = actualExpression.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -216,13 +189,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_ParentPage()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[0];
-
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
                 var expectedString = expected.ToReadableString();
 
-                var actualExpression = ExpressionCompiler.GetSourceExpression(simpleSubquery.ParentPageInfo);
+                var actualExpression = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery().ParentPageInfo);
                 var actualString = actualExpression.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -303,42 +273,20 @@ namespace Octokit.GraphQL.Core.UnitTests
                 }
 
                 var connection = new MockConnection(Execute);
-                var result = (await connection.Run(TestQuery)).ToList();
+                var result = (await connection.Run(TestQuery())).ToList();
 
                 Assert.Equal(Enumerable.Range(0, 6).ToList(), result);
-            }
-
-            private static ICompiledQuery<IEnumerable<int>> TestQuery
-            {
-                get
-                {
-                    return new Query()
-                        .Repository("foo", "bar")
-                        .Issues()
-                        .AllPages()
-                        .Select(issue => issue.Number)
-                        .Compile();
-                }
-            }
-
-            private static ICompiledQuery<IEnumerable<int>> TestQueryCustomSize
-            {
-                get
-                {
-                    var testQueryCustomSize = new Query()
-                        .Repository("foo", "bar")
-                        .Issues()
-                        .AllPages(10)
-                        .Select(issue => issue.Number)
-                        .Compile();
-                    return testQueryCustomSize;
-                }
             }
         }
 
         public class Repository_Name_Issues_AllPages
         {
-            ICompiledQuery<RepositoryModel> TestQuery { get; } = new Query()
+            static Repository_Name_Issues_AllPages()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
+            private ICompiledQuery<RepositoryModel> TestQuery => new Query()
                 .Repository("foo", "bar")
                 .Select(repository => new RepositoryModel
                 {
@@ -349,10 +297,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToList()
                 }).Compile();
 
-            static Repository_Name_Issues_AllPages()
-            {
-                ExpressionCompiler.IsUnitTesting = true;
-            }
+            private SimpleQuery<RepositoryModel> TestMasterQuery => TestQuery.GetMasterQuery();
+
+            private IReadOnlyList<ISubquery> TestQuerySubqueries => TestQuery.GetSubqueries();
+
+            private SimpleSubquery<IEnumerable<IssueModel>> TestQueryFirstSubquery => (SimpleSubquery<IEnumerable<IssueModel>>)TestQuerySubqueries.First();
 
             [Fact]
             public void Creates_MasterQuery()
@@ -373,10 +322,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var compiledQuery = TestQuery;
-                var master = compiledQuery.GetMasterQuery();
-
-                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(expected, TestMasterQuery.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -399,8 +345,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                                 subqueryPlaceholder),
                         });
 
-                var query = TestQuery.GetMasterQuery();
-                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query,
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, TestMasterQuery,
                     "SimpleSubquery<IEnumerable<PagingTests.IssueModel>>");
             }
 
@@ -424,18 +369,13 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var subqueries = TestQuery.GetSubqueries();
-
-                Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+                Assert.Single(TestQuerySubqueries);
+                Assert.Equal(expected, TestQueryFirstSubquery.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
             public void Creates_Subquery_Expression()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
                 Expression<Func<JObject, IEnumerable<IssueModel>>> expected =
                     data => (IEnumerable<IssueModel>)Rewritten.List.Select(
                         Rewritten.Interface.Cast(data["data"]["node"], "Repository")["issues"]["nodes"],
@@ -445,7 +385,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         }).ToList();
                 var expectedString = expected.ToReadableString();
 
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.ResultBuilder);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ResultBuilder);
                 var actualString = actual.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -454,13 +394,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_PageInfo()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
                 Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.issues.pageInfo");
                 var expectedString = expected.ToReadableString();
 
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.PageInfo);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.PageInfo);
                 var actualString = actual.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -469,13 +406,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_ParentId()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.id");
                 var expectedString = expected.ToReadableString();
 
-                var actualExpression = ExpressionCompiler.GetSourceExpression(simpleSubquery.ParentIds);
+                var actualExpression = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ParentIds);
                 var actualString = actualExpression.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -484,13 +418,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_ParentPage()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
                 var expectedString = expected.ToReadableString();
 
-                var actualExpression = ExpressionCompiler.GetSourceExpression(simpleSubquery.ParentPageInfo);
+                var actualExpression = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ParentPageInfo);
                 var actualString = actualExpression.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -563,7 +494,12 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         public class Repository_Name_Issues_AllPages_To_Dictionary
         {
-            ICompiledQuery<RepositoryModelWithDictionary> TestQuery { get; } = new Query()
+            static Repository_Name_Issues_AllPages_To_Dictionary()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
+            private ICompiledQuery<RepositoryModelWithDictionary> TestQuery => new Query()
                 .Repository("foo", "bar")
                 .Select(repository => new RepositoryModelWithDictionary
                 {
@@ -574,10 +510,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }).ToDictionary(x => x.Number, x => x)
                 }).Compile();
 
-            static Repository_Name_Issues_AllPages_To_Dictionary()
-            {
-                ExpressionCompiler.IsUnitTesting = true;
-            }
+            private SimpleQuery<RepositoryModelWithDictionary> TestMasterQuery => TestQuery.GetMasterQuery();
+
+            private IReadOnlyList<ISubquery> TestQuerySubqueries => TestQuery.GetSubqueries();
+
+            private SimpleSubquery<IEnumerable<IssueModel>> TestQueryFirstSubquery => (SimpleSubquery<IEnumerable<IssueModel>>)TestQuerySubqueries.First();
 
             [Fact]
             public void Creates_MasterQuery()
@@ -598,9 +535,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var master = TestQuery.GetMasterQuery();
-
-                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(expected, TestMasterQuery.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -625,8 +560,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                                 x => x)
                         });
 
-                var query = TestQuery.GetMasterQuery();
-                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query,
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, TestMasterQuery,
                     "SimpleSubquery<IEnumerable<PagingTests.IssueModel>>");
             }
 
@@ -650,18 +584,13 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var subqueries = TestQuery.GetSubqueries();
-
-                Assert.Single(subqueries);
-                Assert.Equal(expected, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
+                Assert.Single(TestQuerySubqueries);
+                Assert.Equal(expected, TestQueryFirstSubquery.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
             public void Creates_Subquery_Expression()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
                 Expression<Func<JObject, IEnumerable<IssueModel>>> expected =
                     data => (IEnumerable<IssueModel>)Rewritten.List.Select(
                         Rewritten.Interface.Cast(data["data"]["node"], "Repository")["issues"]["nodes"],
@@ -671,7 +600,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         }).ToList();
                 var expectedString = expected.ToReadableString();
 
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.ResultBuilder);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ResultBuilder);
                 var actualString = actual.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -680,10 +609,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_PageInfo()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.PageInfo);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.PageInfo);
                 var actualString = actual.ToReadableString();
 
                 Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.issues.pageInfo");
@@ -695,10 +621,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_ParentId()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.ParentIds);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ParentIds);
                 var actualString = actual.ToReadableString();
 
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = (Expression<Func<JObject, IEnumerable<JToken>>>)(data => data.SelectTokens("$.data.repository.id"));
@@ -710,10 +633,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_Subquery_Expression_ParentPageInfo()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var simpleSubquery = (SimpleSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var actual = ExpressionCompiler.GetSourceExpression(simpleSubquery.ParentPageInfo);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubquery.ParentPageInfo);
                 var actualString = actual.ToReadableString();
 
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = (Expression<Func<JObject, IEnumerable<JToken>>>)(data => data.SelectTokens("$.data.repository.issues.pageInfo"));
@@ -789,7 +709,12 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         public class Repository_Issues_Comments_AllPages
         {
-            ICompiledQuery<IEnumerable<IssueModel>> TestQuery { get; } = new Query()
+            static Repository_Issues_Comments_AllPages()
+            {
+                ExpressionCompiler.IsUnitTesting = true;
+            }
+
+            private ICompiledQuery<IEnumerable<IssueModel>> TestQuery { get; } = new Query()
                 .Repository("foo", "bar")
                 .Issues()
                 .AllPages()
@@ -804,10 +729,19 @@ namespace Octokit.GraphQL.Core.UnitTests
                 })
                 .Compile();
 
-            static Repository_Issues_Comments_AllPages()
-            {
-                ExpressionCompiler.IsUnitTesting = true;
-            }
+            private SimpleQuery<IEnumerable<IssueModel>> TestMasterQuery => TestQuery.GetMasterQuery();
+
+            private IReadOnlyList<ISubquery> TestQuerySubqueries => TestQuery.GetSubqueries();
+
+            private PagedSubquery<IEnumerable<IssueModel>> TestQueryFirstSubquery => (PagedSubquery<IEnumerable<IssueModel>>)TestQuerySubqueries.First();
+
+            private SimpleQuery<IEnumerable<IssueModel>> TestQueryFirstSubqueryMasterQuery => TestQueryFirstSubquery.GetMasterQuery();
+
+            private IReadOnlyList<ISubquery> TestQueryFirstSubquerySubqueries => TestQueryFirstSubquery.GetSubqueries();
+
+            private SimpleSubquery<IEnumerable<CommentModel>> TestQueryFirstSubqueryFirstSubquery => (SimpleSubquery<IEnumerable<CommentModel>>)TestQueryFirstSubquerySubqueries[0];
+
+            private SimpleSubquery<IEnumerable<CommentModel>> TestQuerySecondSubquery => (SimpleSubquery<IEnumerable<CommentModel>>)TestQuerySubqueries.Skip(1).First();
 
             [Fact]
             public void Creates_MasterQuery()
@@ -838,9 +772,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var master = TestQuery.GetMasterQuery();
-
-                Assert.Equal(expected, master.ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(expected, TestMasterQuery.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -867,8 +799,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         data.Annotation<ISubqueryRunner>(),
                         subqueryPlaceholder);
 
-                var query = TestQuery.GetMasterQuery();
-                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, query,
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, TestMasterQuery,
                     "SimpleSubquery<IEnumerable<PagingTests.CommentModel>>",
                     "PagedSubquery<IEnumerable<PagingTests.IssueModel>>");
             }
@@ -876,11 +807,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_PagedSubquery_1_MasterQuery()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                Assert.Equal(2, subqueries.Count);
-
-                var pagedSubquery = (PagedSubquery<IEnumerable<IssueModel>>)subqueries[0];
-                var masterQuery = pagedSubquery.GetMasterQuery();
+                Assert.Equal(2, TestQuerySubqueries.Count);
 
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
@@ -910,27 +837,33 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                Assert.Equal(expected, masterQuery.ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(expected, TestQueryFirstSubqueryMasterQuery.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
             public void Creates_PagedSubquery_1_MasterQuery_Expression()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var pagedSubquery = (PagedSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var masterQuery = pagedSubquery.MasterQuery;
-                var actual = ExpressionCompiler.GetSourceExpression(masterQuery.ResultBuilder);
-                var actualString = actual.ToReadableString();
-
                 Expression<Func<JObject, IEnumerable<IssueModel>>> expected =
                     data => (IEnumerable<IssueModel>)Rewritten.List.Select(
                         Rewritten.Interface.Cast(data["data"]["node"], "Repository")["issues"]["nodes"],
                         issue => new IssueModel
                         {
-                            Number = issue["number"].ToObject<int>()
+                            Number = issue["number"].ToObject<int>(),
+                            Comments = Rewritten.List.ToSubqueryList(
+                                Rewritten.List.Select(
+                                    issue["comments"]["nodes"],
+                                    comment => new PagingTests.CommentModel
+                                    {
+                                        Id = comment["id"].ToString(),
+                                        Body = comment["body"].ToObject<string>()
+                                    }),
+                                data.Annotation<ISubqueryRunner>(),
+                                subqueryPlaceholder)
                         }).ToList();
-                var expectedString = expected.ToReadableString();
+                var expectedString = ExpressionRewriterAssertions.ReplaceSubqueryPlaceholders(expected.ToReadableString(), "SimpleSubquery<IEnumerable<PagingTests.CommentModel>>");
+
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubqueryMasterQuery.ResultBuilder);
+                var actualString = actual.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
             }
@@ -938,12 +871,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_PagedSubquery_1_SubQuery_Expression()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var pagedSubquery = (PagedSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var subqueries1 = pagedSubquery.GetSubqueries();
-                var subquery = (SimpleSubquery<IEnumerable<CommentModel>>)subqueries1[0];
-                var actual = ExpressionCompiler.GetSourceExpression(subquery.ResultBuilder);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubqueryFirstSubquery.ResultBuilder);
                 var actualString = actual.ToReadableString();
 
                 Expression<Func<JObject, IEnumerable<CommentModel>>> expected =
@@ -962,12 +890,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_PagedSubquery_1_SubQuery_Expression_PageInfo()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var pagedSubquery = (PagedSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var subqueries1 = pagedSubquery.GetSubqueries();
-                var subquery = (SimpleSubquery<IEnumerable<CommentModel>>)subqueries1[0];
-                var actual = ExpressionCompiler.GetSourceExpression(subquery.PageInfo);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubqueryFirstSubquery.PageInfo);
                 var actualString = actual.ToReadableString();
 
                 Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.comments.pageInfo");
@@ -979,12 +902,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_PagedSubquery_1_SubQuery_Expression_ParentIds()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var pagedSubquery = (PagedSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var subqueries1 = pagedSubquery.GetSubqueries();
-                var subquery = (SimpleSubquery<IEnumerable<CommentModel>>)subqueries1[0];
-                var actual = ExpressionCompiler.GetSourceExpression(subquery.ParentIds);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubqueryFirstSubquery.ParentIds);
                 var actualString = actual.ToReadableString();
 
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.node.issues.nodes.[*].id");
@@ -996,12 +914,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_PagedSubquery_1_SubQuery_Expression_ParentPageInfo()
             {
-                var subqueries = TestQuery.GetSubqueries();
-                var pagedSubquery = (PagedSubquery<IEnumerable<IssueModel>>)subqueries[0];
-
-                var subqueries1 = pagedSubquery.GetSubqueries();
-                var subquery = (SimpleSubquery<IEnumerable<CommentModel>>)subqueries1[0];
-                var actual = ExpressionCompiler.GetSourceExpression(subquery.ParentPageInfo);
+                var actual = ExpressionCompiler.GetSourceExpression(TestQueryFirstSubqueryFirstSubquery.ParentPageInfo);
                 var actualString = actual.ToReadableString();
 
                 Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.node.issues.nodes.[*].comments.pageInfo");
@@ -1011,7 +924,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
 
             [Fact]
-            public void Creates_PagedSubquery_2()
+            public void Creates_Subquery_2_MasterQuery()
             {
                 var expected = @"query($__id: ID!, $__after: String) {
   node(id: $__id) {
@@ -1031,10 +944,27 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var subqueries = TestQuery.GetSubqueries();
+                Assert.Equal(2, TestQuerySubqueries.Count);
+                Assert.Equal(expected, TestQuerySecondSubquery.ToString(), ignoreLineEndingDifferences: true);
+            }
 
-                Assert.Equal(2, subqueries.Count);
-                Assert.Equal(expected, subqueries[1].ToString(), ignoreLineEndingDifferences: true);
+            [Fact]
+            public void Creates_Subquery_2_MasterQuery_Expression()
+            {
+                Expression<Func<JObject, IEnumerable<CommentModel>>> expected =
+                    data => (IEnumerable<CommentModel>)Rewritten.List.Select(
+                        Rewritten.Interface.Cast(data["data"]["node"], "Issue")["comments"]["nodes"],
+                        comment => new CommentModel
+                        {
+                            Id = comment["id"].ToString(),
+                            Body = comment["body"].ToObject<string>()
+                        }).ToList();
+                var expectedString = expected.ToReadableString();
+
+                var actual = ExpressionCompiler.GetSourceExpression(TestQuerySecondSubquery.ResultBuilder);
+                var actualString = actual.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
             }
 
             [Fact]
@@ -1062,7 +992,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 ""hasNextPage"": " + hasNextPage.ToString().ToLower() + @",
                 ""endCursor"": """ + "comment_end" + number + @"""
               },
-              ""nodes"": [" + 
+              ""nodes"": [" +
                 string.Join(",", Enumerable.Range(number * 10, commentCount).Select(x => CreateComment(x))) + @"
               ]
             }
@@ -1129,7 +1059,7 @@ namespace Octokit.GraphQL.Core.UnitTests
           ""endCursor"": ""issue_end1""
         },
         ""nodes"": [" +
-            CreateIssue(4, 0, false) + ","  +
+            CreateIssue(4, 0, false) + "," +
             CreateIssue(5, 0, false) + @"
         ]
       }

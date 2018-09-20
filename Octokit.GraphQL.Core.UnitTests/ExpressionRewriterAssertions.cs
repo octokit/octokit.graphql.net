@@ -93,15 +93,22 @@ namespace Octokit.GraphQL.Core.UnitTests
             var actualResultExpression = actualCompiledQuery.GetResultBuilderExpression();
             var actualString = actualResultExpression.ToReadableString();
 
+            expectedString = ReplaceSubqueryPlaceholders(expectedString, subqueryPlaceholderReplacements);
+
+            actualString = ExtractAnonymousTypeDeclarations(actualString);
+
+            Assert.Equal(StripWhitespace(expectedString), StripWhitespace(actualString));
+        }
+
+        public static string ReplaceSubqueryPlaceholders(string expectedString, params string[] subqueryPlaceholderReplacements)
+        {
             foreach (var subqueryPlaceholderReplacement in subqueryPlaceholderReplacements)
             {
                 var regex = new Regex("PagingTests.subqueryPlaceholder");
                 expectedString = regex.Replace(expectedString, subqueryPlaceholderReplacement, 1);
             }
 
-            actualString = ExtractAnonymousTypeDeclarations(actualString);
-
-            Assert.Equal(StripWhitespace(expectedString), StripWhitespace(actualString));
+            return expectedString;
         }
 
         public static string StripWhitespace(string x)
