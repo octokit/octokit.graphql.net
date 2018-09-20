@@ -72,11 +72,6 @@ namespace Octokit.GraphQL.Core.Utilities
         /// <param name="instance">The expression.</param>
         /// <param name="field">The field to return.</param>
         /// <returns>A new expression.</returns>
-//        public static Expression AddIndexer(this Expression instance, FieldSelection field)
-//        {
-//            return AddIndexer(instance, field.Alias ?? field.Name);
-//        }
-
         public static Expression AddIndexer(this Expression instance, FieldSelection field)
         {
             return AddIndexer(instance, field.Alias ?? field.Name);
@@ -89,40 +84,11 @@ namespace Octokit.GraphQL.Core.Utilities
         /// <param name="expression">The expression.</param>
         /// <param name="fieldName">The field to return.</param>
         /// <returns>A new expression.</returns>
-//        public static MethodCallExpression AddIndexer(this Expression expression, string fieldName)
-//        {
-//            if (typeof(JToken).GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
-//            {
-//                // Returns `expression[fieldName];`
-//                return Expression.Call(
-//                    expression,
-//                    JsonMethods.JTokenIndexer,
-//                    Expression.Constant(fieldName));
-//            }
-//            else
-//            {
-//                throw new NotSupportedException($"Don't know how to add an indexer to {expression}.");
-//            }
-//        }
-
-        /// <summary>
-        /// Adds an indexer to an expression representing a <see cref="JToken"/> or a collection of
-        /// <see cref="JToken"/>s.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <param name="fieldName">The field to return.</param>
-        /// <returns>A new expression.</returns>
         public static IndexExpression AddIndexer(this Expression expression, string fieldName)
         {
             if (typeof(JToken).GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
             {
-                // Returns `expression[fieldName];`
-//                return Expression.Call(
-//                    expression,
-//                    JsonMethods.JTokenIndexer,
-//                    Expression.Constant(fieldName));
-
-                return Expression.Property(expression, JsonMethods.JTokenIndexer2, Expression.Constant(fieldName));
+                return Expression.Property(expression, JsonMethods.JTokenIndexer, Expression.Constant(fieldName));
             }
             else
             {

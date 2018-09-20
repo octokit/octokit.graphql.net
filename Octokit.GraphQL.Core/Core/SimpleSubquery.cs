@@ -78,7 +78,7 @@ namespace Octokit.GraphQL.Core
             return new Runner(this, connection, id, after, variables, addResult);
         }
 
-        public static ISubquery Create(
+        internal static ISubquery Create(
             Type resultType,
             OperationDefinition operationDefinition,
             Expression expression,
