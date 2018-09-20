@@ -442,7 +442,7 @@ namespace Octokit.GraphQL.Core.Builders
         private Expression<Func<JObject, IEnumerable<JToken>>> CreatePageInfoExpression()
         {
             return CreateSelectTokensExpression(
-                syntax.FieldStack.Select(x => x.Name).Concat(new[] { "pageInfo" }));
+                syntax.FieldStack.Select(x => x.Alias ?? x.Name).Concat(new[] { "pageInfo" }));
         }
 
         private static Expression<Func<JObject, JToken>> CreateSelectTokenExpression(IEnumerable<string> selectors)
