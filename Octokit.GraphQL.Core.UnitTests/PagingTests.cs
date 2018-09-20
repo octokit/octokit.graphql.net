@@ -203,7 +203,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 int page = 0;
 
-                string Execute(string query, IDictionary<string, string> variables)
+                string Execute(string _, IDictionary<string, string> variables)
                 {
                     switch (page++)
                     {
@@ -432,7 +432,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 int page = 0;
 
-                string Execute(string query, IDictionary<string, string> variables)
+                string Execute(string _, IDictionary<string, string> variables)
                 {
                     switch (page++)
                     {
@@ -647,7 +647,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 int page = 0;
 
-                string Execute(string query, IDictionary<string, string> variables)
+                string Execute(string _, IDictionary<string, string> variables)
                 {
                     switch (page++)
                     {
@@ -999,7 +999,7 @@ namespace Octokit.GraphQL.Core.UnitTests
           }";
                 }
 
-                string Execute(string query, IDictionary<string, string> variables)
+                string Execute(string _, IDictionary<string, string> variables)
                 {
                     switch (page++)
                     {
@@ -1448,6 +1448,78 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
             }
+
+            [Fact]
+            public async Task Reads_All_Pages()
+            {
+                int page = 0;
+
+                string Execute(string _, IDictionary<string, string> variables)
+                {
+                    switch (page++)
+                    {
+                        case 0:
+                            Assert.Null(variables);
+                            return @"{
+	""data"": {
+		""repository"": {
+			""id"": ""MDEwOlJlcG9zaXRvcnk3NTI4Njc5"",
+			""intList1"": {
+				""pageInfo"": {
+					""hasNextPage"": true,
+					""endCursor"": ""Y3Vyc29yOnYyOpHOAZBbyw==""
+				},
+				""nodes"": [{
+						""number"": 1
+					}, {
+						""number"": 2
+					}, {
+						""number"": 3
+					}
+				]
+			},
+			""intList2"": {
+				""pageInfo"": {
+					""hasNextPage"": true,
+					""endCursor"": ""Y3Vyc29yOnYyOpHOAZBbyw==""
+				},
+				""nodes"": [{
+						""number"": 4
+					}, {
+						""number"": 5
+					}, {
+						""number"": 6
+					}
+				]
+			}
+		}
+	}
+}
+";
+                        default:
+                            throw new NotSupportedException("Should not get here");
+                    }
+                }
+
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+
+                var connection = new MockConnection(Execute);
+                var result = (await connection.Run(query));
+            }
+
         }
 
         class RepositoryModel
