@@ -210,12 +210,4 @@ namespace Octokit.GraphQL.UnitTests
             ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
     }
-
-    public static class StringExtensions
-    {
-        public static string RemoveWhitespace(this string str)
-        {
-            return string.Join(string.Empty, str.Split(new []{" ", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries));
-        }
-    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using AgileObjects.ReadableExpressions;
 using Xunit;
@@ -13,7 +14,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public static string ExtractAnonymousTypeDeclarations(string actualString)
         {
             var result = actualString;
-            var nextIndex = result.IndexOf(AnonymousType);
+            var nextIndex = result.IndexOf(AnonymousType, StringComparison.Ordinal);
             while (nextIndex != -1)
             {
                 int stack = 0;
@@ -54,7 +55,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                     }
                 }
 
-                nextIndex = result.IndexOf(AnonymousType);
+                nextIndex = result.IndexOf(AnonymousType, StringComparison.Ordinal);
             }
 
             return result;
@@ -73,12 +74,6 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         public static void AssertExpressionQueryEqual<T>(string expectedString, IQueryableValue<T> actual)
-        {
-            var actualCompiledQuery = actual.Compile();
-            AssertCompiledQueryExpressionEqual(expectedString, actualCompiledQuery);
-        }
-
-        public static void AssertExpressionQueryEqual<T>(string expectedString, IQueryableList<T> actual)
         {
             var actualCompiledQuery = actual.Compile();
             AssertCompiledQueryExpressionEqual(expectedString, actualCompiledQuery);
