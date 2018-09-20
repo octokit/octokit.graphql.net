@@ -668,7 +668,7 @@ namespace Octokit.GraphQL.Core.Builders
                     syntax.Head.Selections.Add(PageInfoSelection());
 
                     // Create the subquery
-                    subquery = AddSubquery(allPages.Method, expression, alias, instance.AddIndexer("pageInfo"), pageSize);
+                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"), pageSize);
 
                     // And continue the query as normal after selecting "nodes".
                     syntax.AddField("nodes");
@@ -736,7 +736,7 @@ namespace Octokit.GraphQL.Core.Builders
                     syntax.Head.Selections.Add(PageInfoSelection());
 
                     // Create the subquery
-                    subquery = AddSubquery(allPages.Method, expression, alias, instance.AddIndexer("pageInfo"), pageSize);
+                    subquery = AddSubquery(allPages.Method, expression, instance.AddIndexer("pageInfo"), pageSize);
 
                     // And continue the query as normal after selecting "nodes".
                     syntax.AddField("nodes");
@@ -961,9 +961,9 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private ISubquery AddSubquery(MethodCallExpression expression,
+        private ISubquery AddSubquery(
+            MethodCallExpression expression,
             MethodCallExpression selector,
-            MemberInfo infoSelector,
             Expression pageInfoSelector,
             int pageSize)
         {
