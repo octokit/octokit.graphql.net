@@ -1181,11 +1181,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                         data["data"]["repository"],
                         repository => new {
                             IntList1 = Rewritten.List.ToSubqueryList(
-                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["issues"]["nodes"], issue => issue["number"])),
+                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["intList1"]["nodes"], issue => issue["number"])),
                                 data.Annotation<ISubqueryRunner>(),
                                 subqueryPlaceholder),
                             IntList2 = Rewritten.List.ToSubqueryList(
-                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["issues"]["nodes"], issue => issue["number"])),
+                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["intList2"]["nodes"], issue => issue["number"])),
                                 data.Annotation<ISubqueryRunner>(),
                                 subqueryPlaceholder)
                         });
@@ -1324,7 +1324,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentPageInfo);
                 var actualString = actual.ToReadableString();
 
-                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.intList1.pageInfo");
                 var expectedString = expected.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -1443,7 +1443,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentPageInfo);
                 var actualString = actual.ToReadableString();
 
-                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.intList2.pageInfo");
                 var expectedString = expected.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
