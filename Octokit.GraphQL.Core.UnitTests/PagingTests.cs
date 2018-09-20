@@ -1130,10 +1130,10 @@ namespace Octokit.GraphQL.Core.UnitTests
             [Fact]
             public void Creates_MasterQuery()
             {
-                var masterQuery = @"query {
+                var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
     id
-    stringList1: issues(first: 100) {
+    intList1: issues(first: 100) {
       pageInfo {
         hasNextPage
         endCursor
@@ -1142,7 +1142,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         number
       }
     }
-    stringList2: issues(first: 100) {
+    intList2: issues(first: 100) {
       pageInfo {
         hasNextPage
         endCursor
@@ -1154,45 +1154,299 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-                var subQuery = @"query($__id: ID!, $__after: String) {
-  node(id: $__id) {
-    __typename
-    ... on Repository {
-      issues(first: 100, after: $__after) {
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-        nodes {
-          number
-        }
-      }
-    }
-  }
-}";
-
-                var compiledQuery = new Query()
+                var query = new Query()
                     .Repository("foo", "bar")
                     .Select(repository => new
                     {
-                        StringList1 = repository.Issues(null, null, null, null, null)
+                        IntList1 = repository.Issues(null, null, null, null, null)
                             .AllPages()
                             .Select(issue => issue.Number)
                             .ToList(),
-                        StringList2 = repository.Issues(null, null, null, null, null)
+                        IntList2 = repository.Issues(null, null, null, null, null)
                             .AllPages()
                             .Select(issue => issue.Number)
                             .ToList()
                     }).Compile();
 
-                var master = compiledQuery.GetMasterQuery();
+                var masterQuery = query.GetMasterQuery();
 
-                Assert.Equal(masterQuery, master.ToString(), ignoreLineEndingDifferences: true);
+                Assert.Equal(expected, masterQuery.ToString(), ignoreLineEndingDifferences: true);
+            }
 
-                var subqueries = compiledQuery.GetSubqueries();
+            [Fact]
+            public void Creates_MasterQuery_Expression()
+            {
+                Expression<Func<JObject, object>> expected = data => 
+                    Rewritten.Value.Select(
+                        data["data"]["repository"],
+                        repository => new {
+                            IntList1 = Rewritten.List.ToSubqueryList(
+                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["issues"]["nodes"], issue => issue["number"])),
+                                data.Annotation<ISubqueryRunner>(),
+                                subqueryPlaceholder),
+                            IntList2 = Rewritten.List.ToSubqueryList(
+                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["issues"]["nodes"], issue => issue["number"])),
+                                data.Annotation<ISubqueryRunner>(),
+                                subqueryPlaceholder)
+                        });
 
-                Assert.Equal(subQuery, subqueries[0].ToString(), ignoreLineEndingDifferences: true);
-                Assert.Equal(subQuery, subqueries[1].ToString(), ignoreLineEndingDifferences: true);
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var masterQuery = query.GetMasterQuery();
+
+                ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, masterQuery,
+                    "SimpleSubquery<IEnumerable<int>>",
+                    "SimpleSubquery<IEnumerable<int>>");
+            }
+
+            [Fact]
+            public void Creates_Subquery_1_Expression()
+            {
+                Expression<Func<JObject, IEnumerable<int>>> expected =
+                    data => (IEnumerable<int>)Rewritten.List.Select(
+                        Rewritten.Interface.Cast(data["data"]["node"], "Repository")["issues"]["nodes"],
+                        issue =>  issue["number"].ToObject<int>()).ToList();
+                var expectedString = expected.ToReadableString();
+
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>) subqueries[0];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ResultBuilder);
+                var actualString = actual.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+            }
+
+            [Fact]
+            public void Creates_Subquery_1_Expression_PageInfo()
+            {
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[0];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.PageInfo);
+                var actualString = actual.ToReadableString();
+
+                Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.issues.pageInfo");
+                var expectedString = expected.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+            }
+
+            [Fact]
+            public void Creates_Subquery_1_Expression_ParentId()
+            {
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[0];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentIds);
+                var actualString = actual.ToReadableString();
+
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.id");
+                var expectedString = expected.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+            }
+
+            [Fact]
+            public void Creates_Subquery_1_Expression_ParentPageInfo()
+            {
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[0];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentPageInfo);
+                var actualString = actual.ToReadableString();
+
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
+                var expectedString = expected.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+            }
+
+            [Fact]
+            public void Creates_Subquery_2_Expression()
+            {
+                Expression<Func<JObject, IEnumerable<int>>> expected =
+                    data => (IEnumerable<int>)Rewritten.List.Select(
+                        Rewritten.Interface.Cast(data["data"]["node"], "Repository")["issues"]["nodes"],
+                        issue =>  issue["number"].ToObject<int>()).ToList();
+                var expectedString = expected.ToReadableString();
+
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>) subqueries[1];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ResultBuilder);
+                var actualString = actual.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+            }
+
+            [Fact]
+            public void Creates_Subquery_2_Expression_PageInfo()
+            {
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[1];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.PageInfo);
+                var actualString = actual.ToReadableString();
+
+                Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.issues.pageInfo");
+                var expectedString = expected.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+            }
+
+            [Fact]
+            public void Creates_Subquery_2_Expression_ParentId()
+            {
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[1];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentIds);
+                var actualString = actual.ToReadableString();
+
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.id");
+                var expectedString = expected.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+            }
+
+            [Fact]
+            public void Creates_Subquery_2_Expression_ParentPageInfo()
+            {
+                var query = new Query()
+                    .Repository("foo", "bar")
+                    .Select(repository => new
+                    {
+                        IntList1 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList(),
+                        IntList2 = repository.Issues(null, null, null, null, null)
+                            .AllPages()
+                            .Select(issue => issue.Number)
+                            .ToList()
+                    }).Compile();
+
+                var subqueries = query.GetSubqueries();
+                var queryFirstSubquery = (SimpleSubquery<IEnumerable<int>>)subqueries[1];
+
+                var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentPageInfo);
+                var actualString = actual.ToReadableString();
+
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
+                var expectedString = expected.ToReadableString();
+
+                Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
             }
         }
 
