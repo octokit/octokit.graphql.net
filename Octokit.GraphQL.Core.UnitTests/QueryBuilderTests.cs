@@ -873,8 +873,6 @@ fragment issueTitle on Issue {
                         .AllPages().Select(fragment).ToList(),
                 });
 
-            var compiledQuery = expression.Compile();
-
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
