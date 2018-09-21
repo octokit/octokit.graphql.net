@@ -962,8 +962,8 @@ fragment issueTitle on Issue {
 
         public class TestIssueSets
         {
-            public object SomeData { get; set; }
-            public object SomeData2 { get; set; }
+            public IReadOnlyList<object> SomeData { get; set; }
+            public IReadOnlyList<object> SomeData2 { get; set; }
         }
     }
 }
