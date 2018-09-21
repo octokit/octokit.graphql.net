@@ -75,6 +75,7 @@ namespace Octokit.GraphQL.Core.Builders
             Expression<Func<JObject, IEnumerable<JToken>>> parentIds,
             Expression<Func<JObject, IEnumerable<JToken>>> parentPageInfo)
         {
+            buildingSubquery = true;
             Initialize();
 
             var resultType = typeof(IEnumerable<>).MakeGenericType(expression.Type.GenericTypeArguments[0]);
@@ -915,8 +916,20 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
+        private int calls = 0;
+        private bool buildingSubquery;
+
         private Expression VisitQueryMethod(MethodCallExpression node, MemberInfo alias)
         {
+            if (syntax.Root!=null && !buildingSubquery && syntax.Root == syntax.Head && alias == null)
+            {
+                calls++;
+                if (calls > 1)
+                {
+                    // throw new NotImplementedException();
+                }
+            }
+
             var queryEntity = (node.Object as ConstantExpression)?.Value as IQueryableValue;
             var instance = Visit(queryEntity?.Expression ?? node.Object);
             var field = syntax.AddField(node.Method, alias);
