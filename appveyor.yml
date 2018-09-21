@@ -2,7 +2,7 @@ os: Visual Studio 2017
 configuration: Release
 
 before_build:
-  - nuget restore
+  - nuget restore -Verbosity Quiet
 
 build:
   verbosity: minimal
@@ -10,9 +10,10 @@ build:
 
 build_script:
 - ps: >-
-    msbuild Octokit.GraphQL.sln --% /bl:output.binlog
+    msbuild Octokit.GraphQL.sln --% /bl:output.binlog /verbosity:minimal
 
 on_finish:
+- 'echo "UserProfile: %USERPROFILE%"'
 - IF "%MSBLOC_TOKEN%x"=="x" echo MSBLOC Token not found
 - IF NOT "%MSBLOC_TOKEN%x"=="x" '%USERPROFILE%\.nuget\packages\msbloc.msbuildlog.console\1.0.0\tools\net471\MSBLOC.MSBuildLog.Console.exe -i output.binlog -o checkrun.json -c "%APPVEYOR_BUILD_FOLDER%"'
 - IF NOT "%MSBLOC_TOKEN%x"=="x" '%USERPROFILE%\.nuget\packages\msbloc.submission.console\1.0.0\tools\net471\MSBLOC.Submission.Console.exe' -i checkrun.json -t "%MSBLOC_TOKEN%" -h "%APPVEYOR_REPO_COMMIT%"
