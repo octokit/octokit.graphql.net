@@ -22,6 +22,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The input subscribable entity.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `subscribable` will change from `Subscribable!` to `Subscribable`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public ISubscribable Subscribable => this.CreateProperty(x => x.Subscribable, Octokit.GraphQL.Model.Internal.StubISubscribable.Create);
 

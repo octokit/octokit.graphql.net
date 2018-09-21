@@ -10,6 +10,8 @@ namespace Octokit.GraphQL.Model
     {
         public ID ProjectCardId { get; set; }
 
+        public bool? IsArchived { get; set; }
+
         public string Note { get; set; }
 
         public string ClientMutationId { get; set; }

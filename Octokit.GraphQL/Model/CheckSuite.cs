@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The GitHub App which created this check suite.
+        /// </summary>
+        public App App => this.CreateProperty(x => x.App, Octokit.GraphQL.Model.App.Create);
+
+        /// <summary>
         /// The name of the branch for this check suite.
         /// </summary>
         public Ref Branch => this.CreateProperty(x => x.Branch, Octokit.GraphQL.Model.Ref.Create);

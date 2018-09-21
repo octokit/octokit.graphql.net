@@ -45,9 +45,10 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Get alphabetically sorted list of Marketplace categories
         /// </summary>
+        /// <param name="includeCategories">Return only the specified categories.</param>
         /// <param name="excludeEmpty">Exclude categories with no listings.</param>
         /// <param name="excludeSubcategories">Exclude subcategories</param>
-        public IQueryableList<MarketplaceCategory> MarketplaceCategories(Arg<bool>? excludeEmpty = null, Arg<bool>? excludeSubcategories = null) => this.CreateMethodCall(x => x.MarketplaceCategories(excludeEmpty, excludeSubcategories));
+        public IQueryableList<MarketplaceCategory> MarketplaceCategories(Arg<IEnumerable<string>>? includeCategories = null, Arg<bool>? excludeEmpty = null, Arg<bool>? excludeSubcategories = null) => this.CreateMethodCall(x => x.MarketplaceCategories(includeCategories, excludeEmpty, excludeSubcategories));
 
         /// <summary>
         /// Look up a Marketplace category by its slug.

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Octokit.GraphQL
 {
@@ -10,7 +11,8 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Retrieve the credentials from the underlying store
         /// </summary>
+        /// <param name="cancellationToken">The optional cancellation token to use.</param>
         /// <returns>A continuation containing credentials</returns>
-        Task<string> GetCredentials();
+        Task<string> GetCredentials(CancellationToken cancellationToken = default);
     }
 }
