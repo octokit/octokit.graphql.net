@@ -15,8 +15,8 @@ build_script:
 on_finish:
 - 'echo "UserProfile: %USERPROFILE%"'
 - IF "%MSBLOC_TOKEN%x"=="x" echo MSBLOC Token not found
-- IF NOT "%MSBLOC_TOKEN%x"=="x" '%USERPROFILE%\.nuget\packages\msbloc.msbuildlog.console\1.0.0\tools\net471\MSBLOC.MSBuildLog.Console.exe -i output.binlog -o checkrun.json -c "%APPVEYOR_BUILD_FOLDER%"'
-- IF NOT "%MSBLOC_TOKEN%x"=="x" '%USERPROFILE%\.nuget\packages\msbloc.submission.console\1.0.0\tools\net471\MSBLOC.Submission.Console.exe' -i checkrun.json -t "%MSBLOC_TOKEN%" -h "%APPVEYOR_REPO_COMMIT%"
+- IF NOT "%MSBLOC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\msbloc.msbuildlog.console\1.0.0\tools\net471\MSBLOC.MSBuildLog.Console.exe -i output.binlog -o checkrun.json -c "%APPVEYOR_BUILD_FOLDER%"
+- IF NOT "%MSBLOC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\msbloc.submission.console\1.0.0\tools\net471\MSBLOC.Submission.Console.exe' -i checkrun.json -t "%MSBLOC_TOKEN%" -h "%APPVEYOR_REPO_COMMIT%"
 
 after_build:
   - nuget pack
