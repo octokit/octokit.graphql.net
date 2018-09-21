@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
@@ -668,9 +669,9 @@ fragment repositoryName on Repository {
         {
             var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
-    forkCount
-    name
-    description
+    intField1: forkCount
+    stringField1: name
+    stringField2: description
   }
 }";
 
@@ -724,9 +725,9 @@ fragment repositoryName on Repository {
   }
 }
 fragment repositoryName on Repository {
-  forkCount
-  name
-  description
+  intField1: forkCount
+  stringField1: name
+  stringField2: description
 }";
 
             var fragment = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
@@ -786,9 +787,9 @@ fragment repositoryName on Repository {
   }
 }
 fragment repositoryName on Repository {
-  forkCount
-  name
-  description
+  intField1: forkCount
+  stringField1: name
+  stringField2: description
 }";
 
             var repositoryName = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
@@ -872,6 +873,82 @@ fragment issueTitle on Issue {
                         .AllPages().Select(fragment).ToList(),
                 });
 
+            var compiledQuery = expression.Compile();
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Two_In_Anon_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    someData: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+    someData2: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query().Repository("foo", "bar").Select(repository => new
+            {
+                SomeData = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+                SomeData2 = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+            });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Two_In_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    someData: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+    someData2: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query().Repository("foo", "bar").Select(repository => new TestIssueSets
+            {
+                SomeData = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+                SomeData2 = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+            });
+
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
@@ -883,6 +960,12 @@ fragment issueTitle on Issue {
             public string StringField2;
             public int IntField1;
             public int IntField2;
+        }
+
+        public class TestIssueSets
+        {
+            public object SomeData { get; set; }
+            public object SomeData2 { get; set; }
         }
     }
 }
