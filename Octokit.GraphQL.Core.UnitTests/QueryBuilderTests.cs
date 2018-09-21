@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
@@ -594,6 +595,30 @@ namespace Octokit.GraphQL.Core.UnitTests
                 {
                     repo1 = q.Repository("foo", "bar").Select(repository => new { repository.Name }).Single(),
                     repo2 = q.Repository("foo", "bar").Select(repository => new { repository.Name }).Single()
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Should_Throw_Error_Repo_Twice()
+        {
+            var expected = @"query {
+  repo1: repository(owner: ""foo"", name: ""bar"") {
+    name
+  }
+  repo2: repository(owner: ""foo"", name: ""bar"") {
+    name
+  }
+}";
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Name.Single(),
+                    repo2 = q.Repository("foo", "bar").Name.Single()
                 });
 
             var query = expression.Compile();
