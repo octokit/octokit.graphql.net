@@ -29,5 +29,3 @@ after_test:
 
 artifacts:
   - path: '*.nupkg'
-  - path: output.binlog
-    name: log
