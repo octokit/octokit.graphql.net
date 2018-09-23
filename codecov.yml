@@ -27,3 +27,6 @@ comment:
   
 fixes:
   - "/C/projects/octokit-graphql/::"
+  
+ignore:
+- "*Tests/"
