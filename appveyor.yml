@@ -14,7 +14,7 @@ build_script:
 
 on_finish:
 - IF NOT "%BCC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\bcc-msbuildlog\0.0.2-alpha\tools\net471\BCC.MSBuildLog.exe -i output.binlog -o checkrun.json -c "%APPVEYOR_BUILD_FOLDER%"
-- IF NOT "%BCC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\bcc-submission\0.0.2-alpha\tools\net471\BCC.Submission.exe -i checkrun.json -t "%MSBLOC_TOKEN%" -h "%APPVEYOR_REPO_COMMIT%"
+- IF NOT "%BCC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\bcc-submission\0.0.2-alpha\tools\net471\BCC.Submission.exe -i checkrun.json -t "%BCC_TOKEN%" -h "%APPVEYOR_REPO_COMMIT%"
 
 after_build:
   - nuget pack
