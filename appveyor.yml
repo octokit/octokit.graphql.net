@@ -13,7 +13,7 @@ build_script:
     msbuild Octokit.GraphQL.sln --% /bl:output.binlog /verbosity:minimal
 
 on_finish:
-- IF NOT "%BCC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\bcc-msbuildlog\0.0.1-alpha\tools\net471\BCC.MSBuildLog.exe -i output.binlog -o checkrun.json -c "%APPVEYOR_BUILD_FOLDER%"
+- IF NOT "%BCC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\bcc-msbuildlog\0.0.2-alpha\tools\net471\BCC.MSBuildLog.exe -i output.binlog -o checkrun.json -c "%APPVEYOR_BUILD_FOLDER%"
 - IF NOT "%BCC_TOKEN%x"=="x" %USERPROFILE%\.nuget\packages\bcc-submission\0.0.2-alpha\tools\net471\BCC.Submission.exe -i checkrun.json -t "%MSBLOC_TOKEN%" -h "%APPVEYOR_REPO_COMMIT%"
 
 after_build:
