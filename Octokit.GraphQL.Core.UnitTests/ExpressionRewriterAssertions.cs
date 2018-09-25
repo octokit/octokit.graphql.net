@@ -14,56 +14,6 @@ namespace Octokit.GraphQL.Core.UnitTests
         private const string AnonymousType = "AnonymousType";
         private static readonly int AnonymousTypeLength = AnonymousType.Length;
 
-        public static string ExtractAnonymousTypeDeclarations(string actualString)
-        {
-            var result = actualString;
-            var nextIndex = result.IndexOf(AnonymousType, StringComparison.Ordinal);
-            while (nextIndex != -1)
-            {
-                int stack = 0;
-
-                int endSlice;
-                for (endSlice = nextIndex + AnonymousTypeLength; endSlice < result.Length; endSlice++)
-                {
-                    var c = result[endSlice];
-                    if (c == '<')
-                    {
-                        stack++;
-                    }
-
-                    if (c == '>')
-                    {
-                        stack--;
-                    }
-
-                    if (stack == 0)
-                        break;
-                }
-
-                if (nextIndex == 0 && endSlice + 1 == result.Length)
-                {
-                    result = "object";
-                }
-                else if (nextIndex == 0)
-                {
-                    result = "object" + result.Substring(endSlice + 1);
-                }
-                else
-                {
-                    var left = result.Substring(0, nextIndex) + "object";
-
-                    if (endSlice != result.Length)
-                    {
-                        result = left + result.Substring(endSlice + 1);
-                    }
-                }
-
-                nextIndex = result.IndexOf(AnonymousType, StringComparison.Ordinal);
-            }
-
-            return result;
-        }
-
         public static void AssertExpressionQueryEqual<T>(Expression expected, IQueryableValue<T> actual)
         {
             var actualCompiledQuery = actual.Compile();
@@ -91,11 +41,9 @@ namespace Octokit.GraphQL.Core.UnitTests
         public static void AssertCompiledQueryExpressionEqual<T>(string expectedString, ICompiledQuery<T> actualCompiledQuery, params string[] subqueryPlaceholderReplacements)
         {
             var actualResultExpression = actualCompiledQuery.GetResultBuilderExpression();
-            var actualString = actualResultExpression.ToReadableString();
+            var actualString = actualResultExpression.ToReadableString(settings => settings.NameAnonymousTypesUsing(_ => "object"));
 
             expectedString = ReplaceSubqueryPlaceholders(expectedString, subqueryPlaceholderReplacements);
-
-            actualString = ExtractAnonymousTypeDeclarations(actualString);
 
             Assert.Equal(StripWhitespace(expectedString), StripWhitespace(actualString));
         }
@@ -133,23 +81,6 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var parentPageInfoExpression = ExpressionCompiler.GetSourceExpression(subquery.ParentPageInfo);
             Assert.Equal(StripWhitespace(expectedParentPageInfoExpression.ToReadableString()), StripWhitespace(parentPageInfoExpression.ToReadableString()));
-        }
-    }
-
-    public class ExpressionRewriterAssertionsTests
-    {
-        [Theory]
-        [InlineData("string", "string")]
-        [InlineData("AnonymousType<string>", "object")]
-        [InlineData("AnonymousType<string, int>", "object")]
-        [InlineData("AnonymousType<string, int, List<string>>", "object")]
-        [InlineData("AnonymousType<string, int, AnonymousType<string, int>>", "object")]
-        [InlineData("asdf AnonymousType<string, int, AnonymousType<string, int>>", "asdf object")]
-        [InlineData("AnonymousType<string, int, AnonymousType<string, int>> asdf", "object asdf")]
-        [InlineData("Tuple<int, AnonymousType<string, int, AnonymousType<string, int>>>", "Tuple<int, object>")]
-        public void ShouldExtractAnonymousTypeDeclarations(string input, string output)
-        {
-            Assert.Equal(output, ExpressionRewriterAssertions.ExtractAnonymousTypeDeclarations(input));
         }
     }
 }
