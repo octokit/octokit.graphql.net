@@ -689,7 +689,6 @@ fragment repositoryName on Repository {
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
-
         [Fact]
         public void Repository_Select_Anon_Object()
         {
@@ -714,7 +713,6 @@ fragment repositoryName on Repository {
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
-
 
         [Fact]
         public void Repository_Select_Object_Fragment()
@@ -845,16 +843,36 @@ fragment issueTitle on Issue {
         [Fact]
         public void Issue_Select_Use_Simple_Fragment_With_AllPages_List()
         {
-            var expected = @"query {
+            var masterQuery = @"query {
   repository(owner: ""foo"", name: ""bar"") {
     id
-    issues(first: 100) {
+    repos: issues(first: 100) {
       pageInfo {
         hasNextPage
         endCursor
       }
       nodes {
         ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var subQuery = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          ...issueTitle
+        }
       }
     }
   }
@@ -873,9 +891,11 @@ fragment issueTitle on Issue {
                         .AllPages().Select(fragment).ToList(),
                 });
 
-            var query = expression.Compile();
+            var compiledQuery = expression.Compile();
 
-            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+            Assert.Equal(masterQuery, compiledQuery.GetMasterQuery().ToString(2), ignoreLineEndingDifferences: true);
+
+            Assert.Equal(subQuery, compiledQuery.GetSubqueries()[0].ToString(2), ignoreLineEndingDifferences: true);
         }
 
         [Fact]

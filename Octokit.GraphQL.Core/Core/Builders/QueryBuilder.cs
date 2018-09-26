@@ -443,7 +443,7 @@ namespace Octokit.GraphQL.Core.Builders
         private Expression<Func<JObject, IEnumerable<JToken>>> CreatePageInfoExpression()
         {
             return CreateSelectTokensExpression(
-                syntax.FieldStack.Select(x => x.Name).Concat(new[] { "pageInfo" }));
+                syntax.FieldStack.Select(x => x.Alias ?? x.Name).Concat(new[] { "pageInfo" }));
         }
 
         private static Expression<Func<JObject, JToken>> CreateSelectTokenExpression(IEnumerable<string> selectors)
@@ -651,7 +651,7 @@ namespace Octokit.GraphQL.Core.Builders
                 {
                     // .AllPages() was called on the instance. The expression is just a marker for
                     // this, the actual instance is in `allPages.Instance`
-                    instance = Visit(allPages.Method);
+                    instance = Visit(AliasedExpression.WrapIfNeeded(allPages.Method, alias));
 
                     // Select the "id" fields for the subquery.
                     var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
@@ -719,7 +719,7 @@ namespace Octokit.GraphQL.Core.Builders
                 {
                     // .AllPages() was called on the instance. The expression is just a marker for
                     // this, the actual instance is in `allPages.Instance`
-                    instance = Visit(allPages.Method);
+                    instance = Visit(AliasedExpression.WrapIfNeeded(allPages.Method, alias));
 
                     // Select the "id" fields for the subquery.
                     var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
