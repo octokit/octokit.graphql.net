@@ -1181,11 +1181,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                         data["data"]["repository"],
                         repository => new {
                             IntList1 = Rewritten.List.ToSubqueryList(
-                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["issues"]["nodes"], issue => issue["number"])),
+                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["intList1"]["nodes"], issue => issue["number"])),
                                 data.Annotation<ISubqueryRunner>(),
                                 subqueryPlaceholder),
                             IntList2 = Rewritten.List.ToSubqueryList(
-                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["issues"]["nodes"], issue => issue["number"])),
+                                Rewritten.List.ToList<int>(Rewritten.List.Select(repository["intList2"]["nodes"], issue => issue["number"])),
                                 data.Annotation<ISubqueryRunner>(),
                                 subqueryPlaceholder)
                         });
@@ -1324,7 +1324,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentPageInfo);
                 var actualString = actual.ToReadableString();
 
-                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.intList1.pageInfo");
                 var expectedString = expected.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -1443,7 +1443,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 var actual = ExpressionCompiler.GetSourceExpression(queryFirstSubquery.ParentPageInfo);
                 var actualString = actual.ToReadableString();
 
-                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.issues.pageInfo");
+                Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.repository.intList2.pageInfo");
                 var expectedString = expected.ToReadableString();
 
                 Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
@@ -1463,11 +1463,11 @@ namespace Octokit.GraphQL.Core.UnitTests
                             return @"{
 	""data"": {
 		""repository"": {
-			""id"": ""MDEwOlJlcG9zaXRvcnk3NTI4Njc5"",
+			""id"": ""repoId"",
 			""intList1"": {
 				""pageInfo"": {
 					""hasNextPage"": true,
-					""endCursor"": ""Y3Vyc29yOnYyOpHOAZBbyw==""
+					""endCursor"": ""endCursor1""
 				},
 				""nodes"": [{
 						""number"": 1
@@ -1481,7 +1481,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 			""intList2"": {
 				""pageInfo"": {
 					""hasNextPage"": true,
-					""endCursor"": ""Y3Vyc29yOnYyOpHOAZBbyw==""
+					""endCursor"": ""endCursor2""
 				},
 				""nodes"": [{
 						""number"": 4
@@ -1494,8 +1494,58 @@ namespace Octokit.GraphQL.Core.UnitTests
 			}
 		}
 	}
-}
-";
+}";
+                        case 1:
+                            Assert.NotNull(variables);
+                            Assert.Equal("repoId", variables["__id"]);
+                            Assert.Equal("endCursor2", variables["__after"]);
+
+                            return @"{
+	""data"": {
+		""node"": {
+			""__typename"": ""Repository"",
+			""issues"": {
+				""pageInfo"": {
+					""hasNextPage"": false,
+					""endCursor"": ""endCursor2.1""
+				},
+				""nodes"": [{
+						""number"": 4
+					}, {
+						""number"": 5
+					}
+				]
+			}
+		}
+	}
+}";
+                        case 2:
+                            Assert.NotNull(variables);
+                            Assert.Equal("repoId", variables["__id"]);
+                            Assert.Equal("endCursor1", variables["__after"]);
+
+                            return @"{
+	""data"": {
+		""node"": {
+			""__typename"": ""Repository"",
+			""issues"": {
+				""pageInfo"": {
+					""hasNextPage"": false,
+					""endCursor"": ""endCursor1.1""
+				},
+				""nodes"": [{
+						""number"": 4
+					}, {
+						""number"": 5
+					}, {
+						""number"": 6
+					}
+				]
+			}
+		}
+	}
+}";
+
                         default:
                             throw new NotSupportedException("Should not get here");
                     }
@@ -1518,6 +1568,9 @@ namespace Octokit.GraphQL.Core.UnitTests
 
                 var connection = new MockConnection(Execute);
                 var result = (await connection.Run(query));
+
+                Assert.Equal(6, result.IntList1.Count);
+                Assert.Equal(5, result.IntList2.Count);
             }
 
         }
