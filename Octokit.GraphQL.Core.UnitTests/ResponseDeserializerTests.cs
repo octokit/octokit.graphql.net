@@ -170,8 +170,8 @@ namespace Octokit.GraphQL.Core.UnitTests
     ""data"":{
         ""repository"": {
             ""issue"":{
-              ""title"": ""Hello World!"",
-              ""body"": ""Goodbye cruel world""
+              ""name"": ""Hello World!"",
+              ""description"": ""Goodbye cruel world""
             }
         }
     }

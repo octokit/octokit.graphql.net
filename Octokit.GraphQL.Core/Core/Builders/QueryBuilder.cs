@@ -255,7 +255,8 @@ namespace Octokit.GraphQL.Core.Builders
 
         protected override MemberAssignment VisitMemberAssignment(MemberAssignment node)
         {
-            var expression = BookmarkAndVisit(node.Expression).AddCast(node.Expression.Type);
+            var nodeExpression = AliasedExpression.WrapIfNeeded(node.Expression, node.Member);
+            var expression = BookmarkAndVisit(nodeExpression).AddCast(node.Expression.Type);
             return Expression.Bind(node.Member, expression);
         }
 
