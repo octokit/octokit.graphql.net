@@ -58,6 +58,11 @@ namespace Octokit.GraphQL.Model
         public string Payload { get; }
 
         /// <summary>
+        /// Identifies the Ref of the deployment, if the deployment was created by ref.
+        /// </summary>
+        public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Model.Ref.Create);
+
+        /// <summary>
         /// Identifies the repository associated with the deployment.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);

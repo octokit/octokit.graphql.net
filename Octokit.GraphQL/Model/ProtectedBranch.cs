@@ -58,7 +58,7 @@ namespace Octokit.GraphQL.Model
         public bool IsAdminEnforced { get; }
 
         /// <summary>
-        /// Identifies the name of the protected branch.
+        /// The name of the protected branch rule.
         /// </summary>
         public string Name { get; }
 
