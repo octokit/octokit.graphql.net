@@ -15,6 +15,7 @@ namespace Octokit.GraphQL.Core.Generation
 
             return $@"namespace {entityNamespace}
 {{
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -24,7 +25,13 @@ namespace Octokit.GraphQL.Core.Generation
     {{
         public {className}(Expression expression) : base(expression)
         {{
-        }}{GeneratePossibleTypes(type, entityNamespace)}
+        }}
+
+        public TResult Switch<TResult>(Expression<Func<Selector<TResult>, Selector<TResult>>> select) => default;
+
+        public class Selector<T>
+        {{{GeneratePossibleTypes(type, entityNamespace)}
+        }}
 
         internal static {className} Create(Expression expression)
         {{
@@ -41,8 +48,6 @@ namespace Octokit.GraphQL.Core.Generation
             if (type.PossibleTypes?.Count > 0)
             {
                 var first = true;
-
-                builder.AppendLine();
 
                 foreach (var field in type.PossibleTypes)
                 {
@@ -67,7 +72,7 @@ namespace Octokit.GraphQL.Core.Generation
             var typeName = TypeUtilities.GetClassName(possibleType);
             var implName = entityNamespace + '.' + typeName;
             var name = possibleType.Name;
-            return comments + $"        public {typeName} {name} => this.CreateProperty(x => x.{name}, {implName}.Create);";
+            return comments + $"            public Selector<T> {name}(Func<{name}, T> selector) => default;";
         }
 
         private static string GenerateUnionDocComments(TypeModel type)
@@ -90,7 +95,7 @@ namespace Octokit.GraphQL.Core.Generation
             if (!string.IsNullOrWhiteSpace(possibleType.Description))
             {
                 var builder = new StringBuilder();
-                DocCommentGenerator.GenerateSummary(possibleType.Description, 8, builder);
+                DocCommentGenerator.GenerateSummary(possibleType.Description, 12, builder);
                 return builder.ToString();
             }
             else
