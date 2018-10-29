@@ -8,6 +8,8 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
 {
     internal static class BuildUtilities
     {
+        private static readonly string[] pagingFields = new[] { "first", "after", "last", "before" };
+
         public static IEnumerable<InputValueModel> SortArgs(IEnumerable<InputValueModel> args)
         {
             return args.OrderBy(x => x, new DefaultValueComparer());
@@ -17,7 +19,25 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
         {
             public int Compare(InputValueModel x, InputValueModel y)
             {
-                return DefaultValueWeight(x) - DefaultValueWeight(y);
+                var defaultValueWeightX = DefaultValueWeight(x);
+                var defaultValueWeightY = DefaultValueWeight(y);
+                var pagingX = Array.IndexOf(pagingFields, x.Name);
+                var pagingY = Array.IndexOf(pagingFields, y.Name);
+
+                if (defaultValueWeightX != defaultValueWeightY)
+                {
+                    return DefaultValueWeight(x) - DefaultValueWeight(y);
+                }
+                else if (pagingX != pagingY)
+                {
+                    if (pagingX == -1) pagingX = int.MaxValue;
+                    if (pagingY == -1) pagingY = int.MaxValue;
+                    return pagingX - pagingY;
+                }
+                else
+                {
+                    return StringComparer.OrdinalIgnoreCase.Compare(x.Name, y.Name);
+                }
             }
 
             private static int DefaultValueWeight(InputValueModel i)
