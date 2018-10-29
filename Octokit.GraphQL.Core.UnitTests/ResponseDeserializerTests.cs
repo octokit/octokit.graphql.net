@@ -415,6 +415,104 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal(42, result.Value.Number);
         }
 
+        [Fact]
+        public void Union_IssueOrPullRequest()
+        {
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .IssueOrPullRequest(1)
+                .Select(x => x.Switch<object>(when =>
+                    when.Issue(issue => new IssueModel
+                    {
+                        Number = issue.Number,
+                    }).PullRequest(pr => new PullRequestModel
+                    {
+                        Title = pr.Title,
+                    })));
+
+            var data = @"{
+    ""data"": {
+        ""repository"": {
+            ""issueOrPullRequest"": {
+                ""__typename"": ""Issue"",
+                ""number"": 1
+            }
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = query.Deserialize(data);
+
+            Assert.IsType<IssueModel>(result);
+            Assert.Equal(1, ((IssueModel)result).Number);
+        }
+
+
+        [Fact]
+        public void Union_PullRequest_Timeline()
+        {
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .PullRequest(1)
+                .Timeline(first: 100)
+                .Nodes
+                .Select(node => node.Switch<TimelineItemModel>(when =>
+                    when.Commit(commit => new CommitModel
+                    {
+                        Oid = commit.AbbreviatedOid,
+                    }).IssueComment(comment => new IssueCommentModel
+                    {
+                        Body = comment.Body,
+                    })));
+
+            var data = @"{
+    ""data"": {
+        ""repository"": {
+            ""pullRequest"": {
+                ""timeline"": {
+                    ""nodes"": [
+                        {
+                            ""__typename"": ""Commit"",
+                            ""oid"": ""2a1d6c7""
+                        },
+                        {
+                            ""__typename"": ""Commit"",
+                            ""oid"": ""cdac23a""
+                        },
+                        {
+                            ""__typename"": ""PullRequestReview"",
+                        },
+                        {
+                            ""__typename"": ""IssueComment"",
+                            ""body"": ""Hello World?""
+                        },
+                    ]
+                }
+            }
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = query.Deserialize(data).ToList();
+
+            // TODO: Switch currently returns a null item for non-matching types.
+            Assert.Equal(4, result.Count);
+            Assert.IsType<CommitModel>(result[0]);
+            Assert.IsType<CommitModel>(result[1]);
+            Assert.Null(result[2]);
+            Assert.IsType<IssueCommentModel>(result[3]);
+
+            Assert.Equal("2a1d6c7", ((CommitModel)result[0]).Oid);
+            Assert.Equal("cdac23a", ((CommitModel)result[1]).Oid);
+            Assert.Equal("Hello World?", ((IssueCommentModel)result[3]).Body);
+        }
+
         private class NamedClass
         {
             public NamedClass()
@@ -429,6 +527,30 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             public string Name { get; set; }
             public string Description { get; set; }
+        }
+
+        class IssueModel
+        {
+            public int Number { get; set; }
+        }
+
+        class PullRequestModel
+        {
+            public string Title { get; set; }
+        }
+
+        class TimelineItemModel
+        {
+        }
+
+        class CommitModel : TimelineItemModel
+        {
+            public string Oid { get; set; }
+        }
+
+        class IssueCommentModel : TimelineItemModel
+        {
+            public string Body { get; set; }
         }
     }
 }

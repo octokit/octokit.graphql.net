@@ -972,12 +972,112 @@ fragment issueTitle on Issue {
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
+        [Fact]
+        public void Union_IssueOrPullRequest()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    issueOrPullRequest(number: 1) {
+      __typename
+      ... on Issue {
+        number
+      }
+      ... on PullRequest {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .IssueOrPullRequest(1)
+                .Select(issueOrPr => issueOrPr.Switch<object>(when =>
+                    when.Issue(issue => new IssueModel
+                    {
+                        Number = issue.Number,
+                    }).PullRequest(pr => new PullRequestModel
+                    {
+                        Title = pr.Title,
+                    })));
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Union_PullRequest_Timeline()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    pullRequest(number: 1) {
+      timeline(first: 100) {
+        nodes {
+          __typename
+          ... on Commit {
+            oid: abbreviatedOid
+          }
+          ... on IssueComment {
+            body
+          }
+        }
+      }
+    }
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .PullRequest(1)
+                .Timeline(first: 100)
+                .Nodes
+                .Select(node => node.Switch<TimelineItemModel>(when =>
+                    when.Commit(commit => new CommitModel
+                    {
+                        Oid = commit.AbbreviatedOid,
+                    }).IssueComment(comment => new IssueCommentModel
+                    {
+                        Body = comment.Body,
+                    })));
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
         class TestModelObject
         {
             public string StringField1;
             public string StringField2;
             public int IntField1;
             public int IntField2;
+        }
+
+        class IssueModel
+        {
+            public int Number { get; set; }
+        }
+
+        class PullRequestModel
+        {
+            public string Title { get; set; }
+        }
+
+        class TimelineItemModel
+        {
+        }
+
+        class CommitModel : TimelineItemModel
+        {
+            public string Oid { get; set; }
+        }
+
+        class IssueCommentModel : TimelineItemModel
+        {
+            public string Body { get; set; }
         }
 
         public class TestIssueSets
