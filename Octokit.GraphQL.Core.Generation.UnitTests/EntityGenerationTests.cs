@@ -1655,16 +1655,17 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                         Type = TypeModel.Object("Other"),
                         Args = new[]
                         {
-                            new InputValueModel
-                            {
-                                Name = "arg1",
-                                Description = "The first argument.",
-                                Type = TypeModel.Int(),
-                            },
+                            // Define these in the wrong order to check arg sorting.
                             new InputValueModel
                             {
                                 Name = "arg2",
                                 Description = "The second argument.\r\nWith a windows newline. Ending with a space. ",
+                                Type = TypeModel.Int(),
+                            },
+                            new InputValueModel
+                            {
+                                Name = "arg1",
+                                Description = "The first argument.",
                                 Type = TypeModel.Int(),
                             },
                         }
