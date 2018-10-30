@@ -14,8 +14,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public async Task Should_Throw_Correct_Error_For_Name_Resolution_Failure()
         {
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net")
-                .Issues(first: 3).Nodes.Select(i => new
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues(first: 3)
+                .Nodes
+                .Select(i => new
                 {
                     i.Title,
                     RepositoryName = i.Repository.Name,
@@ -38,8 +41,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public async Task Should_Throw_Correct_Error_For_Invalid_Repository_Name()
         {
-            var query = new GraphQL.Query().Repository("octokit", "bad_repository")
-                .Issues(first: 3).Nodes.Select(i => new
+            var query = new Query()
+                .Repository(owner: "octokit", name: "bad_repository")
+                .Issues(first: 3)
+                .Nodes
+                .Select(i => new
                 {
                     i.Title,
                     RepositoryName = i.Repository.Name,

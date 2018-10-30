@@ -129,7 +129,7 @@ namespace Octokit.GraphQL.UnitTests
         {
             var query = new Query()
                 .Select(x => x.RepositoryOwner("foo")
-                              .Repositories(30, null, null, null, null, null, null, null, null)
+                              .Repositories(30, null, null, null, null, null, null, null, null, null)
                               .Edges
                               .Select(y => y.Node)
                               .Select(z => new
