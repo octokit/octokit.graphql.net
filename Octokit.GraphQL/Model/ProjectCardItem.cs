@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -14,15 +15,20 @@ namespace Octokit.GraphQL.Model
         {
         }
 
-        /// <summary>
-        /// An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project.
-        /// </summary>
-        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Model.Issue.Create);
+        public TResult Switch<TResult>(Expression<Func<Selector<TResult>, Selector<TResult>>> select) => default;
 
-        /// <summary>
-        /// A repository pull request.
-        /// </summary>
-        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
+        public class Selector<T>
+        {
+            /// <summary>
+            /// An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project.
+            /// </summary>
+            public Selector<T> Issue(Func<Issue, T> selector) => default;
+
+            /// <summary>
+            /// A repository pull request.
+            /// </summary>
+            public Selector<T> PullRequest(Func<PullRequest, T> selector) => default;
+        }
 
         internal static ProjectCardItem Create(Expression expression)
         {

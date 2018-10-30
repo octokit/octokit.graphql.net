@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -14,20 +15,25 @@ namespace Octokit.GraphQL.Model
         {
         }
 
-        /// <summary>
-        /// A repository contains the content for a project.
-        /// </summary>
-        public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
+        public TResult Switch<TResult>(Expression<Func<Selector<TResult>, Selector<TResult>>> select) => default;
 
-        /// <summary>
-        /// An account on GitHub, with one or more owners, that has repositories, members and teams.
-        /// </summary>
-        public Organization Organization => this.CreateProperty(x => x.Organization, Octokit.GraphQL.Model.Organization.Create);
+        public class Selector<T>
+        {
+            /// <summary>
+            /// A repository contains the content for a project.
+            /// </summary>
+            public Selector<T> Repository(Func<Repository, T> selector) => default;
 
-        /// <summary>
-        /// A user is an individual's account on GitHub that owns repositories and can make new content.
-        /// </summary>
-        public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.Model.User.Create);
+            /// <summary>
+            /// An account on GitHub, with one or more owners, that has repositories, members and teams.
+            /// </summary>
+            public Selector<T> Organization(Func<Organization, T> selector) => default;
+
+            /// <summary>
+            /// A user is an individual's account on GitHub that owns repositories and can make new content.
+            /// </summary>
+            public Selector<T> User(Func<User, T> selector) => default;
+        }
 
         internal static CollectionItemContent Create(Expression expression)
         {
