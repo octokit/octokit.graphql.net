@@ -335,19 +335,19 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.True(result.StringList2.Count > 500);
         }
 
-        [IntegrationTest(Skip = "Querying unions like this no longer works")]
+        [IntegrationTest]
         public async Task Should_Query_Union_Issue_Or_PullRequest()
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
                 .IssueOrPullRequest(number: 1)
-                .Select(issueOrPullRequest => new
-                {
-                    IssueId = issueOrPullRequest.Issue.Id,
-                    PullRequestId = issueOrPullRequest.PullRequest.Id
-                });
+                .Select(issueOrPullRequest => issueOrPullRequest.Switch<string>(when =>
+                    when.Issue(issue => "Issue " + issue.Number)
+                        .PullRequest(pr => "PR " + pr.Number)));
 
             var result = await Connection.Run(query);
+
+            Assert.Equal("PR 1", result);
         }
 
         class TestModelObject
