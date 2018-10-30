@@ -203,10 +203,12 @@ namespace Octokit.GraphQL.UnitTests
                     when.User(user => user.Name)));
 
             Expression<Func<JObject, IEnumerable<string>>> expected = data =>
-                (IEnumerable<string>)
-                Rewritten.List.Select(
+                (IEnumerable<string>)Rewritten.List.Select(
                     Rewritten.List.Select(data["data"]["search"]["edges"], x => x["node"]),
-                    x => Rewritten.Value.OfType(x, "User")["name"].ToObject<string>()).ToList();
+                    x => Rewritten.Value.Switch(x, new Dictionary<string, Func<JToken, string>>
+                    {
+                        { "User", user => user["name"].ToObject<string>() },
+                    })).ToList();
 
             ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }

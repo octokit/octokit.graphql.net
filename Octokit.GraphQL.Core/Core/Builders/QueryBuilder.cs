@@ -913,6 +913,23 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression RewriteUnionSwitch(MethodCallExpression expression)
         {
+            LambdaExpression CastInitializer(Expression initializer, Type type)
+            {
+                var lambda = initializer.GetLambda();
+                var bodyType = lambda.Body.Type;
+
+                if (bodyType == typeof(JToken))
+                {
+                    return Expression.Lambda(
+                        lambda.Body.AddCast(type),
+                        lambda.Parameters);
+                }
+                else
+                {
+                    return lambda;
+                }
+            }
+
             var source = expression.Object;
             var instance = Visit(source);
             var resultType = expression.Method.GetGenericArguments()[0];
@@ -928,9 +945,14 @@ namespace Octokit.GraphQL.Core.Builders
             var funcType = typeof(Func<,>).MakeGenericType(typeof(JToken), resultType);
             var dictionaryType = typeof(Dictionary<,>).MakeGenericType(typeof(string), funcType);
             var dictionaryAdd = dictionaryType.GetTypeInfo().GetDeclaredMethod("Add");
+            var initializers = cases.Select(x => 
+                Expression.ElementInit(
+                    dictionaryAdd,
+                    Expression.Constant(x.Key),
+                    CastInitializer(x.Value, resultType))).ToList();
             var newDictionary = Expression.ListInit(
                 Expression.New(dictionaryType),
-                cases.Select(x => Expression.ElementInit(dictionaryAdd, Expression.Constant(x.Key), x.Value)));
+                initializers);
 
             return Expression.Call(
                 Rewritten.Value.SwitchMethod.MakeGenericMethod(resultType),
