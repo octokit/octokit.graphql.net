@@ -89,11 +89,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="privacy">If non-null, filters repositories according to privacy</param>
-        /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
-        /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
+        /// <param name="affiliations">Array of viewer's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the current viewer owns.</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        public RepositoryConnection PinnedRepositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RepositoryPrivacy>? privacy = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, privacy, orderBy, affiliations, isLocked), Octokit.GraphQL.Model.RepositoryConnection.Create);
+        /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
+        /// <param name="ownerAffiliations">Array of owner's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the organization or user being viewed owns.</param>
+        /// <param name="privacy">If non-null, filters repositories according to privacy</param>
+        public RepositoryConnection PinnedRepositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, affiliations, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Find project by number.
@@ -130,12 +131,13 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="privacy">If non-null, filters repositories according to privacy</param>
-        /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
-        /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
-        /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
+        /// <param name="affiliations">Array of viewer's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the current viewer owns.</param>
         /// <param name="isFork">If non-null, filters repositories according to whether they are forks of another repository</param>
-        public RepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RepositoryPrivacy>? privacy = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null, Arg<bool>? isFork = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, privacy, orderBy, affiliations, isLocked, isFork), Octokit.GraphQL.Model.RepositoryConnection.Create);
+        /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
+        /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
+        /// <param name="ownerAffiliations">Array of owner's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the organization or user being viewed owns.</param>
+        /// <param name="privacy">If non-null, filters repositories according to privacy</param>
+        public RepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isFork = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, affiliations, isFork, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Find Repository.
@@ -171,14 +173,14 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="privacy">If non-null, filters teams according to privacy</param>
-        /// <param name="role">If non-null, filters teams according to whether the viewer is an admin or member on team</param>
-        /// <param name="query">If non-null, filters teams with query on team name and team slug</param>
-        /// <param name="userLogins">User logins to filter by</param>
-        /// <param name="orderBy">Ordering options for teams returned from the connection</param>
         /// <param name="ldapMapped">If true, filters teams that are mapped to an LDAP Group (Enterprise only)</param>
+        /// <param name="orderBy">Ordering options for teams returned from the connection</param>
+        /// <param name="privacy">If non-null, filters teams according to privacy</param>
+        /// <param name="query">If non-null, filters teams with query on team name and team slug</param>
+        /// <param name="role">If non-null, filters teams according to whether the viewer is an admin or member on team</param>
         /// <param name="rootTeamsOnly">If true, restrict to only root teams</param>
-        public TeamConnection Teams(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<TeamPrivacy>? privacy = null, Arg<TeamRole>? role = null, Arg<string>? query = null, Arg<IEnumerable<string>>? userLogins = null, Arg<TeamOrder>? orderBy = null, Arg<bool>? ldapMapped = null, Arg<bool>? rootTeamsOnly = null) => this.CreateMethodCall(x => x.Teams(first, after, last, before, privacy, role, query, userLogins, orderBy, ldapMapped, rootTeamsOnly), Octokit.GraphQL.Model.TeamConnection.Create);
+        /// <param name="userLogins">User logins to filter by</param>
+        public TeamConnection Teams(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? ldapMapped = null, Arg<TeamOrder>? orderBy = null, Arg<TeamPrivacy>? privacy = null, Arg<string>? query = null, Arg<TeamRole>? role = null, Arg<bool>? rootTeamsOnly = null, Arg<IEnumerable<string>>? userLogins = null) => this.CreateMethodCall(x => x.Teams(first, after, last, before, ldapMapped, orderBy, privacy, query, role, rootTeamsOnly, userLogins), Octokit.GraphQL.Model.TeamConnection.Create);
 
         /// <summary>
         /// The HTTP path listing organization's teams

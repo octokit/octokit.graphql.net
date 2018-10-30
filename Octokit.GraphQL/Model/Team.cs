@@ -37,10 +37,10 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="immediateOnly">Whether to list immediate child teams or all descendant child teams.</param>
         /// <param name="orderBy">Order for connection</param>
         /// <param name="userLogins">User logins to filter by</param>
-        /// <param name="immediateOnly">Whether to list immediate child teams or all descendant child teams.</param>
-        public TeamConnection ChildTeams(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<TeamOrder>? orderBy = null, Arg<IEnumerable<string>>? userLogins = null, Arg<bool>? immediateOnly = null) => this.CreateMethodCall(x => x.ChildTeams(first, after, last, before, orderBy, userLogins, immediateOnly), Octokit.GraphQL.Model.TeamConnection.Create);
+        public TeamConnection ChildTeams(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? immediateOnly = null, Arg<TeamOrder>? orderBy = null, Arg<IEnumerable<string>>? userLogins = null) => this.CreateMethodCall(x => x.ChildTeams(first, after, last, before, immediateOnly, orderBy, userLogins), Octokit.GraphQL.Model.TeamConnection.Create);
 
         /// <summary>
         /// The slug corresponding to the organization and team.
@@ -85,11 +85,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="query">The search string to look for.</param>
         /// <param name="membership">Filter by membership type</param>
-        /// <param name="role">Filter by team member role</param>
         /// <param name="orderBy">Order for the connection.</param>
-        public TeamMemberConnection Members(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<TeamMembershipType>? membership = null, Arg<TeamMemberRole>? role = null, Arg<TeamMemberOrder>? orderBy = null) => this.CreateMethodCall(x => x.Members(first, after, last, before, query, membership, role, orderBy), Octokit.GraphQL.Model.TeamMemberConnection.Create);
+        /// <param name="query">The search string to look for.</param>
+        /// <param name="role">Filter by team member role</param>
+        public TeamMemberConnection Members(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<TeamMembershipType>? membership = null, Arg<TeamMemberOrder>? orderBy = null, Arg<string>? query = null, Arg<TeamMemberRole>? role = null) => this.CreateMethodCall(x => x.Members(first, after, last, before, membership, orderBy, query, role), Octokit.GraphQL.Model.TeamMemberConnection.Create);
 
         /// <summary>
         /// The HTTP path for the team' members
@@ -138,9 +138,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="query">The search string to look for.</param>
         /// <param name="orderBy">Order for the connection.</param>
-        public TeamRepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<TeamRepositoryOrder>? orderBy = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, query, orderBy), Octokit.GraphQL.Model.TeamRepositoryConnection.Create);
+        /// <param name="query">The search string to look for.</param>
+        public TeamRepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<TeamRepositoryOrder>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.TeamRepositoryConnection.Create);
 
         /// <summary>
         /// The HTTP path for this team's repositories
