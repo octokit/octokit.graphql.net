@@ -16,11 +16,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of Users assigned to this object.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        UserConnection Assignees(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        UserConnection Assignees(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null);
     }
 }
 
@@ -38,7 +38,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public UserConnection Assignees(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
+        public UserConnection Assignees(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Assignees(after, before, first, last), Octokit.GraphQL.Model.UserConnection.Create);
 
         internal static StubIAssignable Create(Expression expression)
         {

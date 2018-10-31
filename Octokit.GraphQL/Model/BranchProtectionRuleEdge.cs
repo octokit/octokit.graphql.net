@@ -7,11 +7,11 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents a user.
+    /// An edge in a connection.
     /// </summary>
-    public class UserEdge : QueryableValue<UserEdge>
+    public class BranchProtectionRuleEdge : QueryableValue<BranchProtectionRuleEdge>
     {
-        public UserEdge(Expression expression) : base(expression)
+        public BranchProtectionRuleEdge(Expression expression) : base(expression)
         {
         }
 
@@ -23,11 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public User Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.User.Create);
+        public BranchProtectionRule Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.BranchProtectionRule.Create);
 
-        internal static UserEdge Create(Expression expression)
+        internal static BranchProtectionRuleEdge Create(Expression expression)
         {
-            return new UserEdge(expression);
+            return new BranchProtectionRuleEdge(expression);
         }
     }
 }

@@ -28,13 +28,13 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of Reactions left on the Issue.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
-        ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null);
+        ReactionConnection Reactions(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null);
 
         /// <summary>
         /// Can user react to this subject
@@ -63,7 +63,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
-        public ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
+        public ReactionConnection Reactions(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(after, before, first, last, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
 
         public bool ViewerCanReact { get; }
 

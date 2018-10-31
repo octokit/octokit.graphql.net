@@ -23,11 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of Users assigned to this object.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public UserConnection Assignees(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Assignees(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public UserConnection Assignees(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Assignees(after, before, first, last), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
         /// The actor who authored the comment.
@@ -67,11 +67,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of comments associated with the Issue.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public IssueCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.IssueCommentConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public IssueCommentConnection Comments(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Comments(after, before, first, last), Octokit.GraphQL.Model.IssueCommentConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -103,11 +103,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of labels associated with the object.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octokit.GraphQL.Model.LabelConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public LabelConnection Labels(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Labels(after, before, first, last), Octokit.GraphQL.Model.LabelConnection.Create);
 
         /// <summary>
         /// The moment the editor made the last edit
@@ -132,21 +132,21 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of Users that are participating in the Issue conversation.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public UserConnection Participants(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Participants(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public UserConnection Participants(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Participants(after, before, first, last), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
         /// List of project cards associated with this issue.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="archivedStates">A list of archived states to filter the cards by</param>
-        public ProjectCardConnection ProjectCards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null) => this.CreateMethodCall(x => x.ProjectCards(first, after, last, before, archivedStates), Octokit.GraphQL.Model.ProjectCardConnection.Create);
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public ProjectCardConnection ProjectCards(Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null, Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.ProjectCards(archivedStates, after, before, first, last), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>
         /// Identifies when the comment was published at.
@@ -161,13 +161,13 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of Reactions left on the Issue.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="content">Allows filtering Reactions by emoji.</param>
         /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
-        public ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
+        public ReactionConnection Reactions(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(after, before, first, last, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
 
         /// <summary>
         /// The repository associated with this node.
@@ -187,12 +187,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of events, comments, commits, etc. associated with the issue.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="since">Allows filtering timeline events by a `since` timestamp.</param>
-        public IssueTimelineConnection Timeline(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<DateTimeOffset>? since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.Model.IssueTimelineConnection.Create);
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public IssueTimelineConnection Timeline(Arg<DateTimeOffset>? since = null, Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Timeline(since, after, before, first, last), Octokit.GraphQL.Model.IssueTimelineConnection.Create);
 
         /// <summary>
         /// Identifies the issue title.
@@ -212,11 +212,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edits to this content.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public UserContentEditConnection UserContentEdits(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.UserContentEdits(after, before, first, last), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 
         /// <summary>
         /// Can user react to this subject

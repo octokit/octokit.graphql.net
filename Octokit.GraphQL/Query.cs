@@ -47,7 +47,7 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="includeCategories">Return only the specified categories.</param>
         /// <param name="excludeEmpty">Exclude categories with no listings.</param>
-        /// <param name="excludeSubcategories">Exclude subcategories</param>
+        /// <param name="excludeSubcategories">Returns top level categories only, excluding any subcategories.</param>
         public IQueryableList<MarketplaceCategory> MarketplaceCategories(Arg<IEnumerable<string>>? includeCategories = null, Arg<bool>? excludeEmpty = null, Arg<bool>? excludeSubcategories = null) => this.CreateMethodCall(x => x.MarketplaceCategories(includeCategories, excludeEmpty, excludeSubcategories));
 
         /// <summary>
@@ -66,10 +66,10 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Look up Marketplace listings
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="categorySlug">Select only listings with the given category.</param>
         /// <param name="useTopicAliases">Also check topic aliases for the category slug</param>
         /// <param name="viewerCanAdmin">Select listings to which user has admin access. If omitted, listings visible to the viewer are returned.</param>
@@ -79,7 +79,7 @@ namespace Octokit.GraphQL
         /// <param name="slugs">Select the listings with these slugs, if they are visible to the viewer.</param>
         /// <param name="primaryCategoryOnly">Select only listings where the primary category matches the given category slug.</param>
         /// <param name="withFreeTrialsOnly">Select only listings that offer a free trial.</param>
-        public MarketplaceListingConnection MarketplaceListings(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? categorySlug = null, Arg<bool>? useTopicAliases = null, Arg<bool>? viewerCanAdmin = null, Arg<ID>? adminId = null, Arg<ID>? organizationId = null, Arg<bool>? allStates = null, Arg<IEnumerable<string>>? slugs = null, Arg<bool>? primaryCategoryOnly = null, Arg<bool>? withFreeTrialsOnly = null) => this.CreateMethodCall(x => x.MarketplaceListings(first, after, last, before, categorySlug, useTopicAliases, viewerCanAdmin, adminId, organizationId, allStates, slugs, primaryCategoryOnly, withFreeTrialsOnly), Octokit.GraphQL.Model.MarketplaceListingConnection.Create);
+        public MarketplaceListingConnection MarketplaceListings(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null, Arg<string>? categorySlug = null, Arg<bool>? useTopicAliases = null, Arg<bool>? viewerCanAdmin = null, Arg<ID>? adminId = null, Arg<ID>? organizationId = null, Arg<bool>? allStates = null, Arg<IEnumerable<string>>? slugs = null, Arg<bool>? primaryCategoryOnly = null, Arg<bool>? withFreeTrialsOnly = null) => this.CreateMethodCall(x => x.MarketplaceListings(after, before, first, last, categorySlug, useTopicAliases, viewerCanAdmin, adminId, organizationId, allStates, slugs, primaryCategoryOnly, withFreeTrialsOnly), Octokit.GraphQL.Model.MarketplaceListingConnection.Create);
 
         /// <summary>
         /// Return information about the GitHub instance
@@ -137,13 +137,13 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Perform a search across resources.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="query">The search string to look for.</param>
         /// <param name="type">The types of search items to search within.</param>
-        public SearchResultItemConnection Search(Arg<string> query, Arg<SearchType> type, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Search(query, type, first, after, last, before), Octokit.GraphQL.Model.SearchResultItemConnection.Create);
+        public SearchResultItemConnection Search(Arg<string> query, Arg<SearchType> type, Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Search(query, type, after, before, first, last), Octokit.GraphQL.Model.SearchResultItemConnection.Create);
 
         /// <summary>
         /// Look up a topic by name.

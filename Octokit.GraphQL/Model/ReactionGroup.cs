@@ -33,11 +33,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Users who have reacted to the reaction subject with the emotion represented by this reaction group
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ReactingUserConnection Users(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Users(first, after, last, before), Octokit.GraphQL.Model.ReactingUserConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public ReactingUserConnection Users(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Users(after, before, first, last), Octokit.GraphQL.Model.ReactingUserConnection.Create);
 
         /// <summary>
         /// Whether or not the authenticated user has left a reaction on the subject.

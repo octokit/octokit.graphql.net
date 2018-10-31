@@ -16,11 +16,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of labels associated with the object.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        LabelConnection Labels(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null);
     }
 }
 
@@ -38,7 +38,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octokit.GraphQL.Model.LabelConnection.Create);
+        public LabelConnection Labels(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Labels(after, before, first, last), Octokit.GraphQL.Model.LabelConnection.Create);
 
         internal static StubILabelable Create(Expression expression)
         {

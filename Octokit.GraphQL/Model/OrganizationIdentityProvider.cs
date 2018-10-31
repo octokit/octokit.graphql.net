@@ -23,11 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// External Identities provisioned by this Identity Provider
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ExternalIdentityConnection ExternalIdentities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ExternalIdentities(first, after, last, before), Octokit.GraphQL.Model.ExternalIdentityConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public ExternalIdentityConnection ExternalIdentities(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.ExternalIdentities(after, before, first, last), Octokit.GraphQL.Model.ExternalIdentityConnection.Create);
 
         public ID Id { get; }
 

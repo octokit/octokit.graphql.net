@@ -40,14 +40,14 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of issues associated with this label.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="states">A list of states to filter the issues by.</param>
-        public IssueConnection Issues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<string>>? labels = null, Arg<IEnumerable<IssueState>>? states = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, orderBy, labels, states), Octokit.GraphQL.Model.IssueConnection.Create);
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public IssueConnection Issues(Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<string>>? labels = null, Arg<IEnumerable<IssueState>>? states = null, Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Issues(orderBy, labels, states, after, before, first, last), Octokit.GraphQL.Model.IssueConnection.Create);
 
         /// <summary>
         /// Identifies the label name.
@@ -57,16 +57,16 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of pull requests associated with this label.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="states">A list of states to filter the pull requests by.</param>
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
         /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
-        public PullRequestConnection PullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PullRequestState>>? states = null, Arg<IEnumerable<string>>? labels = null, Arg<string>? headRefName = null, Arg<string>? baseRefName = null, Arg<IssueOrder>? orderBy = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public PullRequestConnection PullRequests(Arg<IEnumerable<PullRequestState>>? states = null, Arg<IEnumerable<string>>? labels = null, Arg<string>? headRefName = null, Arg<string>? baseRefName = null, Arg<IssueOrder>? orderBy = null, Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.PullRequests(states, labels, headRefName, baseRefName, orderBy, after, before, first, last), Octokit.GraphQL.Model.PullRequestConnection.Create);
 
         /// <summary>
         /// The repository associated with this label.

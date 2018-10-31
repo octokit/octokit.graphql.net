@@ -18,12 +18,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// List of cards in the column
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="archivedStates">A list of archived states to filter the cards by</param>
-        public ProjectCardConnection Cards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null) => this.CreateMethodCall(x => x.Cards(first, after, last, before, archivedStates), Octokit.GraphQL.Model.ProjectCardConnection.Create);
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public ProjectCardConnection Cards(Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null, Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Cards(archivedStates, after, before, first, last), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.

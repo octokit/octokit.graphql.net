@@ -18,11 +18,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The check run's annotations
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public CheckAnnotationConnection Annotations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Annotations(first, after, last, before), Octokit.GraphQL.Model.CheckAnnotationConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public CheckAnnotationConnection Annotations(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Annotations(after, before, first, last), Octokit.GraphQL.Model.CheckAnnotationConnection.Create);
 
         /// <summary>
         /// The check suite that this run is a part of.

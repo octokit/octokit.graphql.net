@@ -78,11 +78,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of edits to this content.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        UserContentEditConnection UserContentEdits(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null);
 
         /// <summary>
         /// Did the viewer author this comment.
@@ -131,7 +131,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public DateTimeOffset UpdatedAt { get; }
 
-        public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
+        public UserContentEditConnection UserContentEdits(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.UserContentEdits(after, before, first, last), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 
         public bool ViewerDidAuthor { get; }
 

@@ -54,21 +54,21 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The check suites associated with a commit.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="filterBy">Filters the check suites by this type.</param>
-        public CheckSuiteConnection CheckSuites(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<CheckSuiteFilter>? filterBy = null) => this.CreateMethodCall(x => x.CheckSuites(first, after, last, before, filterBy), Octokit.GraphQL.Model.CheckSuiteConnection.Create);
+        public CheckSuiteConnection CheckSuites(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null, Arg<CheckSuiteFilter>? filterBy = null) => this.CreateMethodCall(x => x.CheckSuites(after, before, first, last, filterBy), Octokit.GraphQL.Model.CheckSuiteConnection.Create);
 
         /// <summary>
         /// Comments made on the commit.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public CommitCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.CommitCommentConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public CommitCommentConnection Comments(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Comments(after, before, first, last), Octokit.GraphQL.Model.CommitCommentConnection.Create);
 
         /// <summary>
         /// The HTTP path for this Git object
@@ -103,15 +103,15 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The linear commit history starting from (and including) this commit, in the same order as `git log`.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="path">If non-null, filters history to only show commits touching files under this path.</param>
         /// <param name="author">If non-null, filters history to only show commits with matching authorship.</param>
         /// <param name="since">Allows specifying a beginning time or date for fetching commits.</param>
         /// <param name="until">Allows specifying an ending time or date for fetching commits.</param>
-        public CommitHistoryConnection History(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? path = null, Arg<CommitAuthor>? author = null, Arg<string>? since = null, Arg<string>? until = null) => this.CreateMethodCall(x => x.History(first, after, last, before, path, author, since, until), Octokit.GraphQL.Model.CommitHistoryConnection.Create);
+        public CommitHistoryConnection History(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null, Arg<string>? path = null, Arg<CommitAuthor>? author = null, Arg<string>? since = null, Arg<string>? until = null) => this.CreateMethodCall(x => x.History(after, before, first, last, path, author, since, until), Octokit.GraphQL.Model.CommitHistoryConnection.Create);
 
         public ID Id { get; }
 
@@ -148,11 +148,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The parents of a commit.
         /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public CommitConnection Parents(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Parents(first, after, last, before), Octokit.GraphQL.Model.CommitConnection.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        public CommitConnection Parents(Arg<string>? after = null, Arg<string>? before = null, Arg<int>? first = null, Arg<int>? last = null) => this.CreateMethodCall(x => x.Parents(after, before, first, last), Octokit.GraphQL.Model.CommitConnection.Create);
 
         /// <summary>
         /// The datetime when this commit was pushed.
