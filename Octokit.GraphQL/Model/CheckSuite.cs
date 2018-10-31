@@ -64,12 +64,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="states">A list of states to filter the pull requests by.</param>
-        /// <param name="labels">A list of label names to filter the pull requests by.</param>
-        /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
         /// <param name="baseRefName">The base ref name to filter the pull requests by.</param>
+        /// <param name="headRefName">The head ref name to filter the pull requests by.</param>
+        /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
-        public PullRequestConnection MatchingPullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PullRequestState>>? states = null, Arg<IEnumerable<string>>? labels = null, Arg<string>? headRefName = null, Arg<string>? baseRefName = null, Arg<IssueOrder>? orderBy = null) => this.CreateMethodCall(x => x.MatchingPullRequests(first, after, last, before, states, labels, headRefName, baseRefName, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
+        /// <param name="states">A list of states to filter the pull requests by.</param>
+        public PullRequestConnection MatchingPullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? baseRefName = null, Arg<string>? headRefName = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<PullRequestState>>? states = null) => this.CreateMethodCall(x => x.MatchingPullRequests(first, after, last, before, baseRefName, headRefName, labels, orderBy, states), Octokit.GraphQL.Model.PullRequestConnection.Create);
 
         /// <summary>
         /// The push that triggered this check suite.

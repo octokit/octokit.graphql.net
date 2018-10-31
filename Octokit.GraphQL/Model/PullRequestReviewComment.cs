@@ -98,6 +98,11 @@ namespace Octokit.GraphQL.Model
         public int OriginalPosition { get; }
 
         /// <summary>
+        /// Identifies when the comment body is outdated
+        /// </summary>
+        public bool Outdated { get; }
+
+        /// <summary>
         /// The path to which the comment applies.
         /// </summary>
         public string Path { get; }
@@ -152,6 +157,11 @@ namespace Octokit.GraphQL.Model
         /// The HTTP path permalink for this review comment.
         /// </summary>
         public string ResourcePath { get; }
+
+        /// <summary>
+        /// Identifies the state of the comment.
+        /// </summary>
+        public PullRequestReviewCommentState State { get; }
 
         /// <summary>
         /// Identifies when the comment was last updated.

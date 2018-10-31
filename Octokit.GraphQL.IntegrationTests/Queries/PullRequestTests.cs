@@ -12,7 +12,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public async Task Should_Query_Commits()
         {
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").PullRequest(1).Commits(3).Nodes
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .PullRequest(number: 1)
+                .Commits(first: 3)
+                .Nodes
                 .Select(pullRequestCommit => new
                 {
                     pullRequestCommit.Commit.Id,
@@ -33,8 +37,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Should_Query_Title_With_Vars()
         {
             var query = new Query()
-                .Repository(Var("owner"), Var("name"))
-                .PullRequest(Var("number"))
+                .Repository(owner: Var("owner"), name: Var("name"))
+                .PullRequest(number: Var("number"))
                 .Select(x => x.Title)
                 .Compile();
 
@@ -54,8 +58,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_Use_Conditional_In_BaseRef_Query()
         {
             var query = new Query()
-                .Repository("octokit", "octokit.net")
-                .PullRequest(1)
+                .Repository(owner: "octokit", name: "octokit.net")
+                .PullRequest(number: 1)
                 .Select(pr => pr.BaseRef != null ? pr.BaseRef.Name : null);
 
             var result = await Connection.Run(query);
@@ -67,8 +71,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_Use_Conditional_When_Selecting_Base_Repository_Owner()
         {
             var query = new Query()
-                .Repository("octokit", "octokit.net")
-                .PullRequest(1)
+                .Repository(owner: "octokit", name: "octokit.net")
+                .PullRequest(number: 1)
                 .Select(pr => pr.BaseRef != null ? pr.BaseRef.Repository.Owner.Login : null);
 
             var result = await Connection.Run(query);
@@ -81,8 +85,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             // nodegit/nodegit#1331 has a review with >100 comments.
             var query = new Query()
-                .Repository("nodegit", "nodegit")
-                .PullRequest(1331)
+                .Repository(owner: "nodegit", name: "nodegit")
+                .PullRequest(number: 1331)
                 .Select(pr => new
                 {
                     pr.Title,
@@ -106,8 +110,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             // Microsoft/MixedRealityToolkit-Unity#1884 has >100 reviews, one of which has >100 comments.
             var query = new Query()
-                .Repository("Microsoft", "MixedRealityToolkit-Unity")
-                .PullRequest(1884)
+                .Repository(owner: "Microsoft", name: "MixedRealityToolkit-Unity")
+                .PullRequest(number: 1884)
                 .Select(pr => new
                 {
                     pr.Title,
