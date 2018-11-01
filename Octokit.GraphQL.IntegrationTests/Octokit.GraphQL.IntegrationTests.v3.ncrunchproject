@@ -1,25 +1,6 @@
 ﻿<ProjectConfiguration>
   <Settings>
-    <IgnoredTests>
-      <NamedTestSelector>
-        <TestName>Octokit.GraphQL.IntegrationTests.Mutations.MutationTests.Create_And_Delete_Project</TestName>
-      </NamedTestSelector>
-      <NamedTestSelector>
-        <TestName>Octokit.GraphQL.IntegrationTests.Mutations.MutationTests.Star_And_Unstar_Project</TestName>
-      </NamedTestSelector>
-      <NamedTestSelector>
-        <TestName>Octokit.GraphQL.IntegrationTests.Queries.RepositoryTests.Query_Organization_Repositories_Select_Multiple_Object_Fragments</TestName>
-      </NamedTestSelector>
-      <NamedTestSelector>
-        <TestName>Octokit.GraphQL.IntegrationTests.Queries.RepositoryTests.Should_Query_Repository_Issues_PullRequests_To_Object_AutoPaging</TestName>
-      </NamedTestSelector>
-      <NamedTestSelector>
-        <TestName>Octokit.GraphQL.IntegrationTests.Queries.RepositoryTests.Should_Query_Repository_Issues_PullRequests_With_Variables_AutoPaging</TestName>
-      </NamedTestSelector>
-      <NamedTestSelector>
-        <TestName>Octokit.GraphQL.IntegrationTests.Queries.ViewerTests.Viewer_By_GraphyQL_Matches_Api</TestName>
-      </NamedTestSelector>
-    </IgnoredTests>
+    <DefaultTestTimeout>15000</DefaultTestTimeout>
     <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
   </Settings>
 </ProjectConfiguration>
