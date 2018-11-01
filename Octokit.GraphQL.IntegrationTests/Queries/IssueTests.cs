@@ -11,15 +11,19 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
     public class IssueTests : IntegrationTestBase
     {
         [IntegrationTest]
-        public void Should_Query_Issues_By_Repository()
+        public async Task Should_Query_Issues_By_Repository()
         {
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3).Nodes.Select(i => new
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues(first: 3)
+                .Nodes
+                .Select(i => new
             {
                 i.Title,
                 RepositoryName = i.Repository.Name,
             });
 
-            var results = Connection.Run(query).Result;
+            var results = await Connection.Run(query);
             foreach (var result in results)
             {
                 Assert.Equal("octokit.net", result.RepositoryName);
@@ -27,17 +31,21 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Should_Query_Issues_By_State_And_Repository()
+        public async Task Should_Query_Issues_By_State_And_Repository()
         {
-            var openState = new[] { IssueState.Closed };
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: openState).Nodes.Select(i => new
+            var states = new[] { IssueState.Closed };
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues(first: 3, states: states)
+                .Nodes
+                .Select(i => new
             {
                 i.Title,
                 i.State,
                 RepositoryName = i.Repository.Name,
             });
 
-            var results = Connection.Run(query).Result.ToArray();
+            var results = (await Connection.Run(query)).ToArray();
             foreach (var result in results)
             {
                 Assert.Equal("octokit.net", result.RepositoryName);
@@ -46,12 +54,12 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Should_Query_Issues_With_Variable()
+        public async Task Should_Query_Issues_With_Variable()
         {
-            var openState = new[] { IssueState.Closed };
+            var states = new[] { IssueState.Closed };
             var query = new Query()
-                .Repository("octokit", "octokit.net")
-                .Issues(Var("first"), states: openState)
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues(first: Var("first"), states: states)
                 .Nodes
                 .Select(i => new
             {
@@ -66,16 +74,15 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             };
 
             var compiled = query.Compile();
-            var results = Connection.Run(compiled, vars).Result.ToArray();
+            var results = (await Connection.Run(compiled, vars)).ToArray();
             Assert.Equal(3, results.Length);
         }
 
         [IntegrationTest]
-        public void Should_Query_Issue_Page_With_Author_Model()
+        public async Task Should_Query_Issue_Page_With_Author_Model()
         {
-            var openState = new[] { IssueState.Closed };
             var query = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issues(first: 100, after: Var("after"))
                 .Select(connection => new
                 {
@@ -101,7 +108,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 { "after", null }
             };
 
-            var results = Connection.Run(query, vars).Result;
+            var results = await Connection.Run(query, vars);
 
             Assert.Equal(100, results.Items.Count);
         }
@@ -110,7 +117,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_Manually_Page_Issue_Comments_By_Node_Id()
         {
             var masterQuery = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issue(405)
                 .Select(issue => new
                 {
@@ -159,7 +166,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_AutoPage_Issue_Comments()
         {
             var query = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issue(405)
                 .Select(issue => new
                 {
@@ -176,7 +183,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_AutoPage_Issues_Comments()
         {
             var query = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issues().AllPages()
                 .Select(issue => new
                 {
@@ -187,11 +194,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var result = (await Connection.Run(query)).ToList();
 
             Assert.True(result.Count > 100);
-            Assert.True(result.Any(x => x.Comments.Count > 100));
+            Assert.Contains(result, x => x.Comments.Count > 100);
         }
 
         [IntegrationTest(Skip = "Querying unions like this no longer works")]
-        public void Should_Query_Union_Issue_Or_PullRequest2()
+        public async Task Should_Query_Union_Issue_Or_PullRequest2()
         {
             var query = new Query().Repository("octokit", "octokit.net").Issue(23)
                 .Timeline(first: 30).Nodes
@@ -213,7 +220,9 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     UnsubscribedEventId = issueTimelineItem.UnsubscribedEvent.Id,
                 });
 
-            Assert.NotNull(Connection.Run(query).Result.Last().ClosedEventId);
+            var result = (await Connection.Run(query)).Last();
+
+            Assert.NotEqual(default(ID), result.ClosedEventId);
         }
 
         class ActorModel

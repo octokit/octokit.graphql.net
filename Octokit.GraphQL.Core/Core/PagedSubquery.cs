@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
-using Octokit.GraphQL.Core.Deserializers;
 
 namespace Octokit.GraphQL.Core
 {
@@ -69,7 +69,7 @@ namespace Octokit.GraphQL.Core
             string id,
             string after,
             IDictionary<string, object> variables,
-            IList result)
+            Action<object> addResult)
         {
             return new SubqueryRunner(
                 this,
@@ -77,7 +77,7 @@ namespace Octokit.GraphQL.Core
                 id,
                 after,
                 variables,
-                result);
+                addResult);
         }
 
         internal static ISubquery Create(
@@ -106,7 +106,7 @@ namespace Octokit.GraphQL.Core
 
         class SubqueryRunner : Runner
         {
-            IList finalResult;
+            readonly Action<object> addResult;
 
             public SubqueryRunner(
                 PagedSubquery<TResult> owner,
@@ -114,23 +114,24 @@ namespace Octokit.GraphQL.Core
                 string id,
                 string after,
                 IDictionary<string, object> variables,
-                IList result)
+                Action<object> addResult)
                 : base(owner, connection, variables ?? new Dictionary<string, object>())
             {
                 Variables["__id"] = id;
                 Variables["__after"] = after;
-                finalResult = result;
+                this.addResult = addResult;
             }
 
-            public override async Task<bool> RunPage()
+            /// <inheritdoc/>
+            public override async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
-                var more = await base.RunPage();
+                var more = await base.RunPage(cancellationToken).ConfigureAwait(false);
 
                 if (!more)
                 {
                     foreach (var i in (IList)Result)
                     {
-                        finalResult.Add(i);
+                        addResult(i);
                     }
                 }
 

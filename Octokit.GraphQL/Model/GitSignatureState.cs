@@ -12,79 +12,79 @@ namespace Octokit.GraphQL.Model
     public enum GitSignatureState
     {
         /// <summary>
-        /// Valid signature and verified by GitHub.
+        /// Valid signature and verified by GitHub
         /// </summary>
         [EnumMember(Value = "VALID")]
         Valid,
 
         /// <summary>
-        /// Invalid signature.
+        /// Invalid signature
         /// </summary>
         [EnumMember(Value = "INVALID")]
         Invalid,
 
         /// <summary>
-        /// Malformed signature.
+        /// Malformed signature
         /// </summary>
         [EnumMember(Value = "MALFORMED_SIG")]
         MalformedSig,
 
         /// <summary>
-        /// Key used for signing not known to GitHub.
+        /// Key used for signing not known to GitHub
         /// </summary>
         [EnumMember(Value = "UNKNOWN_KEY")]
         UnknownKey,
 
         /// <summary>
-        /// Invalid email used for signing.
+        /// Invalid email used for signing
         /// </summary>
         [EnumMember(Value = "BAD_EMAIL")]
         BadEmail,
 
         /// <summary>
-        /// Email used for signing unverified on GitHub.
+        /// Email used for signing unverified on GitHub
         /// </summary>
         [EnumMember(Value = "UNVERIFIED_EMAIL")]
         UnverifiedEmail,
 
         /// <summary>
-        /// Email used for signing not known to GitHub.
+        /// Email used for signing not known to GitHub
         /// </summary>
         [EnumMember(Value = "NO_USER")]
         NoUser,
 
         /// <summary>
-        /// Unknown signature type.
+        /// Unknown signature type
         /// </summary>
         [EnumMember(Value = "UNKNOWN_SIG_TYPE")]
         UnknownSigType,
 
         /// <summary>
-        /// Unsigned.
+        /// Unsigned
         /// </summary>
         [EnumMember(Value = "UNSIGNED")]
         Unsigned,
 
         /// <summary>
-        /// Internal error - the GPG verification service is unavailable at the moment.
+        /// Internal error - the GPG verification service is unavailable at the moment
         /// </summary>
         [EnumMember(Value = "GPGVERIFY_UNAVAILABLE")]
         GpgverifyUnavailable,
 
         /// <summary>
-        /// Internal error - the GPG verification service misbehaved.
+        /// Internal error - the GPG verification service misbehaved
         /// </summary>
         [EnumMember(Value = "GPGVERIFY_ERROR")]
         GpgverifyError,
 
         /// <summary>
-        /// The usage flags for the key that signed this don't allow signing.
+        /// The usage flags for the key that signed this don't allow signing
         /// </summary>
         [EnumMember(Value = "NOT_SIGNING_KEY")]
         NotSigningKey,
 
         /// <summary>
-        /// Signing key expired.
+        /// Signing key expired
         /// </summary>
         [EnumMember(Value = "EXPIRED_KEY")]
         ExpiredKey,
@@ -100,6 +100,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "OCSP_ERROR")]
         OcspError,
+
+        /// <summary>
+        /// The signing certificate or its chain could not be verified
+        /// </summary>
+        [EnumMember(Value = "BAD_CERT")]
+        BadCert,
 
         /// <summary>
         /// One or more certificates in chain has been revoked

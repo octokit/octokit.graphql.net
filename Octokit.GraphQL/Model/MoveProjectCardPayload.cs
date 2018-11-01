@@ -17,6 +17,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The new edge of the moved card.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `cardEdge` will change from `ProjectCardEdge!` to `ProjectCardEdge`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public ProjectCardEdge CardEdge => this.CreateProperty(x => x.CardEdge, Octokit.GraphQL.Model.ProjectCardEdge.Create);
 

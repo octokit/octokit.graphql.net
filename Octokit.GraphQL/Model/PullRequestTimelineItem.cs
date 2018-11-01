@@ -130,6 +130,11 @@ namespace Octokit.GraphQL.Model
         public DeployedEvent DeployedEvent => this.CreateProperty(x => x.DeployedEvent, Octokit.GraphQL.Model.DeployedEvent.Create);
 
         /// <summary>
+        /// Represents a 'deployment_environment_changed' event on a given pull request.
+        /// </summary>
+        public DeploymentEnvironmentChangedEvent DeploymentEnvironmentChangedEvent => this.CreateProperty(x => x.DeploymentEnvironmentChangedEvent, Octokit.GraphQL.Model.DeploymentEnvironmentChangedEvent.Create);
+
+        /// <summary>
         /// Represents a 'head_ref_deleted' event on a given pull request.
         /// </summary>
         public HeadRefDeletedEvent HeadRefDeletedEvent => this.CreateProperty(x => x.HeadRefDeletedEvent, Octokit.GraphQL.Model.HeadRefDeletedEvent.Create);

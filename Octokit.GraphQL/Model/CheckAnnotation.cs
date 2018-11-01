@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The annotation's severity level.
+        /// </summary>
+        public CheckAnnotationLevel? AnnotationLevel { get; }
+
+        /// <summary>
         /// The path to the file that this annotation was made on.
         /// </summary>
         public string BlobUrl { get; }
@@ -26,14 +31,9 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
-        /// The ending line for this annotation.
+        /// The position of this annotation.
         /// </summary>
-        public int EndLine { get; }
-
-        /// <summary>
-        /// The filename that this annotation was made on.
-        /// </summary>
-        public string Filename { get; }
+        public CheckAnnotationSpan Location => this.CreateProperty(x => x.Location, Octokit.GraphQL.Model.CheckAnnotationSpan.Create);
 
         /// <summary>
         /// The annotation's message.
@@ -41,24 +41,19 @@ namespace Octokit.GraphQL.Model
         public string Message { get; }
 
         /// <summary>
+        /// The path that this annotation was made on.
+        /// </summary>
+        public string Path { get; }
+
+        /// <summary>
         /// Additional information about the annotation.
         /// </summary>
         public string RawDetails { get; }
 
         /// <summary>
-        /// The starting line for this annotation.
-        /// </summary>
-        public int StartLine { get; }
-
-        /// <summary>
         /// The annotation's title
         /// </summary>
         public string Title { get; }
-
-        /// <summary>
-        /// The annotation's severity level.
-        /// </summary>
-        public CheckAnnotationLevel? WarningLevel { get; }
 
         internal static CheckAnnotation Create(Expression expression)
         {

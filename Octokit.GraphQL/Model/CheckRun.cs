@@ -40,11 +40,6 @@ namespace Octokit.GraphQL.Model
         public CheckConclusionState? Conclusion { get; }
 
         /// <summary>
-        /// The GitHub App bot associated with the check run.
-        /// </summary>
-        public Bot Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Model.Bot.Create);
-
-        /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
         public int? DatabaseId { get; }

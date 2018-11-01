@@ -42,6 +42,13 @@ namespace Octokit.GraphQL.Core.Syntax
             return result;
         }
 
+        public FragmentDefinition AddFragment(IFragment value)
+        {
+            var fragmentDefinition = new FragmentDefinition(value.InputType, value.Name);
+            Root.FragmentDefinitions.Add(value.Name, fragmentDefinition);
+            return fragmentDefinition;
+        }
+
         public InlineFragment AddInlineFragment(Type typeCondition, bool selectTypeName)
         {
             var result = new InlineFragment(typeCondition);
@@ -54,6 +61,13 @@ namespace Octokit.GraphQL.Core.Syntax
             Head.Selections.Add(result);
             Head = result;
             return result;
+        }
+
+        public FragmentSpread AddFragmentSpread(string name)
+        {
+            var fragmentSpread = new FragmentSpread(name);
+            Head.Selections.Add(fragmentSpread);
+            return fragmentSpread;
         }
 
         public VariableDefinition AddVariableDefinition(Type type, bool isNullable, string name)

@@ -22,6 +22,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The updated ProjectCard.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `projectCard` will change from `ProjectCard!` to `ProjectCard`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public ProjectCard ProjectCard => this.CreateProperty(x => x.ProjectCard, Octokit.GraphQL.Model.ProjectCard.Create);
 

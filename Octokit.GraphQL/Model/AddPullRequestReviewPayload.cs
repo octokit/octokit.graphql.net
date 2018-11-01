@@ -22,11 +22,17 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The newly created pull request review.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `pullRequestReview` will change from `PullRequestReview!` to `PullRequestReview`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public PullRequestReview PullRequestReview => this.CreateProperty(x => x.PullRequestReview, Octokit.GraphQL.Model.PullRequestReview.Create);
 
         /// <summary>
         /// The edge from the pull request's review connection.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `reviewEdge` will change from `PullRequestReviewEdge!` to `PullRequestReviewEdge`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public PullRequestReviewEdge ReviewEdge => this.CreateProperty(x => x.ReviewEdge, Octokit.GraphQL.Model.PullRequestReviewEdge.Create);
 

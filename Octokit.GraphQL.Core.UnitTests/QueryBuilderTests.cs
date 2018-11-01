@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
@@ -638,6 +639,351 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal(
                 "Cannot directly select \'IQueryableList<>\'. Use ToList() to unwrap the value.",
                 exception.Message);
+        }
+
+        [Fact]
+        public void Repository_Select_Simple_Fragment()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  name
+}";
+
+            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(fragment);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_Select_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    intField1: forkCount
+    stringField1: name
+    stringField2: description
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(repository => new TestModelObject
+                {
+                    IntField1 = repository.ForkCount,
+                    StringField1 = repository.Name,
+                    StringField2 = repository.Description
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_Select_Anon_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    intField1: forkCount
+    stringField1: name
+    stringField2: description
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(repository => new
+                {
+                    IntField1 = repository.ForkCount,
+                    StringField1 = repository.Name,
+                    StringField2 = repository.Description
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_Select_Object_Fragment()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  intField1: forkCount
+  stringField1: name
+  stringField2: description
+}";
+
+            var fragment = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
+            {
+                IntField1 = repository.ForkCount,
+                StringField1 = repository.Name,
+                StringField2 = repository.Description
+            });
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(fragment);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_Select_Use_Simple_Fragment_Twice()
+        {
+            var expected = @"query {
+  repo1: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+  repo2: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  name
+}";
+
+            var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault(),
+                    repo2 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault()
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_Select_Use_Object_Fragment_Twice()
+        {
+            var expected = @"query {
+  repo1: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+  repo2: repository(owner: ""foo"", name: ""bar"") {
+    ...repositoryName
+  }
+}
+fragment repositoryName on Repository {
+  intField1: forkCount
+  stringField1: name
+  stringField2: description
+}";
+
+            var repositoryName = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
+            {
+                IntField1 = repository.ForkCount,
+                StringField1 = repository.Name,
+                StringField2 = repository.Description
+            });
+
+            var expression = new Query()
+                .Select(q => new
+                {
+                    repo1 = q.Repository("foo", "bar").Select(repositoryName).SingleOrDefault(),
+                    repo2 = q.Repository("foo", "bar").Select(repositoryName).SingleOrDefault()
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Use_Simple_Fragment_With_Nodes_List()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    repos: issues {
+      nodes {
+        ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var fragment = new Fragment<Issue, string>("issueTitle", repo => repo.Title);
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(org => new
+                {
+                    Repos = org.Issues(null, null, null, null, null)
+                        .Nodes.Select(fragment).ToList(),
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Use_Simple_Fragment_With_AllPages_List()
+        {
+            var masterQuery = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    id
+    repos: issues(first: 100) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var subQuery = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          ...issueTitle
+        }
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var fragment = new Fragment<Issue, string>("issueTitle", repo => repo.Title);
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(org => new
+                {
+                    Repos = org.Issues(null, null, null, null, null)
+                        .AllPages().Select(fragment).ToList(),
+                });
+
+            var compiledQuery = expression.Compile();
+
+            Assert.Equal(masterQuery, compiledQuery.GetMasterQuery().ToString(2), ignoreLineEndingDifferences: true);
+
+            Assert.Equal(subQuery, compiledQuery.GetSubqueries()[0].ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Two_In_Anon_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    someData: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+    someData2: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query().Repository("foo", "bar").Select(repository => new
+            {
+                SomeData = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+                SomeData2 = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+            });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Two_In_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    someData: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+    someData2: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query().Repository("foo", "bar").Select(repository => new TestIssueSets
+            {
+                SomeData = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+                SomeData2 = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+            });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        class TestModelObject
+        {
+            public string StringField1;
+            public string StringField2;
+            public int IntField1;
+            public int IntField2;
+        }
+
+        public class TestIssueSets
+        {
+            public IReadOnlyList<object> SomeData { get; set; }
+            public IReadOnlyList<object> SomeData2 { get; set; }
         }
     }
 }

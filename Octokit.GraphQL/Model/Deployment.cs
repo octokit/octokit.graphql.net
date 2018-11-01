@@ -58,6 +58,11 @@ namespace Octokit.GraphQL.Model
         public string Payload { get; }
 
         /// <summary>
+        /// Identifies the Ref of the deployment, if the deployment was created by ref.
+        /// </summary>
+        public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Model.Ref.Create);
+
+        /// <summary>
         /// Identifies the repository associated with the deployment.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
@@ -75,6 +80,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public DeploymentStatusConnection Statuses(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Statuses(first, after, last, before), Octokit.GraphQL.Model.DeploymentStatusConnection.Create);
+
+        /// <summary>
+        /// The deployment task.
+        /// </summary>
+        public string Task { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

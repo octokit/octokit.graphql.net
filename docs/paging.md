@@ -14,7 +14,7 @@ Many GraphQL fields can be paged. These fields typically define at least four pa
 |`before`|The start cursor of the previous page|
 
 In addition, these fields produce a `Connection` object which contains a list of `edges` and
-`nodes`, toegther with a `totalCount` and a `pageInfo` object.
+`nodes`, together with a `totalCount` and a `pageInfo` object.
 
 To run a paged query, you would write code like this:
 

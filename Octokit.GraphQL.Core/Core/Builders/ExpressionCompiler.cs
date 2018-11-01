@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Octokit.GraphQL.Core.Builders
 {
     public static class ExpressionCompiler
     {
-        static Dictionary<object, Expression> sourceExpression;
+        static ConcurrentDictionary<object, Expression> sourceExpression;
 
         public static bool IsUnitTesting { get; set; }
 
@@ -18,10 +20,11 @@ namespace Octokit.GraphQL.Core.Builders
             {
                 if (sourceExpression == null)
                 {
-                    sourceExpression = new Dictionary<object, Expression>();
+                    var candidate = new ConcurrentDictionary<object, Expression>();
+                    Interlocked.CompareExchange(ref sourceExpression, candidate, null);
                 }
 
-                sourceExpression.Add(compiled, expression);
+                sourceExpression[compiled] = expression;
             }
 
             return compiled;
@@ -29,6 +32,11 @@ namespace Octokit.GraphQL.Core.Builders
 
         public static Expression GetSourceExpression(object func)
         {
+            if (!IsUnitTesting)
+            {
+                throw new InvalidOperationException($"Cannot call {nameof(GetSourceExpression)} if {nameof(IsUnitTesting)} is false.");
+            }
+
             return sourceExpression[func];
         }
     }
