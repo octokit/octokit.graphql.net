@@ -665,6 +665,29 @@ fragment repositoryName on Repository {
         }
 
         [Fact]
+        public void RepositoryOwner_Select_Simple_Fragment()
+        {
+            var expected = @"query {
+  repositoryOwner(login: ""foo"") {
+    ...ownerLogin
+  }
+}
+fragment ownerLogin on RepositoryOwner {
+  login
+}";
+
+            var fragment = new Fragment<IRepositoryOwner, string>("ownerLogin", owner => owner.Login);
+
+            var expression = new Query()
+                .RepositoryOwner(login: "foo")
+                .Select(fragment);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void Repository_Select_Object()
         {
             var expected = @"query {

@@ -21,5 +21,23 @@ namespace Octokit.GraphQL.Core.Syntax
             var attr = member?.GetCustomAttribute<GraphQLIdentifierAttribute>();
             return attr != null ? attr.Identifier : member?.Name.LowerFirstCharacter();
         }
+
+        public static string GetIdentifier(Type type)
+        {
+            var attr = type.GetTypeInfo().GetCustomAttribute<GraphQLIdentifierAttribute>();
+            
+            if (attr != null)
+            {
+                return attr.Identifier;
+            }
+            else if (type.GetTypeInfo().IsInterface)
+            {
+                return type.Name.Substring(1);
+            }
+            else
+            {
+                return type.Name;
+            }
+        }
     }
 }
