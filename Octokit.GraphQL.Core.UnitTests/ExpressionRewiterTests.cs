@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => x.Name);
 
             Expression<Func<JObject, string>> expected = data =>
-                Rewritten.Value.Select(data["data"]["repository"], x => x["name"]).ToObject<string>();
+                Rewritten.Value.SelectJToken(data["data"]["repository"], x => x["name"]).ToObject<string>();
 
             ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
@@ -216,7 +216,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => x.Body);
 
             Expression<Func<JObject, object>> expected = data =>
-                Rewritten.Value.Select(
+                Rewritten.Value.SelectJToken(
                     Rewritten.Interface.Cast(data["data"]["node"], "Issue"),
                     x => x["body"]).ToObject<string>();
 

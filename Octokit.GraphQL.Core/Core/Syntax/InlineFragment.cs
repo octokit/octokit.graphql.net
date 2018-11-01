@@ -7,9 +7,9 @@ namespace Octokit.GraphQL.Core.Syntax
     {
         public InlineFragment(Type typeCondition)
         {
-            TypeCondition = typeCondition;
+            TypeCondition = GetIdentifier(typeCondition);
         }
 
-        public Type TypeCondition { get; }
+        public string TypeCondition { get; }
     }
 }

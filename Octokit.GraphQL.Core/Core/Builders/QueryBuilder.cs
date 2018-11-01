@@ -529,9 +529,12 @@ namespace Octokit.GraphQL.Core.Builders
                 var lambda = selectExpression.GetLambda();
                 var instance = Visit(AliasedExpression.WrapIfNeeded(source, alias));
                 var select = (LambdaExpression)Visit(lambda);
+                var selectMethod = select.ReturnType == typeof(JToken) ?
+                    Rewritten.Value.SelectJTokenMethod :
+                    Rewritten.Value.SelectMethod.MakeGenericMethod(select.ReturnType);
 
                 return Expression.Call(
-                    Rewritten.Value.SelectMethod.MakeGenericMethod(select.ReturnType),
+                    selectMethod,
                     instance,
                     select);
             }
@@ -842,7 +845,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return Expression.Call(
                     Rewritten.List.OfTypeMethod,
                     instance,
-                    Expression.Constant(fragment.TypeCondition.Name));
+                    Expression.Constant(fragment.TypeCondition));
             }
             else
             {
@@ -862,7 +865,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return Expression.Call(
                     Rewritten.Interface.CastMethod,
                     instance,
-                    Expression.Constant(fragment.TypeCondition.Name));
+                    Expression.Constant(fragment.TypeCondition));
             }
             else
             {
