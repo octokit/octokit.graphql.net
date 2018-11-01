@@ -415,6 +415,83 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal(42, result.Value.Number);
         }
 
+        [Fact]
+        public void Repository_Issue_SingleOrDefault_Returned_Null()
+        {
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(x => new
+                {
+                    Value = x.Issue(1).Select(y => new
+                    {
+                        y.Title,
+                        y.Number,
+                    }).SingleOrDefault()
+                });
+
+            var data = @"{
+    ""data"":{
+        ""repository"": {
+            ""value"": null
+        }
+    }
+}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = query.Deserialize(data);
+
+            Assert.Null(result.Value);
+        }
+
+        [Fact]
+        public void Should_Handle_Null_Repository_Parent_Using_SingleOrDefault()
+        {
+            var expression = new Query()
+                .Repository("octokit", "octokit.net")
+                .Select(repository => new
+                {
+                    Name = repository.Name,
+                    Parent = repository.Parent.Select(parent => new
+                    {
+                        parent.Name
+                    }).SingleOrDefault()
+                });
+
+            var data = @"{""data"":{""repository"":{""name"":""octokit.net"",""parent"":null}}}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = query.Deserialize(data);
+
+            Assert.Equal("octokit.net", result.Name);
+            Assert.Null(result.Parent);
+        }
+
+        [Fact]
+        public void Should_Handle_Null_Repository_ParentName_Using_SingleOrDefault()
+        {
+            var expression = new Query()
+                .Repository("octokit", "octokit.net")
+                .Select(repository => new
+                {
+                    Name = repository.Name,
+                    ParentName = repository.Parent.Select(parent => parent.Name).SingleOrDefault()
+                });
+
+            var data = @"{""data"":{""repository"":{""name"":""octokit.net"",""parentName"":null}}}";
+
+            var foo = JObject.Parse(data);
+
+            var query = new QueryBuilder().Build(expression);
+            var result = query.Deserialize(data);
+
+            Assert.Equal("octokit.net", result.Name);
+            Assert.Null(result.ParentName);
+        }
+
         private class NamedClass
         {
             public NamedClass()
