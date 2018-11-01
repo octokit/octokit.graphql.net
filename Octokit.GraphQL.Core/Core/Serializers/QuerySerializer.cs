@@ -85,7 +85,7 @@ namespace Octokit.GraphQL.Core.Serializers
             builder.Append("fragment ");
             builder.Append(fragment.Name);
             builder.Append(" on ");
-            builder.Append(fragment.Type);
+            builder.Append(fragment.TypeCondition);
             SerializeSelections(fragment, builder);
         }
 
@@ -124,7 +124,7 @@ namespace Octokit.GraphQL.Core.Serializers
         private void Serialize(InlineFragment fragment, StringBuilder builder)
         {
             builder.Append("... on ");
-            builder.Append(fragment.TypeCondition.Name);
+            builder.Append(fragment.TypeCondition);
 
             if (fragment.Selections.Any() == true)
             {

@@ -369,7 +369,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return Expression.Call(
                     Rewritten.Value.OfTypeMethod,
                     source,
-                    Expression.Constant(fragment.TypeCondition.Name));
+                    Expression.Constant(fragment.TypeCondition));
             }
             else if (IsQueryableValueMember(node.Member))
             {
@@ -847,7 +847,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return Expression.Call(
                     Rewritten.List.OfTypeMethod,
                     instance,
-                    Expression.Constant(fragment.TypeCondition.Name));
+                    Expression.Constant(fragment.TypeCondition));
             }
             else
             {
@@ -867,7 +867,7 @@ namespace Octokit.GraphQL.Core.Builders
                 return Expression.Call(
                     Rewritten.Interface.CastMethod,
                     instance,
-                    Expression.Constant(fragment.TypeCondition.Name));
+                    Expression.Constant(fragment.TypeCondition));
             }
             else
             {
