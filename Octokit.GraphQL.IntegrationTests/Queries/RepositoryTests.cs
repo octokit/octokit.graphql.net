@@ -285,7 +285,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 });
 
             var testModelObject = await Connection.Run(query);
-            Assert.Equal("alanjrogers", testModelObject.Member.StringField1);
+            Assert.Equal("bkeepers", testModelObject.Member.StringField1);
             Assert.Equal("bkeepers", testModelObject.MentionableUser.StringField1);
         }
 
