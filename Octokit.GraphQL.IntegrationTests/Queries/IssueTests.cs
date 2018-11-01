@@ -197,34 +197,6 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.Contains(result, x => x.Comments.Count > 100);
         }
 
-        [IntegrationTest(Skip = "Querying unions like this no longer works")]
-        public async Task Should_Query_Union_Issue_Or_PullRequest2()
-        {
-            var query = new Query().Repository("octokit", "octokit.net").Issue(23)
-                .Timeline(first: 30).Nodes
-                .Select(issueTimelineItem => new
-                {
-                    AssignedEventId = issueTimelineItem.AssignedEvent.Id,
-                    ClosedEventId = issueTimelineItem.ClosedEvent.Id,
-                    DemilestonedEventId = issueTimelineItem.DemilestonedEvent.Id,
-                    LabeledEventId = issueTimelineItem.LabeledEvent.Id,
-                    LockedEventId = issueTimelineItem.LockedEvent.Id,
-                    MilestonedEventId = issueTimelineItem.MilestonedEvent.Id,
-                    ReferencedEventId = issueTimelineItem.ReferencedEvent.Id,
-                    RenamedTitleEventId = issueTimelineItem.RenamedTitleEvent.Id,
-                    ReopenedEventId = issueTimelineItem.ReopenedEvent.Id,
-                    SubscribedEventId = issueTimelineItem.SubscribedEvent.Id,
-                    UnassignedEventId = issueTimelineItem.UnassignedEvent.Id,
-                    UnlabeledEventId = issueTimelineItem.UnlabeledEvent.Id,
-                    UnlockedEventId = issueTimelineItem.UnlockedEvent.Id,
-                    UnsubscribedEventId = issueTimelineItem.UnsubscribedEvent.Id,
-                });
-
-            var result = (await Connection.Run(query)).Last();
-
-            Assert.NotEqual(default(ID), result.ClosedEventId);
-        }
-
         class ActorModel
         {
             public string Login { get; set; }

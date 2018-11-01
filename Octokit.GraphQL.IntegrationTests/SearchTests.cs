@@ -12,7 +12,11 @@ namespace Octokit.GraphQL.IntegrationTests
         [IntegrationTest]
         public void Should_Query_Commits()
         {
-            var query = new Query().Search("language:JavaScript stars:>10000", SearchType.Issue, first: 3).Nodes.Select(searchResultItem => new {searchResultItem.Issue.Id});
+            var query = new Query()
+                .Search("language:JavaScript stars:>10000", SearchType.Issue, first: 3)
+                .Nodes
+                .Select(item => item.Switch<string>(when =>
+                    when.Issue(issue => issue.Id.Value)));
 
             var queryBuilder = new QueryBuilder();
             var queryString = queryBuilder.Build(query);;

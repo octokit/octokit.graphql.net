@@ -362,16 +362,7 @@ namespace Octokit.GraphQL.Core.Builders
 
         private Expression VisitMember(MemberExpression node, MemberInfo alias)
         {
-            if (IsUnionMember(node.Member))
-            {
-                var source = Visit(node.Expression);
-                var fragment = syntax.AddInlineFragment(((PropertyInfo)node.Member).PropertyType, true);
-                return Expression.Call(
-                    Rewritten.Value.OfTypeMethod,
-                    source,
-                    Expression.Constant(fragment.TypeCondition));
-            }
-            else if (IsQueryableValueMember(node.Member))
+            if (IsQueryableValueMember(node.Member))
             {
                 var expression = node.Expression;
                 bool isSubqueryPager = false;
@@ -506,6 +497,10 @@ namespace Octokit.GraphQL.Core.Builders
             else if (node.Method.DeclaringType == typeof(PagingConnectionExtensions))
             {
                 return RewritePagingConnectionExtensions(node);
+            }
+            else if (IsUnionSwitch(node.Method))
+            {
+                return RewriteUnionSwitch(node);
             }
             else if (IsQueryableValueMember(node.Method))
             {
@@ -677,7 +672,7 @@ namespace Octokit.GraphQL.Core.Builders
                     syntax.AddField("nodes");
                     instance = instance.AddIndexer("nodes");
                 }
-                
+
                 var select = (LambdaExpression)Visit(lambda);
                 var rewrittenSelect = Expression.Call(
                     Rewritten.List.SelectMethod.MakeGenericMethod(select.ReturnType),
@@ -916,6 +911,74 @@ namespace Octokit.GraphQL.Core.Builders
             else
             {
                 throw new NotSupportedException($"{expression.Method.Name}() is not supported");
+            }
+        }
+
+        private Expression RewriteUnionSwitch(MethodCallExpression expression)
+        {
+            LambdaExpression CastInitializer(Expression initializer, Type type)
+            {
+                var lambda = initializer.GetLambda();
+                var bodyType = lambda.Body.Type;
+
+                if (bodyType == typeof(JToken))
+                {
+                    return Expression.Lambda(
+                        lambda.Body.AddCast(type),
+                        lambda.Parameters);
+                }
+                else
+                {
+                    return lambda;
+                }
+            }
+
+            var source = expression.Object;
+            var instance = Visit(source);
+            var resultType = expression.Method.GetGenericArguments()[0];
+
+            if (!(expression.Arguments[0].GetLambda().Body is MethodCallExpression casesBody))
+            {
+                throw new GraphQLException("Expected union switch expression.");
+            }
+
+            var cases = new Dictionary<string, Expression>();
+            BuildUnionSwitchCases(casesBody, cases);
+
+            var funcType = typeof(Func<,>).MakeGenericType(typeof(JToken), resultType);
+            var dictionaryType = typeof(Dictionary<,>).MakeGenericType(typeof(string), funcType);
+            var dictionaryAdd = dictionaryType.GetTypeInfo().GetDeclaredMethod("Add");
+            var initializers = cases.Select(x => 
+                Expression.ElementInit(
+                    dictionaryAdd,
+                    Expression.Constant(x.Key),
+                    CastInitializer(x.Value, resultType))).ToList();
+            var newDictionary = Expression.ListInit(
+                Expression.New(dictionaryType),
+                initializers);
+
+            return Expression.Call(
+                Rewritten.Value.SwitchMethod.MakeGenericMethod(resultType),
+                instance,
+                newDictionary);
+            throw new NotImplementedException();
+        }
+
+        private void BuildUnionSwitchCases(MethodCallExpression body, Dictionary<string, Expression> result)
+        {
+            if (body.Object is MethodCallExpression previous)
+            {
+                BuildUnionSwitchCases(previous, result);
+            }
+
+            using (syntax.Bookmark())
+            {
+                var methodParam = body.Method.GetParameters()[0];
+                var type = methodParam.ParameterType.GenericTypeArguments[0];
+                syntax.AddInlineFragment(type, true);
+
+                var selector = Visit(body.Arguments[0]);
+                result.Add(type.Name, selector);
             }
         }
 
@@ -1214,9 +1277,11 @@ namespace Octokit.GraphQL.Core.Builders
             return typeof(IUnion).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
-        private static bool IsUnionMember(MemberInfo member)
+        private static bool IsUnionSwitch(MemberInfo member)
         {
-            return member is PropertyInfo && IsUnion(member.DeclaringType);
+            return IsUnion(member.DeclaringType) &&
+                member is MethodInfo m &&
+                m.Name == "Switch";
         }
 
         private static FieldSelection PageInfoSelection()

@@ -381,25 +381,26 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.NotNull(result.repoOwner);
         }
 
-        [IntegrationTest(Skip = "Querying unions like this no longer works")]
+        [IntegrationTest]
         public async Task Should_Query_Union_Issue_Or_PullRequest()
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
                 .IssueOrPullRequest(number: 1)
-                .Select(issueOrPullRequest => new
-                {
-                    IssueId = issueOrPullRequest.Issue.Id,
-                    PullRequestId = issueOrPullRequest.PullRequest.Id
-                });
+                .Select(issueOrPullRequest => issueOrPullRequest.Switch<string>(when =>
+                    when.Issue(issue => "Issue " + issue.Number)
+                        .PullRequest(pr => "PR " + pr.Number)));
 
             var result = await Connection.Run(query);
+
+            Assert.Equal("PR 1", result);
         }
 
         [IntegrationTest]
         public void Should_Handle_Null_Repository_Parent_Using_SingleOrDefault()
         {
-            var query = new Query().Repository("octokit", "octokit.net")
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Select(repository => new
                 {
                     Name = repository.Name,
@@ -416,7 +417,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public void Should_Handle_Null_Repository_ParentName_Using_SingleOrDefault()
         {
-            var query = new Query().Repository("octokit", "octokit.net")
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Select(repository => new
                 {
                     Name = repository.Name,

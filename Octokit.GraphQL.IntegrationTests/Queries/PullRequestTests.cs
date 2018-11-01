@@ -136,7 +136,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task PullRequest_Status_Context_CanBeNull()
         {
             var query = new Query()
-            .Repository("StanleyGoldman", "ConsoleCoreAppWithYamlForNoReason")
+            .Repository(owner: "StanleyGoldman", name: "ConsoleCoreAppWithYamlForNoReason")
             .PullRequests(1)
             .Select(page => 
                 page.Nodes.Select(pr => new 

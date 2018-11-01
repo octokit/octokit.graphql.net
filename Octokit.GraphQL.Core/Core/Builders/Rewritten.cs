@@ -17,6 +17,7 @@ namespace Octokit.GraphQL.Core.Builders
             public static readonly MethodInfo SelectListMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SelectList));
             public static readonly MethodInfo SingleMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Single));
             public static readonly MethodInfo SingleOrDefaultMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SingleOrDefault));
+            public static readonly MethodInfo SwitchMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Switch));
 
             public static JToken OfType(JToken source, string typeName)
             {
@@ -54,6 +55,18 @@ namespace Octokit.GraphQL.Core.Builders
             }
 
             public static TResult SingleOrDefault<TResult>(TResult value) => value;
+
+            public static TResult Switch<TResult>(JToken source, IDictionary<string, Func<JToken, TResult>> selectors)
+            {
+                var typename = (string)source["__typename"];
+
+                if (selectors.TryGetValue(typename, out var selector))
+                {
+                    return selector(source);
+                }
+
+                return default;
+            }
         }
 
         public static class List
