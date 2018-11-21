@@ -1098,68 +1098,6 @@ fragment issueTitle on Issue {
         }
 
         [Fact]
-        public void Select_Nodes_Then_AllPage()
-        {
-            var expected = @"query {
-  repository(owner: ""github"", name: ""visualstudio"") {
-    pullRequest(number: 1864) {
-      commits(last: 1) {
-        nodes {
-          commit {
-            id
-            checkSuites(first: 10) {
-              pageInfo {
-                hasNextPage
-                endCursor
-              }
-              nodes {
-                id
-                checkRuns(first: 10) {
-                  pageInfo {
-                    hasNextPage
-                    endCursor
-                  }
-                  nodes {
-                    checkRunId: id
-                    name
-                    annotations(first: 100) {
-                      pageInfo {
-                        hasNextPage
-                        endCursor
-                      }
-                      nodes {
-                        path
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}";
-
-            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
-
-            var expression = new Query()
-                .Repository("github", "visualstudio").Issues(last: 1).Nodes.Select(issue => new
-                {
-                    Comments = issue.Comments(null, null, null, null)
-                        .AllPages()
-                        .Select(comment => comment.Body)
-                        .ToList()
-                });
-
-            var query = expression.Compile();
-
-            var actual = query.ToString(2);
-            Assert.Equal(expected, actual, ignoreLineEndingDifferences: true);
-        }
-
-        [Fact]
         public void Repository_PullRequest_CheckRun_Normal_Id()
         {
             var expected = @"query {
