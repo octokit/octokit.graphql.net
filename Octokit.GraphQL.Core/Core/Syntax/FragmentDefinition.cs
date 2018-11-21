@@ -4,22 +4,20 @@ using System.Text;
 
 namespace Octokit.GraphQL.Core.Syntax
 {
-    public class FragmentDefinition: SelectionSet
+    public class FragmentDefinition : SelectionSet
     {
-        public string Type { get; }
+        public string TypeCondition { get; }
         public string Name { get; }
 
-        public FragmentDefinition(Type inputType, string name)
+        public FragmentDefinition(Type typeCondition, string name)
         {
             if (name.ToLowerInvariant() == "on")
             {
-                throw new ArgumentException("On is an invalid value a fragment name", nameof(name));
+                throw new ArgumentException("'on' is an invalid fragment name", nameof(name));
             }
 
-            Type = ToTypeName(inputType);
+            TypeCondition = GetIdentifier(typeCondition);
             Name = name;
         }
-
-        private string ToTypeName(Type type) => type.Name;
     }
 }

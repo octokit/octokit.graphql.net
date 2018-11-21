@@ -13,7 +13,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public async Task Should_Query_Issues_By_Repository()
         {
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3).Nodes.Select(i => new
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues(first: 3)
+                .Nodes
+                .Select(i => new
             {
                 i.Title,
                 RepositoryName = i.Repository.Name,
@@ -30,7 +34,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Should_Query_Issues_By_State_And_Repository()
         {
             var states = new[] { IssueState.Closed };
-            var query = new GraphQL.Query().Repository("octokit", "octokit.net").Issues(first: 3, states: states).Nodes.Select(i => new
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues(first: 3, states: states)
+                .Nodes
+                .Select(i => new
             {
                 i.Title,
                 i.State,
@@ -50,8 +58,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             var states = new[] { IssueState.Closed };
             var query = new Query()
-                .Repository("octokit", "octokit.net")
-                .Issues(Var("first"), states: states)
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues(first: Var("first"), states: states)
                 .Nodes
                 .Select(i => new
             {
@@ -74,7 +82,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Should_Query_Issue_Page_With_Author_Model()
         {
             var query = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issues(first: 100, after: Var("after"))
                 .Select(connection => new
                 {
@@ -109,7 +117,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_Manually_Page_Issue_Comments_By_Node_Id()
         {
             var masterQuery = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issue(405)
                 .Select(issue => new
                 {
@@ -158,7 +166,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_AutoPage_Issue_Comments()
         {
             var query = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issue(405)
                 .Select(issue => new
                 {
@@ -175,7 +183,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         public async Task Can_AutoPage_Issues_Comments()
         {
             var query = new Query()
-                .Repository("octokit", "octokit.net")
+                .Repository(owner: "octokit", name: "octokit.net")
                 .Issues().AllPages()
                 .Select(issue => new
                 {
@@ -187,34 +195,6 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             Assert.True(result.Count > 100);
             Assert.Contains(result, x => x.Comments.Count > 100);
-        }
-
-        [IntegrationTest(Skip = "Querying unions like this no longer works")]
-        public async Task Should_Query_Union_Issue_Or_PullRequest2()
-        {
-            var query = new Query().Repository("octokit", "octokit.net").Issue(23)
-                .Timeline(first: 30).Nodes
-                .Select(issueTimelineItem => new
-                {
-                    AssignedEventId = issueTimelineItem.AssignedEvent.Id,
-                    ClosedEventId = issueTimelineItem.ClosedEvent.Id,
-                    DemilestonedEventId = issueTimelineItem.DemilestonedEvent.Id,
-                    LabeledEventId = issueTimelineItem.LabeledEvent.Id,
-                    LockedEventId = issueTimelineItem.LockedEvent.Id,
-                    MilestonedEventId = issueTimelineItem.MilestonedEvent.Id,
-                    ReferencedEventId = issueTimelineItem.ReferencedEvent.Id,
-                    RenamedTitleEventId = issueTimelineItem.RenamedTitleEvent.Id,
-                    ReopenedEventId = issueTimelineItem.ReopenedEvent.Id,
-                    SubscribedEventId = issueTimelineItem.SubscribedEvent.Id,
-                    UnassignedEventId = issueTimelineItem.UnassignedEvent.Id,
-                    UnlabeledEventId = issueTimelineItem.UnlabeledEvent.Id,
-                    UnlockedEventId = issueTimelineItem.UnlockedEvent.Id,
-                    UnsubscribedEventId = issueTimelineItem.UnsubscribedEvent.Id,
-                });
-
-            var result = (await Connection.Run(query)).Last();
-
-            Assert.NotEqual(default(ID), result.ClosedEventId);
         }
 
         class ActorModel

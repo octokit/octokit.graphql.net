@@ -691,6 +691,29 @@ fragment repositoryName on Repository {
         }
 
         [Fact]
+        public void RepositoryOwner_Select_Simple_Fragment()
+        {
+            var expected = @"query {
+  repositoryOwner(login: ""foo"") {
+    ...ownerLogin
+  }
+}
+fragment ownerLogin on RepositoryOwner {
+  login
+}";
+
+            var fragment = new Fragment<IRepositoryOwner, string>("ownerLogin", owner => owner.Login);
+
+            var expression = new Query()
+                .RepositoryOwner(login: "foo")
+                .Select(fragment);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void Repository_Select_Object()
         {
             var expected = @"query {
@@ -999,6 +1022,82 @@ fragment issueTitle on Issue {
         }
 
         [Fact]
+        public void Union_IssueOrPullRequest()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    issueOrPullRequest(number: 1) {
+      __typename
+      ... on Issue {
+        number
+      }
+      ... on PullRequest {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .IssueOrPullRequest(1)
+                .Select(issueOrPr => issueOrPr.Switch<object>(when =>
+                    when.Issue(issue => new IssueModel
+                    {
+                        Number = issue.Number,
+                    }).PullRequest(pr => new PullRequestModel
+                    {
+                        Title = pr.Title,
+                    })));
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Union_PullRequest_Timeline()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    pullRequest(number: 1) {
+      timeline(first: 100) {
+        nodes {
+          __typename
+          ... on Commit {
+            oid: abbreviatedOid
+          }
+          ... on IssueComment {
+            body
+          }
+        }
+      }
+    }
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .PullRequest(1)
+                .Timeline(first: 100)
+                .Nodes
+                .Select(node => node.Switch<TimelineItemModel>(when =>
+                    when.Commit(commit => new CommitModel
+                    {
+                        Oid = commit.AbbreviatedOid,
+                    }).IssueComment(comment => new IssueCommentModel
+                    {
+                        Body = comment.Body,
+                    })));
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void Select_Nodes_Then_AllPage()
         {
             var expected = @"query {
@@ -1219,6 +1318,30 @@ fragment issueTitle on Issue {
             public string StringField2;
             public int IntField1;
             public int IntField2;
+        }
+
+        class IssueModel
+        {
+            public int Number { get; set; }
+        }
+
+        class PullRequestModel
+        {
+            public string Title { get; set; }
+        }
+
+        class TimelineItemModel
+        {
+        }
+
+        class CommitModel : TimelineItemModel
+        {
+            public string Oid { get; set; }
+        }
+
+        class IssueCommentModel : TimelineItemModel
+        {
+            public string Body { get; set; }
         }
 
         public class TestIssueSets

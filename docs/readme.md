@@ -8,4 +8,5 @@
 4. [Variables](variables.md)
 5. [Paging](paging.md)
 5. [Fragments](fragments.md)
-6. [Contributing](contributing.md)
+6. [Unions](unions.md)
+7. [Contributing](contributing.md)

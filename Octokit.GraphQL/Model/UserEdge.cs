@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// An edge in a connection.
+    /// Represents a user.
     /// </summary>
     public class UserEdge : QueryableValue<UserEdge>
     {

@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => x.Name);
 
             Expression<Func<JObject, string>> expected = data =>
-                Rewritten.Value.Select(data["data"]["repository"], x => x["name"]).ToObject<string>();
+                Rewritten.Value.SelectJToken(data["data"]["repository"], x => x["name"]).ToObject<string>();
 
             ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
@@ -216,7 +216,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => x.Body);
 
             Expression<Func<JObject, object>> expected = data =>
-                Rewritten.Value.Select(
+                Rewritten.Value.SelectJToken(
                     Rewritten.Interface.Cast(data["data"]["node"], "Issue"),
                     x => x["body"]).ToObject<string>();
 
@@ -257,6 +257,91 @@ namespace Octokit.GraphQL.Core.UnitTests
             //   data => Rewritten.Value.Select(data["data"]["repository"], x => (((int)x["name"].Type) != 10) ? x["name"].ToObject<string>() : null)
 
             ExpressionRewriterAssertions.AssertExpressionQueryEqual(readableString, query);
+        }
+
+        
+        [Fact]
+        public void Union_IssueOrPullRequest()
+        {
+            var query = new Query()
+                .Repository("foo", "bar")
+                .IssueOrPullRequest(1)
+                .Select(issueOrPr => issueOrPr.Switch<object>(when =>
+                    when.Issue(issue => new IssueModel
+                    {
+                        Number = issue.Number,
+                    }).PullRequest(pr => new PullRequestModel
+                    {
+                        Title = pr.Title,
+                    })));
+
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
+                    data["data"]["repository"]["issueOrPullRequest"],
+                    issueOrPr =>  Rewritten.Value.Switch(
+                        issueOrPr,
+                        new Dictionary<string, Func<JToken, object>>
+                        {
+                            { "Issue", issue => new IssueModel { Number = issue["number"].ToObject<int>() } },
+                            { "PullRequest", pr => new PullRequestModel { Title = pr["title"].ToObject<string>() } },
+                        }));
+
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
+        }
+
+        [Fact]
+        public void Union_PullRequest_Timeline()
+        {
+            var query = new Query()
+                .Repository("foo", "bar")
+                .PullRequest(1)
+                .Timeline(first: 100)
+                .Nodes
+                .Select(node => node.Switch<TimelineItemModel>(when =>
+                    when.Commit(commit => new CommitModel
+                    {
+                        Oid = commit.AbbreviatedOid,
+                    }).IssueComment(comment => new IssueCommentModel
+                    {
+                        Body = comment.Body,
+                    })));
+
+            Expression<Func<JObject, IEnumerable<TimelineItemModel>>> expected = data =>
+                (IEnumerable<TimelineItemModel>)Rewritten.List.Select(
+                    data["data"]["repository"]["pullRequest"]["timeline"]["nodes"],
+                    node => Rewritten.Value.Switch(
+                        node,
+                        new Dictionary<string, Func<JToken, TimelineItemModel>>
+                        {
+                            { "Commit", commit => new CommitModel { Oid = commit["oid"].ToObject<string>() } },
+                            { "IssueComment", comment => new IssueCommentModel { Body = comment["body"].ToObject<string>() } },
+                        })).ToList();
+
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
+        }
+
+        class IssueModel
+        {
+            public int Number { get; set; }
+        }
+
+        class PullRequestModel
+        {
+            public string Title { get; set; }
+        }
+
+        class TimelineItemModel
+        {
+        }
+
+        class CommitModel : TimelineItemModel
+        {
+            public string Oid { get; set; }
+        }
+
+        class IssueCommentModel : TimelineItemModel
+        {
+            public string Body { get; set; }
         }
     }
 }

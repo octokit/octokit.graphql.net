@@ -2,6 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/falhvlth7og0nkw4/branch/master?svg=true)](https://ci.appveyor.com/project/github-windows/octokit-graphql/branch/master)
 [![codecov](https://codecov.io/gh/octokit/octokit.graphql.net/branch/master/graph/badge.svg)](https://codecov.io/gh/octokit/octokit.graphql.net)
+[![NuGet](http://img.shields.io/nuget/v/Octokit.GraphQL.svg)](https://www.nuget.org/packages/Octokit.GraphQL)
 
 **Note**: This software is currently beta. There are few things left, and there might be bugs - be warned!
 

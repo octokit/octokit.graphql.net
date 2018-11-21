@@ -61,6 +61,11 @@ namespace Octokit.GraphQL
         public AddStarPayload AddStar(Arg<AddStarInput> input) => this.CreateMethodCall(x => x.AddStar(input), Octokit.GraphQL.Model.AddStarPayload.Create);
 
         /// <summary>
+        /// Create a new branch protection rule
+        /// </summary>
+        public CreateBranchProtectionRulePayload CreateBranchProtectionRule(Arg<CreateBranchProtectionRuleInput> input) => this.CreateMethodCall(x => x.CreateBranchProtectionRule(input), Octokit.GraphQL.Model.CreateBranchProtectionRulePayload.Create);
+
+        /// <summary>
         /// Create a check run.
         /// </summary>
         public CreateCheckRunPayload CreateCheckRun(Arg<CreateCheckRunInput> input) => this.CreateMethodCall(x => x.CreateCheckRun(input), Octokit.GraphQL.Model.CreateCheckRunPayload.Create);
@@ -79,6 +84,11 @@ namespace Octokit.GraphQL
         /// Rejects a suggested topic for the repository.
         /// </summary>
         public DeclineTopicSuggestionPayload DeclineTopicSuggestion(Arg<DeclineTopicSuggestionInput> input) => this.CreateMethodCall(x => x.DeclineTopicSuggestion(input), Octokit.GraphQL.Model.DeclineTopicSuggestionPayload.Create);
+
+        /// <summary>
+        /// Delete a branch protection rule
+        /// </summary>
+        public DeleteBranchProtectionRulePayload DeleteBranchProtectionRule(Arg<DeleteBranchProtectionRuleInput> input) => this.CreateMethodCall(x => x.DeleteBranchProtectionRule(input), Octokit.GraphQL.Model.DeleteBranchProtectionRulePayload.Create);
 
         /// <summary>
         /// Deletes a project.
@@ -154,6 +164,11 @@ namespace Octokit.GraphQL
         /// Unlock a lockable object
         /// </summary>
         public UnlockLockablePayload UnlockLockable(Arg<UnlockLockableInput> input) => this.CreateMethodCall(x => x.UnlockLockable(input), Octokit.GraphQL.Model.UnlockLockablePayload.Create);
+
+        /// <summary>
+        /// Create a new branch protection rule
+        /// </summary>
+        public UpdateBranchProtectionRulePayload UpdateBranchProtectionRule(Arg<UpdateBranchProtectionRuleInput> input) => this.CreateMethodCall(x => x.UpdateBranchProtectionRule(input), Octokit.GraphQL.Model.UpdateBranchProtectionRulePayload.Create);
 
         /// <summary>
         /// Update a check run
