@@ -12,6 +12,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public string Body { get; }
         public int Number { get; }
         public string Title { get; }
+        public PullRequestCommitConnection Commits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Commits(first, after, last, before), PullRequestCommitConnection.Create);
         public PullRequestTimelineConnection Timeline(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before), Models.PullRequestTimelineConnection.Create);
 
         internal static PullRequest Create(Expression expression)

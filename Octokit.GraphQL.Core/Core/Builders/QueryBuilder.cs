@@ -653,9 +653,12 @@ namespace Octokit.GraphQL.Core.Builders
 
                     // Select the "id" fields for the subquery.
                     var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
-                    AddIdSelection(parentSelection.Last());
+                    var idSelection = AddIdSelection(parentSelection.Last());
                     parentIds = CreateSelectTokensExpression(
-                        parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
+                        parentSelection.Select(x => x.Name).Concat(new[] 
+                        {
+                            idSelection.Alias ?? idSelection.Name
+                        }));
 
                     var pageSize = allPages.PageSize ?? MaxPageSize;
 
@@ -721,9 +724,12 @@ namespace Octokit.GraphQL.Core.Builders
 
                     // Select the "id" fields for the subquery.
                     var parentSelection = syntax.FieldStack.Take(syntax.FieldStack.Count - 1);
-                    AddIdSelection(parentSelection.Last());
+                    var idSelection = AddIdSelection(parentSelection.Last());
                     parentIds = CreateSelectTokensExpression(
-                        parentSelection.Select(x => x.Name).Concat(new[] { "id" }));
+                        parentSelection.Select(x => x.Name).Concat(new[]
+                        {
+                            idSelection.Alias ?? idSelection.Name
+                        }));
 
                     var pageSize = allPages.PageSize ?? MaxPageSize;
 
@@ -1019,12 +1025,17 @@ namespace Octokit.GraphQL.Core.Builders
             }
         }
 
-        private void AddIdSelection(ISelectionSet set)
+        private FieldSelection AddIdSelection(ISelectionSet set)
         {
-            if (!set.Selections.OfType<FieldSelection>().Any(x => x.Name == "id"))
+            var result = set.Selections.OfType<FieldSelection>().FirstOrDefault(x => x.Name == "id");
+
+            if (result == null)
             {
-                set.Selections.Insert(0, new FieldSelection("id", null));
+                result = new FieldSelection("id", null);
+                set.Selections.Insert(0, result);
             }
+
+            return result;
         }
 
         private ISubquery AddSubquery(

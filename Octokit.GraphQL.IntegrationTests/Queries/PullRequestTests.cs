@@ -35,6 +35,83 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
+        public async Task Should_Query_Commits_AllPages_Aliased_Id()
+        {
+            var query = new GraphQL.Query().Repository(owner: "octokit", name: "octokit.net")
+                .PullRequests(last:1).Nodes
+                .Select(request =>
+                        request.Commits(null, null, null, null)
+                        .AllPages(1)
+                        .Select(pullRequestCommit => new
+                        {
+                            PullRequestCommitId = pullRequestCommit.Id.Value,
+                            pullRequestCommit.Commit.Id,
+                            pullRequestCommit.Commit.Message,
+                            pullRequestCommit.Commit.Author.Name
+                        }).ToList());
+
+            var results = (await Connection.Run(query)).ToArray();
+        }
+
+        [IntegrationTest]
+        public async Task Should_Query_Repository_PullRequest_CheckRun_Normal_Id()
+        {
+            var query = new Query()
+                .Repository(owner: "github", name: "visualstudio")
+                .PullRequest(1864)
+                .Commits(last:1).Nodes
+                .Select(commit => new 
+                {
+                    CheckSuites = commit.Commit.CheckSuites(null, null, null, null, null).AllPages(10)
+                        .Select(suite => new 
+                        {
+                            CheckRuns = suite.CheckRuns(null, null, null, null, null).AllPages(10)
+                                .Select(run => new 
+                                {
+                                    Name = run.Name,
+                                    Annotations = run.Annotations(null, null, null, null).AllPages()
+                                        .Select(annotation => new 
+                                        {
+                                            Path = annotation.Path,
+                                        }).ToList()
+                                }).ToList(),
+                        }).ToList()
+                });
+
+            var results = (await Connection.Run(query)).ToArray();
+        }
+
+        [IntegrationTest]
+        public async Task Should_Query_Repository_PullRequest_CheckRun_Aliased_Id()
+        {
+            var query = new Query()
+                .Repository(owner: "github", name: "visualstudio")
+                .PullRequest(1864)
+                .Commits(last:1).Nodes
+                .Select(commit => new 
+                    {
+                        CheckSuites = commit.Commit.CheckSuites(null, null, null, null, null).AllPages(10)
+                            .Select(suite => new 
+                            {
+                                CheckRuns = suite.CheckRuns(null, null, null, null, null).AllPages(10)
+                                    .Select(run => new 
+                                    {
+                                        CheckRunId = run.Id.Value,
+                                        Name = run.Name,
+                                        Annotations = run.Annotations(null, null, null, null).AllPages()
+                                            .Select(annotation => new 
+                                            {
+                                                Path = annotation.Path,
+                                            }).ToList()
+                                    }).ToList(),
+                            }).ToList()
+                    }
+                );
+
+            var results = (await Connection.Run(query)).ToArray();
+        }
+
+        [IntegrationTest]
         public async Task Should_Query_Title_With_Vars()
         {
             var query = new Query()
