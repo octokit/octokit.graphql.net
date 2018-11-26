@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.UnitTests;
 using Octokit.GraphQL.Model;
 using Xunit;
 
@@ -20,12 +21,12 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void RepositoryOwner_Repository_Query()
         {
-            var expression = new Query()
+            var query = new Query()
                 .RepositoryOwner("foo")
                 .Repository("bar")
                 .Select((Repository x) => new
                 {
-                    x.Id,
+                    Id = x.Id.ToString(),
                     x.Name,
                     Owner = x.Owner.Select(o => new
                     {
@@ -35,39 +36,38 @@ namespace Octokit.GraphQL.UnitTests
                     x.IsPrivate,
                 });
 
-            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.List.Select(
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
                     data["data"]["repositoryOwner"]["repository"],
                     x => new
                     {
-                        Id = x["id"].ToObject<string>(),
+                        Id = x["id"].ToString(),
                         Name = x["name"].ToObject<string>(),
                         Owner = Rewritten.Value.Single(
                             Rewritten.Value.Select(
                                 x["owner"],
                                 o => new { Login = o["login"].ToObject<string>() })),
-                        IsFork = x["isFork"].ToObject<string>(),
-                        IsPrivate = x["isPrivate"].ToObject<string>(),
+                        IsFork = x["isFork"].ToObject<bool>(),
+                        IsPrivate = x["isPrivate"].ToObject<bool>(),
                     });
 
-            var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void Repository_Select_Use_Fragment_Twice()
         {
             var fragment = new Fragment<Repository, string>("repositoryName", repository => repository.Name);
-
-            var expression = new Query()
+            
+            var query = new Query()
                 .Select(q => new
                 {
                     repo1 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault(),
                     repo2 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault()
                 });
 
-            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.List.Select(
+            Expression<Func<JObject, object>> expected = data =>
+                Rewritten.Value.Select(
                     data["data"],
                     q => new
                     {
@@ -81,21 +81,20 @@ namespace Octokit.GraphQL.UnitTests
                                 repository => repository["name"].ToObject<string>())),
                     });
 
-            var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void RepositoryOwner_Repositories_Query()
         {
-            var expression = new Query()
+            var query = new Query()
                 .RepositoryOwner(login: "foo")
                 .Repositories(first: 30)
                 .Edges
                 .Select(x => x.Node)
                 .Select(x => new
                 {
-                    x.Id,
+                    Id = x.Id.ToString(),
                     x.Name,
                     Owner = x.Owner.Select(o => new
                     {
@@ -112,26 +111,25 @@ namespace Octokit.GraphQL.UnitTests
                         x => x["node"]),
                         x => new
                         {
-                            Id = x["id"].ToObject<string>(),
+                            Id = x["id"].ToString(),
                             Name = x["name"].ToObject<string>(),
                             Owner = Rewritten.Value.Single(
                                 Rewritten.Value.Select(
                                     x["owner"],
                                     o => new { Login = o["login"].ToObject<string>() })),
-                            IsFork = x["isFork"].ToObject<string>(),
-                            IsPrivate = x["isPrivate"].ToObject<string>(),
+                            IsFork = x["isFork"].ToObject<bool>(),
+                            IsPrivate = x["isPrivate"].ToObject<bool>(),
                         }).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void Repository_Details_With_Viewer()
         {
-            var expression = new Query()
+            var query = new Query()
                 .Select(x => x.RepositoryOwner("foo")
-                              .Repositories(30, null, null, null, null, null, null, null, null)
+                              .Repositories(30, null, null, null, null, null, null, null, null, null)
                               .Edges
                               .Select(y => y.Node)
                               .Select(z => new
@@ -155,7 +153,7 @@ namespace Octokit.GraphQL.UnitTests
                             z => new
                             {
                                 Name = z["name"].ToObject<string>(),
-                                IsPrivate = z["isPrivate"].ToObject<string>(),
+                                IsPrivate = z["isPrivate"].ToObject<bool>(),
                                 Viewer = Rewritten.Value.Single(
                                     Rewritten.Value.Select(
                                         x["viewer"],
@@ -165,14 +163,13 @@ namespace Octokit.GraphQL.UnitTests
                                         }))
                             })).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
         [Fact]
         public void Issues_Select_Nodes()
         {
-            var expression = new Query()
+            var query = new Query()
                 .Repository("github", "VisualStudio")
                 .Issues(first: 30, labels: new[] { "bug" }, states: new[] { IssueState.Closed })
                 .Select(x => x.Nodes)
@@ -193,25 +190,27 @@ namespace Octokit.GraphQL.UnitTests
                         Title = x["title"].ToObject<string>(),
                     }).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
 
-        [Fact(Skip = "Not yet working")]
+        [Fact]
         public void Search_User_Name_Via_Edges()
         {
-            var expression = new Query()
+            var query = new Query()
                 .Search("foo", SearchType.User, 30)
                 .Edges.Select(x => x.Node)
-                .Select(x => x.User.Name);
+                .Select(x => x.Switch<string>(when =>
+                    when.User(user => user.Name)));
 
-            Expression<Func<JObject, IEnumerable<object>>> expected = data =>
-                Rewritten.List.Select(
-                    Rewritten.Value.OfType(data["data"]["search"]["edges"], "User"),
-                    x => x["name"].ToObject<string>());
+            Expression<Func<JObject, IEnumerable<string>>> expected = data =>
+                (IEnumerable<string>)Rewritten.List.Select(
+                    Rewritten.List.Select(data["data"]["search"]["edges"], x => x["node"]),
+                    x => Rewritten.Value.Switch(x, new Dictionary<string, Func<JToken, string>>
+                    {
+                        { "User", user => user["name"].ToObject<string>() },
+                    })).ToList();
 
-            var query = new QueryBuilder().Build(expression);
-            Assert.Equal(expected.ToString(), query.GetResultBuilderExpression().ToString());
+            ExpressionRewriterAssertions.AssertExpressionQueryEqual(expected, query);
         }
     }
 }

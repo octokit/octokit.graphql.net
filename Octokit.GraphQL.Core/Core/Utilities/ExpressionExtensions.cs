@@ -84,15 +84,11 @@ namespace Octokit.GraphQL.Core.Utilities
         /// <param name="expression">The expression.</param>
         /// <param name="fieldName">The field to return.</param>
         /// <returns>A new expression.</returns>
-        public static MethodCallExpression AddIndexer(this Expression expression, string fieldName)
+        public static IndexExpression AddIndexer(this Expression expression, string fieldName)
         {
             if (typeof(JToken).GetTypeInfo().IsAssignableFrom(expression.Type.GetTypeInfo()))
             {
-                // Returns `expression[fieldName];`
-                return Expression.Call(
-                    expression,
-                    JsonMethods.JTokenIndexer,
-                    Expression.Constant(fieldName));
+                return Expression.Property(expression, JsonMethods.JTokenIndexer, Expression.Constant(fieldName));
             }
             else
             {

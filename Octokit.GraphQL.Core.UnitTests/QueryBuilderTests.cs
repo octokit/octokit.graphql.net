@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
 using Xunit;
@@ -213,6 +214,32 @@ namespace Octokit.GraphQL.Core.UnitTests
                 .Select(x => new
                 {
                     Items = x.Issues(10, arg1, null, null, null).Select(y => new
+                    {
+                        y.TotalCount,
+                    }).Single()
+                });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+        
+        [Fact]
+        public void Repository_Issues_Nested_Select_Last_Parameter()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    items: issues(last: 10) {
+      totalCount
+    }
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(x => new
+                {
+                    Items = x.Issues(null, null, 10, null, null).Select(y => new
                     {
                         y.TotalCount,
                     }).Single()
@@ -689,13 +716,36 @@ fragment repositoryName on Repository {
         }
 
         [Fact]
+        public void RepositoryOwner_Select_Simple_Fragment()
+        {
+            var expected = @"query {
+  repositoryOwner(login: ""foo"") {
+    ...ownerLogin
+  }
+}
+fragment ownerLogin on RepositoryOwner {
+  login
+}";
+
+            var fragment = new Fragment<IRepositoryOwner, string>("ownerLogin", owner => owner.Login);
+
+            var expression = new Query()
+                .RepositoryOwner(login: "foo")
+                .Select(fragment);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void Repository_Select_Object()
         {
             var expected = @"query {
   repository(owner: ""foo"", name: ""bar"") {
-    forkCount
-    name
-    description
+    intField1: forkCount
+    stringField1: name
+    stringField2: description
   }
 }";
 
@@ -712,7 +762,6 @@ fragment repositoryName on Repository {
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
-
 
         [Fact]
         public void Repository_Select_Anon_Object()
@@ -739,7 +788,6 @@ fragment repositoryName on Repository {
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
         }
 
-
         [Fact]
         public void Repository_Select_Object_Fragment()
         {
@@ -749,9 +797,9 @@ fragment repositoryName on Repository {
   }
 }
 fragment repositoryName on Repository {
-  forkCount
-  name
-  description
+  intField1: forkCount
+  stringField1: name
+  stringField2: description
 }";
 
             var fragment = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
@@ -811,9 +859,9 @@ fragment repositoryName on Repository {
   }
 }
 fragment repositoryName on Repository {
-  forkCount
-  name
-  description
+  intField1: forkCount
+  stringField1: name
+  stringField2: description
 }";
 
             var repositoryName = new Fragment<Repository, TestModelObject>("repositoryName", repository => new TestModelObject
@@ -869,16 +917,36 @@ fragment issueTitle on Issue {
         [Fact]
         public void Issue_Select_Use_Simple_Fragment_With_AllPages_List()
         {
-            var expected = @"query {
+            var masterQuery = @"query {
   repository(owner: ""foo"", name: ""bar"") {
     id
-    issues(first: 100) {
+    repos: issues(first: 100) {
       pageInfo {
         hasNextPage
         endCursor
       }
       nodes {
         ...issueTitle
+      }
+    }
+  }
+}
+fragment issueTitle on Issue {
+  title
+}";
+
+            var subQuery = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Repository {
+      issues(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          ...issueTitle
+        }
       }
     }
   }
@@ -897,9 +965,314 @@ fragment issueTitle on Issue {
                         .AllPages().Select(fragment).ToList(),
                 });
 
+            var compiledQuery = expression.Compile();
+
+            Assert.Equal(masterQuery, compiledQuery.GetMasterQuery().ToString(2), ignoreLineEndingDifferences: true);
+
+            Assert.Equal(subQuery, compiledQuery.GetSubqueries()[0].ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Two_In_Anon_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    someData: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+    someData2: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query().Repository("foo", "bar").Select(repository => new
+            {
+                SomeData = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+                SomeData2 = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+            });
+
             var query = expression.Compile();
 
             Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Issue_Select_Two_In_Object()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    someData: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+    someData2: issues(labels: [""asdf""]) {
+      nodes {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query().Repository("foo", "bar").Select(repository => new TestIssueSets
+            {
+                SomeData = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+                SomeData2 = repository.Issues(null, null, null, null, labels)
+                    .Nodes
+                    .Select(issue => new { issue.Title })
+                    .ToList(),
+            });
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Union_IssueOrPullRequest()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    issueOrPullRequest(number: 1) {
+      __typename
+      ... on Issue {
+        number
+      }
+      ... on PullRequest {
+        title
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .IssueOrPullRequest(1)
+                .Select(issueOrPr => issueOrPr.Switch<object>(when =>
+                    when.Issue(issue => new IssueModel
+                    {
+                        Number = issue.Number,
+                    }).PullRequest(pr => new PullRequestModel
+                    {
+                        Title = pr.Title,
+                    })));
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Union_PullRequest_Timeline()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    pullRequest(number: 1) {
+      timeline(first: 100) {
+        nodes {
+          __typename
+          ... on Commit {
+            oid: abbreviatedOid
+          }
+          ... on IssueComment {
+            body
+          }
+        }
+      }
+    }
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .PullRequest(1)
+                .Timeline(first: 100)
+                .Nodes
+                .Select(node => node.Switch<TimelineItemModel>(when =>
+                    when.Commit(commit => new CommitModel
+                    {
+                        Oid = commit.AbbreviatedOid,
+                    }).IssueComment(comment => new IssueCommentModel
+                    {
+                        Body = comment.Body,
+                    })));
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_PullRequest_CheckRun_Normal_Id()
+        {
+            var expected = @"query {
+  repository(owner: ""github"", name: ""visualstudio"") {
+    pullRequest(number: 1864) {
+      commits(last: 1) {
+        nodes {
+          commit {
+            id
+            checkSuites(first: 10) {
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+              nodes {
+                id
+                checkRuns(first: 10) {
+                  pageInfo {
+                    hasNextPage
+                    endCursor
+                  }
+                  nodes {
+                    id
+                    name
+                    annotations(first: 100) {
+                      pageInfo {
+                        hasNextPage
+                        endCursor
+                      }
+                      nodes {
+                        path
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query()
+                .Repository("github", "visualstudio")
+                .PullRequest(1864)
+                .Commits(last: 1).Nodes
+                .Select(commit => new
+                    {
+                        CheckSuites = commit.Commit.CheckSuites(null, null, null, null, null).AllPages(10)
+                            .Select(suite => new
+                            {
+                                CheckRuns = suite.CheckRuns(null, null, null, null, null).AllPages(10)
+                                    .Select(run => new
+                                    {
+                                        Name = run.Name,
+                                        Annotations = run.Annotations(null, null, null, null).AllPages()
+                                            .Select(annotation => new
+                                            {
+                                                Path = annotation.Path,
+                                            }).ToList()
+                                    }).ToList(),
+                            }).ToList()
+                    }
+                );
+
+            var query = expression.Compile();
+
+            var actual = query.ToString(2);
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Repository_PullRequest_CheckRun_Aliased_Id()
+        {
+            var expected = @"query {
+  repository(owner: ""github"", name: ""visualstudio"") {
+    pullRequest(number: 1864) {
+      commits(last: 1) {
+        nodes {
+          commit {
+            id
+            checkSuites(first: 10) {
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+              nodes {
+                id
+                checkRuns(first: 10) {
+                  pageInfo {
+                    hasNextPage
+                    endCursor
+                  }
+                  nodes {
+                    checkRunId: id
+                    name
+                    annotations(first: 100) {
+                      pageInfo {
+                        hasNextPage
+                        endCursor
+                      }
+                      nodes {
+                        path
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}";
+
+            Arg<IEnumerable<string>>? labels = new[] { "asdf" };
+
+            var expression = new Query()
+                .Repository("github", "visualstudio")
+                .PullRequest(1864)
+                .Commits(last: 1).Nodes
+                .Select(commit => new
+                    {
+                        CheckSuites = commit.Commit.CheckSuites(null, null, null, null, null).AllPages(10)
+                            .Select(suite => new
+                            {
+                                CheckRuns = suite.CheckRuns(null, null, null, null, null).AllPages(10)
+                                    .Select(run => new
+                                    {
+                                        CheckRunId = run.Id.Value,
+                                        Name = run.Name,
+                                        Annotations = run.Annotations(null, null, null, null).AllPages()
+                                            .Select(annotation => new
+                                            {
+                                                Path = annotation.Path,
+                                            }).ToList()
+                                    }).ToList(),
+                            }).ToList()
+                    }
+                );
+
+            var query = expression.Compile();
+
+            var actual = query.ToString(2);
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: true);
         }
 
         class TestModelObject
@@ -908,6 +1281,36 @@ fragment issueTitle on Issue {
             public string StringField2;
             public int IntField1;
             public int IntField2;
+        }
+
+        class IssueModel
+        {
+            public int Number { get; set; }
+        }
+
+        class PullRequestModel
+        {
+            public string Title { get; set; }
+        }
+
+        class TimelineItemModel
+        {
+        }
+
+        class CommitModel : TimelineItemModel
+        {
+            public string Oid { get; set; }
+        }
+
+        class IssueCommentModel : TimelineItemModel
+        {
+            public string Body { get; set; }
+        }
+
+        public class TestIssueSets
+        {
+            public IReadOnlyList<object> SomeData { get; set; }
+            public IReadOnlyList<object> SomeData2 { get; set; }
         }
     }
 }

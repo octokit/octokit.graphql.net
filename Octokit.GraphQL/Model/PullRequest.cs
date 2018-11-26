@@ -314,9 +314,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="states">A list of states to filter the reviews.</param>
         /// <param name="author">Filter by author of the review.</param>
-        public PullRequestReviewConnection Reviews(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PullRequestReviewState>>? states = null, Arg<string>? author = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, states, author), Octokit.GraphQL.Model.PullRequestReviewConnection.Create);
+        /// <param name="states">A list of states to filter the reviews.</param>
+        public PullRequestReviewConnection Reviews(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? author = null, Arg<IEnumerable<PullRequestReviewState>>? states = null) => this.CreateMethodCall(x => x.Reviews(first, after, last, before, author, states), Octokit.GraphQL.Model.PullRequestReviewConnection.Create);
 
         /// <summary>
         /// Identifies the state of the pull request.
@@ -361,6 +361,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
+
+        /// <summary>
+        /// Whether or not the viewer can apply suggestion.
+        /// </summary>
+        public bool ViewerCanApplySuggestion { get; }
 
         /// <summary>
         /// Can user react to this subject

@@ -117,7 +117,7 @@ namespace Octokit.GraphQL.UnitTests
             var expression = new Query()
                 .Select(root => root
                     .RepositoryOwner("foo")
-                    .Repositories(30, null, null, null, null, null, null, null, null)
+                    .Repositories(30, null, null, null, null, null, null, null, null, null)
                     .Edges.Select(x => x.Node)
                     .Select(x => new
                     {
@@ -218,7 +218,7 @@ namespace Octokit.GraphQL.UnitTests
 
             var expression = new Query()
                 .Select(x => x.RepositoryOwner("foo")
-                              .Repositories(30, null, null, null, null, null, null, null, null)
+                              .Repositories(30, null, null, null, null, null, null, null, null, null)
                               .Edges
                               .Select(y => y.Node)
                               .Select(y => new
@@ -253,7 +253,8 @@ namespace Octokit.GraphQL.UnitTests
             var expression = new Query()
                 .Search("foo", SearchType.User, 30)
                 .Nodes
-                .Select(x => x.User.Name);
+                .Select(x => x.Switch<string>(when =>
+                    when.User(user => user.Name)));
 
             var query = expression.Compile();
 
@@ -278,12 +279,12 @@ namespace Octokit.GraphQL.UnitTests
             var expression = new Query()
                 .Search("foo", SearchType.User, 30)
                 .Nodes
-                .Select(x => x.User)
-                .Select(x => new
-                {
-                    x.Name,
-                    x.Login,
-                });
+                .Select(x => x.Switch<object>(when =>
+                    when.User(user => new
+                    {
+                        user.Name,
+                        user.Login,
+                    })));
 
             var query = expression.Compile();
 
@@ -309,7 +310,8 @@ namespace Octokit.GraphQL.UnitTests
             var expression = new Query()
                 .Search("foo", SearchType.User, 30)
                 .Edges.Select(x => x.Node)
-                .Select(x => x.User.Name);
+                .Select(x => x.Switch<string>(when =>
+                    when.User(user => user.Name)));
 
             var query = expression.Compile();
 

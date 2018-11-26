@@ -1,5 +1,6 @@
 namespace Octokit.GraphQL.Model
 {
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -14,15 +15,20 @@ namespace Octokit.GraphQL.Model
         {
         }
 
-        /// <summary>
-        /// Represents a Git commit.
-        /// </summary>
-        public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);
+        public TResult Switch<TResult>(Expression<Func<Selector<TResult>, Selector<TResult>>> select) => default;
 
-        /// <summary>
-        /// A repository pull request.
-        /// </summary>
-        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
+        public class Selector<T>
+        {
+            /// <summary>
+            /// Represents a Git commit.
+            /// </summary>
+            public Selector<T> Commit(Func<Commit, T> selector) => default;
+
+            /// <summary>
+            /// A repository pull request.
+            /// </summary>
+            public Selector<T> PullRequest(Func<PullRequest, T> selector) => default;
+        }
 
         internal static Closer Create(Expression expression)
         {

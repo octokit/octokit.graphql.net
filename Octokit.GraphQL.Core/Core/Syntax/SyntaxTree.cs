@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.Core.Syntax
 
             if (selectTypeName)
             {
-                Head.Selections.Add(new FieldSelection("__typename", null));
+                AddField(Head, new FieldSelection("__typename", null), false);
             }
 
             Head.Selections.Add(result);
@@ -97,7 +97,7 @@ namespace Octokit.GraphQL.Core.Syntax
             });
         }
 
-        private FieldSelection AddField(ISelectionSet parent, FieldSelection field)
+        private FieldSelection AddField(ISelectionSet parent, FieldSelection field, bool updateHead = true)
         {
             var existing = field.Alias == null ?
                 parent.Selections
@@ -114,8 +114,12 @@ namespace Octokit.GraphQL.Core.Syntax
                 field = existing;
             }
 
-            Head = field;
-            FieldStack.Add(field);
+            if (updateHead)
+            {
+                Head = field;
+                FieldStack.Add(field);
+            }
+
             return field;
         }
     }

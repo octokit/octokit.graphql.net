@@ -168,12 +168,6 @@ namespace Octokit.GraphQL.Model
         LockedEvent,
 
         /// <summary>
-        /// Represents a 'marked_as_duplicate' event on a given issue or pull request.
-        /// </summary>
-        [EnumMember(Value = "MARKED_AS_DUPLICATE_EVENT")]
-        MarkedAsDuplicateEvent,
-
-        /// <summary>
         /// Represents a 'mentioned' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "MENTIONED_EVENT")]
@@ -238,12 +232,6 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "UNLOCKED_EVENT")]
         UnlockedEvent,
-
-        /// <summary>
-        /// Represents an 'unmarked_as_duplicate' event on a given issue or pull request.
-        /// </summary>
-        [EnumMember(Value = "UNMARKED_AS_DUPLICATE_EVENT")]
-        UnmarkedAsDuplicateEvent,
 
         /// <summary>
         /// Represents an 'unsubscribed' event on a given `Subscribable`.

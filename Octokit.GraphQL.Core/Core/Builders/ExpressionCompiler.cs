@@ -1,5 +1,7 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Octokit.GraphQL.Core.Builders
@@ -30,6 +32,11 @@ namespace Octokit.GraphQL.Core.Builders
 
         public static Expression GetSourceExpression(object func)
         {
+            if (!IsUnitTesting)
+            {
+                throw new InvalidOperationException($"Cannot call {nameof(GetSourceExpression)} if {nameof(IsUnitTesting)} is false.");
+            }
+
             return sourceExpression[func];
         }
     }
