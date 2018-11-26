@@ -630,7 +630,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Should_Throw_Error_Repo_Twice()
+        public void Should_Throw_Error_Selecting_Repo_Twice()
         {
             var expected = @"query {
   repo1: repository(owner: ""foo"", name: ""bar"") {
