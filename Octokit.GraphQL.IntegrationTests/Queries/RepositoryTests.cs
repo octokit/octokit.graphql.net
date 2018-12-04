@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -382,6 +383,30 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
+        public async Task Should_Query_Viewer_Repos_And_Orgs()
+        {
+            var query = new Query()
+                .Viewer
+                .Select(viewer => new ViewerRepositoriesModel
+                {
+                    OrganizationRepositories = viewer.Organizations(null, null, null, null).AllPages()
+                        .Select(org => new OrganizationRepository
+                    {
+                        Name = org.Name,
+                        Repositories = org.Repositories(null, null, null, null, null, null, null, null, null, null)
+                            .AllPages()
+                            .Select(repo => new RepositoryListItemModel
+                            {
+                                Name = repo.Name,
+                            })
+                            .ToList()
+                    }).ToList()
+                }).Compile();
+
+            var result = await Connection.Run(query);
+        }
+
+        [IntegrationTest]
         public async Task Should_Query_Union_Issue_Or_PullRequest()
         {
             var query = new Query()
@@ -446,5 +471,21 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             public string Url { get; set; }
             public string AvatarUrl { get; set; }
         }
+
+        public class RepositoryListItemModel
+        {
+            public string Name { get; set; }
+        }
+
+        public class ViewerRepositoriesModel
+        {
+            public List<OrganizationRepository> OrganizationRepositories { get; set; }
+        }
+    }
+
+    public class OrganizationRepository
+    {
+        public List<RepositoryTests.RepositoryListItemModel> Repositories { get; set; }
+        public string Name { get; set; }
     }
 }
