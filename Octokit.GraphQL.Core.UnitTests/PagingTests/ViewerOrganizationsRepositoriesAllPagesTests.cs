@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using AgileObjects.ReadableExpressions;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.UnitTests.Models;
@@ -39,13 +41,22 @@ namespace Octokit.GraphQL.Core.UnitTests
             return query;
         }
 
-        private SimpleQuery<ViewerRepositoriesModel> TestMasterQuery() => TestQuery().GetMasterQuery();
+        private SimpleQuery<ViewerRepositoriesModel> TestQuery_MasterQuery() => TestQuery().GetMasterQuery();
 
-        private IReadOnlyList<ISubquery> TestQuerySubqueries() => TestQuery().GetSubqueries();
+        private IReadOnlyList<ISubquery> TestQuery_Subqueries() => TestQuery().GetSubqueries();
 
-        private PagedSubquery<IEnumerable<OrganizationRepository>> TestQueryFirstSubquery() => (PagedSubquery<IEnumerable<OrganizationRepository>>)TestQuerySubqueries().First();
+        private PagedSubquery<IEnumerable<OrganizationRepository>> TestQuery_PagedSubquery_1() => (PagedSubquery<IEnumerable<OrganizationRepository>>)TestQuery_Subqueries().First();
 
-        private SimpleQuery<IEnumerable<OrganizationRepository>> TestQueryFirstSubqueryMasterQuery() => TestQueryFirstSubquery().GetMasterQuery();
+        private SimpleQuery<IEnumerable<OrganizationRepository>> TestQuery_PagedSubquery_1_MasterQuery() => TestQuery_PagedSubquery_1().GetMasterQuery();
+
+        private IReadOnlyList<ISubquery> TestQuery_PagedSubquery_1_Subqueries() => TestQuery_PagedSubquery_1().GetSubqueries();
+        private SimpleSubquery<IEnumerable<RepositoryListItemModel>> TestQuery_PagedSubquery_1_Subquery_1() => (SimpleSubquery<IEnumerable<RepositoryListItemModel>>)TestQuery_PagedSubquery_1_Subqueries()[0];
+
+        [Fact]
+        public void Creates_Query()
+        {
+            var testQuerySubqueries = TestQuery_PagedSubquery_1_Subqueries();
+        }
 
         [Fact]
         public void Creates_MasterQuery()
@@ -75,7 +86,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            var masterQuery = TestMasterQuery();
+            var masterQuery = TestQuery_MasterQuery();
 
             Assert.Equal(expected, masterQuery.ToString(), ignoreLineEndingDifferences: true);
         }
@@ -107,7 +118,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                         SubqueryPlaceholder.placeholder)
                 });
 
-            var masterQuery = TestMasterQuery();
+            var masterQuery = TestQuery_MasterQuery();
 
             ExpressionRewriterAssertions.AssertCompiledQueryExpressionEqual(expected, masterQuery,
                 "SimpleSubquery<IEnumerable<RepositoryListItemModel>>",
@@ -144,7 +155,94 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
 
-            Assert.Equal(expected, TestQueryFirstSubqueryMasterQuery().ToString(), ignoreLineEndingDifferences: true);
+            Assert.Equal(expected, TestQuery_PagedSubquery_1_MasterQuery().ToString(), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Creates_PagedSubquery_1_PagedSubQuery_1_Expression()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_PagedSubquery_1_Subquery_1().ResultBuilder);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, IEnumerable<RepositoryListItemModel>>> expected =
+                data => (IEnumerable<RepositoryListItemModel>)Rewritten.List.Select(
+                    Rewritten.Interface.Cast(data["data"]["node"], "Organization")["repositories"]["nodes"],
+                    repo => new RepositoryListItemModel
+                    {
+                        Name = repo["name"].ToObject<string>()
+                    }).ToList();
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public void Creates_PagedSubquery_1_SubQuery_1_Expression_PageInfo()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_PagedSubquery_1_Subquery_1().PageInfo);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.repositories.pageInfo");
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public void Creates_PagedSubquery_1_SubQuery_1_Expression_ParentIds()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_PagedSubquery_1_Subquery_1().ParentIds);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.node.organizations.nodes.[*].id");
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public void Creates_PagedSubquery_1_SubQuery_1_Expression_ParentPageInfo()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_PagedSubquery_1_Subquery_1().ParentPageInfo);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.node.organizations.nodes.[*].repositories.pageInfo");
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public async Task Reads_All_Pages()
+        {
+            int page = 0;
+
+            string Execute(string _, IDictionary<string, string> variables)
+            {
+                switch (page++)
+                {
+                    case 0:
+                        Assert.Null(variables);
+                        return @"";
+                    case 1:
+                        Assert.NotNull(variables);
+                        Assert.Equal("issue2", variables["__id"]);
+                        Assert.Equal("comment_end2", variables["__after"]);
+                        return @"";
+
+                    case 2:
+                        Assert.NotNull(variables);
+                        Assert.Equal("repoid", variables["__id"]);
+                        Assert.Equal("issue_end0", variables["__after"]);
+                        return @"";
+
+                    default:
+                        throw new NotSupportedException("Should not get here");
+                }
+            }
+
+            var connection = new MockConnection(Execute);
+            var result = await connection.Run(TestQuery());
         }
     }
 }
