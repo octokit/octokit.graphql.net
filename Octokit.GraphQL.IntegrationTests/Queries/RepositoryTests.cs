@@ -481,11 +481,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             public List<OrganizationRepository> OrganizationRepositories { get; set; }
         }
-    }
 
-    public class OrganizationRepository
-    {
-        public List<RepositoryTests.RepositoryListItemModel> Repositories { get; set; }
-        public string Name { get; set; }
+        public class OrganizationRepository
+        {
+            public List<RepositoryListItemModel> Repositories { get; set; }
+            public string Name { get; set; }
+        }
     }
 }
