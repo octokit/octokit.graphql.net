@@ -45,18 +45,15 @@ namespace Octokit.GraphQL.Core.UnitTests
 
         private IReadOnlyList<ISubquery> TestQuery_Subqueries() => TestQuery().GetSubqueries();
 
-        private PagedSubquery<IEnumerable<OrganizationRepository>> TestQuery_PagedSubquery_1() => (PagedSubquery<IEnumerable<OrganizationRepository>>)TestQuery_Subqueries().First();
+        private PagedSubquery<IEnumerable<OrganizationRepository>> TestQuery_PagedSubquery_1() => (PagedSubquery<IEnumerable<OrganizationRepository>>)TestQuery_Subqueries()[0];
 
         private SimpleQuery<IEnumerable<OrganizationRepository>> TestQuery_PagedSubquery_1_MasterQuery() => TestQuery_PagedSubquery_1().GetMasterQuery();
 
         private IReadOnlyList<ISubquery> TestQuery_PagedSubquery_1_Subqueries() => TestQuery_PagedSubquery_1().GetSubqueries();
+
         private SimpleSubquery<IEnumerable<RepositoryListItemModel>> TestQuery_PagedSubquery_1_Subquery_1() => (SimpleSubquery<IEnumerable<RepositoryListItemModel>>)TestQuery_PagedSubquery_1_Subqueries()[0];
 
-        [Fact]
-        public void Creates_Query()
-        {
-            var testQuerySubqueries = TestQuery_PagedSubquery_1_Subqueries();
-        }
+        private SimpleSubquery<IEnumerable<RepositoryListItemModel>> TestQuery_SimpleSubquery_2() => (SimpleSubquery<IEnumerable<RepositoryListItemModel>>)TestQuery_Subqueries()[1];
 
         [Fact]
         public void Creates_MasterQuery()
@@ -132,7 +129,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   node(id: $__id) {
     __typename
     ... on User {
-      organizations(first: 100, after: $__after) {
+      organizationRepositories: organizations(first: 100, after: $__after) {
         pageInfo {
           hasNextPage
           endCursor
@@ -159,7 +156,31 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public void Creates_PagedSubquery_1_PagedSubQuery_1_Expression()
+        public void Creates_PagedSubquery_1_SubQuery_1_Query()
+        {
+            var expected = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Organization {
+      repositories(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          name
+        }
+      }
+    }
+  }
+}";
+
+            var actual = TestQuery_PagedSubquery_1_Subquery_1().ToString();
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Creates_PagedSubquery_1_SubQuery_1_Expression()
         {
             var actual = ExpressionCompiler.GetSourceExpression(TestQuery_PagedSubquery_1_Subquery_1().ResultBuilder);
             var actualString = actual.ToReadableString();
@@ -213,28 +234,132 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public async Task Reads_All_Pages()
+        public void Creates_SimpleSubquery_2_Query()
+        {
+            var expected = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on Organization {
+      repositories(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          name
+        }
+      }
+    }
+  }
+}";
+
+            Assert.Equal(expected, TestQuery_SimpleSubquery_2().ToString(), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Creates_SimpleSubquery_2_Expression()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_SimpleSubquery_2().ResultBuilder);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, IEnumerable<RepositoryListItemModel>>> expected =
+                data => (IEnumerable<RepositoryListItemModel>)Rewritten.List.Select(
+                    Rewritten.Interface.Cast(data["data"]["node"], "Organization")["repositories"]["nodes"],
+                    repo => new RepositoryListItemModel
+                    {
+                        Name = repo["name"].ToObject<string>()
+                    }).ToList();
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public void Creates_SimpleSubquery_2_Expression_PageInfo()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_SimpleSubquery_2().PageInfo);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, JToken>> expected = data => data.SelectToken("data.node.repositories.pageInfo");
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public void Creates_SimpleSubquery_2_Expression_ParentIds()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_SimpleSubquery_2().ParentIds);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.viewer.organizations.nodes.[*].id");
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public void Creates_SimpleSubquery_2_Expression_ParentPageInfo()
+        {
+            var actual = ExpressionCompiler.GetSourceExpression(TestQuery_SimpleSubquery_2().ParentPageInfo);
+            var actualString = actual.ToReadableString();
+
+            Expression<Func<JObject, IEnumerable<JToken>>> expected = data => data.SelectTokens("$.data.viewer.organizationRepositories.nodes.[*].repositories.pageInfo");
+            var expectedString = expected.ToReadableString();
+
+            Assert.Equal(ExpressionRewriterAssertions.StripWhitespace(expectedString), ExpressionRewriterAssertions.StripWhitespace(actualString));
+        }
+
+        [Fact]
+        public async Task Reads_All_Pages_Of_Organizations()
         {
             int page = 0;
 
-            string Execute(string _, IDictionary<string, string> variables)
+            string Execute(string query, IDictionary<string, string> variables)
             {
                 switch (page++)
                 {
                     case 0:
                         Assert.Null(variables);
-                        return @"";
+                        return
+@"{
+    ""data"":{
+        ""viewer"":{
+            ""id"":""viewerid"",
+            ""organizationRepositories"":{
+                ""pageInfo"":{
+                    ""hasNextPage"":true,
+                    ""endCursor"":""organizationRepositories_end_1""
+                },
+                ""nodes"":[" +
+                    CreateOrganization(1, 2, false) + "," +
+                    CreateOrganization(2, 2, false) +
+                @"]
+            }
+        }
+    }
+}";
                     case 1:
                         Assert.NotNull(variables);
-                        Assert.Equal("issue2", variables["__id"]);
-                        Assert.Equal("comment_end2", variables["__after"]);
-                        return @"";
-
-                    case 2:
-                        Assert.NotNull(variables);
-                        Assert.Equal("repoid", variables["__id"]);
-                        Assert.Equal("issue_end0", variables["__after"]);
-                        return @"";
+                        Assert.Equal("viewerid", variables["__id"]);
+                        Assert.Equal("organizationRepositories_end_1", variables["__after"]);
+                        return @"{
+  data: {
+    ""node"": {
+      ""__typename"": ""User"",
+      ""organizations"": {
+        ""pageInfo"": {
+          ""hasNextPage"": false,
+          ""endCursor"": ""organizationRepositories_end_2""
+        },
+        ""nodes"": [" +
+           CreateOrganization(3, 2, false) + "," +
+           CreateOrganization(4, 2, false) +
+        @"]
+      }
+    }
+  }
+}";
 
                     default:
                         throw new NotSupportedException("Should not get here");
@@ -243,6 +368,28 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var connection = new MockConnection(Execute);
             var result = await connection.Run(TestQuery());
+        }
+
+        private static string CreateOrganization(int id, int repositoryCount, bool hasNextPage)
+        {
+            return @"{
+    ""id"":""MDEyOk9yZ2FuaXphdGlvbjEwMDY4NDE2"",
+    ""name"":""organization" + id + @""",
+    ""repositories"":{
+        ""pageInfo"":{
+            ""hasNextPage"":" + hasNextPage.ToString().ToLower() + @",
+            ""endCursor"":""repository_end_" + id + @"""
+        },
+        ""nodes"":[" +
+            string.Join(",", Enumerable.Range(id * 10, repositoryCount).Select(CreateRepository))
+        + @"]
+    }
+}";
+        }
+
+        private static string CreateRepository(int id)
+        {
+            return $@"{{""name"":""repository{id}""}}";
         }
     }
 }
