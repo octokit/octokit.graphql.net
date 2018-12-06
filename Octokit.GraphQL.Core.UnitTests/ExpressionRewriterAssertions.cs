@@ -52,7 +52,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             foreach (var subqueryPlaceholderReplacement in subqueryPlaceholderReplacements)
             {
-                var regex = new Regex("PagingTests.subqueryPlaceholder");
+                var regex = new Regex("SubqueryPlaceholder.placeholder");
                 expectedString = regex.Replace(expectedString, subqueryPlaceholderReplacement, 1);
             }
 
