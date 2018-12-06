@@ -22,6 +22,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The accepted topic.
+        /// **Upcoming Change on 2019-01-01 UTC**
+        /// **Description:** Type for `topic` will change from `Topic!` to `Topic`.
+        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public Topic Topic => this.CreateProperty(x => x.Topic, Octokit.GraphQL.Model.Topic.Create);
 

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
 using Xunit;
@@ -8,7 +9,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
     public class ViewerTests: IntegrationTestBase
     {
         [IntegrationTest]
-        public void Viewer_By_OAuthToken_Matches_Username()
+        public async Task Viewer_By_OAuthToken_Matches_Username()
         {
             var query = new GraphQL.Query().Viewer.Select(user => new
             {
@@ -17,7 +18,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 user.IsViewer
             });
 
-            var graphqlUser = Connection.Run(query).Result;
+            var graphqlUser = await Connection.Run(query);
 
             Assert.NotNull(graphqlUser);
             Assert.True(graphqlUser.IsViewer);
@@ -26,11 +27,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         }
 
         [IntegrationTest]
-        public void Viewer_By_GraphyQL_Matches_Api()
+        public async Task Viewer_By_GraphyQL_Matches_Api()
         {
             var gitHubClient = GetV3GitHubClient();
 
-            var apiUser = gitHubClient.User.Current().Result;
+            var apiUser = await gitHubClient.User.Current();
 
             var query = new GraphQL.Query().Viewer.Select(user => new
             {
@@ -47,13 +48,13 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 user.Location,
             });
 
-            var graphqlUser = Connection.Run(query).Result;
+            var graphqlUser = await Connection.Run(query);
 
             Assert.NotNull(graphqlUser);
 
             Assert.Equal(apiUser.AvatarUrl, graphqlUser.AvatarUrl);
-            Assert.Equal(apiUser.Bio, graphqlUser.Bio);
-            Assert.Equal(apiUser.Company, graphqlUser.Company);
+            Assert.Equal(apiUser.Bio ?? string.Empty, graphqlUser.Bio);
+            Assert.Equal(apiUser.Company ?? string.Empty, graphqlUser.Company);
 
             Assert.Equal(apiUser.CreatedAt.ToUniversalTime(), graphqlUser.CreatedAt.ToUniversalTime());
 

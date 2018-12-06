@@ -10,6 +10,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     {
         const string MemberTemplate = @"namespace Test
 {{
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
@@ -20,7 +21,13 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         public Union(Expression expression) : base(expression)
         {{
         }}
-{0}
+
+        public TResult Switch<TResult>(Expression<Func<Selector<TResult>, Selector<TResult>>> select) => default;
+
+        public class Selector<T>
+        {{{0}
+        }}
+
         internal static Union Create(Expression expression)
         {{
             return new Union(expression);
@@ -31,7 +38,9 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_PossibleType()
         {
-            var expected = FormatMemberTemplate("public Other Other => this.CreateProperty(x => x.Other, Test.Other.Create);");
+            var expected = FormatMemberTemplate(@"public Selector<T> One(Func<One, T> selector) => default;
+
+            public Selector<T> Another(Func<Another, T> selector) => default;");
 
             var model = new TypeModel
             {
@@ -39,7 +48,8 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                 Kind = TypeKind.Union,
                 PossibleTypes = new[]
                 {
-                    TypeModel.Object("Other"),
+                    TypeModel.Object("One"),
+                    TypeModel.Object("Another"),
                 }
             };
 
@@ -52,9 +62,11 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         public void Generates_Doc_Comments_For_PossibleType()
         {
             var expected = FormatMemberTemplate(@"/// <summary>
-        /// Testing if doc comments are generated.
-        /// </summary>
-        public Other Other => this.CreateProperty(x => x.Other, Test.Other.Create);");
+            /// Testing if doc comments are generated.
+            /// </summary>
+            public Selector<T> Other(Func<Other, T> selector) => default;
+
+            public Selector<T> Another(Func<Another, T> selector) => default;");
 
             var model = new TypeModel
             {
@@ -67,7 +79,8 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                         Kind = TypeKind.Object,
                         Name = "Other",
                         Description = "Testing if doc comments are generated.",
-                    }
+                    },
+                    TypeModel.Object("Another"),
                 }
             };
 
@@ -80,7 +93,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
             if (members != null)
             {
-                members = "\r\n        " + members + "\r\n";
+                members = "\r\n            " + members;
             }
 
             return string.Format(MemberTemplate, members, interfaces);

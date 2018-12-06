@@ -12,9 +12,12 @@ namespace Octokit.GraphQL.Core.Builders
         {
             public static readonly MethodInfo OfTypeMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(OfType));
             public static readonly MethodInfo SelectMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Select));
+            public static readonly MethodInfo SelectJTokenMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SelectJToken));
+            public static readonly MethodInfo SelectFragmentMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SelectFragment));
             public static readonly MethodInfo SelectListMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SelectList));
             public static readonly MethodInfo SingleMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Single));
             public static readonly MethodInfo SingleOrDefaultMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(SingleOrDefault));
+            public static readonly MethodInfo SwitchMethod = typeof(Value).GetTypeInfo().GetDeclaredMethod(nameof(Switch));
 
             public static JToken OfType(JToken source, string typeName)
             {
@@ -22,6 +25,16 @@ namespace Octokit.GraphQL.Core.Builders
             }
 
             public static TResult Select<TResult>(JToken source, Func<JToken, TResult> selector)
+            {
+                return source.Type != JTokenType.Null ? selector(source) : default(TResult);
+            }
+
+            public static JToken SelectJToken(JToken source, Func<JToken, JToken> selector)
+            {
+                return source.Type != JTokenType.Null ? selector(source) : JValue.CreateNull();
+            }
+
+            public static TResult SelectFragment<TResult>(JToken source, Func<JToken, TResult> selector)
             {
                 return source.Type != JTokenType.Null ? selector(source) : default(TResult);
             }
@@ -42,6 +55,18 @@ namespace Octokit.GraphQL.Core.Builders
             }
 
             public static TResult SingleOrDefault<TResult>(TResult value) => value;
+
+            public static TResult Switch<TResult>(JToken source, IDictionary<string, Func<JToken, TResult>> selectors)
+            {
+                var typename = (string)source["__typename"];
+
+                if (selectors.TryGetValue(typename, out var selector))
+                {
+                    return selector(source);
+                }
+
+                return default;
+            }
         }
 
         public static class List
@@ -51,6 +76,7 @@ namespace Octokit.GraphQL.Core.Builders
             public static readonly MethodInfo ToDictionaryMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToDictionary));
             public static readonly MethodInfo ToListMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToList));
             public static readonly MethodInfo ToSubqueryListMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToSubqueryList));
+            public static readonly MethodInfo ToSubqueryDictionaryMethod = typeof(List).GetTypeInfo().GetDeclaredMethod(nameof(ToSubqueryDictionary));
 
             public static IEnumerable<JToken> OfType(IEnumerable<JToken> source, string typeName)
             {
@@ -83,7 +109,21 @@ namespace Octokit.GraphQL.Core.Builders
                 ISubquery subquery)
             {
                 var result = source.ToList();
-                context.SetQueryResultSink(subquery, result);
+                context.SetQueryResultSink(subquery, x => result.Add((T)x));
+                return result;
+            }
+
+            public static Dictionary<TKey, TElement> ToSubqueryDictionary<TSource, TKey, TElement>(
+                IEnumerable<TSource> source,
+                ISubqueryRunner context,
+                ISubquery subquery,
+                Func<TSource, TKey> keySelector,
+                Func<TSource, TElement> elementSelector)
+            {
+                var result = source.ToDictionary(keySelector, elementSelector);
+                context.SetQueryResultSink(
+                    subquery,
+                    x => result.Add(keySelector((TSource)x), elementSelector((TSource)x)));
                 return result;
             }
         }

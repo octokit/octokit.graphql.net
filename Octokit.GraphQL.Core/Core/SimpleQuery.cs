@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Octokit.GraphQL.Core.Serializers;
-using Octokit.GraphQL.Core.Syntax;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using System.Threading.Tasks;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
+using Octokit.GraphQL.Core.Serializers;
+using Octokit.GraphQL.Core.Syntax;
 
 namespace Octokit.GraphQL.Core
 {
@@ -111,13 +112,17 @@ namespace Octokit.GraphQL.Core
                 this.variables = variables;
             }
 
+            /// <inheritdoc />
             public TResult Result { get; private set; }
+
+            /// <inheritdoc />
             object IQueryRunner.Result => Result;
 
-            public async Task<bool> RunPage()
+            /// <inheritdoc />
+            public async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
                 var deserializer = new ResponseDeserializer();
-                var data = await connection.Run(parent.GetPayload(variables));
+                var data = await connection.Run(parent.GetPayload(variables), cancellationToken).ConfigureAwait(false);
                 Result = deserializer.Deserialize(parent.ResultBuilder, data);
                 return false;
             }

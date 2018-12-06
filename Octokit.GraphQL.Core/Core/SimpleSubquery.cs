@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Octokit.GraphQL.Core.Builders;
@@ -72,9 +73,9 @@ namespace Octokit.GraphQL.Core
             string id,
             string after,
             IDictionary<string, object> variables,
-            IList result)
+            Action<object> addResult)
         {
-            return new Runner(this, connection, id, after, variables, result);
+            return new Runner(this, connection, id, after, variables, addResult);
         }
 
         internal static ISubquery Create(
@@ -107,7 +108,7 @@ namespace Octokit.GraphQL.Core
             readonly IConnection connection;
             readonly Dictionary<string, object> variables;
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
-            IList finalResult;
+            readonly Action<object> addResult;
 
             public Runner(
                SimpleSubquery<TResult> owner,
@@ -115,7 +116,7 @@ namespace Octokit.GraphQL.Core
                string id,
                string after,
                IDictionary<string, object> variables,
-               IList result)
+               Action<object> addResult)
             {
                 this.owner = owner;
                 this.connection = connection;
@@ -123,17 +124,20 @@ namespace Octokit.GraphQL.Core
                     new Dictionary<string, object>();
                 this.variables["__id"] = id;
                 this.variables["__after"] = after;
-                finalResult = result;
+                this.addResult = addResult;
             }
 
+            /// <inheritdoc />
             public TResult Result { get; private set; }
 
+            /// <inheritdoc />
             object IQueryRunner.Result => Result;
 
-            public async Task<bool> RunPage()
+            /// <inheritdoc />
+            public async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
                 var payload = owner.GetPayload(variables);
-                var data = await connection.Run(payload);
+                var data = await connection.Run(payload, cancellationToken).ConfigureAwait(false);
                 var json = deserializer.Deserialize(data);
                 var pageInfo = owner.PageInfo(json);
 
@@ -141,7 +145,7 @@ namespace Octokit.GraphQL.Core
 
                 foreach (var i in (IList)Result)
                 {
-                    finalResult.Add(i);
+                    addResult(i);
                 }
 
                 if ((bool)pageInfo["hasNextPage"] == true)

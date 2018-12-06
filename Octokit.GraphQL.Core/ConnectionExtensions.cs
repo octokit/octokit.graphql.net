@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
 
@@ -9,25 +9,28 @@ namespace Octokit.GraphQL
     {
         public static Task<T> Run<T>(
             this IConnection connection,
-            IQueryableValue<T> expression)
+            IQueryableValue<T> expression,
+            CancellationToken cancellationToken = default)
         {
-            return connection.Run(expression.Compile());
+            return connection.Run(expression.Compile(), cancellationToken: cancellationToken);
         }
 
         public static Task<IEnumerable<T>> Run<T>(
             this IConnection connection,
-            IQueryableList<T> expression)
+            IQueryableList<T> expression,
+            CancellationToken cancellationToken = default)
         {
-            return connection.Run(expression.Compile());
+            return connection.Run(expression.Compile(), cancellationToken: cancellationToken);
         }
 
         public static async Task<T> Run<T>(
             this IConnection connection,
             ICompiledQuery<T> query,
-            Dictionary<string, object> variables = null)
+            Dictionary<string, object> variables = null,
+            CancellationToken cancellationToken = default)
         {
             var run = query.Start(connection, variables);
-            while (await run.RunPage()) { }
+            while (await run.RunPage(cancellationToken).ConfigureAwait(false)) { }
             return run.Result;
         }
 

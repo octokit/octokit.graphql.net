@@ -23,7 +23,8 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
             _gitHubClient = GetV3GitHubClient();
             _repository = _gitHubClient.Repository.Create(new NewRepository(_repoName)).Result;
 
-            var repositoryQuery = new Query().Repository(Helper.Username, _repoName)
+            var repositoryQuery = new Query()
+                .Repository(owner: Helper.Username, name: _repoName)
                 .Select(r => r.Id );
 
             _repositoryId = Connection.Run(repositoryQuery).Result;
@@ -81,7 +82,9 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
         [IntegrationTest]
         public void Star_And_Unstar_Project()
         {
-            var viewerHasStarredQuery = new Query().Repository(Helper.Username, _repoName).Select(repository => repository.ViewerHasStarred);
+            var viewerHasStarredQuery = new Query()
+                .Repository(owner: Helper.Username, name: _repoName)
+                .Select(repository => repository.ViewerHasStarred);
 
             var viewerHasStarred = Connection.Run(viewerHasStarredQuery).Result;
             Assert.False(viewerHasStarred);

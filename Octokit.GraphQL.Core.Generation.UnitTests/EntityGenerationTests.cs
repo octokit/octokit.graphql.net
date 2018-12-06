@@ -1457,6 +1457,72 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Paging_Args_Are_Ordered_Correctly()
+        {
+            var expected = FormatMemberTemplate(
+                "public IOther Foo(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => " +
+                "this.CreateMethodCall(x => x.Foo(first, after, last, before), Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel { Name = "after", Type = TypeModel.String() },
+                            new InputValueModel { Name = "first", Type = TypeModel.Int() },
+                            new InputValueModel { Name = "before", Type = TypeModel.String() },
+                            new InputValueModel { Name = "last", Type = TypeModel.Int() },
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
+        public void Non_Paging_Args_Ordered_Correctly()
+        {
+            var expected = FormatMemberTemplate(
+                "public IOther Foo(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? bar = null, Arg<string>? foo = null) => " +
+                "this.CreateMethodCall(x => x.Foo(first, after, bar, foo), Test.Internal.StubIOther.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "foo",
+                        Type = TypeModel.Interface("Other"),
+                        Args = new[]
+                        {
+                            new InputValueModel { Name = "after", Type = TypeModel.String() },
+                            new InputValueModel { Name = "first", Type = TypeModel.Int() },
+                            new InputValueModel { Name = "foo", Type = TypeModel.String() },
+                            new InputValueModel { Name = "bar", Type = TypeModel.Int() },
+                        }
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
         public void Generates_Doc_Comments_For_Class()
         {
             var expected = @"namespace Test
@@ -1589,16 +1655,17 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                         Type = TypeModel.Object("Other"),
                         Args = new[]
                         {
-                            new InputValueModel
-                            {
-                                Name = "arg1",
-                                Description = "The first argument.",
-                                Type = TypeModel.Int(),
-                            },
+                            // Define these in the wrong order to check arg sorting.
                             new InputValueModel
                             {
                                 Name = "arg2",
                                 Description = "The second argument.\r\nWith a windows newline. Ending with a space. ",
+                                Type = TypeModel.Int(),
+                            },
+                            new InputValueModel
+                            {
+                                Name = "arg1",
+                                Description = "The first argument.",
                                 Type = TypeModel.Int(),
                             },
                         }

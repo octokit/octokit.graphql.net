@@ -117,7 +117,7 @@ namespace Octokit.GraphQL.Core.Generation
 
                 if (field.Args != null)
                 {
-                    foreach (var arg in field.Args)
+                    foreach (var arg in BuildUtilities.SortArgs(field.Args))
                     {
                         if (!string.IsNullOrWhiteSpace(arg.Description))
                         {

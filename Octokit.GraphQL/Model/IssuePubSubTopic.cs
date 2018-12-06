@@ -28,5 +28,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "TIMELINE")]
         Timeline,
+
+        /// <summary>
+        /// The channel ID for observing issue state updates.
+        /// </summary>
+        [EnumMember(Value = "STATE")]
+        State,
     }
 }

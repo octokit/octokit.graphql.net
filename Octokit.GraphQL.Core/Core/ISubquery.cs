@@ -32,13 +32,13 @@ namespace Octokit.GraphQL.Core
         /// <param name="id">The ID of the parent object.</param>
         /// <param name="after">The end cursor from the master query.</param>
         /// <param name="variables">The query variables.</param>
-        /// <param name="results">The collection to which to add the results.</param>
+        /// <param name="addResult">The method to call to add an item to the result collection.</param>
         /// <returns>An <see cref="IQueryRunner"/>.</returns>
         IQueryRunner Start(
             IConnection connection,
             string id,
             string after,
             IDictionary<string, object> variables,
-            IList results);
+            Action<object> addResult);
     }
 }

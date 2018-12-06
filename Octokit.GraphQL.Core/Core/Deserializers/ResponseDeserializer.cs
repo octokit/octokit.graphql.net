@@ -63,7 +63,7 @@ namespace Octokit.GraphQL.Core.Deserializers
 
         private Exception DeserializeException(JToken error)
         {
-            return new GraphQLQueryException(
+            return new ResponseDeserializerException(
                 (string)error["message"],
                 (int)error["locations"][0]["line"],
                 (int)error["locations"][0]["column"]);

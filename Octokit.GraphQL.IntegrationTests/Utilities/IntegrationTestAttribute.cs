@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.IntegrationTests.Utilities
         public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
         {
             return Helper.HasCredentials
-                ? new[] { new XunitTestCase(_diagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) }
+                ? new[] { new XunitTestCase(_diagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), TestMethodDisplayOptions.None, testMethod) }
                 : Enumerable.Empty<IXunitTestCase>();
         }
     }

@@ -36,6 +36,11 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
+        /// The deployment description.
+        /// </summary>
+        public string Description { get; }
+
+        /// <summary>
         /// The environment to which this deployment was made.
         /// </summary>
         public string Environment { get; }
@@ -53,6 +58,11 @@ namespace Octokit.GraphQL.Model
         public string Payload { get; }
 
         /// <summary>
+        /// Identifies the Ref of the deployment, if the deployment was created by ref.
+        /// </summary>
+        public Ref Ref => this.CreateProperty(x => x.Ref, Octokit.GraphQL.Model.Ref.Create);
+
+        /// <summary>
         /// Identifies the repository associated with the deployment.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
@@ -66,10 +76,20 @@ namespace Octokit.GraphQL.Model
         /// A list of statuses associated with the deployment.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified global ID.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified global ID.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public DeploymentStatusConnection Statuses(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Statuses(first, after, last, before), Octokit.GraphQL.Model.DeploymentStatusConnection.Create);
+
+        /// <summary>
+        /// The deployment task.
+        /// </summary>
+        public string Task { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public DateTimeOffset UpdatedAt { get; }
 
         internal static Deployment Create(Expression expression)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Octokit.GraphQL.Core
@@ -16,8 +17,11 @@ namespace Octokit.GraphQL.Core
         /// <summary>
         /// Runs the next page of the query.
         /// </summary>
-        /// <returns></returns>
-        Task<bool> RunPage();
+        /// <param name="cancellationToken">The optional cancellation token to use.</param>
+        /// <returns>
+        /// A <see cref="Task{TResult}"/> that returns whether a page was returned.
+        /// </returns>
+        Task<bool> RunPage(CancellationToken cancellationToken = default);
     }
 
     /// <summary>

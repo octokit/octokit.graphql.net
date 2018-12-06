@@ -2,6 +2,7 @@
 using System.Linq;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
+using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Model;
 using Xunit;
 
@@ -49,8 +50,8 @@ namespace Octokit.GraphQL.UnitTests
             Assert.Equal("1234", result.Id.Value);
             Assert.Equal("Octokit.GraphQL.Core", result.Name);
             Assert.Equal("grokys", result.Owner.Login);
-            Assert.Equal(false, result.IsFork);
-            Assert.Equal(false, result.IsPrivate);
+            Assert.False(result.IsFork);
+            Assert.False(result.IsPrivate);
         }
 
 
@@ -203,7 +204,7 @@ namespace Octokit.GraphQL.UnitTests
             {
                 var result = query.Deserialize(data);
             }
-            catch (GraphQLQueryException e)
+            catch (ResponseDeserializerException e)
             {
                 thrown = e.Message == "Error message." &&
                          e.Line == 5 &&
