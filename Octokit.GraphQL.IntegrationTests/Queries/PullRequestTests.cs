@@ -232,5 +232,28 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var result = await Connection.Run(query);
             Assert.Null(result.LastCommit.Statuses);
         }
+
+        [IntegrationTest]
+        public async Task NugetTest()
+        {
+            var query = new Query()
+                .Repository("NuGetPackageExplorer", "NuGetPackageExplorer")
+                          .PullRequest(576).Commits(last: 1).Nodes.Select(
+                              commit => new 
+                              {
+                                  CheckSuites = commit.Commit.CheckSuites(null, null, null, null, null).AllPages(10)
+                                      .Select(suite => new 
+                                      {
+                                          CheckRuns = suite.CheckRuns(null, null, null, null, null).AllPages(10)
+                                              .Select(run => new 
+                                              {
+                                                  Test = run.Text
+                                              }).ToList()
+                                      }).ToList()
+                              }
+                          );
+
+            var result = await Connection.Run(query);
+        }
     }
 }
