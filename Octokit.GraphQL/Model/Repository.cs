@@ -414,7 +414,7 @@ namespace Octokit.GraphQL.Model
         /// A description of the repository, rendered to HTML without any links in it.
         /// </summary>
         /// <param name="limit">How many characters to return.</param>
-        public string ShortDescriptionHTML(Arg<int>? limit = null) => null;
+        public string ShortDescriptionHTML(Arg<int>? limit = null) => default;
 
         /// <summary>
         /// Whether or not squash-merging is enabled on this repository.

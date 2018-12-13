@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         /// A URL pointing to the user's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        public string AvatarUrl(Arg<int>? size = null) => null;
+        public string AvatarUrl(Arg<int>? size = null) => default;
 
         /// <summary>
         /// The user's public profile bio.
@@ -49,6 +49,14 @@ namespace Octokit.GraphQL.Model
         /// The user's public profile company as HTML.
         /// </summary>
         public string CompanyHTML { get; }
+
+        /// <summary>
+        /// The collection of contributions this user has made to different repositories.
+        /// </summary>
+        /// <param name="from">Only contributions made at this time or later will be counted. If omitted, defaults to a year ago.</param>
+        /// <param name="organizationID">The ID of the organization used to filter contributions.</param>
+        /// <param name="to">Only contributions made before and up to and including this time will be counted. If omitted, defaults to the current time.</param>
+        public ContributionsCollection ContributionsCollection(Arg<DateTimeOffset>? from = null, Arg<ID>? organizationID = null, Arg<DateTimeOffset>? to = null) => this.CreateMethodCall(x => x.ContributionsCollection(from, organizationID, to), Octokit.GraphQL.Model.ContributionsCollection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.

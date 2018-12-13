@@ -68,6 +68,11 @@ namespace Octokit.GraphQL.Model
         public bool IncludesCreatedEdit { get; }
 
         /// <summary>
+        /// Returns whether or not a comment has been minimized.
+        /// </summary>
+        public bool IsMinimized { get; }
+
+        /// <summary>
         /// Identifies the issue associated with the comment.
         /// </summary>
         public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Model.Issue.Create);
@@ -76,6 +81,11 @@ namespace Octokit.GraphQL.Model
         /// The moment the editor made the last edit
         /// </summary>
         public DateTimeOffset? LastEditedAt { get; }
+
+        /// <summary>
+        /// Returns why the comment was minimized.
+        /// </summary>
+        public string MinimizedReason { get; }
 
         /// <summary>
         /// Identifies when the comment was published at.
@@ -137,6 +147,11 @@ namespace Octokit.GraphQL.Model
         /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
+
+        /// <summary>
+        /// Check if the current viewer can minimize this object.
+        /// </summary>
+        public bool ViewerCanMinimize { get; }
 
         /// <summary>
         /// Can user react to this subject

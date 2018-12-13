@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Model
         /// A URL pointing to the app's logo.
         /// </summary>
         /// <param name="size">The size of the resulting image.</param>
-        public string LogoUrl(Arg<int>? size = null) => null;
+        public string LogoUrl(Arg<int>? size = null) => default;
 
         /// <summary>
         /// The name of the app.
