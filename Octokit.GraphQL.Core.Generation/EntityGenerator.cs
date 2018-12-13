@@ -229,7 +229,7 @@ namespace Octokit.GraphQL.Core.Generation
 
             GenerateArguments(field, out string arguments, out string parameters);
 
-            return $"{obsoleteAttribute}        public {csharpType} {name}({arguments}) => null;";
+            return $"{obsoleteAttribute}        public {csharpType} {name}({arguments}) => default;";
         }
 
         private static string GenerateObjectMethod(FieldModel field, TypeModel type, string entityNamespace)

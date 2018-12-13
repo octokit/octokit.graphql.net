@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         /// A URL pointing to the organization's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
-        public string AvatarUrl(Arg<int>? size = null) => null;
+        public string AvatarUrl(Arg<int>? size = null) => default;
 
         /// <summary>
         /// Identifies the primary key from the database.
