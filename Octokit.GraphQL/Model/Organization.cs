@@ -63,6 +63,15 @@ namespace Octokit.GraphQL.Model
         public UserConnection Members(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Members(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
+        /// A list of users who are members of this organization.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public OrganizationMemberConnection MembersWithRole(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.MembersWithRole(first, after, last, before), Octokit.GraphQL.Model.OrganizationMemberConnection.Create);
+
+        /// <summary>
         /// The organization's public profile name.
         /// </summary>
         public string Name { get; }

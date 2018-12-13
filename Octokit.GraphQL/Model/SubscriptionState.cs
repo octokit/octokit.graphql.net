@@ -12,7 +12,7 @@ namespace Octokit.GraphQL.Model
     public enum SubscriptionState
     {
         /// <summary>
-        /// The User is only notified when particpating or @mentioned.
+        /// The User is only notified when participating or @mentioned.
         /// </summary>
         [EnumMember(Value = "UNSUBSCRIBED")]
         Unsubscribed,
