@@ -90,6 +90,12 @@ namespace Octokit.GraphQL.Model
         MovedColumnsInProjectEvent,
 
         /// <summary>
+        /// Represents a 'pinned' event on a given issue or pull request.
+        /// </summary>
+        [EnumMember(Value = "PINNED_EVENT")]
+        PinnedEvent,
+
+        /// <summary>
         /// Represents a 'referenced' event on a given `ReferencedSubject`.
         /// </summary>
         [EnumMember(Value = "REFERENCED_EVENT")]
@@ -120,6 +126,12 @@ namespace Octokit.GraphQL.Model
         SubscribedEvent,
 
         /// <summary>
+        /// Represents a 'transferred' event on a given issue or pull request.
+        /// </summary>
+        [EnumMember(Value = "TRANSFERRED_EVENT")]
+        TransferredEvent,
+
+        /// <summary>
         /// Represents an 'unassigned' event on any assignable object.
         /// </summary>
         [EnumMember(Value = "UNASSIGNED_EVENT")]
@@ -136,6 +148,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "UNLOCKED_EVENT")]
         UnlockedEvent,
+
+        /// <summary>
+        /// Represents an 'unpinned' event on a given issue or pull request.
+        /// </summary>
+        [EnumMember(Value = "UNPINNED_EVENT")]
+        UnpinnedEvent,
 
         /// <summary>
         /// Represents an 'unsubscribed' event on a given `Subscribable`.

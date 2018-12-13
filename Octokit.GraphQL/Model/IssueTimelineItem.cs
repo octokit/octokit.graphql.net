@@ -103,6 +103,11 @@ namespace Octokit.GraphQL.Model
             /// Represents an 'unlocked' event on a given issue or pull request.
             /// </summary>
             public Selector<T> UnlockedEvent(Func<UnlockedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'transferred' event on a given issue or pull request.
+            /// </summary>
+            public Selector<T> TransferredEvent(Func<TransferredEvent, T> selector) => default;
         }
 
         internal static IssueTimelineItem Create(Expression expression)

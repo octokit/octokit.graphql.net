@@ -40,5 +40,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "VERIFIED_EMAIL_REQUIRED")]
         VerifiedEmailRequired,
+
+        /// <summary>
+        /// You cannot update this comment
+        /// </summary>
+        [EnumMember(Value = "DENIED")]
+        Denied,
     }
 }

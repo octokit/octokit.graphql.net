@@ -73,6 +73,11 @@ namespace Octokit.GraphQL.Model
         public Ref Tag => this.CreateProperty(x => x.Tag, Octokit.GraphQL.Model.Ref.Create);
 
         /// <summary>
+        /// The name of the release's Git tag
+        /// </summary>
+        public string TagName { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }

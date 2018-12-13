@@ -185,7 +185,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string ResourcePath { get; }
 
-        public string ShortDescriptionHTML(Arg<int>? limit = null) => null;
+        public string ShortDescriptionHTML(Arg<int>? limit = null) => default;
 
         public DateTimeOffset UpdatedAt { get; }
 

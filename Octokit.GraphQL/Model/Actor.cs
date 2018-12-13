@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public string AvatarUrl(Arg<int>? size = null) => null;
+        public string AvatarUrl(Arg<int>? size = null) => default;
 
         public string Login { get; }
 

@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);
 
         /// <summary>
+        /// Identifies the oid of the deployment commit, even if the commit has been deleted.
+        /// </summary>
+        public string CommitOid { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }

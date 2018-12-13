@@ -7,23 +7,23 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for Commit.
+    /// The connection type for User.
     /// </summary>
-    public class CommitHistoryConnection : QueryableValue<CommitHistoryConnection>, IPagingConnection<Commit>
+    public class OrganizationMemberConnection : QueryableValue<OrganizationMemberConnection>, IPagingConnection<User>
     {
-        public CommitHistoryConnection(Expression expression) : base(expression)
+        public OrganizationMemberConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryableList<CommitEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<OrganizationMemberEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryableList<Commit> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<User> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -37,9 +37,9 @@ namespace Octokit.GraphQL.Model
 
         IPageInfo IPagingConnection.PageInfo => PageInfo;
 
-        internal static CommitHistoryConnection Create(Expression expression)
+        internal static OrganizationMemberConnection Create(Expression expression)
         {
-            return new CommitHistoryConnection(expression);
+            return new OrganizationMemberConnection(expression);
         }
     }
 }
