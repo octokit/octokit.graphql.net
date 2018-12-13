@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReactionOrder
     {
+        /// <summary>
+        /// The field in which to order reactions by.
+        /// </summary>
         public ReactionOrderField Field { get; set; }
 
+        /// <summary>
+        /// The direction in which to order reactions by the specified field.
+        /// </summary>
         public OrderDirection Direction { get; set; }
     }
 }

@@ -8,12 +8,24 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CreateContentAttachmentInput
     {
+        /// <summary>
+        /// The node ID of the content_reference.
+        /// </summary>
         public ID ContentReferenceId { get; set; }
 
+        /// <summary>
+        /// The title of the content attachment.
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// The body of the content attachment, which may contain markdown.
+        /// </summary>
         public string Body { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

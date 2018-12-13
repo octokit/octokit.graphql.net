@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RerequestCheckSuiteInput
     {
+        /// <summary>
+        /// The Node ID of the repository.
+        /// </summary>
         public ID RepositoryId { get; set; }
 
+        /// <summary>
+        /// The Node ID of the check suite.
+        /// </summary>
         public ID CheckSuiteId { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

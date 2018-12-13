@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AcceptTopicSuggestionInput
     {
+        /// <summary>
+        /// The Node ID of the repository.
+        /// </summary>
         public ID RepositoryId { get; set; }
 
+        /// <summary>
+        /// The name of the suggested topic.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

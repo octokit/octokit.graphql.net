@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MilestoneOrder
     {
+        /// <summary>
+        /// The field to order milestones by.
+        /// </summary>
         public MilestoneOrderField Field { get; set; }
 
+        /// <summary>
+        /// The ordering direction.
+        /// </summary>
         public OrderDirection Direction { get; set; }
     }
 }
