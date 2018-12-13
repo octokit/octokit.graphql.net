@@ -66,6 +66,31 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
             CompareModel("InputObject.cs", expected, result);
         }
 
+        [Fact]
+        public void Generates_Property_For_List_Field_With_Description()
+        {
+            var expected = FormatMemberTemplate("/// <summary>\r\n        /// Field foo for InputObject\r\n        /// </summary>\r\n        public IEnumerable<int?> Foo { get; set; }");
+
+            var model = new TypeModel
+            {
+                Name = "InputObject",
+                Kind = TypeKind.InputObject,
+                InputFields = new[]
+                {
+                    new InputValueModel
+                    {
+                        Description = "Field foo for InputObject",
+                        Name = "foo",
+                        Type = TypeModel.List(TypeModel.Int())
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("InputObject.cs", expected, result);
+        }
+
         private string FormatMemberTemplate(string members)
         {
             if (members != null)
