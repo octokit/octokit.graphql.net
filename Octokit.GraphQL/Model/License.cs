@@ -58,7 +58,7 @@ namespace Octokit.GraphQL.Model
         public IQueryableList<LicenseRule> Limitations => this.CreateProperty(x => x.Limitations);
 
         /// <summary>
-        /// The license full name specified by <https://spdx.org/licenses>
+        /// The license full name specified by &lt;https://spdx.org/licenses&gt;
         /// </summary>
         public string Name { get; }
 
@@ -78,12 +78,12 @@ namespace Octokit.GraphQL.Model
         public bool PseudoLicense { get; }
 
         /// <summary>
-        /// Short identifier specified by <https://spdx.org/licenses>
+        /// Short identifier specified by &lt;https://spdx.org/licenses&gt;
         /// </summary>
         public string SpdxId { get; }
 
         /// <summary>
-        /// URL to the license on <https://choosealicense.com>
+        /// URL to the license on &lt;https://choosealicense.com&gt;
         /// </summary>
         public string Url { get; }
 
