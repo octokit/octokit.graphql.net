@@ -20,6 +20,8 @@ namespace Octokit.GraphQL.Core.Generation
 
         private static void GenerateCommentBlock(string text, string indent, StringBuilder builder)
         {
+            text = text.Replace("<", "&lt;").Replace(">", "&gt;");
+
             foreach (var line in text.Split('\r', '\n'))
             {
                 if (!string.IsNullOrWhiteSpace(line))
