@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Xml;
 
 namespace Octokit.GraphQL.Core.Generation
 {
@@ -20,7 +21,7 @@ namespace Octokit.GraphQL.Core.Generation
 
         private static void GenerateCommentBlock(string text, string indent, StringBuilder builder)
         {
-            text = text.Replace("<", "&lt;").Replace(">", "&gt;");
+            text = text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
 
             foreach (var line in text.Split('\r', '\n'))
             {
