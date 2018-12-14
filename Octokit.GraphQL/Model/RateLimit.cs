@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RateLimit : QueryableValue<RateLimit>
     {
-        public RateLimit(Expression expression) : base(expression)
+        internal RateLimit(Expression expression) : base(expression)
         {
         }
 

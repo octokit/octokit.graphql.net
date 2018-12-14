@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SearchResultItemConnection : QueryableValue<SearchResultItemConnection>, IPagingConnection<SearchResultItem>
     {
-        public SearchResultItemConnection(Expression expression) : base(expression)
+        internal SearchResultItemConnection(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProtectedBranchConnection : QueryableValue<ProtectedBranchConnection>, IPagingConnection<ProtectedBranch>
     {
-        public ProtectedBranchConnection(Expression expression) : base(expression)
+        internal ProtectedBranchConnection(Expression expression) : base(expression)
         {
         }
 

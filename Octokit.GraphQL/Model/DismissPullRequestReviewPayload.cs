@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DismissPullRequestReviewPayload : QueryableValue<DismissPullRequestReviewPayload>
     {
-        public DismissPullRequestReviewPayload(Expression expression) : base(expression)
+        internal DismissPullRequestReviewPayload(Expression expression) : base(expression)
         {
         }
 

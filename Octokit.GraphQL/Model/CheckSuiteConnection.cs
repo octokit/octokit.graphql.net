@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckSuiteConnection : QueryableValue<CheckSuiteConnection>, IPagingConnection<CheckSuite>
     {
-        public CheckSuiteConnection(Expression expression) : base(expression)
+        internal CheckSuiteConnection(Expression expression) : base(expression)
         {
         }
 

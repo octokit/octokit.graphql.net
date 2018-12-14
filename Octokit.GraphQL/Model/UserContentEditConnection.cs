@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UserContentEditConnection : QueryableValue<UserContentEditConnection>, IPagingConnection<UserContentEdit>
     {
-        public UserContentEditConnection(Expression expression) : base(expression)
+        internal UserContentEditConnection(Expression expression) : base(expression)
         {
         }
 

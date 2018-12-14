@@ -16,7 +16,7 @@ namespace Octokit.GraphQL
         {
         }
 
-        public Query(Expression expression) : base(expression)
+        internal Query(Expression expression) : base(expression)
         {
         }
 

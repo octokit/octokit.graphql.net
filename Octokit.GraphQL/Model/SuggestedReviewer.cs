@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SuggestedReviewer : QueryableValue<SuggestedReviewer>
     {
-        public SuggestedReviewer(Expression expression) : base(expression)
+        internal SuggestedReviewer(Expression expression) : base(expression)
         {
         }
 

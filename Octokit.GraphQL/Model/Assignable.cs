@@ -34,7 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIAssignable : QueryableValue<StubIAssignable>, IAssignable
     {
-        public StubIAssignable(Expression expression) : base(expression)
+        internal StubIAssignable(Expression expression) : base(expression)
         {
         }
 

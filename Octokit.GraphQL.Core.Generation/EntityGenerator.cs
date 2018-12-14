@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Core.Generation
 
     {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type, pagingConnectionNodeType)}
     {{
-        public {className}(Expression expression) : base(expression)
+        internal {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, generateDocComments, rootNamespace, entityNamespace, queryType, pagingConnectionNodeType != null)}
 
@@ -64,7 +64,7 @@ namespace Octokit.GraphQL.Core.Generation
         {{
         }}
 
-        public {className}(Expression expression) : base(expression)
+        internal {className}(Expression expression) : base(expression)
         {{
         }}{GenerateFields(type, true, rootNamespace, entityNamespace, queryType, false)}
 

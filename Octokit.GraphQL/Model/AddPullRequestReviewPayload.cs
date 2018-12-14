@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddPullRequestReviewPayload : QueryableValue<AddPullRequestReviewPayload>
     {
-        public AddPullRequestReviewPayload(Expression expression) : base(expression)
+        internal AddPullRequestReviewPayload(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class StargazerEdge : QueryableValue<StargazerEdge>
     {
-        public StargazerEdge(Expression expression) : base(expression)
+        internal StargazerEdge(Expression expression) : base(expression)
         {
         }
 

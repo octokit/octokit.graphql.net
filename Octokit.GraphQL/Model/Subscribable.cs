@@ -37,7 +37,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubISubscribable : QueryableValue<StubISubscribable>, ISubscribable
     {
-        public StubISubscribable(Expression expression) : base(expression)
+        internal StubISubscribable(Expression expression) : base(expression)
         {
         }
 

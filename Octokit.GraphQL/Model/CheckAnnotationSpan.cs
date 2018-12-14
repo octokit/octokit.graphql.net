@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckAnnotationSpan : QueryableValue<CheckAnnotationSpan>
     {
-        public CheckAnnotationSpan(Expression expression) : base(expression)
+        internal CheckAnnotationSpan(Expression expression) : base(expression)
         {
         }
 

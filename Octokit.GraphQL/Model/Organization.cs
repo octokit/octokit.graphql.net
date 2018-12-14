@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Organization : QueryableValue<Organization>
     {
-        public Organization(Expression expression) : base(expression)
+        internal Organization(Expression expression) : base(expression)
         {
         }
 

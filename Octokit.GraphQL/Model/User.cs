@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class User : QueryableValue<User>
     {
-        public User(Expression expression) : base(expression)
+        internal User(Expression expression) : base(expression)
         {
         }
 

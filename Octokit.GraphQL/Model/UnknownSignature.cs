@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnknownSignature : QueryableValue<UnknownSignature>
     {
-        public UnknownSignature(Expression expression) : base(expression)
+        internal UnknownSignature(Expression expression) : base(expression)
         {
         }
 

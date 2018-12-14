@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TransferredEvent : QueryableValue<TransferredEvent>
     {
-        public TransferredEvent(Expression expression) : base(expression)
+        internal TransferredEvent(Expression expression) : base(expression)
         {
         }
 

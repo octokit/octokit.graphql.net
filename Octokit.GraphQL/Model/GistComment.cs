@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class GistComment : QueryableValue<GistComment>
     {
-        public GistComment(Expression expression) : base(expression)
+        internal GistComment(Expression expression) : base(expression)
         {
         }
 

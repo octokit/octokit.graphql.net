@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Push : QueryableValue<Push>
     {
-        public Push(Expression expression) : base(expression)
+        internal Push(Expression expression) : base(expression)
         {
         }
 

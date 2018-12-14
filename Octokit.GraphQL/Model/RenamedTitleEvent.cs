@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RenamedTitleEvent : QueryableValue<RenamedTitleEvent>
     {
-        public RenamedTitleEvent(Expression expression) : base(expression)
+        internal RenamedTitleEvent(Expression expression) : base(expression)
         {
         }
 

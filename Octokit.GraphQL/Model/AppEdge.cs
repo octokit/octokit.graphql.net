@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AppEdge : QueryableValue<AppEdge>
     {
-        public AppEdge(Expression expression) : base(expression)
+        internal AppEdge(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewDismissalAllowanceEdge : QueryableValue<ReviewDismissalAllowanceEdge>
     {
-        public ReviewDismissalAllowanceEdge(Expression expression) : base(expression)
+        internal ReviewDismissalAllowanceEdge(Expression expression) : base(expression)
         {
         }
 

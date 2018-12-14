@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ContentAttachment : QueryableValue<ContentAttachment>
     {
-        public ContentAttachment(Expression expression) : base(expression)
+        internal ContentAttachment(Expression expression) : base(expression)
         {
         }
 

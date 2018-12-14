@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LanguageEdge : QueryableValue<LanguageEdge>
     {
-        public LanguageEdge(Expression expression) : base(expression)
+        internal LanguageEdge(Expression expression) : base(expression)
         {
         }
 

@@ -60,7 +60,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIProjectOwner : QueryableValue<StubIProjectOwner>, IProjectOwner
     {
-        public StubIProjectOwner(Expression expression) : base(expression)
+        internal StubIProjectOwner(Expression expression) : base(expression)
         {
         }
 

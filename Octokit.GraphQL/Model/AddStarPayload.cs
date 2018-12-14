@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddStarPayload : QueryableValue<AddStarPayload>
     {
-        public AddStarPayload(Expression expression) : base(expression)
+        internal AddStarPayload(Expression expression) : base(expression)
         {
         }
 

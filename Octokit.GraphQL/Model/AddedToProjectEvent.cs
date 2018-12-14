@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddedToProjectEvent : QueryableValue<AddedToProjectEvent>
     {
-        public AddedToProjectEvent(Expression expression) : base(expression)
+        internal AddedToProjectEvent(Expression expression) : base(expression)
         {
         }
 

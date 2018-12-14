@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ClosedEvent : QueryableValue<ClosedEvent>
     {
-        public ClosedEvent(Expression expression) : base(expression)
+        internal ClosedEvent(Expression expression) : base(expression)
         {
         }
 

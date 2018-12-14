@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Bot : QueryableValue<Bot>
     {
-        public Bot(Expression expression) : base(expression)
+        internal Bot(Expression expression) : base(expression)
         {
         }
 

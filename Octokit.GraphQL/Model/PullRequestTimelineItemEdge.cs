@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestTimelineItemEdge : QueryableValue<PullRequestTimelineItemEdge>
     {
-        public PullRequestTimelineItemEdge(Expression expression) : base(expression)
+        internal PullRequestTimelineItemEdge(Expression expression) : base(expression)
         {
         }
 

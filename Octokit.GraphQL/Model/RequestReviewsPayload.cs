@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RequestReviewsPayload : QueryableValue<RequestReviewsPayload>
     {
-        public RequestReviewsPayload(Expression expression) : base(expression)
+        internal RequestReviewsPayload(Expression expression) : base(expression)
         {
         }
 

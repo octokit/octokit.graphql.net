@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommentDeletedEvent : QueryableValue<CommentDeletedEvent>
     {
-        public CommentDeletedEvent(Expression expression) : base(expression)
+        internal CommentDeletedEvent(Expression expression) : base(expression)
         {
         }
 

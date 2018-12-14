@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveReactionPayload : QueryableValue<RemoveReactionPayload>
     {
-        public RemoveReactionPayload(Expression expression) : base(expression)
+        internal RemoveReactionPayload(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateBranchProtectionRulePayload : QueryableValue<UpdateBranchProtectionRulePayload>
     {
-        public UpdateBranchProtectionRulePayload(Expression expression) : base(expression)
+        internal UpdateBranchProtectionRulePayload(Expression expression) : base(expression)
         {
         }
 

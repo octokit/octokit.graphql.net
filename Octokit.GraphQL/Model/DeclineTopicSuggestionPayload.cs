@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeclineTopicSuggestionPayload : QueryableValue<DeclineTopicSuggestionPayload>
     {
-        public DeclineTopicSuggestionPayload(Expression expression) : base(expression)
+        internal DeclineTopicSuggestionPayload(Expression expression) : base(expression)
         {
         }
 

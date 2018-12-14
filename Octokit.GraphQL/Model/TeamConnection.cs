@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TeamConnection : QueryableValue<TeamConnection>, IPagingConnection<Team>
     {
-        public TeamConnection(Expression expression) : base(expression)
+        internal TeamConnection(Expression expression) : base(expression)
         {
         }
 

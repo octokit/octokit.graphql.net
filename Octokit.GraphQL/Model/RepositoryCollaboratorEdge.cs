@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RepositoryCollaboratorEdge : QueryableValue<RepositoryCollaboratorEdge>
     {
-        public RepositoryCollaboratorEdge(Expression expression) : base(expression)
+        internal RepositoryCollaboratorEdge(Expression expression) : base(expression)
         {
         }
 

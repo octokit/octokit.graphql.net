@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommitCommentThread : QueryableValue<CommitCommentThread>
     {
-        public CommitCommentThread(Expression expression) : base(expression)
+        internal CommitCommentThread(Expression expression) : base(expression)
         {
         }
 

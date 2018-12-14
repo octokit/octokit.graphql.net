@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class BranchProtectionRuleConflictConnection : QueryableValue<BranchProtectionRuleConflictConnection>, IPagingConnection<BranchProtectionRuleConflict>
     {
-        public BranchProtectionRuleConflictConnection(Expression expression) : base(expression)
+        internal BranchProtectionRuleConflictConnection(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TopicConnection : QueryableValue<TopicConnection>, IPagingConnection<Topic>
     {
-        public TopicConnection(Expression expression) : base(expression)
+        internal TopicConnection(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckAnnotationPosition : QueryableValue<CheckAnnotationPosition>
     {
-        public CheckAnnotationPosition(Expression expression) : base(expression)
+        internal CheckAnnotationPosition(Expression expression) : base(expression)
         {
         }
 

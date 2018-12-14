@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeleteProjectColumnPayload : QueryableValue<DeleteProjectColumnPayload>
     {
-        public DeleteProjectColumnPayload(Expression expression) : base(expression)
+        internal DeleteProjectColumnPayload(Expression expression) : base(expression)
         {
         }
 
