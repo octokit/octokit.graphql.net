@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddReactionPayload : QueryableValue<AddReactionPayload>
     {
-        public AddReactionPayload(Expression expression) : base(expression)
+        internal AddReactionPayload(Expression expression) : base(expression)
         {
         }
 

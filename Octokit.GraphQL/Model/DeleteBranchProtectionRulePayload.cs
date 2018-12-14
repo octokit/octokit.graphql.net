@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeleteBranchProtectionRulePayload : QueryableValue<DeleteBranchProtectionRulePayload>
     {
-        public DeleteBranchProtectionRulePayload(Expression expression) : base(expression)
+        internal DeleteBranchProtectionRulePayload(Expression expression) : base(expression)
         {
         }
 

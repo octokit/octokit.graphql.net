@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProjectCardItem : QueryableValue<ProjectCardItem>, IUnion
     {
-        public ProjectCardItem(Expression expression) : base(expression)
+        internal ProjectCardItem(Expression expression) : base(expression)
         {
         }
 

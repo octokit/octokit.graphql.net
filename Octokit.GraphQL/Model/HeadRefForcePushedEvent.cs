@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class HeadRefForcePushedEvent : QueryableValue<HeadRefForcePushedEvent>
     {
-        public HeadRefForcePushedEvent(Expression expression) : base(expression)
+        internal HeadRefForcePushedEvent(Expression expression) : base(expression)
         {
         }
 

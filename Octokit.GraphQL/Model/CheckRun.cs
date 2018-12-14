@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckRun : QueryableValue<CheckRun>
     {
-        public CheckRun(Expression expression) : base(expression)
+        internal CheckRun(Expression expression) : base(expression)
         {
         }
 

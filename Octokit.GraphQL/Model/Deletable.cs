@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIDeletable : QueryableValue<StubIDeletable>, IDeletable
     {
-        public StubIDeletable(Expression expression) : base(expression)
+        internal StubIDeletable(Expression expression) : base(expression)
         {
         }
 

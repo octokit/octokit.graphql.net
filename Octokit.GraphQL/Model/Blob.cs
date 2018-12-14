@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Blob : QueryableValue<Blob>
     {
-        public Blob(Expression expression) : base(expression)
+        internal Blob(Expression expression) : base(expression)
         {
         }
 

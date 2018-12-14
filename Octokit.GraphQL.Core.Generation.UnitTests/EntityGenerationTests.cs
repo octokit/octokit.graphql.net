@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class Entity : QueryableValue<Entity>{1}
     {{
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {{
         }}
 {0}
@@ -1538,7 +1538,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {
         }
 
@@ -1580,7 +1580,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {
         }
 
@@ -1636,7 +1636,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         public void Generates_Doc_Comments_For_Property_With_XmlCharacters()
         {
             var expected = FormatMemberTemplate(@"/// <summary>
-        /// Testing if doc comments are generated &lt;http://localhost&gt;.
+        /// Testing if doc comments &amp; generated &lt;http://localhost&gt;.
         /// </summary>
         public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
@@ -1649,7 +1649,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     new FieldModel
                     {
                         Name = "Foo",
-                        Description = "Testing if doc comments are generated <http://localhost>.",
+                        Description = "Testing if doc comments & generated <http://localhost>.",
                         Type = TypeModel.Object("Other")
                     },
                 }
@@ -1770,7 +1770,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
         }
 
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {
         }
 
@@ -1819,7 +1819,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
         }
 
-        public Mutation(Expression expression) : base(expression)
+        internal Mutation(Expression expression) : base(expression)
         {
         }
 
@@ -1888,7 +1888,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class PageInfo : QueryableValue<PageInfo>, IPageInfo
     {
-        public PageInfo(Expression expression) : base(expression)
+        internal PageInfo(Expression expression) : base(expression)
         {
         }
 

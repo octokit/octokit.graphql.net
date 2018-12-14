@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SearchResultItem : QueryableValue<SearchResultItem>, IUnion
     {
-        public SearchResultItem(Expression expression) : base(expression)
+        internal SearchResultItem(Expression expression) : base(expression)
         {
         }
 

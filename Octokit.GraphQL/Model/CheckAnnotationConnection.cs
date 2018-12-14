@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckAnnotationConnection : QueryableValue<CheckAnnotationConnection>, IPagingConnection<CheckAnnotation>
     {
-        public CheckAnnotationConnection(Expression expression) : base(expression)
+        internal CheckAnnotationConnection(Expression expression) : base(expression)
         {
         }
 

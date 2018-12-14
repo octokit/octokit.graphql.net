@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReleaseAssetEdge : QueryableValue<ReleaseAssetEdge>
     {
-        public ReleaseAssetEdge(Expression expression) : base(expression)
+        internal ReleaseAssetEdge(Expression expression) : base(expression)
         {
         }
 

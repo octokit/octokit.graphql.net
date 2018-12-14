@@ -141,7 +141,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIRepositoryInfo : QueryableValue<StubIRepositoryInfo>, IRepositoryInfo
     {
-        public StubIRepositoryInfo(Expression expression) : base(expression)
+        internal StubIRepositoryInfo(Expression expression) : base(expression)
         {
         }
 

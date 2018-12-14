@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SearchResultItemEdge : QueryableValue<SearchResultItemEdge>
     {
-        public SearchResultItemEdge(Expression expression) : base(expression)
+        internal SearchResultItemEdge(Expression expression) : base(expression)
         {
         }
 

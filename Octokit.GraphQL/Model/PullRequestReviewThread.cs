@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestReviewThread : QueryableValue<PullRequestReviewThread>
     {
-        public PullRequestReviewThread(Expression expression) : base(expression)
+        internal PullRequestReviewThread(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnlockLockablePayload : QueryableValue<UnlockLockablePayload>
     {
-        public UnlockLockablePayload(Expression expression) : base(expression)
+        internal UnlockLockablePayload(Expression expression) : base(expression)
         {
         }
 

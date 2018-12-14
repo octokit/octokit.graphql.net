@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ContributionCalendarWeek : QueryableValue<ContributionCalendarWeek>
     {
-        public ContributionCalendarWeek(Expression expression) : base(expression)
+        internal ContributionCalendarWeek(Expression expression) : base(expression)
         {
         }
 

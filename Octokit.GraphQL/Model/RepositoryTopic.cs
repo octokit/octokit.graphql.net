@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RepositoryTopic : QueryableValue<RepositoryTopic>
     {
-        public RepositoryTopic(Expression expression) : base(expression)
+        internal RepositoryTopic(Expression expression) : base(expression)
         {
         }
 

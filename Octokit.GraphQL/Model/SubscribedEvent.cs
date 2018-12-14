@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SubscribedEvent : QueryableValue<SubscribedEvent>
     {
-        public SubscribedEvent(Expression expression) : base(expression)
+        internal SubscribedEvent(Expression expression) : base(expression)
         {
         }
 

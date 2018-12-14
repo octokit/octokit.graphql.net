@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RerequestCheckSuitePayload : QueryableValue<RerequestCheckSuitePayload>
     {
-        public RerequestCheckSuitePayload(Expression expression) : base(expression)
+        internal RerequestCheckSuitePayload(Expression expression) : base(expression)
         {
         }
 

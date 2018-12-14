@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueComment : QueryableValue<IssueComment>
     {
-        public IssueComment(Expression expression) : base(expression)
+        internal IssueComment(Expression expression) : base(expression)
         {
         }
 

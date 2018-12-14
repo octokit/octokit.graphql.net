@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewDismissalAllowanceActor : QueryableValue<ReviewDismissalAllowanceActor>, IUnion
     {
-        public ReviewDismissalAllowanceActor(Expression expression) : base(expression)
+        internal ReviewDismissalAllowanceActor(Expression expression) : base(expression)
         {
         }
 

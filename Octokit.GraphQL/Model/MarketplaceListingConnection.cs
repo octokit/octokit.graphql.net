@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MarketplaceListingConnection : QueryableValue<MarketplaceListingConnection>, IPagingConnection<MarketplaceListing>
     {
-        public MarketplaceListingConnection(Expression expression) : base(expression)
+        internal MarketplaceListingConnection(Expression expression) : base(expression)
         {
         }
 

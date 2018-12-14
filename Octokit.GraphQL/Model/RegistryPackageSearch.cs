@@ -27,7 +27,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIRegistryPackageSearch : QueryableValue<StubIRegistryPackageSearch>, IRegistryPackageSearch
     {
-        public StubIRegistryPackageSearch(Expression expression) : base(expression)
+        internal StubIRegistryPackageSearch(Expression expression) : base(expression)
         {
         }
 

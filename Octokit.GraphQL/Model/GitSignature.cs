@@ -60,7 +60,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIGitSignature : QueryableValue<StubIGitSignature>, IGitSignature
     {
-        public StubIGitSignature(Expression expression) : base(expression)
+        internal StubIGitSignature(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Closer : QueryableValue<Closer>, IUnion
     {
-        public Closer(Expression expression) : base(expression)
+        internal Closer(Expression expression) : base(expression)
         {
         }
 

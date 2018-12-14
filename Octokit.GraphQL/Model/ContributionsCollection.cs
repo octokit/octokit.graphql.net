@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ContributionsCollection : QueryableValue<ContributionsCollection>
     {
-        public ContributionsCollection(Expression expression) : base(expression)
+        internal ContributionsCollection(Expression expression) : base(expression)
         {
         }
 

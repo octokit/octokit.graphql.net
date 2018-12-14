@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PushAllowanceEdge : QueryableValue<PushAllowanceEdge>
     {
-        public PushAllowanceEdge(Expression expression) : base(expression)
+        internal PushAllowanceEdge(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestTimelineItems : QueryableValue<PullRequestTimelineItems>, IUnion
     {
-        public PullRequestTimelineItems(Expression expression) : base(expression)
+        internal PullRequestTimelineItems(Expression expression) : base(expression)
         {
         }
 

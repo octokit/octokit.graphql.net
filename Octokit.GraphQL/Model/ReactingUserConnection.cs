@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReactingUserConnection : QueryableValue<ReactingUserConnection>, IPagingConnection<User>
     {
-        public ReactingUserConnection(Expression expression) : base(expression)
+        internal ReactingUserConnection(Expression expression) : base(expression)
         {
         }
 

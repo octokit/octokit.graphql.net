@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeletePullRequestReviewPayload : QueryableValue<DeletePullRequestReviewPayload>
     {
-        public DeletePullRequestReviewPayload(Expression expression) : base(expression)
+        internal DeletePullRequestReviewPayload(Expression expression) : base(expression)
         {
         }
 

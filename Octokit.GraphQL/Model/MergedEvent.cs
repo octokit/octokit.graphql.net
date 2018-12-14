@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MergedEvent : QueryableValue<MergedEvent>
     {
-        public MergedEvent(Expression expression) : base(expression)
+        internal MergedEvent(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MovedColumnsInProjectEvent : QueryableValue<MovedColumnsInProjectEvent>
     {
-        public MovedColumnsInProjectEvent(Expression expression) : base(expression)
+        internal MovedColumnsInProjectEvent(Expression expression) : base(expression)
         {
         }
 

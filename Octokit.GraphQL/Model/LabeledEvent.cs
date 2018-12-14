@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class LabeledEvent : QueryableValue<LabeledEvent>
     {
-        public LabeledEvent(Expression expression) : base(expression)
+        internal LabeledEvent(Expression expression) : base(expression)
         {
         }
 

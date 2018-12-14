@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UserContentEdit : QueryableValue<UserContentEdit>
     {
-        public UserContentEdit(Expression expression) : base(expression)
+        internal UserContentEdit(Expression expression) : base(expression)
         {
         }
 

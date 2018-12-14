@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PublicKeyConnection : QueryableValue<PublicKeyConnection>, IPagingConnection<PublicKey>
     {
-        public PublicKeyConnection(Expression expression) : base(expression)
+        internal PublicKeyConnection(Expression expression) : base(expression)
         {
         }
 

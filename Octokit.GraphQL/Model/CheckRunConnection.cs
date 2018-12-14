@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckRunConnection : QueryableValue<CheckRunConnection>, IPagingConnection<CheckRun>
     {
-        public CheckRunConnection(Expression expression) : base(expression)
+        internal CheckRunConnection(Expression expression) : base(expression)
         {
         }
 

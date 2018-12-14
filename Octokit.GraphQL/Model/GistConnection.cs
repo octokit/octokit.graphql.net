@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class GistConnection : QueryableValue<GistConnection>, IPagingConnection<Gist>
     {
-        public GistConnection(Expression expression) : base(expression)
+        internal GistConnection(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReactionEdge : QueryableValue<ReactionEdge>
     {
-        public ReactionEdge(Expression expression) : base(expression)
+        internal ReactionEdge(Expression expression) : base(expression)
         {
         }
 
