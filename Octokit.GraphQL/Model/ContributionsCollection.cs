@@ -81,14 +81,14 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         /// <param name="excludeFirst">Should the user's first issue ever be excluded from this count.</param>
         /// <param name="excludePopular">Should the user's most commented issue be excluded from this count.</param>
-        public int TotalIssueContributions(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => null;
+        public int TotalIssueContributions(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => default;
 
         /// <summary>
         /// How many pull requests the user opened.
         /// </summary>
         /// <param name="excludeFirst">Should the user's first pull request ever be excluded from this count.</param>
         /// <param name="excludePopular">Should the user's most commented pull request be excluded from this count.</param>
-        public int TotalPullRequestContributions(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => null;
+        public int TotalPullRequestContributions(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => default;
 
         /// <summary>
         /// How many pull request reviews the user left.
@@ -105,7 +105,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         /// <param name="excludeFirst">Should the user's first issue ever be excluded from this count.</param>
         /// <param name="excludePopular">Should the user's most commented issue be excluded from this count.</param>
-        public int TotalRepositoriesWithContributedIssues(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => null;
+        public int TotalRepositoriesWithContributedIssues(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => default;
 
         /// <summary>
         /// How many different repositories the user left pull request reviews in.
@@ -117,13 +117,13 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         /// <param name="excludeFirst">Should the user's first pull request ever be excluded from this count.</param>
         /// <param name="excludePopular">Should the user's most commented pull request be excluded from this count.</param>
-        public int TotalRepositoriesWithContributedPullRequests(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => null;
+        public int TotalRepositoriesWithContributedPullRequests(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => default;
 
         /// <summary>
         /// How many repositories the user created.
         /// </summary>
         /// <param name="excludeFirst">Should the user's first repository ever be excluded from this count.</param>
-        public int TotalRepositoryContributions(Arg<bool>? excludeFirst = null) => null;
+        public int TotalRepositoryContributions(Arg<bool>? excludeFirst = null) => default;
 
         /// <summary>
         /// The user who made the contributions in this collection.
