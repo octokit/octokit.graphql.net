@@ -1633,6 +1633,34 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Doc_Comments_For_Property_With_XmlCharacters()
+        {
+            var expected = FormatMemberTemplate(@"/// <summary>
+        /// Testing if doc comments are generated &lt;http://localhost&gt;.
+        /// </summary>
+        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "Foo",
+                        Description = "Testing if doc comments are generated <http://localhost>.",
+                        Type = TypeModel.Object("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
         public void Generates_Doc_Comments_For_Method()
         {
             var expected = FormatMemberTemplate(@"/// <summary>
