@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 { "name", "octokit.graphql.net" },
             };
 
-            var result = Connection.Run(query, vars).Result;
+            var result = await Connection.Run(query, vars);
             Assert.Equal(result.Login, "octokit");
             Assert.Equal(result.Name, "octokit.graphql.net");
         }
@@ -437,7 +437,6 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             public string StringField1;
             public string StringField2;
             public int IntField1;
-            public int IntField2;
         }
 
         public class OwnerModel
