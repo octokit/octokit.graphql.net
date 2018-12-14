@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class AddProjectColumnInput
     {
+        /// <summary>
+        /// The Node ID of the project.
+        /// </summary>
         public ID ProjectId { get; set; }
 
+        /// <summary>
+        /// The name of the column.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

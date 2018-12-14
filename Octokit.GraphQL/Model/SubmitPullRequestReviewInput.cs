@@ -8,12 +8,24 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SubmitPullRequestReviewInput
     {
+        /// <summary>
+        /// The Pull Request Review ID to submit.
+        /// </summary>
         public ID PullRequestReviewId { get; set; }
 
+        /// <summary>
+        /// The event to send to the Pull Request Review.
+        /// </summary>
         public PullRequestReviewEvent Event { get; set; }
 
+        /// <summary>
+        /// The text field to set on the Pull Request Review.
+        /// </summary>
         public string Body { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

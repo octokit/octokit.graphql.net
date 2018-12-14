@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveReactionInput
     {
+        /// <summary>
+        /// The Node ID of the subject to modify.
+        /// </summary>
         public ID SubjectId { get; set; }
 
+        /// <summary>
+        /// The name of the emoji reaction to remove.
+        /// </summary>
         public ReactionContent Content { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TeamRepositoryOrder
     {
+        /// <summary>
+        /// The field to order repositories by.
+        /// </summary>
         public TeamRepositoryOrderField Field { get; set; }
 
+        /// <summary>
+        /// The ordering direction.
+        /// </summary>
         public OrderDirection Direction { get; set; }
     }
 }

@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdatePullRequestReviewCommentInput
     {
+        /// <summary>
+        /// The Node ID of the comment to modify.
+        /// </summary>
         public ID PullRequestReviewCommentId { get; set; }
 
+        /// <summary>
+        /// The text of the comment.
+        /// </summary>
         public string Body { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

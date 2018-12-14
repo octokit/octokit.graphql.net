@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveOutsideCollaboratorInput
     {
+        /// <summary>
+        /// The ID of the outside collaborator to remove.
+        /// </summary>
         public ID UserId { get; set; }
 
+        /// <summary>
+        /// The ID of the organization to remove the outside collaborator from.
+        /// </summary>
         public ID OrganizationId { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }
