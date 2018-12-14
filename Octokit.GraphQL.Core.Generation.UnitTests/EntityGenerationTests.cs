@@ -1636,7 +1636,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         public void Generates_Doc_Comments_For_Property_With_XmlCharacters()
         {
             var expected = FormatMemberTemplate(@"/// <summary>
-        /// Testing if doc comments are generated &lt;http://localhost&gt;.
+        /// Testing if doc comments &amp; generated &lt;http://localhost&gt;.
         /// </summary>
         public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
@@ -1649,7 +1649,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     new FieldModel
                     {
                         Name = "Foo",
-                        Description = "Testing if doc comments are generated <http://localhost>.",
+                        Description = "Testing if doc comments & generated <http://localhost>.",
                         Type = TypeModel.Object("Other")
                     },
                 }
