@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PublicKeyEdge : QueryableValue<PublicKeyEdge>
     {
-        public PublicKeyEdge(Expression expression) : base(expression)
+        internal PublicKeyEdge(Expression expression) : base(expression)
         {
         }
 

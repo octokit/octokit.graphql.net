@@ -34,7 +34,7 @@ namespace Test.Internal
 
     internal class StubIEntity : QueryableValue<StubIEntity>, IEntity
     {{
-        public StubIEntity(Expression expression) : base(expression)
+        internal StubIEntity(Expression expression) : base(expression)
         {{
         }}
 {1}
@@ -709,7 +709,7 @@ namespace Test.Internal
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PushAllowanceActor : QueryableValue<PushAllowanceActor>, IUnion
     {
-        public PushAllowanceActor(Expression expression) : base(expression)
+        internal PushAllowanceActor(Expression expression) : base(expression)
         {
         }
 

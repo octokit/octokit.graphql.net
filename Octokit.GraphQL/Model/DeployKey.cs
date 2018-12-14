@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeployKey : QueryableValue<DeployKey>
     {
-        public DeployKey(Expression expression) : base(expression)
+        internal DeployKey(Expression expression) : base(expression)
         {
         }
 

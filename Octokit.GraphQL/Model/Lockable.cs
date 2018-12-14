@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubILockable : QueryableValue<StubILockable>, ILockable
     {
-        public StubILockable(Expression expression) : base(expression)
+        internal StubILockable(Expression expression) : base(expression)
         {
         }
 

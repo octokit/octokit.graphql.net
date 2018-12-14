@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckAnnotationEdge : QueryableValue<CheckAnnotationEdge>
     {
-        public CheckAnnotationEdge(Expression expression) : base(expression)
+        internal CheckAnnotationEdge(Expression expression) : base(expression)
         {
         }
 

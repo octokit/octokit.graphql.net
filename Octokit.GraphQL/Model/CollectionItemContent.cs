@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CollectionItemContent : QueryableValue<CollectionItemContent>, IUnion
     {
-        public CollectionItemContent(Expression expression) : base(expression)
+        internal CollectionItemContent(Expression expression) : base(expression)
         {
         }
 

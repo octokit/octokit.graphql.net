@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class Entity : QueryableValue<Entity>{1}
     {{
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {{
         }}
 {0}
@@ -1538,7 +1538,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {
         }
 
@@ -1580,7 +1580,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     /// </summary>
     public class Entity : QueryableValue<Entity>
     {
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {
         }
 
@@ -1770,7 +1770,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
         }
 
-        public Entity(Expression expression) : base(expression)
+        internal Entity(Expression expression) : base(expression)
         {
         }
 
@@ -1819,7 +1819,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         {
         }
 
-        public Mutation(Expression expression) : base(expression)
+        internal Mutation(Expression expression) : base(expression)
         {
         }
 
@@ -1888,7 +1888,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
 
     public class PageInfo : QueryableValue<PageInfo>, IPageInfo
     {
-        public PageInfo(Expression expression) : base(expression)
+        internal PageInfo(Expression expression) : base(expression)
         {
         }
 

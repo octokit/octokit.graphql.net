@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RenamedTitleSubject : QueryableValue<RenamedTitleSubject>, IUnion
     {
-        public RenamedTitleSubject(Expression expression) : base(expression)
+        internal RenamedTitleSubject(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckSuiteEdge : QueryableValue<CheckSuiteEdge>
     {
-        public CheckSuiteEdge(Expression expression) : base(expression)
+        internal CheckSuiteEdge(Expression expression) : base(expression)
         {
         }
 

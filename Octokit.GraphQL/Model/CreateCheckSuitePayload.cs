@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CreateCheckSuitePayload : QueryableValue<CreateCheckSuitePayload>
     {
-        public CreateCheckSuitePayload(Expression expression) : base(expression)
+        internal CreateCheckSuitePayload(Expression expression) : base(expression)
         {
         }
 

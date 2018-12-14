@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class BaseRefChangedEvent : QueryableValue<BaseRefChangedEvent>
     {
-        public BaseRefChangedEvent(Expression expression) : base(expression)
+        internal BaseRefChangedEvent(Expression expression) : base(expression)
         {
         }
 

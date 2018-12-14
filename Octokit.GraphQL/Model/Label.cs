@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class Label : QueryableValue<Label>
     {
-        public Label(Expression expression) : base(expression)
+        internal Label(Expression expression) : base(expression)
         {
         }
 

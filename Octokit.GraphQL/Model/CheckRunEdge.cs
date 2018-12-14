@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckRunEdge : QueryableValue<CheckRunEdge>
     {
-        public CheckRunEdge(Expression expression) : base(expression)
+        internal CheckRunEdge(Expression expression) : base(expression)
         {
         }
 

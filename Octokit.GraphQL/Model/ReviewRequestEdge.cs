@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewRequestEdge : QueryableValue<ReviewRequestEdge>
     {
-        public ReviewRequestEdge(Expression expression) : base(expression)
+        internal ReviewRequestEdge(Expression expression) : base(expression)
         {
         }
 

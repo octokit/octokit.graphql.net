@@ -83,7 +83,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIRepositoryOwner : QueryableValue<StubIRepositoryOwner>, IRepositoryOwner
     {
-        public StubIRepositoryOwner(Expression expression) : base(expression)
+        internal StubIRepositoryOwner(Expression expression) : base(expression)
         {
         }
 

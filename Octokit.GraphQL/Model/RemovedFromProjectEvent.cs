@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemovedFromProjectEvent : QueryableValue<RemovedFromProjectEvent>
     {
-        public RemovedFromProjectEvent(Expression expression) : base(expression)
+        internal RemovedFromProjectEvent(Expression expression) : base(expression)
         {
         }
 

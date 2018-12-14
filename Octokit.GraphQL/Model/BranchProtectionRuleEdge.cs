@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class BranchProtectionRuleEdge : QueryableValue<BranchProtectionRuleEdge>
     {
-        public BranchProtectionRuleEdge(Expression expression) : base(expression)
+        internal BranchProtectionRuleEdge(Expression expression) : base(expression)
         {
         }
 

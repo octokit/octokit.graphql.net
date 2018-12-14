@@ -23,7 +23,7 @@ namespace Octokit.GraphQL.Core.Generation
 
     {GenerateUnionDocComments(type)}public class {className} : QueryableValue<{className}>, IUnion
     {{
-        public {className}(Expression expression) : base(expression)
+        internal {className}(Expression expression) : base(expression)
         {{
         }}
 

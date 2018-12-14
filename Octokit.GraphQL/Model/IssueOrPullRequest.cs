@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueOrPullRequest : QueryableValue<IssueOrPullRequest>, IUnion
     {
-        public IssueOrPullRequest(Expression expression) : base(expression)
+        internal IssueOrPullRequest(Expression expression) : base(expression)
         {
         }
 

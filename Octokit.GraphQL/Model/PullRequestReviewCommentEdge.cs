@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class PullRequestReviewCommentEdge : QueryableValue<PullRequestReviewCommentEdge>
     {
-        public PullRequestReviewCommentEdge(Expression expression) : base(expression)
+        internal PullRequestReviewCommentEdge(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ProjectColumn : QueryableValue<ProjectColumn>
     {
-        public ProjectColumn(Expression expression) : base(expression)
+        internal ProjectColumn(Expression expression) : base(expression)
         {
         }
 

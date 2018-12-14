@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeploymentConnection : QueryableValue<DeploymentConnection>, IPagingConnection<Deployment>
     {
-        public DeploymentConnection(Expression expression) : base(expression)
+        internal DeploymentConnection(Expression expression) : base(expression)
         {
         }
 

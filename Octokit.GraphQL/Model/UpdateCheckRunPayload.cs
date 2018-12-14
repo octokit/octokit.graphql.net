@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateCheckRunPayload : QueryableValue<UpdateCheckRunPayload>
     {
-        public UpdateCheckRunPayload(Expression expression) : base(expression)
+        internal UpdateCheckRunPayload(Expression expression) : base(expression)
         {
         }
 

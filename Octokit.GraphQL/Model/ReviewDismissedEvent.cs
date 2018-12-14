@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReviewDismissedEvent : QueryableValue<ReviewDismissedEvent>
     {
-        public ReviewDismissedEvent(Expression expression) : base(expression)
+        internal ReviewDismissedEvent(Expression expression) : base(expression)
         {
         }
 

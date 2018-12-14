@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MoveProjectColumnPayload : QueryableValue<MoveProjectColumnPayload>
     {
-        public MoveProjectColumnPayload(Expression expression) : base(expression)
+        internal MoveProjectColumnPayload(Expression expression) : base(expression)
         {
         }
 

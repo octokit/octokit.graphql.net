@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnpinnedEvent : QueryableValue<UnpinnedEvent>
     {
-        public UnpinnedEvent(Expression expression) : base(expression)
+        internal UnpinnedEvent(Expression expression) : base(expression)
         {
         }
 

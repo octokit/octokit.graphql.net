@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeploymentEnvironmentChangedEvent : QueryableValue<DeploymentEnvironmentChangedEvent>
     {
-        public DeploymentEnvironmentChangedEvent(Expression expression) : base(expression)
+        internal DeploymentEnvironmentChangedEvent(Expression expression) : base(expression)
         {
         }
 

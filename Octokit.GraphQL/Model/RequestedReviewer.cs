@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RequestedReviewer : QueryableValue<RequestedReviewer>, IUnion
     {
-        public RequestedReviewer(Expression expression) : base(expression)
+        internal RequestedReviewer(Expression expression) : base(expression)
         {
         }
 

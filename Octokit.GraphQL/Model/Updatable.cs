@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model.Internal
 
     internal class StubIUpdatable : QueryableValue<StubIUpdatable>, IUpdatable
     {
-        public StubIUpdatable(Expression expression) : base(expression)
+        internal StubIUpdatable(Expression expression) : base(expression)
         {
         }
 

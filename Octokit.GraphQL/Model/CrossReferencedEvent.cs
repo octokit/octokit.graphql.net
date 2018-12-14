@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CrossReferencedEvent : QueryableValue<CrossReferencedEvent>
     {
-        public CrossReferencedEvent(Expression expression) : base(expression)
+        internal CrossReferencedEvent(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class TextMatch : QueryableValue<TextMatch>
     {
-        public TextMatch(Expression expression) : base(expression)
+        internal TextMatch(Expression expression) : base(expression)
         {
         }
 

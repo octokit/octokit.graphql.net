@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ContentReference : QueryableValue<ContentReference>
     {
-        public ContentReference(Expression expression) : base(expression)
+        internal ContentReference(Expression expression) : base(expression)
         {
         }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RepositoryInvitationEdge : QueryableValue<RepositoryInvitationEdge>
     {
-        public RepositoryInvitationEdge(Expression expression) : base(expression)
+        internal RepositoryInvitationEdge(Expression expression) : base(expression)
         {
         }
 

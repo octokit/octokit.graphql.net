@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class StatusContext : QueryableValue<StatusContext>
     {
-        public StatusContext(Expression expression) : base(expression)
+        internal StatusContext(Expression expression) : base(expression)
         {
         }
 

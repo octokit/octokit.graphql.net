@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class SmimeSignature : QueryableValue<SmimeSignature>
     {
-        public SmimeSignature(Expression expression) : base(expression)
+        internal SmimeSignature(Expression expression) : base(expression)
         {
         }
 

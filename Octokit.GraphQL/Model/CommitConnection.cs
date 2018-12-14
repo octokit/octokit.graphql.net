@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CommitConnection : QueryableValue<CommitConnection>, IPagingConnection<Commit>
     {
-        public CommitConnection(Expression expression) : base(expression)
+        internal CommitConnection(Expression expression) : base(expression)
         {
         }
 

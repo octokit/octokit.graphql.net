@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class GpgSignature : QueryableValue<GpgSignature>
     {
-        public GpgSignature(Expression expression) : base(expression)
+        internal GpgSignature(Expression expression) : base(expression)
         {
         }
 
