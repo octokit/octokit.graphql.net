@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RefOrder
     {
+        /// <summary>
+        /// The field in which to order refs by.
+        /// </summary>
         public RefOrderField Field { get; set; }
 
+        /// <summary>
+        /// The direction in which to order refs by the specified field.
+        /// </summary>
         public OrderDirection Direction { get; set; }
     }
 }

@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class StarOrder
     {
+        /// <summary>
+        /// The field in which to order nodes by.
+        /// </summary>
         public StarOrderField Field { get; set; }
 
+        /// <summary>
+        /// The direction in which to order nodes.
+        /// </summary>
         public OrderDirection Direction { get; set; }
     }
 }

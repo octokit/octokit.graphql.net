@@ -8,12 +8,24 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeclineTopicSuggestionInput
     {
+        /// <summary>
+        /// The Node ID of the repository.
+        /// </summary>
         public ID RepositoryId { get; set; }
 
+        /// <summary>
+        /// The name of the suggested topic.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// The reason why the suggested topic is declined.
+        /// </summary>
         public TopicSuggestionDeclineReason Reason { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

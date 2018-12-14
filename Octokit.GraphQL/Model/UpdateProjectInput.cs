@@ -8,16 +8,34 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateProjectInput
     {
+        /// <summary>
+        /// The Project ID to update.
+        /// </summary>
         public ID ProjectId { get; set; }
 
+        /// <summary>
+        /// The name of project.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// The description of project.
+        /// </summary>
         public string Body { get; set; }
 
+        /// <summary>
+        /// Whether the project is open or closed.
+        /// </summary>
         public ProjectState? State { get; set; }
 
+        /// <summary>
+        /// Whether the project is public or not.
+        /// </summary>
         public bool? Public { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

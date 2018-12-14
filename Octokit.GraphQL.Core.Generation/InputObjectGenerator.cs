@@ -52,9 +52,10 @@ namespace Octokit.GraphQL.Core.Generation
 
         private static string GenerateField(InputValueModel field)
         {
+            var result = GenerateDocComments(field);
             var name = TypeUtilities.PascalCase(field.Name);
             var typeName = TypeUtilities.GetCSharpArgType(field.Type);
-            return $"        public {typeName} {name} {{ get; set; }}";
+            return result + $"        public {typeName} {name} {{ get; set; }}";
         }
 
         private static string GenerateDocComments(TypeModel type)
@@ -72,24 +73,12 @@ namespace Octokit.GraphQL.Core.Generation
             }
         }
 
-        private static string GenerateDocComments(FieldModel field)
+        private static string GenerateDocComments(InputValueModel field)
         {
             if (!string.IsNullOrWhiteSpace(field.Description))
             {
                 var builder = new StringBuilder();
                 DocCommentGenerator.GenerateSummary(field.Description, 8, builder);
-
-                if (field.Args != null)
-                {
-                    foreach (var arg in field.Args)
-                    {
-                        if (!string.IsNullOrWhiteSpace(arg.Description))
-                        {
-                            builder.AppendLine($"        /// <param name=\"{arg.Name}\">{arg.Description}</param>");
-                        }
-                    }
-                }
-
                 return builder.ToString();
             }
             else

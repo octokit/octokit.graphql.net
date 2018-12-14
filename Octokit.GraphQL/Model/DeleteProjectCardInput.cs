@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class DeleteProjectCardInput
     {
+        /// <summary>
+        /// The id of the card to delete.
+        /// </summary>
         public ID CardId { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

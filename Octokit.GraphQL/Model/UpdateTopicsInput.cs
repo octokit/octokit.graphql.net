@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UpdateTopicsInput
     {
+        /// <summary>
+        /// The Node ID of the repository.
+        /// </summary>
         public ID RepositoryId { get; set; }
 
+        /// <summary>
+        /// An array of topic names.
+        /// </summary>
         public IEnumerable<string> TopicNames { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

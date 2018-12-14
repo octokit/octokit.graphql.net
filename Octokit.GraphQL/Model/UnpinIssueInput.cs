@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class UnpinIssueInput
     {
+        /// <summary>
+        /// The ID of the issue to be unpinned
+        /// </summary>
         public ID IssueId { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

@@ -8,10 +8,19 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class CheckRunOutputImage
     {
+        /// <summary>
+        /// The alternative text for the image.
+        /// </summary>
         public string Alt { get; set; }
 
+        /// <summary>
+        /// The full URL of the image.
+        /// </summary>
         public string ImageUrl { get; set; }
 
+        /// <summary>
+        /// A short image description.
+        /// </summary>
         public string Caption { get; set; }
     }
 }

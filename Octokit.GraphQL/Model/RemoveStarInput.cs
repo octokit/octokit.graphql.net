@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class RemoveStarInput
     {
+        /// <summary>
+        /// The Starrable ID to unstar.
+        /// </summary>
         public ID StarrableId { get; set; }
 
+        /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
         public string ClientMutationId { get; set; }
     }
 }

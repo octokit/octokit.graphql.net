@@ -8,8 +8,14 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReleaseOrder
     {
+        /// <summary>
+        /// The field in which to order releases by.
+        /// </summary>
         public ReleaseOrderField Field { get; set; }
 
+        /// <summary>
+        /// The direction in which to order releases by the specified field.
+        /// </summary>
         public OrderDirection Direction { get; set; }
     }
 }
