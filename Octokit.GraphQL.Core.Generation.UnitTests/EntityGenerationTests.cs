@@ -1055,7 +1055,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_String_Field()
         {
-            var expected = FormatMemberTemplate("public int? Foo(Arg<string>? bar = null) => null;");
+            var expected = FormatMemberTemplate("public int? Foo(Arg<string>? bar = null) => default;");
 
             var model = new TypeModel
             {
@@ -1087,7 +1087,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_String_Field()
         {
-            var expected = FormatMemberTemplate("public int? Foo(Arg<string> bar) => null;");
+            var expected = FormatMemberTemplate("public int? Foo(Arg<string> bar) => default;");
 
             var model = new TypeModel
             {
@@ -1119,7 +1119,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Scalar_Field()
         {
-            var expected = FormatMemberTemplate("public int? Foo(Arg<int>? bar = null) => null;");
+            var expected = FormatMemberTemplate("public int? Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {
@@ -1151,7 +1151,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Deprecated_WithoutReason_Scalar_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public int? Foo(Arg<int>? bar = null) => null;");
+            var expected = FormatMemberTemplate($@"[Obsolete(@""Old and unused"")]{Environment.NewLine}        public int? Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {
@@ -1185,7 +1185,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_Deprecated_Scalar_Field()
         {
-            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo(Arg<int>? bar = null) => null;");
+            var expected = FormatMemberTemplate($@"[Obsolete]{Environment.NewLine}        public int? Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {
@@ -1218,7 +1218,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_Scalar_Field()
         {
-            var expected = FormatMemberTemplate("public int Foo(Arg<int>? bar = null) => null;");
+            var expected = FormatMemberTemplate("public int Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {
@@ -1250,7 +1250,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_ID_Field()
         {
-            var expected = FormatMemberTemplate("public ID? Foo(Arg<int>? bar = null) => null;");
+            var expected = FormatMemberTemplate("public ID? Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {
@@ -1282,7 +1282,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Method_For_NonNull_ID_Field()
         {
-            var expected = FormatMemberTemplate("public ID Foo(Arg<int>? bar = null) => null;");
+            var expected = FormatMemberTemplate("public ID Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {

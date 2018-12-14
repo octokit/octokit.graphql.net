@@ -155,6 +155,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> MovedColumnsInProjectEvent(Func<MovedColumnsInProjectEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'pinned' event on a given issue or pull request.
+            /// </summary>
+            public Selector<T> PinnedEvent(Func<PinnedEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'referenced' event on a given `ReferencedSubject`.
             /// </summary>
             public Selector<T> ReferencedEvent(Func<ReferencedEvent, T> selector) => default;
@@ -180,6 +185,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> SubscribedEvent(Func<SubscribedEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'transferred' event on a given issue or pull request.
+            /// </summary>
+            public Selector<T> TransferredEvent(Func<TransferredEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents an 'unassigned' event on any assignable object.
             /// </summary>
             public Selector<T> UnassignedEvent(Func<UnassignedEvent, T> selector) => default;
@@ -193,6 +203,11 @@ namespace Octokit.GraphQL.Model
             /// Represents an 'unlocked' event on a given issue or pull request.
             /// </summary>
             public Selector<T> UnlockedEvent(Func<UnlockedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents an 'unpinned' event on a given issue or pull request.
+            /// </summary>
+            public Selector<T> UnpinnedEvent(Func<UnpinnedEvent, T> selector) => default;
 
             /// <summary>
             /// Represents an 'unsubscribed' event on a given `Subscribable`.

@@ -512,7 +512,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int? Foo(Arg<int>? bar = null);",
-                "public int? Foo(Arg<int>? bar = null) => null;");
+                "public int? Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {
@@ -546,7 +546,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int Foo(Arg<int>? bar = null);",
-                "public int Foo(Arg<int>? bar = null) => null;");
+                "public int Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
             {
