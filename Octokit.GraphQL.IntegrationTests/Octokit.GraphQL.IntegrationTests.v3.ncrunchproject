@@ -1,6 +1,9 @@
 ﻿<ProjectConfiguration>
   <Settings>
     <DefaultTestTimeout>15000</DefaultTestTimeout>
+    <IgnoredTests>
+      <AllTestsSelector />
+    </IgnoredTests>
     <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
   </Settings>
 </ProjectConfiguration>
