@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class MilestoneItem : QueryableValue<MilestoneItem>, IUnion
     {
-        public MilestoneItem(Expression expression) : base(expression)
+        internal MilestoneItem(Expression expression) : base(expression)
         {
         }
 

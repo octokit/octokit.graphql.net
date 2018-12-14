@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class ReferencedSubject : QueryableValue<ReferencedSubject>, IUnion
     {
-        public ReferencedSubject(Expression expression) : base(expression)
+        internal ReferencedSubject(Expression expression) : base(expression)
         {
         }
 

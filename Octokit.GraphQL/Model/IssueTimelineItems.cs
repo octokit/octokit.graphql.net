@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public class IssueTimelineItems : QueryableValue<IssueTimelineItems>, IUnion
     {
-        public IssueTimelineItems(Expression expression) : base(expression)
+        internal IssueTimelineItems(Expression expression) : base(expression)
         {
         }
 
