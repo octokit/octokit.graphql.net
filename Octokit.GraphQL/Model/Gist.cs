@@ -1,3 +1,6 @@
+using System.CodeDom.Compiler;
+using System.Diagnostics.CodeAnalysis;
+
 namespace Octokit.GraphQL.Model
 {
     using System;
@@ -6,9 +9,6 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    /// <summary>
-    /// A Gist.
-    /// </summary>
     public class Gist : QueryableValue<Gist>
     {
         internal Gist(Expression expression) : base(expression)

@@ -1563,6 +1563,46 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
+        public void Generates_Doc_Comments_For_Class_Without_Summary()
+        {
+            var expected = @"namespace Test
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using Octokit.GraphQL.Core;
+    using Octokit.GraphQL.Core.Builders;
+
+    /// <summary>
+    /// Testing if doc comments are generated.
+    /// </summary>
+    public class Entity : QueryableValue<Entity>
+    {
+        internal Entity(Expression expression) : base(expression)
+        {
+        }
+
+        internal static Entity Create(Expression expression)
+        {
+            return new Entity(expression);
+        }
+    }
+}";
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Description = "Testing if doc comments are generated.",
+                Kind = TypeKind.Object,
+                Fields = new FieldModel[0],
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
         public void Generates_Multi_Line_Doc_Comments_For_Class()
         {
             var expected = @"namespace Test
@@ -1622,6 +1662,31 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     {
                         Name = "Foo",
                         Description = "Testing if doc comments are generated.",
+                        Type = TypeModel.Object("Other")
+                    },
+                }
+            };
+
+            var result = CodeGenerator.Generate(model, "Test", null);
+
+            CompareModel("Entity.cs", expected, result);
+        }
+
+        [Fact]
+        public void Generates_Doc_Comments_For_Property_Without_Description()
+        {
+            var expected = FormatMemberTemplate(@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]
+        public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
+
+            var model = new TypeModel
+            {
+                Name = "Entity",
+                Kind = TypeKind.Object,
+                Fields = new[]
+                {
+                    new FieldModel
+                    {
+                        Name = "Foo",
                         Type = TypeModel.Object("Other")
                     },
                 }
