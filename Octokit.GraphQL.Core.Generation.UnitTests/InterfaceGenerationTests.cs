@@ -50,6 +50,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int? Foo { get; }",
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
                 "public int? Foo { get; }");
 
             var model = new TypeModel
@@ -76,6 +77,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int FooBar { get; }",
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
                 "public int FooBar { get; }");
 
             var model = new TypeModel
@@ -102,6 +104,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Baz FooBar { get; }",
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
                 "public Baz FooBar { get; }");
 
             var model = new TypeModel
