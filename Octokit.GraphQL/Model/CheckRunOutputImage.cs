@@ -2,7 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Images attached to the check run output displayed in the GitHub pull request UI.

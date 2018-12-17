@@ -2,7 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Specifies a review comment to be left with a Pull Request Review.

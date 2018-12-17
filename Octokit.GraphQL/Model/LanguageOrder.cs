@@ -2,7 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Ordering options for language connections.

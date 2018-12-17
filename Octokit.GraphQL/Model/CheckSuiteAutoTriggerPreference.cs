@@ -2,7 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The auto-trigger preferences that are available for check suites.
