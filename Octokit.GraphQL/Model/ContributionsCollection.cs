@@ -36,6 +36,11 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset EndedAt { get; }
 
         /// <summary>
+        /// Does the user have any more activity in the timeline that occurred prior to the collection's time range?
+        /// </summary>
+        public bool HasActivityInThePast { get; }
+
+        /// <summary>
         /// Determine if there are any contributions in this collection.
         /// </summary>
         public bool HasAnyContributions { get; }
@@ -51,6 +56,12 @@ namespace Octokit.GraphQL.Model
         public bool IsSingleDay { get; }
 
         /// <summary>
+        /// When the user signed up for GitHub. This will be null if that sign up date falls outside the collection's time range and ignoreTimeRange is false.
+        /// </summary>
+        /// <param name="ignoreTimeRange">If true, the contribution will be returned even if the user signed up outside of the collection's time range.</param>
+        public JoinedGitHubContribution JoinedGitHubContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.JoinedGitHubContribution(ignoreTimeRange), Octokit.GraphQL.Model.JoinedGitHubContribution.Create);
+
+        /// <summary>
         /// The date of the most recent restricted contribution the user made in this time period. Can only be non-null when the user has enabled private contribution counts.
         /// </summary>
         public string LatestRestrictedContributionDate { get; }
@@ -60,6 +71,24 @@ namespace Octokit.GraphQL.Model
         /// to get a different collection from an earlier time range that does have activity.
         /// </summary>
         public ContributionsCollection MostRecentCollectionWithActivity => this.CreateProperty(x => x.MostRecentCollectionWithActivity, Octokit.GraphQL.Model.ContributionsCollection.Create);
+
+        /// <summary>
+        /// Returns a different contributions collection from an earlier time range than this one
+        /// that does not have any contributions.
+        /// </summary>
+        public ContributionsCollection MostRecentCollectionWithoutActivity => this.CreateProperty(x => x.MostRecentCollectionWithoutActivity, Octokit.GraphQL.Model.ContributionsCollection.Create);
+
+        /// <summary>
+        /// The issue the user opened on GitHub that received the most comments in the specified
+        /// time frame.
+        /// </summary>
+        public CreatedIssueContribution PopularIssueContribution => this.CreateProperty(x => x.PopularIssueContribution, Octokit.GraphQL.Model.CreatedIssueContribution.Create);
+
+        /// <summary>
+        /// The pull request the user opened on GitHub that received the most comments in the
+        /// specified time frame.
+        /// </summary>
+        public CreatedPullRequestContribution PopularPullRequestContribution => this.CreateProperty(x => x.PopularPullRequestContribution, Octokit.GraphQL.Model.CreatedPullRequestContribution.Create);
 
         /// <summary>
         /// A count of contributions made by the user that the viewer cannot access. Only non-zero when the user has chosen to share their private contribution counts.
