@@ -179,7 +179,9 @@ namespace Octokit.GraphQL.Core.Generation
             }
             else
             {
-                return null;
+                var builder = new StringBuilder();
+                DocCommentGenerator.GenerateSupressMessage(8, builder);
+                return builder.ToString();
             }
         }
 

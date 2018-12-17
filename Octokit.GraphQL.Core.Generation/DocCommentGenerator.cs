@@ -6,18 +6,12 @@ namespace Octokit.GraphQL.Core.Generation
 {
     internal static class DocCommentGenerator
     {
-        public static void GenerateMemberSummary(string summary, int indentation, StringBuilder builder)
+        public static void GenerateSupressMessage(int indentation, StringBuilder builder)
         {
-            if (!string.IsNullOrWhiteSpace(summary))
-            {
-                GenerateSummary(summary, indentation, new StringBuilder());
-            }
-            else
-            {
-                var indent = new string(' ', indentation);
-                builder.Append(indent);
-                builder.AppendLine("[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide detail\")]");
-            }
+            var indent = new string(' ', indentation);
+            builder.Append(indent);
+            builder.AppendLine(
+                "[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide detail\")]");
         }
 
         public static void GenerateSummary(string summary, int indentation, StringBuilder builder)
