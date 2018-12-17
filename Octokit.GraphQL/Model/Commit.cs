@@ -2,6 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -113,6 +114,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="until">Allows specifying an ending time or date for fetching commits.</param>
         public CommitHistoryConnection History(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<CommitAuthor>? author = null, Arg<string>? path = null, Arg<string>? since = null, Arg<string>? until = null) => this.CreateMethodCall(x => x.History(first, after, last, before, author, path, since, until), Octokit.GraphQL.Model.CommitHistoryConnection.Create);
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public ID Id { get; }
 
         /// <summary>

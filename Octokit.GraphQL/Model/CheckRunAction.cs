@@ -2,6 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;;
 
     /// <summary>
     /// Possible further actions the integrator can perform.

@@ -135,6 +135,7 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -145,50 +146,73 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public DateTimeOffset CreatedAt { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string Description { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string DescriptionHTML { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public int ForkCount { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public bool HasIssuesEnabled { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public bool HasWikiEnabled { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string HomepageUrl { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public bool IsArchived { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public bool IsFork { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public bool IsLocked { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public bool IsMirror { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public bool IsPrivate { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public License LicenseInfo => this.CreateProperty(x => x.LicenseInfo, Octokit.GraphQL.Model.License.Create);
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public RepositoryLockReason? LockReason { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string MirrorUrl { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string Name { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string NameWithOwner { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Model.Internal.StubIRepositoryOwner.Create);
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public DateTimeOffset? PushedAt { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string ResourcePath { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string ShortDescriptionHTML(Arg<int>? limit = null) => default;
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public DateTimeOffset UpdatedAt { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string Url { get; }
 
         internal static StubIRepositoryInfo Create(Expression expression)

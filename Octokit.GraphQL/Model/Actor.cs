@@ -40,6 +40,7 @@ namespace Octokit.GraphQL.Model.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -50,12 +51,16 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string AvatarUrl(Arg<int>? size = null) => default;
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string Login { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string ResourcePath { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public string Url { get; }
 
         internal static StubIActor Create(Expression expression)

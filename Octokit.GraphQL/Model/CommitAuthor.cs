@@ -2,6 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;;
 
     /// <summary>
     /// Specifies an author for filtering Git commits.

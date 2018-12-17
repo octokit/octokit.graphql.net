@@ -2,6 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -30,6 +31,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public ID Id { get; }
 
         internal static ReopenedEvent Create(Expression expression)

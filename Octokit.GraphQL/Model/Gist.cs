@@ -1,14 +1,15 @@
-using System.CodeDom.Compiler;
-using System.Diagnostics.CodeAnalysis;
-
 namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    /// <summary>
+    /// A Gist.
+    /// </summary>
     public class Gist : QueryableValue<Gist>
     {
         internal Gist(Expression expression) : base(expression)
@@ -34,6 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Description { get; }
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public ID Id { get; }
 
         /// <summary>

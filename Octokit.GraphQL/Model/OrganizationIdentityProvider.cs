@@ -2,6 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -29,6 +30,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ExternalIdentityConnection ExternalIdentities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ExternalIdentities(first, after, last, before), Octokit.GraphQL.Model.ExternalIdentityConnection.Create);
 
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
         public ID Id { get; }
 
         /// <summary>

@@ -2,6 +2,7 @@ namespace Octokit.GraphQL.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;;
 
     /// <summary>
     /// Ways in which lists of releases can be ordered upon return.
