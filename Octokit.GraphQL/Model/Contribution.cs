@@ -57,19 +57,19 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public bool IsRestricted { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public DateTimeOffset OccurredAt { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public string ResourcePath { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public string Url { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.Model.User.Create);
 
         internal static StubIContribution Create(Expression expression)

@@ -58,19 +58,19 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public int? DatabaseId { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public ID Id { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public bool ViewerCanReact { get; }
 
         internal static StubIReactable Create(Expression expression)

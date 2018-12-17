@@ -50,7 +50,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int? Foo { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public int? Foo { get; }");
 
             var model = new TypeModel
@@ -77,7 +77,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int FooBar { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public int FooBar { get; }");
 
             var model = new TypeModel
@@ -104,7 +104,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Baz FooBar { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public Baz FooBar { get; }");
 
             var model = new TypeModel
@@ -131,7 +131,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
@@ -158,7 +158,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
@@ -185,7 +185,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo => this.CreateProperty(x => x.Foo);");
 
             var model = new TypeModel
@@ -212,7 +212,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo(Arg<int> bar);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public Other Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
@@ -247,7 +247,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "Other Foo(Arg<int> bar);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public Other Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
 
             var model = new TypeModel
@@ -282,7 +282,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo(Arg<int>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo(Arg<int>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -317,7 +317,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo(Arg<IEnumerable<int?>>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo(Arg<IEnumerable<int?>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -352,7 +352,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo(Arg<IEnumerable<int>>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo(Arg<IEnumerable<int>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -387,7 +387,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -422,7 +422,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo(Arg<IEnumerable<Another>> bar);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo(Arg<IEnumerable<Another>> bar) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -457,7 +457,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo(Arg<IEnumerable<Another?>>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo(Arg<IEnumerable<Another?>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -492,7 +492,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IQueryableList<Other> Foo(Arg<IEnumerable<Another>>? bar = null) => this.CreateMethodCall(x => x.Foo(bar));");
 
             var model = new TypeModel
@@ -527,7 +527,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int? Foo(Arg<int>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public int? Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
@@ -562,7 +562,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "int Foo(Arg<int>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public int Foo(Arg<int>? bar = null) => default;");
 
             var model = new TypeModel
@@ -601,7 +601,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 $"IOther Foo(Arg<{csharpType}> bar);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 $"public IOther Foo(Arg<{csharpType}> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
@@ -644,7 +644,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 $"IOther Foo(Arg<{csharpType}>? bar = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 $"public IOther Foo(Arg<{csharpType}>? bar = null) => this.CreateMethodCall(x => x.Foo(bar), Test.Internal.StubIOther.Create);");
 
             var model = new TypeModel
@@ -683,7 +683,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "IOther Foo(Arg<int> req1, Arg<int> req2, Arg<int>? opt1 = null, Arg<int>? opt2 = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public IOther Foo(Arg<int> req1, Arg<int> req2, Arg<int>? opt1 = null, Arg<int>? opt2 = null) => " +
                 "this.CreateMethodCall(x => x.Foo(req1, req2, opt1, opt2), Test.Internal.StubIOther.Create);");
 
@@ -761,7 +761,7 @@ namespace Test.Internal
         /// Testing if doc comments are generated.
         /// </summary>
         Other Foo { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
 
             var model = new TypeModel
@@ -793,7 +793,7 @@ namespace Test.Internal
         /// </summary>
         /// <param name=""arg1"">The first argument.</param>
         Other Foo(Arg<int>? arg1 = null, Arg<int>? arg2 = null);",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public Other Foo(Arg<int>? arg1 = null, Arg<int>? arg2 = null) => this.CreateMethodCall(x => x.Foo(arg1, arg2), Test.Other.Create);");
 
             var model = new TypeModel
@@ -835,7 +835,7 @@ namespace Test.Internal
         {
             var expected = FormatMemberTemplate(
                 "DateTimeOffset? Foo { get; }",
-                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide detail"")]{Environment.NewLine}        " +
+                $@"[SuppressMessage(""System.Diagnostics"", ""CS1591"", Justification = ""Source did not provide summary"")]{Environment.NewLine}        " +
                 "public DateTimeOffset? Foo { get; }");
 
             var model = new TypeModel

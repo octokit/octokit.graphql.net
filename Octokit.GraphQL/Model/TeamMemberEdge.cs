@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string MemberAccessUrl { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public User Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.User.Create);
 
         /// <summary>

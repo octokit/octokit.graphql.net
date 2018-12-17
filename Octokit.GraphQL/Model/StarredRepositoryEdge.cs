@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Cursor { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public Repository Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>

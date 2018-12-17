@@ -57,22 +57,22 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public string AbbreviatedOid { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public string CommitResourcePath { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public string CommitUrl { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public ID Id { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public string Oid { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
         internal static StubIGitObject Create(Expression expression)

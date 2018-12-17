@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Core.Generation
             var indent = new string(' ', indentation);
             builder.Append(indent);
             builder.AppendLine(
-                "[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide detail\")]");
+                "[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide summary\")]");
         }
 
         public static void GenerateSummary(string summary, int indentation, StringBuilder builder)

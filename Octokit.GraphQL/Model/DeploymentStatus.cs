@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EnvironmentUrl { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public ID Id { get; }
 
         /// <summary>

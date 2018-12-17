@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_Scalar_Field()
         {
-            var expected = FormatMemberTemplate("[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide detail\")]\r\n        public int? Foo { get; set; }");
+            var expected = FormatMemberTemplate("[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide summary\")]\r\n        public int? Foo { get; set; }");
 
             var model = new TypeModel
             {
@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         [Fact]
         public void Generates_Property_For_List_Field()
         {
-            var expected = FormatMemberTemplate("[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide detail\")]\r\n        public IEnumerable<int?> Foo { get; set; }");
+            var expected = FormatMemberTemplate("[SuppressMessage(\"System.Diagnostics\", \"CS1591\", Justification = \"Source did not provide summary\")]\r\n        public IEnumerable<int?> Foo { get; set; }");
 
             var model = new TypeModel
             {

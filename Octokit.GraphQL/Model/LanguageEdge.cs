@@ -16,10 +16,10 @@ namespace Octokit.GraphQL.Model
         {
         }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public string Cursor { get; }
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public Language Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Language.Create);
 
         /// <summary>

@@ -32,7 +32,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IQueryableList<StatusContext> Contexts => this.CreateProperty(x => x.Contexts);
 
-        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide detail")]
+        [SuppressMessage("System.Diagnostics", "CS1591", Justification = "Source did not provide summary")]
         public ID Id { get; }
 
         /// <summary>
