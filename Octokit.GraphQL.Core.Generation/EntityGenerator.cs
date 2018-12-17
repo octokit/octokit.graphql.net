@@ -25,6 +25,7 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
@@ -54,6 +55,7 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;{includeEntities}
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;

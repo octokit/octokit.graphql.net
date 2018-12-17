@@ -16,6 +16,7 @@ namespace Octokit.GraphQL.Core.Generation
 {{
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;;
 
     {GenerateDocComments(type)}public class {className}
     {{{GenerateFields(type)}
