@@ -10,6 +10,11 @@ namespace Octokit.GraphQL
     public interface ICompiledQuery
     {
         /// <summary>
+        /// Gets a value indicating whether the query is a mutation.
+        /// </summary>
+        bool IsMutation { get; }
+
+        /// <summary>
         /// Returns an <see cref="IQueryRunner"/> which can be used to run the query on a connection.
         /// </summary>
         /// <param name="connection">The connection.</param>
