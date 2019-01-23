@@ -32,6 +32,11 @@ namespace Octokit.GraphQL.Core
         }
 
         /// <summary>
+        /// Gets a value indicating whether the query is a mutation.
+        /// </summary>
+        public bool IsMutation => MasterQuery.IsMutation;
+
+        /// <summary>
         /// Gets the master query.
         /// </summary>
         public SimpleQuery<TResult> MasterQuery { get; }

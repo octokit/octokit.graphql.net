@@ -37,6 +37,11 @@ namespace Octokit.GraphQL.Core
         }
 
         /// <summary>
+        /// Gets a value indicating whether the query is a mutation.
+        /// </summary>
+        public bool IsMutation => OperationDefinition.Type == OperationType.Mutation;
+
+        /// <summary>
         /// Gets the GraphQL operation definition.
         /// </summary>
         public OperationDefinition OperationDefinition { get; }
