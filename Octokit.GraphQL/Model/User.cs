@@ -220,6 +220,34 @@ namespace Octokit.GraphQL.Model
         public RepositoryConnection PinnedRepositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, affiliations, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
+        /// Find project by number.
+        /// </summary>
+        /// <param name="number">The project number to find.</param>
+        public Project Project(Arg<int> number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
+
+        /// <summary>
+        /// A list of projects under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for projects returned from the connection</param>
+        /// <param name="search">Query to search projects by, currently only searching by name.</param>
+        /// <param name="states">A list of states to filter the projects by.</param>
+        public ProjectConnection Projects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectOrder>? orderBy = null, Arg<string>? search = null, Arg<IEnumerable<ProjectState>>? states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
+
+        /// <summary>
+        /// The HTTP path listing user's projects
+        /// </summary>
+        public string ProjectsResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP URL listing user's projects
+        /// </summary>
+        public string ProjectsUrl { get; }
+
+        /// <summary>
         /// A list of public keys associated with this user.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -294,6 +322,11 @@ namespace Octokit.GraphQL.Model
         public StarredRepositoryConnection StarredRepositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<StarOrder>? orderBy = null, Arg<bool>? ownedByViewer = null) => this.CreateMethodCall(x => x.StarredRepositories(first, after, last, before, orderBy, ownedByViewer), Octokit.GraphQL.Model.StarredRepositoryConnection.Create);
 
         /// <summary>
+        /// The user's description of what they're currently doing.
+        /// </summary>
+        public UserStatus Status => this.CreateProperty(x => x.Status, Octokit.GraphQL.Model.UserStatus.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
@@ -302,6 +335,11 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL for this user
         /// </summary>
         public string Url { get; }
+
+        /// <summary>
+        /// Can the current viewer create new projects on this owner.
+        /// </summary>
+        public bool ViewerCanCreateProjects { get; }
 
         /// <summary>
         /// Whether or not the viewer is able to follow the user.

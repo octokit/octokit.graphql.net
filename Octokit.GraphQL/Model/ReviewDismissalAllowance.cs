@@ -27,12 +27,6 @@ namespace Octokit.GraphQL.Model
 
         public ID Id { get; }
 
-        /// <summary>
-        /// Identifies the protected branch associated with the allowed user or team.
-        /// </summary>
-        [Obsolete(@"The `ProtectedBranch` type is deprecated and will be removed soon. Use `ReviewDismissalAllowance.branchProtectionRule` instead. Removal on 2019-01-01 UTC.")]
-        public ProtectedBranch ProtectedBranch => this.CreateProperty(x => x.ProtectedBranch, Octokit.GraphQL.Model.ProtectedBranch.Create);
-
         internal static ReviewDismissalAllowance Create(Expression expression)
         {
             return new ReviewDismissalAllowance(expression);

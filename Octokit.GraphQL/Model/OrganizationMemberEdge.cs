@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public string Cursor { get; }
 
         /// <summary>
+        /// Whether the organization member has two factor enabled or not. Returns null if information is not available to viewer.
+        /// </summary>
+        public bool? HasTwoFactorEnabled { get; }
+
+        /// <summary>
         /// The item at the end of the edge.
         /// </summary>
         public User Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.User.Create);

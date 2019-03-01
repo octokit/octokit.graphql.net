@@ -24,9 +24,10 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// A list of related topics, including aliases of this topic, sorted with the most relevant
-        /// first.
+        /// first. Returns up to 10 Topics.
         /// </summary>
-        public IQueryableList<Topic> RelatedTopics => this.CreateProperty(x => x.RelatedTopics);
+        /// <param name="first">How many topics to return.</param>
+        public IQueryableList<Topic> RelatedTopics(Arg<int>? first = null) => this.CreateMethodCall(x => x.RelatedTopics(first));
 
         /// <summary>
         /// A list of users who have starred this starrable.

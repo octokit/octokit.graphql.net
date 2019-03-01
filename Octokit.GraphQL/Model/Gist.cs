@@ -34,7 +34,18 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Description { get; }
 
+        /// <summary>
+        /// The files in this gist.
+        /// </summary>
+        /// <param name="limit">The maximum number of files to return.</param>
+        public IQueryableList<GistFile> Files(Arg<int>? limit = null) => this.CreateMethodCall(x => x.Files(limit));
+
         public ID Id { get; }
+
+        /// <summary>
+        /// Identifies if the gist is a fork.
+        /// </summary>
+        public bool IsFork { get; }
 
         /// <summary>
         /// Whether the gist is public or not.

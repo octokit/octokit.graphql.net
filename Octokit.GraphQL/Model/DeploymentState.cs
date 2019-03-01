@@ -52,5 +52,17 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "PENDING")]
         Pending,
+
+        /// <summary>
+        /// The deployment has queued
+        /// </summary>
+        [EnumMember(Value = "QUEUED")]
+        Queued,
+
+        /// <summary>
+        /// The deployment is in progress.
+        /// </summary>
+        [EnumMember(Value = "IN_PROGRESS")]
+        InProgress,
     }
 }

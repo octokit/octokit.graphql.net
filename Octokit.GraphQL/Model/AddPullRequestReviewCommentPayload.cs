@@ -22,17 +22,11 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The newly created comment.
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `comment` will change from `PullRequestReviewComment!` to `PullRequestReviewComment`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public PullRequestReviewComment Comment => this.CreateProperty(x => x.Comment, Octokit.GraphQL.Model.PullRequestReviewComment.Create);
 
         /// <summary>
         /// The edge from the review's comment connection.
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `commentEdge` will change from `PullRequestReviewCommentEdge!` to `PullRequestReviewCommentEdge`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public PullRequestReviewCommentEdge CommentEdge => this.CreateProperty(x => x.CommentEdge, Octokit.GraphQL.Model.PullRequestReviewCommentEdge.Create);
 

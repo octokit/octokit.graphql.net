@@ -46,5 +46,17 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "HEART")]
         Heart,
+
+        /// <summary>
+        /// Represents the 🚀 emoji.
+        /// </summary>
+        [EnumMember(Value = "ROCKET")]
+        Rocket,
+
+        /// <summary>
+        /// Represents the 👀 emoji.
+        /// </summary>
+        [EnumMember(Value = "EYES")]
+        Eyes,
     }
 }

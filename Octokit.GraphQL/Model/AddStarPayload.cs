@@ -22,9 +22,6 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The starrable.
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `starrable` will change from `Starrable!` to `Starrable`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public IStarrable Starrable => this.CreateProperty(x => x.Starrable, Octokit.GraphQL.Model.Internal.StubIStarrable.Create);
 

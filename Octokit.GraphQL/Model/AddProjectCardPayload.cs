@@ -17,9 +17,6 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The edge from the ProjectColumn's card connection.
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `cardEdge` will change from `ProjectCardEdge!` to `ProjectCardEdge`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public ProjectCardEdge CardEdge => this.CreateProperty(x => x.CardEdge, Octokit.GraphQL.Model.ProjectCardEdge.Create);
 
@@ -30,11 +27,8 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The ProjectColumn
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `projectColumn` will change from `Project!` to `ProjectColumn`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
-        public Project ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octokit.GraphQL.Model.Project.Create);
+        public ProjectColumn ProjectColumn => this.CreateProperty(x => x.ProjectColumn, Octokit.GraphQL.Model.ProjectColumn.Create);
 
         internal static AddProjectCardPayload Create(Expression expression)
         {

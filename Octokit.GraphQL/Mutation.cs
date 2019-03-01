@@ -61,6 +61,16 @@ namespace Octokit.GraphQL
         public AddStarPayload AddStar(Arg<AddStarInput> input) => this.CreateMethodCall(x => x.AddStar(input), Octokit.GraphQL.Model.AddStarPayload.Create);
 
         /// <summary>
+        /// Update your status on GitHub.
+        /// </summary>
+        public ChangeUserStatusPayload ChangeUserStatus(Arg<ChangeUserStatusInput> input) => this.CreateMethodCall(x => x.ChangeUserStatus(input), Octokit.GraphQL.Model.ChangeUserStatusPayload.Create);
+
+        /// <summary>
+        /// Close a pull request.
+        /// </summary>
+        public ClosePullRequestPayload ClosePullRequest(Arg<ClosePullRequestInput> input) => this.CreateMethodCall(x => x.ClosePullRequest(input), Octokit.GraphQL.Model.ClosePullRequestPayload.Create);
+
+        /// <summary>
         /// Create a new branch protection rule
         /// </summary>
         public CreateBranchProtectionRulePayload CreateBranchProtectionRule(Arg<CreateBranchProtectionRuleInput> input) => this.CreateMethodCall(x => x.CreateBranchProtectionRule(input), Octokit.GraphQL.Model.CreateBranchProtectionRulePayload.Create);
@@ -79,6 +89,11 @@ namespace Octokit.GraphQL
         /// Creates a new project.
         /// </summary>
         public CreateProjectPayload CreateProject(Arg<CreateProjectInput> input) => this.CreateMethodCall(x => x.CreateProject(input), Octokit.GraphQL.Model.CreateProjectPayload.Create);
+
+        /// <summary>
+        /// Create a new pull request
+        /// </summary>
+        public CreatePullRequestPayload CreatePullRequest(Arg<CreatePullRequestInput> input) => this.CreateMethodCall(x => x.CreatePullRequest(input), Octokit.GraphQL.Model.CreatePullRequestPayload.Create);
 
         /// <summary>
         /// Rejects a suggested topic for the repository.
@@ -111,6 +126,11 @@ namespace Octokit.GraphQL
         public DeletePullRequestReviewPayload DeletePullRequestReview(Arg<DeletePullRequestReviewInput> input) => this.CreateMethodCall(x => x.DeletePullRequestReview(input), Octokit.GraphQL.Model.DeletePullRequestReviewPayload.Create);
 
         /// <summary>
+        /// Deletes a pull request review comment.
+        /// </summary>
+        public DeletePullRequestReviewCommentPayload DeletePullRequestReviewComment(Arg<DeletePullRequestReviewCommentInput> input) => this.CreateMethodCall(x => x.DeletePullRequestReviewComment(input), Octokit.GraphQL.Model.DeletePullRequestReviewCommentPayload.Create);
+
+        /// <summary>
         /// Dismisses an approved or rejected pull request review.
         /// </summary>
         public DismissPullRequestReviewPayload DismissPullRequestReview(Arg<DismissPullRequestReviewInput> input) => this.CreateMethodCall(x => x.DismissPullRequestReview(input), Octokit.GraphQL.Model.DismissPullRequestReviewPayload.Create);
@@ -119,6 +139,11 @@ namespace Octokit.GraphQL
         /// Lock a lockable object
         /// </summary>
         public LockLockablePayload LockLockable(Arg<LockLockableInput> input) => this.CreateMethodCall(x => x.LockLockable(input), Octokit.GraphQL.Model.LockLockablePayload.Create);
+
+        /// <summary>
+        /// Merge a pull request.
+        /// </summary>
+        public MergePullRequestPayload MergePullRequest(Arg<MergePullRequestInput> input) => this.CreateMethodCall(x => x.MergePullRequest(input), Octokit.GraphQL.Model.MergePullRequestPayload.Create);
 
         /// <summary>
         /// Moves a project card to another place.
@@ -146,6 +171,11 @@ namespace Octokit.GraphQL
         public RemoveStarPayload RemoveStar(Arg<RemoveStarInput> input) => this.CreateMethodCall(x => x.RemoveStar(input), Octokit.GraphQL.Model.RemoveStarPayload.Create);
 
         /// <summary>
+        /// Reopen a pull request.
+        /// </summary>
+        public ReopenPullRequestPayload ReopenPullRequest(Arg<ReopenPullRequestInput> input) => this.CreateMethodCall(x => x.ReopenPullRequest(input), Octokit.GraphQL.Model.ReopenPullRequestPayload.Create);
+
+        /// <summary>
         /// Set review requests on a pull request.
         /// </summary>
         public RequestReviewsPayload RequestReviews(Arg<RequestReviewsInput> input) => this.CreateMethodCall(x => x.RequestReviews(input), Octokit.GraphQL.Model.RequestReviewsPayload.Create);
@@ -156,6 +186,11 @@ namespace Octokit.GraphQL
         public RerequestCheckSuitePayload RerequestCheckSuite(Arg<RerequestCheckSuiteInput> input) => this.CreateMethodCall(x => x.RerequestCheckSuite(input), Octokit.GraphQL.Model.RerequestCheckSuitePayload.Create);
 
         /// <summary>
+        /// Marks a review thread as resolved.
+        /// </summary>
+        public ResolveReviewThreadPayload ResolveReviewThread(Arg<ResolveReviewThreadInput> input) => this.CreateMethodCall(x => x.ResolveReviewThread(input), Octokit.GraphQL.Model.ResolveReviewThreadPayload.Create);
+
+        /// <summary>
         /// Submits a pending pull request review.
         /// </summary>
         public SubmitPullRequestReviewPayload SubmitPullRequestReview(Arg<SubmitPullRequestReviewInput> input) => this.CreateMethodCall(x => x.SubmitPullRequestReview(input), Octokit.GraphQL.Model.SubmitPullRequestReviewPayload.Create);
@@ -164,6 +199,11 @@ namespace Octokit.GraphQL
         /// Unlock a lockable object
         /// </summary>
         public UnlockLockablePayload UnlockLockable(Arg<UnlockLockableInput> input) => this.CreateMethodCall(x => x.UnlockLockable(input), Octokit.GraphQL.Model.UnlockLockablePayload.Create);
+
+        /// <summary>
+        /// Marks a review thread as unresolved.
+        /// </summary>
+        public UnresolveReviewThreadPayload UnresolveReviewThread(Arg<UnresolveReviewThreadInput> input) => this.CreateMethodCall(x => x.UnresolveReviewThread(input), Octokit.GraphQL.Model.UnresolveReviewThreadPayload.Create);
 
         /// <summary>
         /// Create a new branch protection rule
@@ -194,6 +234,11 @@ namespace Octokit.GraphQL
         /// Updates an existing project column.
         /// </summary>
         public UpdateProjectColumnPayload UpdateProjectColumn(Arg<UpdateProjectColumnInput> input) => this.CreateMethodCall(x => x.UpdateProjectColumn(input), Octokit.GraphQL.Model.UpdateProjectColumnPayload.Create);
+
+        /// <summary>
+        /// Update a pull request
+        /// </summary>
+        public UpdatePullRequestPayload UpdatePullRequest(Arg<UpdatePullRequestInput> input) => this.CreateMethodCall(x => x.UpdatePullRequest(input), Octokit.GraphQL.Model.UpdatePullRequestPayload.Create);
 
         /// <summary>
         /// Updates the body of a pull request review.
