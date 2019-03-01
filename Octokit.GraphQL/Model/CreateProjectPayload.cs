@@ -22,9 +22,6 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The new project.
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `project` will change from `Project!` to `Project`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Model.Project.Create);
 

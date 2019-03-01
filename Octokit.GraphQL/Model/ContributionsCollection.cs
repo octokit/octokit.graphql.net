@@ -16,6 +16,12 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Commit contributions made by the user, grouped by repository.
+        /// </summary>
+        /// <param name="maxRepositories">How many repositories should be included.</param>
+        public IQueryableList<CommitContributionsByRepository> CommitContributionsByRepository(Arg<int>? maxRepositories = null) => this.CreateMethodCall(x => x.CommitContributionsByRepository(maxRepositories));
+
+        /// <summary>
         /// A calendar of this user's contributions on GitHub.
         /// </summary>
         public ContributionCalendar ContributionCalendar => this.CreateProperty(x => x.ContributionCalendar, Octokit.GraphQL.Model.ContributionCalendar.Create);
@@ -36,6 +42,24 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset EndedAt { get; }
 
         /// <summary>
+        /// The first issue the user opened on GitHub. This will be null if that issue was opened outside the collection's time range and ignoreTimeRange is false. If the issue is not visible but the user has opted to show private contributions, a RestrictedContribution will be returned.
+        /// </summary>
+        /// <param name="ignoreTimeRange">If true, the first issue will be returned even if it was opened outside of the collection's time range.</param>
+        public CreatedIssueOrRestrictedContribution FirstIssueContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.FirstIssueContribution(ignoreTimeRange), Octokit.GraphQL.Model.CreatedIssueOrRestrictedContribution.Create);
+
+        /// <summary>
+        /// The first pull request the user opened on GitHub. This will be null if that pull request was opened outside the collection's time range and ignoreTimeRange is not true. If the pull request is not visible but the user has opted to show private contributions, a RestrictedContribution will be returned.
+        /// </summary>
+        /// <param name="ignoreTimeRange">If true, the first pull request will be returned even if it was opened outside of the collection's time range.</param>
+        public CreatedPullRequestOrRestrictedContribution FirstPullRequestContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.FirstPullRequestContribution(ignoreTimeRange), Octokit.GraphQL.Model.CreatedPullRequestOrRestrictedContribution.Create);
+
+        /// <summary>
+        /// The first repository the user created on GitHub. This will be null if that first repository was created outside the collection's time range and ignoreTimeRange is false. If the repository is not visible, then a RestrictedContribution is returned.
+        /// </summary>
+        /// <param name="ignoreTimeRange">If true, the first repository will be returned even if it was opened outside of the collection's time range.</param>
+        public CreatedRepositoryOrRestrictedContribution FirstRepositoryContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.FirstRepositoryContribution(ignoreTimeRange), Octokit.GraphQL.Model.CreatedRepositoryOrRestrictedContribution.Create);
+
+        /// <summary>
         /// Does the user have any more activity in the timeline that occurred prior to the collection's time range?
         /// </summary>
         public bool HasActivityInThePast { get; }
@@ -54,6 +78,17 @@ namespace Octokit.GraphQL.Model
         /// Whether or not the collector's time span is all within the same day.
         /// </summary>
         public bool IsSingleDay { get; }
+
+        /// <summary>
+        /// A list of issues the user opened.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="excludeFirst">Should the user's first issue ever be excluded from the result.</param>
+        /// <param name="excludePopular">Should the user's most commented issue be excluded from the result.</param>
+        public CreatedIssueContributionConnection IssueContributions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null) => this.CreateMethodCall(x => x.IssueContributions(first, after, last, before, excludeFirst, excludePopular), Octokit.GraphQL.Model.CreatedIssueContributionConnection.Create);
 
         /// <summary>
         /// When the user signed up for GitHub. This will be null if that sign up date falls outside the collection's time range and ignoreTimeRange is false.
@@ -89,6 +124,18 @@ namespace Octokit.GraphQL.Model
         /// specified time frame.
         /// </summary>
         public CreatedPullRequestContribution PopularPullRequestContribution => this.CreateProperty(x => x.PopularPullRequestContribution, Octokit.GraphQL.Model.CreatedPullRequestContribution.Create);
+
+        /// <summary>
+        /// Pull request contributions made by the user.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="excludeFirst">Should the user's first pull request ever be excluded from the result.</param>
+        /// <param name="excludePopular">Should the user's most commented pull request be excluded from the result.</param>
+        /// <param name="orderBy">Ordering options for contributions returned from the connection.</param>
+        public CreatedPullRequestContributionConnection PullRequestContributions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null, Arg<ContributionOrder>? orderBy = null) => this.CreateMethodCall(x => x.PullRequestContributions(first, after, last, before, excludeFirst, excludePopular, orderBy), Octokit.GraphQL.Model.CreatedPullRequestContributionConnection.Create);
 
         /// <summary>
         /// A count of contributions made by the user that the viewer cannot access. Only non-zero when the user has chosen to share their private contribution counts.

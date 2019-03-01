@@ -101,6 +101,17 @@ namespace Octokit.GraphQL.Model
         public int Deletions { get; }
 
         /// <summary>
+        /// The deployments associated with a commit.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="environments">Environments to list deployments for</param>
+        /// <param name="orderBy">Ordering options for deployments returned from the connection.</param>
+        public DeploymentConnection Deployments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? environments = null, Arg<DeploymentOrder>? orderBy = null) => this.CreateMethodCall(x => x.Deployments(first, after, last, before, environments, orderBy), Octokit.GraphQL.Model.DeploymentConnection.Create);
+
+        /// <summary>
         /// The linear commit history starting from (and including) this commit, in the same order as `git log`.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

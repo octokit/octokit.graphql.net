@@ -106,6 +106,22 @@ namespace Octokit.GraphQL.Model
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
         /// <summary>
+        /// A list of reactions grouped by content left on the subject.
+        /// </summary>
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+
+        /// <summary>
+        /// A list of Reactions left on the Issue.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="content">Allows filtering Reactions by emoji.</param>
+        /// <param name="orderBy">Allows specifying the order in which reactions are returned.</param>
+        public ReactionConnection Reactions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ReactionContent>? content = null, Arg<ReactionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Reactions(first, after, last, before, content, orderBy), Octokit.GraphQL.Model.ReactionConnection.Create);
+
+        /// <summary>
         /// The repository associated with this node.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
@@ -148,6 +164,11 @@ namespace Octokit.GraphQL.Model
         /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
+
+        /// <summary>
+        /// Can user react to this subject
+        /// </summary>
+        public bool ViewerCanReact { get; }
 
         /// <summary>
         /// Check if the current viewer can update this object.

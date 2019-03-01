@@ -118,9 +118,39 @@ namespace Octokit.GraphQL.Model
         public bool IsPaid { get; }
 
         /// <summary>
+        /// Whether this listing has been approved for display in the Marketplace.
+        /// </summary>
+        public bool IsPublic { get; }
+
+        /// <summary>
         /// Whether this listing has been rejected by GitHub for display in the Marketplace.
         /// </summary>
         public bool IsRejected { get; }
+
+        /// <summary>
+        /// Whether this listing has been approved for unverified display in the Marketplace.
+        /// </summary>
+        public bool IsUnverified { get; }
+
+        /// <summary>
+        /// Whether this draft listing has been submitted for review for approval to be unverified in the Marketplace.
+        /// </summary>
+        public bool IsUnverifiedPending { get; }
+
+        /// <summary>
+        /// Whether this draft listing has been submitted for review from GitHub for approval to be verified in the Marketplace.
+        /// </summary>
+        public bool IsVerificationPendingFromDraft { get; }
+
+        /// <summary>
+        /// Whether this unverified listing has been submitted for review from GitHub for approval to be verified in the Marketplace.
+        /// </summary>
+        public bool IsVerificationPendingFromUnverified { get; }
+
+        /// <summary>
+        /// Whether this listing has been approved for verified display in the Marketplace.
+        /// </summary>
+        public bool IsVerified { get; }
 
         /// <summary>
         /// The hex color code, without the leading '#', for the logo background.

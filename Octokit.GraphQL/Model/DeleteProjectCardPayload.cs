@@ -22,19 +22,13 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The column the deleted card was in.
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `column` will change from `ProjectColumn!` to `ProjectColumn`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
         public ProjectColumn Column => this.CreateProperty(x => x.Column, Octokit.GraphQL.Model.ProjectColumn.Create);
 
         /// <summary>
         /// The deleted card ID.
-        /// **Upcoming Change on 2019-01-01 UTC**
-        /// **Description:** Type for `deletedCardId` will change from `ID!` to `ID`.
-        /// **Reason:** In preparation for an upcoming change to the way we report mutation errors, non-nullable payload fields are becoming nullable.
         /// </summary>
-        public ID DeletedCardId { get; }
+        public ID? DeletedCardId { get; }
 
         internal static DeleteProjectCardPayload Create(Expression expression)
         {
