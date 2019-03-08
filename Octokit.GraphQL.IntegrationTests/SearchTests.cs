@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.IntegrationTests
                                 when.PullRequest(pr => new PullRequestListItem
                                 {
                                     Number = pr.Number,
-                                    Reviews = pr.Reviews(20, null, null, null, null, null)
+                                    Reviews = pr.Reviews(null, null, null, null, null, null)
                                         .AllPages()
                                         .Select(review => new Review
                                         {
