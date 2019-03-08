@@ -61,5 +61,31 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             Assert.Equal(expected, TestMasterQuery().ToString(), ignoreLineEndingDifferences: true);
         }
+
+        [Fact]
+        public void Creates_Subquery()
+        {
+            var expected = @"query($__id: ID!, $__after: String) {
+  node(id: $__id) {
+    __typename
+    ... on PullRequest {
+      commits(first: 100, after: $__after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          commit {
+            abbreviatedOid
+          }
+        }
+      }
+    }
+  }
+}";
+
+            Assert.Single(TestQuerySubqueries());
+            Assert.Equal(expected, TestQuerySubqueries().First().ToString(), ignoreLineEndingDifferences: true);
+        }
     }
 }
