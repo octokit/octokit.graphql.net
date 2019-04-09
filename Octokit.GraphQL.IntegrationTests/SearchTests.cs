@@ -66,6 +66,39 @@ namespace Octokit.GraphQL.IntegrationTests
             var result = await Connection.Run(query, vars);
         }
 
+        [IntegrationTest]
+        public async Task Should_Query_Issues2()
+        {
+            var filter = $"type:pr repo:github/VisualStudio";
+
+            var query = new Query().Search(query: Var(nameof(filter)), SearchType.Issue, 100)
+                .AllPages()
+                .Select(item => new IssueishItemWrapper
+                {
+                    SuggestionItem = item
+                        .Switch<IssueishItem>(selector => selector
+                            .Issue(issue => new IssueishItem { Number = issue.Number })
+                            .PullRequest(pullRequest => new IssueishItem { Number = pullRequest.Number }))
+                }).Compile();
+
+            var vars = new Dictionary<string, object>
+            {
+                { nameof(filter), filter }
+            };
+
+            var result = await Connection.Run(query, vars);
+        }
+
+        public class IssueishItemWrapper
+        {
+            public IssueishItem SuggestionItem { get; set; }
+        }
+
+        public class IssueishItem
+        {
+            public int Number { get; set; }
+        }
+
         public class PullRequestListItem
         {
             public int Number { get; set; }
