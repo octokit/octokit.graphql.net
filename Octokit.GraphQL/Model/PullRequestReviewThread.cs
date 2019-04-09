@@ -27,6 +27,11 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether this thread has been resolved
+        /// </summary>
+        public bool IsResolved { get; }
+
+        /// <summary>
         /// Identifies the pull request associated with this thread.
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
@@ -35,6 +40,21 @@ namespace Octokit.GraphQL.Model
         /// Identifies the repository associated with this thread.
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
+
+        /// <summary>
+        /// The user who resolved this thread
+        /// </summary>
+        public User ResolvedBy => this.CreateProperty(x => x.ResolvedBy, Octokit.GraphQL.Model.User.Create);
+
+        /// <summary>
+        /// Whether or not the viewer can resolve this thread
+        /// </summary>
+        public bool ViewerCanResolve { get; }
+
+        /// <summary>
+        /// Whether or not the viewer can unresolve this thread
+        /// </summary>
+        public bool ViewerCanUnresolve { get; }
 
         internal static PullRequestReviewThread Create(Expression expression)
         {

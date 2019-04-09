@@ -133,6 +133,15 @@ namespace Octokit.GraphQL.Model
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Lists the files changed within this pull request.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public PullRequestChangedFileConnection Files(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Files(first, after, last, before), Octokit.GraphQL.Model.PullRequestChangedFileConnection.Create);
+
+        /// <summary>
         /// Identifies the head Ref associated with the pull request.
         /// </summary>
         public Ref HeadRef => this.CreateProperty(x => x.HeadRef, Octokit.GraphQL.Model.Ref.Create);
@@ -306,6 +315,15 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ReviewRequestConnection ReviewRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ReviewRequests(first, after, last, before), Octokit.GraphQL.Model.ReviewRequestConnection.Create);
+
+        /// <summary>
+        /// The list of all review threads for this pull request.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public PullRequestReviewThreadConnection ReviewThreads(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ReviewThreads(first, after, last, before), Octokit.GraphQL.Model.PullRequestReviewThreadConnection.Create);
 
         /// <summary>
         /// A list of reviews associated with the pull request.

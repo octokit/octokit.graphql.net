@@ -72,7 +72,7 @@ namespace Octokit.GraphQL.Model
         public int Number { get; }
 
         /// <summary>
-        /// The project's owner. Currently limited to repositories and organizations.
+        /// The project's owner. Currently limited to repositories, organizations, and users.
         /// </summary>
         public IProjectOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Model.Internal.StubIProjectOwner.Create);
 

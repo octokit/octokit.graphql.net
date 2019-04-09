@@ -30,16 +30,28 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// Identifies the optional message associated with the 'review_dismissed' event.
+        /// </summary>
+        public string DismissalMessage { get; }
+
+        /// <summary>
+        /// Identifies the optional message associated with the event, rendered to HTML.
+        /// </summary>
+        public string DismissalMessageHTML { get; }
+
         public ID Id { get; }
 
         /// <summary>
         /// Identifies the message associated with the 'review_dismissed' event.
         /// </summary>
+        [Obsolete(@"`message` is being removed because it not nullable, whereas the underlying field is optional. Use `dismissalMessage` instead. Removal on 2019-07-01 UTC.")]
         public string Message { get; }
 
         /// <summary>
         /// The message associated with the event, rendered to HTML.
         /// </summary>
+        [Obsolete(@"`messageHtml` is being removed because it not nullable, whereas the underlying field is optional. Use `dismissalMessageHTML` instead. Removal on 2019-07-01 UTC.")]
         public string MessageHtml { get; }
 
         /// <summary>
