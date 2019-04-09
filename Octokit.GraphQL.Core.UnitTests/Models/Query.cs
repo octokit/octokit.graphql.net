@@ -16,6 +16,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public RateLimit RateLimit(Arg<bool>? dryRun = null) => this.CreateMethodCall(x => x.RateLimit(dryRun), Models.RateLimit.Create);
         public Repository Repository(Arg<string> owner, Arg<string> name) => this.CreateMethodCall(x => x.Repository(owner, name), Models.Repository.Create);
         public IRepositoryOwner RepositoryOwner(Arg<string> login) => this.CreateMethodCall(x => x.RepositoryOwner(login), Models.StubIRepositoryOwner.Create);
+        public SearchResultItemConnection Search(Arg<string> query) => this.CreateMethodCall(x => x.Search(query), Models.SearchResultItemConnection.Create);
 
         // Mutations here for convenience.
         public IssueComment AddComment(Arg<AddCommentInput> input) => this.CreateMethodCall(x => x.AddComment(input), Models.IssueComment.Create);
