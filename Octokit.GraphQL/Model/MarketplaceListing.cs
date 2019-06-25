@@ -63,6 +63,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Whether this listing has been submitted for review from GitHub for approval to be displayed in the Marketplace.
         /// </summary>
+        [Obsolete(@"`hasApprovalBeenRequested` will be removed. Use `isVerificationPendingFromDraft` instead. Removal on 2019-10-01 UTC.")]
         public bool HasApprovalBeenRequested { get; }
 
         /// <summary>
@@ -100,11 +101,18 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Whether this listing has been approved for display in the Marketplace.
         /// </summary>
+        [Obsolete(@"`isApproved` will be removed. Use `isPublic` instead. Removal on 2019-10-01 UTC.")]
         public bool IsApproved { get; }
 
         /// <summary>
         /// Whether this listing has been removed from the Marketplace.
         /// </summary>
+        public bool IsArchived { get; }
+
+        /// <summary>
+        /// Whether this listing has been removed from the Marketplace.
+        /// </summary>
+        [Obsolete(@"`isDelisted` will be removed. Use `isArchived` instead. Removal on 2019-10-01 UTC.")]
         public bool IsDelisted { get; }
 
         /// <summary>
@@ -184,7 +192,7 @@ namespace Octokit.GraphQL.Model
         public MarketplaceCategory PrimaryCategory => this.CreateProperty(x => x.PrimaryCategory, Octokit.GraphQL.Model.MarketplaceCategory.Create);
 
         /// <summary>
-        /// URL to the listing's privacy policy.
+        /// URL to the listing's privacy policy, may return an empty string for listings that do not require a privacy policy URL.
         /// </summary>
         public string PrivacyPolicyUrl { get; }
 
@@ -224,7 +232,7 @@ namespace Octokit.GraphQL.Model
         public string SupportEmail { get; }
 
         /// <summary>
-        /// Either a URL or an email address for support for this listing's app.
+        /// Either a URL or an email address for support for this listing's app, may return an empty string for listings that do not require a support URL.
         /// </summary>
         public string SupportUrl { get; }
 
@@ -283,7 +291,7 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// Can the current viewer request this listing be reviewed for display in
-        /// the Marketplace.
+        /// the Marketplace as verified.
         /// </summary>
         public bool ViewerCanRequestApproval { get; }
 

@@ -16,6 +16,12 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The avatar of the OAuth application or the user that created the status
+        /// </summary>
+        /// <param name="size">The size of the resulting square image.</param>
+        public string AvatarUrl(Arg<int>? size = null) => default;
+
+        /// <summary>
         /// This commit this status context is attached to.
         /// </summary>
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);

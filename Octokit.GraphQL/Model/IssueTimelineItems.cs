@@ -135,6 +135,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> UnlockedEvent(Func<UnlockedEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'user_blocked' event on a given user.
+            /// </summary>
+            public Selector<T> UserBlockedEvent(Func<UserBlockedEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents an 'unpinned' event on a given issue or pull request.
             /// </summary>
             public Selector<T> UnpinnedEvent(Func<UnpinnedEvent, T> selector) => default;

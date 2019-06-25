@@ -90,6 +90,11 @@ namespace Octokit.GraphQL.Model
         public bool RequiresApprovingReviews { get; }
 
         /// <summary>
+        /// Are reviews from code owners required to update matching branches.
+        /// </summary>
+        public bool RequiresCodeOwnerReviews { get; }
+
+        /// <summary>
         /// Are commits required to be signed.
         /// </summary>
         public bool RequiresCommitSignatures { get; }

@@ -16,6 +16,12 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Determine if this repository owner has any items that can be pinned to their profile.
+        /// </summary>
+        /// <param name="type">Filter to only a particular kind of pinnable item.</param>
+        public bool AnyPinnableItems(Arg<PinnableItemType>? type = null) => default;
+
+        /// <summary>
         /// A URL pointing to the user's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
@@ -170,10 +176,16 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="filterBy">Filtering options for issues returned from the connection.</param>
         /// <param name="labels">A list of label names to filter the pull requests by.</param>
         /// <param name="orderBy">Ordering options for issues returned from the connection.</param>
         /// <param name="states">A list of states to filter the issues by.</param>
-        public IssueConnection Issues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, labels, orderBy, states), Octokit.GraphQL.Model.IssueConnection.Create);
+        public IssueConnection Issues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IssueFilters>? filterBy = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<IssueState>>? states = null) => this.CreateMethodCall(x => x.Issues(first, after, last, before, filterBy, labels, orderBy, states), Octokit.GraphQL.Model.IssueConnection.Create);
+
+        /// <summary>
+        /// Showcases a selection of repositories and gists that the profile owner has either curated or that have been selected automatically based on popularity.
+        /// </summary>
+        public ProfileItemShowcase ItemShowcase => this.CreateProperty(x => x.ItemShowcase, Octokit.GraphQL.Model.ProfileItemShowcase.Create);
 
         /// <summary>
         /// The user's public profile location.
@@ -204,6 +216,31 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public OrganizationConnection Organizations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Organizations(first, after, last, before), Octokit.GraphQL.Model.OrganizationConnection.Create);
+
+        /// <summary>
+        /// A list of repositories and gists this profile owner can pin to their profile.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="types">Filter the types of pinnable items that are returned.</param>
+        public PinnableItemConnection PinnableItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PinnableItemType>>? types = null) => this.CreateMethodCall(x => x.PinnableItems(first, after, last, before, types), Octokit.GraphQL.Model.PinnableItemConnection.Create);
+
+        /// <summary>
+        /// A list of repositories and gists this profile owner has pinned to their profile
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="types">Filter the types of pinned items that are returned.</param>
+        public PinnableItemConnection PinnedItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PinnableItemType>>? types = null) => this.CreateMethodCall(x => x.PinnedItems(first, after, last, before, types), Octokit.GraphQL.Model.PinnableItemConnection.Create);
+
+        /// <summary>
+        /// Returns how many more items this profile owner can pin to their profile.
+        /// </summary>
+        public int PinnedItemsRemaining { get; }
 
         /// <summary>
         /// A list of repositories this user has pinned to their profile
@@ -335,6 +372,11 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL for this user
         /// </summary>
         public string Url { get; }
+
+        /// <summary>
+        /// Can the viewer pin repositories and gists to the profile?
+        /// </summary>
+        public bool ViewerCanChangePinnedItems { get; }
 
         /// <summary>
         /// Can the current viewer create new projects on this owner.

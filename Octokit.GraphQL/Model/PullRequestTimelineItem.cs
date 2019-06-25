@@ -173,6 +173,11 @@ namespace Octokit.GraphQL.Model
             /// Represents a 'review_dismissed' event on a given issue or pull request.
             /// </summary>
             public Selector<T> ReviewDismissedEvent(Func<ReviewDismissedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'user_blocked' event on a given user.
+            /// </summary>
+            public Selector<T> UserBlockedEvent(Func<UserBlockedEvent, T> selector) => default;
         }
 
         internal static PullRequestTimelineItem Create(Expression expression)

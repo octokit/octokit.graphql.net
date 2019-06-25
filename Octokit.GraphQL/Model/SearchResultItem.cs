@@ -48,6 +48,11 @@ namespace Octokit.GraphQL.Model
             /// A listing in the GitHub integration marketplace.
             /// </summary>
             public Selector<T> MarketplaceListing(Func<MarketplaceListing, T> selector) => default;
+
+            /// <summary>
+            /// A GitHub App.
+            /// </summary>
+            public Selector<T> App(Func<App, T> selector) => default;
         }
 
         internal static SearchResultItem Create(Expression expression)

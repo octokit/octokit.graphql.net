@@ -26,9 +26,19 @@ namespace Octokit.GraphQL
         public AcceptTopicSuggestionPayload AcceptTopicSuggestion(Arg<AcceptTopicSuggestionInput> input) => this.CreateMethodCall(x => x.AcceptTopicSuggestion(input), Octokit.GraphQL.Model.AcceptTopicSuggestionPayload.Create);
 
         /// <summary>
+        /// Adds assignees to an assignable object.
+        /// </summary>
+        public AddAssigneesToAssignablePayload AddAssigneesToAssignable(Arg<AddAssigneesToAssignableInput> input) => this.CreateMethodCall(x => x.AddAssigneesToAssignable(input), Octokit.GraphQL.Model.AddAssigneesToAssignablePayload.Create);
+
+        /// <summary>
         /// Adds a comment to an Issue or Pull Request.
         /// </summary>
         public AddCommentPayload AddComment(Arg<AddCommentInput> input) => this.CreateMethodCall(x => x.AddComment(input), Octokit.GraphQL.Model.AddCommentPayload.Create);
+
+        /// <summary>
+        /// Adds labels to a labelable object.
+        /// </summary>
+        public AddLabelsToLabelablePayload AddLabelsToLabelable(Arg<AddLabelsToLabelableInput> input) => this.CreateMethodCall(x => x.AddLabelsToLabelable(input), Octokit.GraphQL.Model.AddLabelsToLabelablePayload.Create);
 
         /// <summary>
         /// Adds a card to a ProjectColumn. Either `contentId` or `note` must be provided but **not** both.
@@ -66,9 +76,34 @@ namespace Octokit.GraphQL
         public ChangeUserStatusPayload ChangeUserStatus(Arg<ChangeUserStatusInput> input) => this.CreateMethodCall(x => x.ChangeUserStatus(input), Octokit.GraphQL.Model.ChangeUserStatusPayload.Create);
 
         /// <summary>
+        /// Clears all labels from a labelable object.
+        /// </summary>
+        public ClearLabelsFromLabelablePayload ClearLabelsFromLabelable(Arg<ClearLabelsFromLabelableInput> input) => this.CreateMethodCall(x => x.ClearLabelsFromLabelable(input), Octokit.GraphQL.Model.ClearLabelsFromLabelablePayload.Create);
+
+        /// <summary>
+        /// Creates a new project by cloning configuration from an existing project.
+        /// </summary>
+        public CloneProjectPayload CloneProject(Arg<CloneProjectInput> input) => this.CreateMethodCall(x => x.CloneProject(input), Octokit.GraphQL.Model.CloneProjectPayload.Create);
+
+        /// <summary>
+        /// Create a new repository with the same files and directory structure as a template repository.
+        /// </summary>
+        public CloneTemplateRepositoryPayload CloneTemplateRepository(Arg<CloneTemplateRepositoryInput> input) => this.CreateMethodCall(x => x.CloneTemplateRepository(input), Octokit.GraphQL.Model.CloneTemplateRepositoryPayload.Create);
+
+        /// <summary>
+        /// Close an issue.
+        /// </summary>
+        public CloseIssuePayload CloseIssue(Arg<CloseIssueInput> input) => this.CreateMethodCall(x => x.CloseIssue(input), Octokit.GraphQL.Model.CloseIssuePayload.Create);
+
+        /// <summary>
         /// Close a pull request.
         /// </summary>
         public ClosePullRequestPayload ClosePullRequest(Arg<ClosePullRequestInput> input) => this.CreateMethodCall(x => x.ClosePullRequest(input), Octokit.GraphQL.Model.ClosePullRequestPayload.Create);
+
+        /// <summary>
+        /// Convert a project note card to one associated with a newly created issue.
+        /// </summary>
+        public ConvertProjectCardNoteToIssuePayload ConvertProjectCardNoteToIssue(Arg<ConvertProjectCardNoteToIssueInput> input) => this.CreateMethodCall(x => x.ConvertProjectCardNoteToIssue(input), Octokit.GraphQL.Model.ConvertProjectCardNoteToIssuePayload.Create);
 
         /// <summary>
         /// Create a new branch protection rule
@@ -86,6 +121,11 @@ namespace Octokit.GraphQL
         public CreateCheckSuitePayload CreateCheckSuite(Arg<CreateCheckSuiteInput> input) => this.CreateMethodCall(x => x.CreateCheckSuite(input), Octokit.GraphQL.Model.CreateCheckSuitePayload.Create);
 
         /// <summary>
+        /// Creates a new issue.
+        /// </summary>
+        public CreateIssuePayload CreateIssue(Arg<CreateIssueInput> input) => this.CreateMethodCall(x => x.CreateIssue(input), Octokit.GraphQL.Model.CreateIssuePayload.Create);
+
+        /// <summary>
         /// Creates a new project.
         /// </summary>
         public CreateProjectPayload CreateProject(Arg<CreateProjectInput> input) => this.CreateMethodCall(x => x.CreateProject(input), Octokit.GraphQL.Model.CreateProjectPayload.Create);
@@ -96,6 +136,11 @@ namespace Octokit.GraphQL
         public CreatePullRequestPayload CreatePullRequest(Arg<CreatePullRequestInput> input) => this.CreateMethodCall(x => x.CreatePullRequest(input), Octokit.GraphQL.Model.CreatePullRequestPayload.Create);
 
         /// <summary>
+        /// Create a new repository.
+        /// </summary>
+        public CreateRepositoryPayload CreateRepository(Arg<CreateRepositoryInput> input) => this.CreateMethodCall(x => x.CreateRepository(input), Octokit.GraphQL.Model.CreateRepositoryPayload.Create);
+
+        /// <summary>
         /// Rejects a suggested topic for the repository.
         /// </summary>
         public DeclineTopicSuggestionPayload DeclineTopicSuggestion(Arg<DeclineTopicSuggestionInput> input) => this.CreateMethodCall(x => x.DeclineTopicSuggestion(input), Octokit.GraphQL.Model.DeclineTopicSuggestionPayload.Create);
@@ -104,6 +149,16 @@ namespace Octokit.GraphQL
         /// Delete a branch protection rule
         /// </summary>
         public DeleteBranchProtectionRulePayload DeleteBranchProtectionRule(Arg<DeleteBranchProtectionRuleInput> input) => this.CreateMethodCall(x => x.DeleteBranchProtectionRule(input), Octokit.GraphQL.Model.DeleteBranchProtectionRulePayload.Create);
+
+        /// <summary>
+        /// Deletes an Issue object.
+        /// </summary>
+        public DeleteIssuePayload DeleteIssue(Arg<DeleteIssueInput> input) => this.CreateMethodCall(x => x.DeleteIssue(input), Octokit.GraphQL.Model.DeleteIssuePayload.Create);
+
+        /// <summary>
+        /// Deletes an IssueComment object.
+        /// </summary>
+        public DeleteIssueCommentPayload DeleteIssueComment(Arg<DeleteIssueCommentInput> input) => this.CreateMethodCall(x => x.DeleteIssueComment(input), Octokit.GraphQL.Model.DeleteIssueCommentPayload.Create);
 
         /// <summary>
         /// Deletes a project.
@@ -156,6 +211,16 @@ namespace Octokit.GraphQL
         public MoveProjectColumnPayload MoveProjectColumn(Arg<MoveProjectColumnInput> input) => this.CreateMethodCall(x => x.MoveProjectColumn(input), Octokit.GraphQL.Model.MoveProjectColumnPayload.Create);
 
         /// <summary>
+        /// Removes assignees from an assignable object.
+        /// </summary>
+        public RemoveAssigneesFromAssignablePayload RemoveAssigneesFromAssignable(Arg<RemoveAssigneesFromAssignableInput> input) => this.CreateMethodCall(x => x.RemoveAssigneesFromAssignable(input), Octokit.GraphQL.Model.RemoveAssigneesFromAssignablePayload.Create);
+
+        /// <summary>
+        /// Removes labels from a Labelable object.
+        /// </summary>
+        public RemoveLabelsFromLabelablePayload RemoveLabelsFromLabelable(Arg<RemoveLabelsFromLabelableInput> input) => this.CreateMethodCall(x => x.RemoveLabelsFromLabelable(input), Octokit.GraphQL.Model.RemoveLabelsFromLabelablePayload.Create);
+
+        /// <summary>
         /// Removes outside collaborator from all repositories in an organization.
         /// </summary>
         public RemoveOutsideCollaboratorPayload RemoveOutsideCollaborator(Arg<RemoveOutsideCollaboratorInput> input) => this.CreateMethodCall(x => x.RemoveOutsideCollaborator(input), Octokit.GraphQL.Model.RemoveOutsideCollaboratorPayload.Create);
@@ -169,6 +234,11 @@ namespace Octokit.GraphQL
         /// Removes a star from a Starrable.
         /// </summary>
         public RemoveStarPayload RemoveStar(Arg<RemoveStarInput> input) => this.CreateMethodCall(x => x.RemoveStar(input), Octokit.GraphQL.Model.RemoveStarPayload.Create);
+
+        /// <summary>
+        /// Reopen a issue.
+        /// </summary>
+        public ReopenIssuePayload ReopenIssue(Arg<ReopenIssueInput> input) => this.CreateMethodCall(x => x.ReopenIssue(input), Octokit.GraphQL.Model.ReopenIssuePayload.Create);
 
         /// <summary>
         /// Reopen a pull request.
@@ -201,6 +271,11 @@ namespace Octokit.GraphQL
         public UnlockLockablePayload UnlockLockable(Arg<UnlockLockableInput> input) => this.CreateMethodCall(x => x.UnlockLockable(input), Octokit.GraphQL.Model.UnlockLockablePayload.Create);
 
         /// <summary>
+        /// Unmark an issue as a duplicate of another issue.
+        /// </summary>
+        public UnmarkIssueAsDuplicatePayload UnmarkIssueAsDuplicate(Arg<UnmarkIssueAsDuplicateInput> input) => this.CreateMethodCall(x => x.UnmarkIssueAsDuplicate(input), Octokit.GraphQL.Model.UnmarkIssueAsDuplicatePayload.Create);
+
+        /// <summary>
         /// Marks a review thread as unresolved.
         /// </summary>
         public UnresolveReviewThreadPayload UnresolveReviewThread(Arg<UnresolveReviewThreadInput> input) => this.CreateMethodCall(x => x.UnresolveReviewThread(input), Octokit.GraphQL.Model.UnresolveReviewThreadPayload.Create);
@@ -219,6 +294,16 @@ namespace Octokit.GraphQL
         /// Modifies the settings of an existing check suite
         /// </summary>
         public UpdateCheckSuitePreferencesPayload UpdateCheckSuitePreferences(Arg<UpdateCheckSuitePreferencesInput> input) => this.CreateMethodCall(x => x.UpdateCheckSuitePreferences(input), Octokit.GraphQL.Model.UpdateCheckSuitePreferencesPayload.Create);
+
+        /// <summary>
+        /// Updates an Issue.
+        /// </summary>
+        public UpdateIssuePayload UpdateIssue(Arg<UpdateIssueInput> input) => this.CreateMethodCall(x => x.UpdateIssue(input), Octokit.GraphQL.Model.UpdateIssuePayload.Create);
+
+        /// <summary>
+        /// Updates an IssueComment object.
+        /// </summary>
+        public UpdateIssueCommentPayload UpdateIssueComment(Arg<UpdateIssueCommentInput> input) => this.CreateMethodCall(x => x.UpdateIssueComment(input), Octokit.GraphQL.Model.UpdateIssueCommentPayload.Create);
 
         /// <summary>
         /// Updates an existing project.

@@ -29,6 +29,11 @@ namespace Octokit.GraphQL.Model
         public bool? LimitedAvailability { get; set; }
 
         /// <summary>
+        /// If set, the user status will not be shown after this date.
+        /// </summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

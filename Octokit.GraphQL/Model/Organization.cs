@@ -16,6 +16,12 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Determine if this repository owner has any items that can be pinned to their profile.
+        /// </summary>
+        /// <param name="type">Filter to only a particular kind of pinnable item.</param>
+        public bool AnyPinnableItems(Arg<PinnableItemType>? type = null) => default;
+
+        /// <summary>
         /// A URL pointing to the organization's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
@@ -44,6 +50,11 @@ namespace Octokit.GraphQL.Model
         public bool IsVerified { get; }
 
         /// <summary>
+        /// Showcases a selection of repositories and gists that the profile owner has either curated or that have been selected automatically based on popularity.
+        /// </summary>
+        public ProfileItemShowcase ItemShowcase => this.CreateProperty(x => x.ItemShowcase, Octokit.GraphQL.Model.ProfileItemShowcase.Create);
+
+        /// <summary>
         /// The organization's public profile location.
         /// </summary>
         public string Location { get; }
@@ -62,15 +73,6 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for user statuses returned from the connection.</param>
         public UserStatusConnection MemberStatuses(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<UserStatusOrder>? orderBy = null) => this.CreateMethodCall(x => x.MemberStatuses(first, after, last, before, orderBy), Octokit.GraphQL.Model.UserStatusConnection.Create);
-
-        /// <summary>
-        /// A list of users who are members of this organization.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public UserConnection Members(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Members(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
         /// A list of users who are members of this organization.
@@ -109,6 +111,31 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public UserConnection PendingMembers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PendingMembers(first, after, last, before), Octokit.GraphQL.Model.UserConnection.Create);
+
+        /// <summary>
+        /// A list of repositories and gists this profile owner can pin to their profile.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="types">Filter the types of pinnable items that are returned.</param>
+        public PinnableItemConnection PinnableItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PinnableItemType>>? types = null) => this.CreateMethodCall(x => x.PinnableItems(first, after, last, before, types), Octokit.GraphQL.Model.PinnableItemConnection.Create);
+
+        /// <summary>
+        /// A list of repositories and gists this profile owner has pinned to their profile
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="types">Filter the types of pinned items that are returned.</param>
+        public PinnableItemConnection PinnedItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PinnableItemType>>? types = null) => this.CreateMethodCall(x => x.PinnedItems(first, after, last, before, types), Octokit.GraphQL.Model.PinnableItemConnection.Create);
+
+        /// <summary>
+        /// Returns how many more items this profile owner can pin to their profile.
+        /// </summary>
+        public int PinnedItemsRemaining { get; }
 
         /// <summary>
         /// A list of repositories this user has pinned to their profile
@@ -184,7 +211,7 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
-        /// The Organization's SAML Identity Providers
+        /// The Organization's SAML identity providers
         /// </summary>
         public OrganizationIdentityProvider SamlIdentityProvider => this.CreateProperty(x => x.SamlIdentityProvider, Octokit.GraphQL.Model.OrganizationIdentityProvider.Create);
 
@@ -229,6 +256,11 @@ namespace Octokit.GraphQL.Model
         /// Organization is adminable by the viewer.
         /// </summary>
         public bool ViewerCanAdminister { get; }
+
+        /// <summary>
+        /// Can the viewer pin repositories and gists to the profile?
+        /// </summary>
+        public bool ViewerCanChangePinnedItems { get; }
 
         /// <summary>
         /// Can the current viewer create new projects on this owner.

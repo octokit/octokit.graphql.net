@@ -60,6 +60,11 @@ namespace Octokit.GraphQL.Model
         public string BaseRefOid { get; }
 
         /// <summary>
+        /// The repository associated with this pull request's base Ref.
+        /// </summary>
+        public Repository BaseRepository => this.CreateProperty(x => x.BaseRepository, Octokit.GraphQL.Model.Repository.Create);
+
+        /// <summary>
         /// The body as Markdown.
         /// </summary>
         public string Body { get; }
@@ -355,6 +360,18 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="since">Allows filtering timeline events by a `since` timestamp.</param>
         public PullRequestTimelineConnection Timeline(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<DateTimeOffset>? since = null) => this.CreateMethodCall(x => x.Timeline(first, after, last, before, since), Octokit.GraphQL.Model.PullRequestTimelineConnection.Create);
+
+        /// <summary>
+        /// A list of events, comments, commits, etc. associated with the pull request.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="itemTypes">Filter timeline items by type.</param>
+        /// <param name="since">Filter timeline items by a `since` timestamp.</param>
+        /// <param name="skip">Skips the first _n_ elements in the list.</param>
+        public PullRequestTimelineItemsConnection TimelineItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<PullRequestTimelineItemsItemType>>? itemTypes = null, Arg<DateTimeOffset>? since = null, Arg<int>? skip = null) => this.CreateMethodCall(x => x.TimelineItems(first, after, last, before, itemTypes, since, skip), Octokit.GraphQL.Model.PullRequestTimelineItemsConnection.Create);
 
         /// <summary>
         /// Identifies the pull request title.

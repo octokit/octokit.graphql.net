@@ -246,6 +246,12 @@ namespace Octokit.GraphQL.Model
         UnlockedEvent,
 
         /// <summary>
+        /// Represents a 'user_blocked' event on a given user.
+        /// </summary>
+        [EnumMember(Value = "USER_BLOCKED_EVENT")]
+        UserBlockedEvent,
+
+        /// <summary>
         /// Represents an 'unpinned' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "UNPINNED_EVENT")]
