@@ -74,6 +74,11 @@ namespace Octokit.GraphQL.Model
         bool IsPrivate { get; }
 
         /// <summary>
+        /// Identifies if the repository is a template that can be used to generate new repositories.
+        /// </summary>
+        bool IsTemplate { get; }
+
+        /// <summary>
         /// The license associated with the repository
         /// </summary>
         License LicenseInfo { get; }
@@ -97,6 +102,11 @@ namespace Octokit.GraphQL.Model
         /// The repository's name with owner.
         /// </summary>
         string NameWithOwner { get; }
+
+        /// <summary>
+        /// The image used to represent this repository in Open Graph data.
+        /// </summary>
+        string OpenGraphImageUrl { get; }
 
         /// <summary>
         /// The User owner of the repository.
@@ -128,6 +138,11 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL for this repository
         /// </summary>
         string Url { get; }
+
+        /// <summary>
+        /// Whether this repository has a custom image to use with Open Graph as opposed to being represented by the owner's avatar.
+        /// </summary>
+        bool UsesCustomOpenGraphImage { get; }
     }
 }
 
@@ -169,6 +184,8 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool IsPrivate { get; }
 
+        public bool IsTemplate { get; }
+
         public License LicenseInfo => this.CreateProperty(x => x.LicenseInfo, Octokit.GraphQL.Model.License.Create);
 
         public RepositoryLockReason? LockReason { get; }
@@ -178,6 +195,8 @@ namespace Octokit.GraphQL.Model.Internal
         public string Name { get; }
 
         public string NameWithOwner { get; }
+
+        public string OpenGraphImageUrl { get; }
 
         public IRepositoryOwner Owner => this.CreateProperty(x => x.Owner, Octokit.GraphQL.Model.Internal.StubIRepositoryOwner.Create);
 
@@ -190,6 +209,8 @@ namespace Octokit.GraphQL.Model.Internal
         public DateTimeOffset UpdatedAt { get; }
 
         public string Url { get; }
+
+        public bool UsesCustomOpenGraphImage { get; }
 
         internal static StubIRepositoryInfo Create(Expression expression)
         {

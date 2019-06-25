@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public string Emoji { get; }
 
         /// <summary>
+        /// If set, the status will not be shown after this date.
+        /// </summary>
+        public DateTimeOffset? ExpiresAt { get; }
+
+        /// <summary>
         /// ID of the object.
         /// </summary>
         public ID Id { get; }

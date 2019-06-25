@@ -26,6 +26,16 @@ namespace Octokit.GraphQL.Model
         public int Additions { get; }
 
         /// <summary>
+        /// The pull requests associated with a commit
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for pull requests.</param>
+        public PullRequestConnection AssociatedPullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<PullRequestOrder>? orderBy = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
+
+        /// <summary>
         /// Authorship details of the commit.
         /// </summary>
         public GitActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Model.GitActor.Create);

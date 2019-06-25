@@ -28,6 +28,11 @@ namespace Octokit.GraphQL.Model
             /// A team of users in an organization.
             /// </summary>
             public Selector<T> Team(Func<Team, T> selector) => default;
+
+            /// <summary>
+            /// A placeholder user for attribution of imported data on GitHub.
+            /// </summary>
+            public Selector<T> Mannequin(Func<Mannequin, T> selector) => default;
         }
 
         internal static RequestedReviewer Create(Expression expression)

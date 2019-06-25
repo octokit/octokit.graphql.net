@@ -25,6 +25,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> PullRequestCommit(Func<PullRequestCommit, T> selector) => default;
 
             /// <summary>
+            /// Represents a commit comment thread part of a pull request.
+            /// </summary>
+            public Selector<T> PullRequestCommitCommentThread(Func<PullRequestCommitCommentThread, T> selector) => default;
+
+            /// <summary>
             /// A review object for a given pull request.
             /// </summary>
             public Selector<T> PullRequestReview(Func<PullRequestReview, T> selector) => default;
@@ -33,6 +38,11 @@ namespace Octokit.GraphQL.Model
             /// A threaded list of comments for a given pull request.
             /// </summary>
             public Selector<T> PullRequestReviewThread(Func<PullRequestReviewThread, T> selector) => default;
+
+            /// <summary>
+            /// Represents the latest point in the pull request timeline for which the viewer has seen the pull request's commits.
+            /// </summary>
+            public Selector<T> PullRequestRevisionMarker(Func<PullRequestRevisionMarker, T> selector) => default;
 
             /// <summary>
             /// Represents a 'base_ref_changed' event on a given issue or pull request.
@@ -203,6 +213,11 @@ namespace Octokit.GraphQL.Model
             /// Represents an 'unlocked' event on a given issue or pull request.
             /// </summary>
             public Selector<T> UnlockedEvent(Func<UnlockedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'user_blocked' event on a given user.
+            /// </summary>
+            public Selector<T> UserBlockedEvent(Func<UserBlockedEvent, T> selector) => default;
 
             /// <summary>
             /// Represents an 'unpinned' event on a given issue or pull request.
