@@ -120,6 +120,9 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string UserUrl { get; }
 
+        // HACK: This wasn't auto-generated
+        IQueryableList<AuditEntryActor> IAuditEntry.Actor => throw new NotImplementedException();
+
         internal static StubIAuditEntry Create(Expression expression)
         {
             return new StubIAuditEntry(expression);
