@@ -96,7 +96,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string Action { get; }
 
-        public AuditEntryActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Model.AuditEntryActor.Create);
+        public IQueryableList<AuditEntryActor> Actor => this.CreateProperty(x => x.Actor);
 
         public string ActorIp { get; }
 
@@ -119,9 +119,6 @@ namespace Octokit.GraphQL.Model.Internal
         public string UserResourcePath { get; }
 
         public string UserUrl { get; }
-
-        // HACK: This wasn't auto-generated
-        IQueryableList<AuditEntryActor> IAuditEntry.Actor => throw new NotImplementedException();
 
         internal static StubIAuditEntry Create(Expression expression)
         {
