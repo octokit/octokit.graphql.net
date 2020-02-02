@@ -39,6 +39,11 @@ namespace Octokit.GraphQL.Model
         bool HasIssuesEnabled { get; }
 
         /// <summary>
+        /// Indicates if the repository has the Projects feature enabled.
+        /// </summary>
+        bool HasProjectsEnabled { get; }
+
+        /// <summary>
         /// Indicates if the repository has wiki feature enabled.
         /// </summary>
         bool HasWikiEnabled { get; }
@@ -169,6 +174,8 @@ namespace Octokit.GraphQL.Model.Internal
         public int ForkCount { get; }
 
         public bool HasIssuesEnabled { get; }
+
+        public bool HasProjectsEnabled { get; }
 
         public bool HasWikiEnabled { get; }
 

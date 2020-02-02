@@ -24,6 +24,16 @@ namespace Octokit.GraphQL.Model
         public string Body { get; set; }
 
         /// <summary>
+        /// The name of the GitHub-provided template.
+        /// </summary>
+        public ProjectTemplate? Template { get; set; }
+
+        /// <summary>
+        /// A list of repository IDs to create as linked repositories for the project
+        /// </summary>
+        public IEnumerable<ID> RepositoryIds { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

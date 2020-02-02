@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Identifies the actor who performed the event.
+        /// </summary>
+        public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; }

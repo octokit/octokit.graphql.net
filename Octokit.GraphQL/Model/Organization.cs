@@ -22,10 +22,26 @@ namespace Octokit.GraphQL.Model
         public bool AnyPinnableItems(Arg<PinnableItemType>? type = null) => default;
 
         /// <summary>
+        /// Audit log entries of the organization
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for the returned audit log entries.</param>
+        /// <param name="query">The query string to filter audit entries</param>
+        public OrganizationAuditEntryConnection AuditLog(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<AuditLogOrder>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.AuditLog(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.OrganizationAuditEntryConnection.Create);
+
+        /// <summary>
         /// A URL pointing to the organization's public avatar.
         /// </summary>
         /// <param name="size">The size of the resulting square image.</param>
         public string AvatarUrl(Arg<int>? size = null) => default;
+
+        /// <summary>
+        /// Identifies the date and time when the object was created.
+        /// </summary>
+        public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
         /// Identifies the primary key from the database.
@@ -36,6 +52,11 @@ namespace Octokit.GraphQL.Model
         /// The organization's public profile description.
         /// </summary>
         public string Description { get; }
+
+        /// <summary>
+        /// The organization's public profile description rendered to HTML.
+        /// </summary>
+        public string DescriptionHTML { get; }
 
         /// <summary>
         /// The organization's public email.
@@ -180,6 +201,32 @@ namespace Octokit.GraphQL.Model
         public string ProjectsUrl { get; }
 
         /// <summary>
+        /// A list of registry packages under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="name">Find registry package by name.</param>
+        /// <param name="names">Find registry packages by their names.</param>
+        /// <param name="packageType">Filter registry package by type.</param>
+        /// <param name="publicOnly">Filter registry package by whether it is publicly visible</param>
+        /// <param name="registryPackageType">Filter registry package by type (string).</param>
+        /// <param name="repositoryId">Find registry packages in a repository.</param>
+        public RegistryPackageConnection RegistryPackages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? name = null, Arg<IEnumerable<string>>? names = null, Arg<RegistryPackageType>? packageType = null, Arg<bool>? publicOnly = null, Arg<string>? registryPackageType = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.RegistryPackages(first, after, last, before, name, names, packageType, publicOnly, registryPackageType, repositoryId), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
+
+        /// <summary>
+        /// A list of registry packages for a particular search query.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="packageType">Filter registry package by type.</param>
+        /// <param name="query">Find registry package by search query.</param>
+        public RegistryPackageConnection RegistryPackagesForQuery(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RegistryPackageType>? packageType = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.RegistryPackagesForQuery(first, after, last, before, packageType, query), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
+
+        /// <summary>
         /// A list of repositories that the user owns.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -216,6 +263,32 @@ namespace Octokit.GraphQL.Model
         public OrganizationIdentityProvider SamlIdentityProvider => this.CreateProperty(x => x.SamlIdentityProvider, Octokit.GraphQL.Model.OrganizationIdentityProvider.Create);
 
         /// <summary>
+        /// The GitHub Sponsors listing for this user.
+        /// </summary>
+        public SponsorsListing SponsorsListing => this.CreateProperty(x => x.SponsorsListing, Octokit.GraphQL.Model.SponsorsListing.Create);
+
+        /// <summary>
+        /// This object's sponsorships as the maintainer.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="includePrivate">Whether or not to include private sponsorships in the result set</param>
+        /// <param name="orderBy">Ordering options for sponsorships returned from this connection. If left blank, the sponsorships will be ordered based on relevancy to the viewer.</param>
+        public SponsorshipConnection SponsorshipsAsMaintainer(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includePrivate = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsMaintainer(first, after, last, before, includePrivate, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
+
+        /// <summary>
+        /// This object's sponsorships as the sponsor.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for sponsorships returned from this connection. If left blank, the sponsorships will be ordered based on relevancy to the viewer.</param>
+        public SponsorshipConnection SponsorshipsAsSponsor(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsSponsor(first, after, last, before, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
+
+        /// <summary>
         /// Find an organization's team by its slug.
         /// </summary>
         /// <param name="slug">The name or slug of the team to find.</param>
@@ -246,6 +319,11 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL listing organization's teams
         /// </summary>
         public string TeamsUrl { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was last updated.
+        /// </summary>
+        public DateTimeOffset UpdatedAt { get; }
 
         /// <summary>
         /// The HTTP URL for this organization.

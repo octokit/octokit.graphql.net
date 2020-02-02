@@ -85,6 +85,16 @@ namespace Octokit.GraphQL.Model
         public int ChangedFiles { get; }
 
         /// <summary>
+        /// The HTTP path for the checks of this pull request.
+        /// </summary>
+        public string ChecksResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP URL for the checks of this pull request.
+        /// </summary>
+        public string ChecksUrl { get; }
+
+        /// <summary>
         /// `true` if the pull request is closed
         /// </summary>
         public bool Closed { get; }
@@ -171,6 +181,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IRepositoryOwner HeadRepositoryOwner => this.CreateProperty(x => x.HeadRepositoryOwner, Octokit.GraphQL.Model.Internal.StubIRepositoryOwner.Create);
 
+        /// <summary>
+        /// The hovercard information for this issue
+        /// </summary>
+        /// <param name="includeNotificationContexts">Whether or not to include notification contexts</param>
+        public Hovercard Hovercard(Arg<bool>? includeNotificationContexts = null) => this.CreateMethodCall(x => x.Hovercard(includeNotificationContexts), Octokit.GraphQL.Model.Hovercard.Create);
+
         public ID Id { get; }
 
         /// <summary>
@@ -190,7 +206,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octokit.GraphQL.Model.LabelConnection.Create);
+        /// <param name="orderBy">Ordering options for labels returned from the connection.</param>
+        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<LabelOrder>? orderBy = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before, orderBy), Octokit.GraphQL.Model.LabelConnection.Create);
 
         /// <summary>
         /// The moment the editor made the last edit

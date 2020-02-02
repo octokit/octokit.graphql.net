@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Model
         public string Body { get; }
 
         /// <summary>
-        /// Identifies the body of the issue rendered to HTML.
+        /// The body rendered to HTML.
         /// </summary>
         public string BodyHTML { get; }
 
@@ -93,6 +93,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
+        /// <summary>
+        /// The hovercard information for this issue
+        /// </summary>
+        /// <param name="includeNotificationContexts">Whether or not to include notification contexts</param>
+        public Hovercard Hovercard(Arg<bool>? includeNotificationContexts = null) => this.CreateMethodCall(x => x.Hovercard(includeNotificationContexts), Octokit.GraphQL.Model.Hovercard.Create);
+
         public ID Id { get; }
 
         /// <summary>
@@ -107,7 +113,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before), Octokit.GraphQL.Model.LabelConnection.Create);
+        /// <param name="orderBy">Ordering options for labels returned from the connection.</param>
+        public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<LabelOrder>? orderBy = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before, orderBy), Octokit.GraphQL.Model.LabelConnection.Create);
 
         /// <summary>
         /// The moment the editor made the last edit

@@ -32,6 +32,27 @@ namespace Octokit.GraphQL
         public IQueryableList<CodeOfConduct> CodesOfConduct => this.CreateProperty(x => x.CodesOfConduct);
 
         /// <summary>
+        /// Look up an enterprise by URL slug.
+        /// </summary>
+        /// <param name="slug">The enterprise URL slug.</param>
+        /// <param name="invitationToken">The enterprise invitation token.</param>
+        public Enterprise Enterprise(Arg<string> slug, Arg<string>? invitationToken = null) => this.CreateMethodCall(x => x.Enterprise(slug, invitationToken), Octokit.GraphQL.Model.Enterprise.Create);
+
+        /// <summary>
+        /// Look up a pending enterprise administrator invitation by invitee, enterprise and role.
+        /// </summary>
+        /// <param name="enterpriseSlug">The slug of the enterprise the user was invited to join.</param>
+        /// <param name="role">The role for the business member invitation.</param>
+        /// <param name="userLogin">The login of the user invited to join the business.</param>
+        public EnterpriseAdministratorInvitation EnterpriseAdministratorInvitation(Arg<string> enterpriseSlug, Arg<EnterpriseAdministratorRole> role, Arg<string> userLogin) => this.CreateMethodCall(x => x.EnterpriseAdministratorInvitation(enterpriseSlug, role, userLogin), Octokit.GraphQL.Model.EnterpriseAdministratorInvitation.Create);
+
+        /// <summary>
+        /// Look up a pending enterprise administrator invitation by invitation token.
+        /// </summary>
+        /// <param name="invitationToken">The invitation token sent with the invitation email.</param>
+        public EnterpriseAdministratorInvitation EnterpriseAdministratorInvitationByToken(Arg<string> invitationToken) => this.CreateMethodCall(x => x.EnterpriseAdministratorInvitationByToken(invitationToken), Octokit.GraphQL.Model.EnterpriseAdministratorInvitation.Create);
+
+        /// <summary>
         /// Look up an open source license by its key
         /// </summary>
         /// <param name="key">The license's downcased SPDX ID</param>
@@ -176,6 +197,12 @@ namespace Octokit.GraphQL
         /// <param name="package">A package name to filter vulnerabilities by.</param>
         /// <param name="severities">A list of severities to filter vulnerabilities by.</param>
         public SecurityVulnerabilityConnection SecurityVulnerabilities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? ecosystem = null, Arg<SecurityVulnerabilityOrder>? orderBy = null, Arg<string>? package = null, Arg<IEnumerable<SecurityAdvisorySeverity>>? severities = null) => this.CreateMethodCall(x => x.SecurityVulnerabilities(first, after, last, before, ecosystem, orderBy, package, severities), Octokit.GraphQL.Model.SecurityVulnerabilityConnection.Create);
+
+        /// <summary>
+        /// Look up a single Sponsors Listing
+        /// </summary>
+        /// <param name="slug">Select the Sponsors listing which matches this slug</param>
+        public SponsorsListing SponsorsListing(Arg<string> slug) => this.CreateMethodCall(x => x.SponsorsListing(slug), Octokit.GraphQL.Model.SponsorsListing.Create);
 
         /// <summary>
         /// Look up a topic by name.
