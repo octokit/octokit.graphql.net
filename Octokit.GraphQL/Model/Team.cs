@@ -58,6 +58,33 @@ namespace Octokit.GraphQL.Model
         public string Description { get; }
 
         /// <summary>
+        /// Find a team discussion by its number.
+        /// </summary>
+        /// <param name="number">The sequence number of the discussion to find.</param>
+        public TeamDiscussion Discussion(Arg<int> number) => this.CreateMethodCall(x => x.Discussion(number), Octokit.GraphQL.Model.TeamDiscussion.Create);
+
+        /// <summary>
+        /// A list of team discussions.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="isPinned">If provided, filters discussions according to whether or not they are pinned.</param>
+        /// <param name="orderBy">Order for connection</param>
+        public TeamDiscussionConnection Discussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? isPinned = null, Arg<TeamDiscussionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Discussions(first, after, last, before, isPinned, orderBy), Octokit.GraphQL.Model.TeamDiscussionConnection.Create);
+
+        /// <summary>
+        /// The HTTP path for team discussions
+        /// </summary>
+        public string DiscussionsResourcePath { get; }
+
+        /// <summary>
+        /// The HTTP URL for team discussions
+        /// </summary>
+        public string DiscussionsUrl { get; }
+
+        /// <summary>
         /// The HTTP path for editing this team
         /// </summary>
         public string EditTeamResourcePath { get; }

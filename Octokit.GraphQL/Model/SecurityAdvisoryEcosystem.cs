@@ -40,5 +40,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "NUGET")]
         Nuget,
+
+        /// <summary>
+        /// PHP packages hosted at packagist.org
+        /// </summary>
+        [EnumMember(Value = "COMPOSER")]
+        Composer,
     }
 }

@@ -29,6 +29,11 @@ namespace Octokit.GraphQL.Model
         public string ExpectedHeadOid { get; set; }
 
         /// <summary>
+        /// The merge method to use. If omitted, defaults to 'MERGE'
+        /// </summary>
+        public PullRequestMergeMethod? MergeMethod { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

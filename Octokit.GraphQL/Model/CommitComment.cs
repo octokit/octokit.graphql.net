@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Model
         public string Body { get; }
 
         /// <summary>
-        /// Identifies the comment body rendered to HTML.
+        /// The body rendered to HTML.
         /// </summary>
         public string BodyHTML { get; }
 

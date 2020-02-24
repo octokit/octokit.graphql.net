@@ -20,16 +20,6 @@ namespace Octokit.GraphQL.Model
         public class Selector<T>
         {
             /// <summary>
-            /// Represents a comment on an Issue.
-            /// </summary>
-            public Selector<T> IssueComment(Func<IssueComment, T> selector) => default;
-
-            /// <summary>
-            /// Represents a mention made by one issue or pull request to another.
-            /// </summary>
-            public Selector<T> CrossReferencedEvent(Func<CrossReferencedEvent, T> selector) => default;
-
-            /// <summary>
             /// Represents a 'added_to_project' event on a given issue or pull request.
             /// </summary>
             public Selector<T> AddedToProjectEvent(Func<AddedToProjectEvent, T> selector) => default;
@@ -50,14 +40,34 @@ namespace Octokit.GraphQL.Model
             public Selector<T> CommentDeletedEvent(Func<CommentDeletedEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'connected' event on a given issue or pull request.
+            /// </summary>
+            public Selector<T> ConnectedEvent(Func<ConnectedEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'converted_note_to_issue' event on a given issue or pull request.
             /// </summary>
             public Selector<T> ConvertedNoteToIssueEvent(Func<ConvertedNoteToIssueEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a mention made by one issue or pull request to another.
+            /// </summary>
+            public Selector<T> CrossReferencedEvent(Func<CrossReferencedEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'demilestoned' event on a given issue or pull request.
             /// </summary>
             public Selector<T> DemilestonedEvent(Func<DemilestonedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'disconnected' event on a given issue or pull request.
+            /// </summary>
+            public Selector<T> DisconnectedEvent(Func<DisconnectedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a comment on an Issue.
+            /// </summary>
+            public Selector<T> IssueComment(Func<IssueComment, T> selector) => default;
 
             /// <summary>
             /// Represents a 'labeled' event on a given issue or pull request.
@@ -68,6 +78,11 @@ namespace Octokit.GraphQL.Model
             /// Represents a 'locked' event on a given issue or pull request.
             /// </summary>
             public Selector<T> LockedEvent(Func<LockedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'marked_as_duplicate' event on a given issue or pull request.
+            /// </summary>
+            public Selector<T> MarkedAsDuplicateEvent(Func<MarkedAsDuplicateEvent, T> selector) => default;
 
             /// <summary>
             /// Represents a 'mentioned' event on a given issue or pull request.
@@ -135,9 +150,9 @@ namespace Octokit.GraphQL.Model
             public Selector<T> UnlockedEvent(Func<UnlockedEvent, T> selector) => default;
 
             /// <summary>
-            /// Represents a 'user_blocked' event on a given user.
+            /// Represents an 'unmarked_as_duplicate' event on a given issue or pull request.
             /// </summary>
-            public Selector<T> UserBlockedEvent(Func<UserBlockedEvent, T> selector) => default;
+            public Selector<T> UnmarkedAsDuplicateEvent(Func<UnmarkedAsDuplicateEvent, T> selector) => default;
 
             /// <summary>
             /// Represents an 'unpinned' event on a given issue or pull request.
@@ -148,6 +163,11 @@ namespace Octokit.GraphQL.Model
             /// Represents an 'unsubscribed' event on a given `Subscribable`.
             /// </summary>
             public Selector<T> UnsubscribedEvent(Func<UnsubscribedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'user_blocked' event on a given user.
+            /// </summary>
+            public Selector<T> UserBlockedEvent(Func<UserBlockedEvent, T> selector) => default;
         }
 
         internal static IssueTimelineItems Create(Expression expression)

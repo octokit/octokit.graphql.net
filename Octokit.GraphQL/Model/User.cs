@@ -123,6 +123,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="privacy">Filters Gists according to privacy.</param>
         public GistConnection Gists(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<GistOrder>? orderBy = null, Arg<GistPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Gists(first, after, last, before, orderBy, privacy), Octokit.GraphQL.Model.GistConnection.Create);
 
+        /// <summary>
+        /// The hovercard information for this user in a given context
+        /// </summary>
+        /// <param name="primarySubjectId">The ID of the subject to get the hovercard in the context of</param>
+        public Hovercard Hovercard(Arg<ID>? primarySubjectId = null) => this.CreateMethodCall(x => x.Hovercard(primarySubjectId), Octokit.GraphQL.Model.Hovercard.Create);
+
         public ID Id { get; }
 
         /// <summary>
@@ -308,6 +314,32 @@ namespace Octokit.GraphQL.Model
         public PullRequestConnection PullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? baseRefName = null, Arg<string>? headRefName = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<PullRequestState>>? states = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, baseRefName, headRefName, labels, orderBy, states), Octokit.GraphQL.Model.PullRequestConnection.Create);
 
         /// <summary>
+        /// A list of registry packages under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="name">Find registry package by name.</param>
+        /// <param name="names">Find registry packages by their names.</param>
+        /// <param name="packageType">Filter registry package by type.</param>
+        /// <param name="publicOnly">Filter registry package by whether it is publicly visible</param>
+        /// <param name="registryPackageType">Filter registry package by type (string).</param>
+        /// <param name="repositoryId">Find registry packages in a repository.</param>
+        public RegistryPackageConnection RegistryPackages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? name = null, Arg<IEnumerable<string>>? names = null, Arg<RegistryPackageType>? packageType = null, Arg<bool>? publicOnly = null, Arg<string>? registryPackageType = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.RegistryPackages(first, after, last, before, name, names, packageType, publicOnly, registryPackageType, repositoryId), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
+
+        /// <summary>
+        /// A list of registry packages for a particular search query.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="packageType">Filter registry package by type.</param>
+        /// <param name="query">Find registry package by search query.</param>
+        public RegistryPackageConnection RegistryPackagesForQuery(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RegistryPackageType>? packageType = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.RegistryPackagesForQuery(first, after, last, before, packageType, query), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
+
+        /// <summary>
         /// A list of repositories that the user owns.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -348,6 +380,42 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
+        /// Replies this user has saved
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">The field to order saved replies by.</param>
+        public SavedReplyConnection SavedReplies(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SavedReplyOrder>? orderBy = null) => this.CreateMethodCall(x => x.SavedReplies(first, after, last, before, orderBy), Octokit.GraphQL.Model.SavedReplyConnection.Create);
+
+        /// <summary>
+        /// The GitHub Sponsors listing for this user.
+        /// </summary>
+        public SponsorsListing SponsorsListing => this.CreateProperty(x => x.SponsorsListing, Octokit.GraphQL.Model.SponsorsListing.Create);
+
+        /// <summary>
+        /// This object's sponsorships as the maintainer.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="includePrivate">Whether or not to include private sponsorships in the result set</param>
+        /// <param name="orderBy">Ordering options for sponsorships returned from this connection. If left blank, the sponsorships will be ordered based on relevancy to the viewer.</param>
+        public SponsorshipConnection SponsorshipsAsMaintainer(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includePrivate = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsMaintainer(first, after, last, before, includePrivate, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
+
+        /// <summary>
+        /// This object's sponsorships as the sponsor.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for sponsorships returned from this connection. If left blank, the sponsorships will be ordered based on relevancy to the viewer.</param>
+        public SponsorshipConnection SponsorshipsAsSponsor(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsSponsor(first, after, last, before, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
+
+        /// <summary>
         /// Repositories the user has starred.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -362,6 +430,17 @@ namespace Octokit.GraphQL.Model
         /// The user's description of what they're currently doing.
         /// </summary>
         public UserStatus Status => this.CreateProperty(x => x.Status, Octokit.GraphQL.Model.UserStatus.Create);
+
+        /// <summary>
+        /// Repositories the user has contributed to, ordered by contribution rank, plus repositories the user has created
+        /// </summary>
+        /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="since">How far back in time to fetch contributed repositories</param>
+        public RepositoryConnection TopRepositories(Arg<RepositoryOrder> orderBy, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<DateTimeOffset>? since = null) => this.CreateMethodCall(x => x.TopRepositories(orderBy, first, after, last, before, since), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

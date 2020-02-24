@@ -43,18 +43,6 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// Identifies the message associated with the 'review_dismissed' event.
-        /// </summary>
-        [Obsolete(@"`message` is being removed because it not nullable, whereas the underlying field is optional. Use `dismissalMessage` instead. Removal on 2019-07-01 UTC.")]
-        public string Message { get; }
-
-        /// <summary>
-        /// The message associated with the event, rendered to HTML.
-        /// </summary>
-        [Obsolete(@"`messageHtml` is being removed because it not nullable, whereas the underlying field is optional. Use `dismissalMessageHTML` instead. Removal on 2019-07-01 UTC.")]
-        public string MessageHtml { get; }
-
-        /// <summary>
         /// Identifies the previous state of the review with the 'review_dismissed' event.
         /// </summary>
         public PullRequestReviewState PreviousReviewState { get; }

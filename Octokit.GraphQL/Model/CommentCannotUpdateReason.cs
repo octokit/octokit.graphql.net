@@ -12,6 +12,12 @@ namespace Octokit.GraphQL.Model
     public enum CommentCannotUpdateReason
     {
         /// <summary>
+        /// Unable to create comment because repository is archived.
+        /// </summary>
+        [EnumMember(Value = "ARCHIVED")]
+        Archived,
+
+        /// <summary>
         /// You must be the author or have write access to this repository to update this comment.
         /// </summary>
         [EnumMember(Value = "INSUFFICIENT_ACCESS")]

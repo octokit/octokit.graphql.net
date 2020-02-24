@@ -20,9 +20,24 @@ namespace Octokit.GraphQL.Model
         public class Selector<T>
         {
             /// <summary>
+            /// A GitHub App.
+            /// </summary>
+            public Selector<T> App(Func<App, T> selector) => default;
+
+            /// <summary>
             /// An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project.
             /// </summary>
             public Selector<T> Issue(Func<Issue, T> selector) => default;
+
+            /// <summary>
+            /// A listing in the GitHub integration marketplace.
+            /// </summary>
+            public Selector<T> MarketplaceListing(Func<MarketplaceListing, T> selector) => default;
+
+            /// <summary>
+            /// An account on GitHub, with one or more owners, that has repositories, members and teams.
+            /// </summary>
+            public Selector<T> Organization(Func<Organization, T> selector) => default;
 
             /// <summary>
             /// A repository pull request.
@@ -38,21 +53,6 @@ namespace Octokit.GraphQL.Model
             /// A user is an individual's account on GitHub that owns repositories and can make new content.
             /// </summary>
             public Selector<T> User(Func<User, T> selector) => default;
-
-            /// <summary>
-            /// An account on GitHub, with one or more owners, that has repositories, members and teams.
-            /// </summary>
-            public Selector<T> Organization(Func<Organization, T> selector) => default;
-
-            /// <summary>
-            /// A listing in the GitHub integration marketplace.
-            /// </summary>
-            public Selector<T> MarketplaceListing(Func<MarketplaceListing, T> selector) => default;
-
-            /// <summary>
-            /// A GitHub App.
-            /// </summary>
-            public Selector<T> App(Func<App, T> selector) => default;
         }
 
         internal static SearchResultItem Create(Expression expression)
