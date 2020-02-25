@@ -470,6 +470,21 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public void DateTimeOffsetValue_Variable()
+        {
+            var expected = "query{repository(owner:\"foo\",name:\"bar\"){issueByCreation(createdSince:\"2000-01-02T03:04:05+00:00\"){body}}}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .IssueByCreation(new DateTimeOffset(2000,1,2,3,4,5, default))
+                .Select(x => x.Body);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(0));
+        }
+
+        [Fact]
         public void InputObject_Variable()
         {
             var expected = "query($var1:AddCommentInput!){addComment(input:$var1){body}}";
