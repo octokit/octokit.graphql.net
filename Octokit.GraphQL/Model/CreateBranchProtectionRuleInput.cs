@@ -74,7 +74,7 @@ namespace Octokit.GraphQL.Model
         public bool? RestrictsPushes { get; set; }
 
         /// <summary>
-        /// A list of User or Team IDs allowed to push to matching branches.
+        /// A list of User, Team or App IDs allowed to push to matching branches.
         /// </summary>
         public IEnumerable<ID> PushActorIds { get; set; }
 

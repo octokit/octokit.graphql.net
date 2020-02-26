@@ -48,6 +48,12 @@ namespace Octokit.GraphQL.Model
         CommentDeletedEvent,
 
         /// <summary>
+        /// Represents a 'connected' event on a given issue or pull request.
+        /// </summary>
+        [EnumMember(Value = "CONNECTED_EVENT")]
+        ConnectedEvent,
+
+        /// <summary>
         /// Represents a 'converted_note_to_issue' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "CONVERTED_NOTE_TO_ISSUE_EVENT")]
@@ -60,6 +66,12 @@ namespace Octokit.GraphQL.Model
         DemilestonedEvent,
 
         /// <summary>
+        /// Represents a 'disconnected' event on a given issue or pull request.
+        /// </summary>
+        [EnumMember(Value = "DISCONNECTED_EVENT")]
+        DisconnectedEvent,
+
+        /// <summary>
         /// Represents a 'labeled' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "LABELED_EVENT")]
@@ -70,6 +82,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "LOCKED_EVENT")]
         LockedEvent,
+
+        /// <summary>
+        /// Represents a 'marked_as_duplicate' event on a given issue or pull request.
+        /// </summary>
+        [EnumMember(Value = "MARKED_AS_DUPLICATE_EVENT")]
+        MarkedAsDuplicateEvent,
 
         /// <summary>
         /// Represents a 'mentioned' event on a given issue or pull request.
@@ -154,6 +172,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "USER_BLOCKED_EVENT")]
         UserBlockedEvent,
+
+        /// <summary>
+        /// Represents an 'unmarked_as_duplicate' event on a given issue or pull request.
+        /// </summary>
+        [EnumMember(Value = "UNMARKED_AS_DUPLICATE_EVENT")]
+        UnmarkedAsDuplicateEvent,
 
         /// <summary>
         /// Represents an 'unpinned' event on a given issue or pull request.

@@ -30,9 +30,34 @@ namespace Octokit.GraphQL.Model
         public string Body { get; set; }
 
         /// <summary>
+        /// The target state of the pull request.
+        /// </summary>
+        public PullRequestUpdateState? State { get; set; }
+
+        /// <summary>
         /// Indicates whether maintainers can modify the pull request.
         /// </summary>
         public bool? MaintainerCanModify { get; set; }
+
+        /// <summary>
+        /// An array of Node IDs of users for this pull request.
+        /// </summary>
+        public IEnumerable<ID> AssigneeIds { get; set; }
+
+        /// <summary>
+        /// The Node ID of the milestone for this pull request.
+        /// </summary>
+        public ID? MilestoneId { get; set; }
+
+        /// <summary>
+        /// An array of Node IDs of labels for this pull request.
+        /// </summary>
+        public IEnumerable<ID> LabelIds { get; set; }
+
+        /// <summary>
+        /// An array of Node IDs for projects associated with this pull request.
+        /// </summary>
+        public IEnumerable<ID> ProjectIds { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

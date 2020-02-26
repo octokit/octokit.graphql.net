@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Model
         public string Body { get; }
 
         /// <summary>
-        /// The body of this review rendered to HTML.
+        /// The body rendered to HTML.
         /// </summary>
         public string BodyHTML { get; }
 

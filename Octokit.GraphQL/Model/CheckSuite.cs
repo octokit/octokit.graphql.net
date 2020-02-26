@@ -82,6 +82,11 @@ namespace Octokit.GraphQL.Model
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
+        /// The HTTP path for this check suite
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// The status of this check suite.
         /// </summary>
         public CheckStatusState Status { get; }
@@ -90,6 +95,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL for this check suite
+        /// </summary>
+        public string Url { get; }
 
         internal static CheckSuite Create(Expression expression)
         {
