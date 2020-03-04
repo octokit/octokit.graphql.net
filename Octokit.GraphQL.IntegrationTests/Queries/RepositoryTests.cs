@@ -280,7 +280,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                         .Select(fragment).ToList().OrderBy(o => o.StringField1).First(),
 
                     MentionableUser = organization.Repository("octokit.net")
-                        .MentionableUsers(10, null, null, null).Nodes
+                        .MentionableUsers(10, null, null, null, null).Nodes
                         .Select(fragment).ToList().OrderBy(o => o.StringField1).First()
                 });
 

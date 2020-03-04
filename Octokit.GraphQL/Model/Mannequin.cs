@@ -31,6 +31,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// The mannequin's email on the source instance.
+        /// </summary>
+        public string Email { get; }
+
         public ID Id { get; }
 
         /// <summary>

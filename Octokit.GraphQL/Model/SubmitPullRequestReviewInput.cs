@@ -9,9 +9,14 @@ namespace Octokit.GraphQL.Model
     public class SubmitPullRequestReviewInput
     {
         /// <summary>
+        /// The Pull Request ID to submit any pending reviews.
+        /// </summary>
+        public ID? PullRequestId { get; set; }
+
+        /// <summary>
         /// The Pull Request Review ID to submit.
         /// </summary>
-        public ID PullRequestReviewId { get; set; }
+        public ID? PullRequestReviewId { get; set; }
 
         /// <summary>
         /// The event to send to the Pull Request Review.

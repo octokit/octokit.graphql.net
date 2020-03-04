@@ -46,5 +46,17 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "NEUTRAL")]
         Neutral,
+
+        /// <summary>
+        /// The check suite or run was skipped. For internal use only.
+        /// </summary>
+        [EnumMember(Value = "SKIPPED")]
+        Skipped,
+
+        /// <summary>
+        /// The check suite or run was marked stale. For internal use only.
+        /// </summary>
+        [EnumMember(Value = "STALE")]
+        Stale,
     }
 }

@@ -49,20 +49,17 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The first issue the user opened on GitHub. This will be null if that issue was opened outside the collection's time range and ignoreTimeRange is false. If the issue is not visible but the user has opted to show private contributions, a RestrictedContribution will be returned.
         /// </summary>
-        /// <param name="ignoreTimeRange">If true, the first issue will be returned even if it was opened outside of the collection's time range. **Upcoming Change on 2019-07-01 UTC** **Description:** `ignoreTimeRange` will be removed. Use a `ContributionsCollection` starting sufficiently far back **Reason:** ignore_time_range will be removed</param>
-        public CreatedIssueOrRestrictedContribution FirstIssueContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.FirstIssueContribution(ignoreTimeRange), Octokit.GraphQL.Model.CreatedIssueOrRestrictedContribution.Create);
+        public CreatedIssueOrRestrictedContribution FirstIssueContribution => this.CreateProperty(x => x.FirstIssueContribution, Octokit.GraphQL.Model.CreatedIssueOrRestrictedContribution.Create);
 
         /// <summary>
         /// The first pull request the user opened on GitHub. This will be null if that pull request was opened outside the collection's time range and ignoreTimeRange is not true. If the pull request is not visible but the user has opted to show private contributions, a RestrictedContribution will be returned.
         /// </summary>
-        /// <param name="ignoreTimeRange">If true, the first pull request will be returned even if it was opened outside of the collection's time range. **Upcoming Change on 2019-07-01 UTC** **Description:** `ignoreTimeRange` will be removed. Use a `ContributionsCollection` starting sufficiently far back **Reason:** ignore_time_range will be removed</param>
-        public CreatedPullRequestOrRestrictedContribution FirstPullRequestContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.FirstPullRequestContribution(ignoreTimeRange), Octokit.GraphQL.Model.CreatedPullRequestOrRestrictedContribution.Create);
+        public CreatedPullRequestOrRestrictedContribution FirstPullRequestContribution => this.CreateProperty(x => x.FirstPullRequestContribution, Octokit.GraphQL.Model.CreatedPullRequestOrRestrictedContribution.Create);
 
         /// <summary>
         /// The first repository the user created on GitHub. This will be null if that first repository was created outside the collection's time range and ignoreTimeRange is false. If the repository is not visible, then a RestrictedContribution is returned.
         /// </summary>
-        /// <param name="ignoreTimeRange">If true, the first repository will be returned even if it was opened outside of the collection's time range. **Upcoming Change on 2019-07-01 UTC** **Description:** `ignoreTimeRange` will be removed. Use a `ContributionsCollection` starting sufficiently far back **Reason:** ignore_time_range will be removed</param>
-        public CreatedRepositoryOrRestrictedContribution FirstRepositoryContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.FirstRepositoryContribution(ignoreTimeRange), Octokit.GraphQL.Model.CreatedRepositoryOrRestrictedContribution.Create);
+        public CreatedRepositoryOrRestrictedContribution FirstRepositoryContribution => this.CreateProperty(x => x.FirstRepositoryContribution, Octokit.GraphQL.Model.CreatedRepositoryOrRestrictedContribution.Create);
 
         /// <summary>
         /// Does the user have any more activity in the timeline that occurred prior to the collection's time range?
@@ -107,8 +104,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// When the user signed up for GitHub. This will be null if that sign up date falls outside the collection's time range and ignoreTimeRange is false.
         /// </summary>
-        /// <param name="ignoreTimeRange">If true, the contribution will be returned even if the user signed up outside of the collection's time range. **Upcoming Change on 2019-07-01 UTC** **Description:** `ignoreTimeRange` will be removed. Use a `ContributionsCollection` starting sufficiently far back **Reason:** ignore_time_range will be removed</param>
-        public JoinedGitHubContribution JoinedGitHubContribution(Arg<bool>? ignoreTimeRange = null) => this.CreateMethodCall(x => x.JoinedGitHubContribution(ignoreTimeRange), Octokit.GraphQL.Model.JoinedGitHubContribution.Create);
+        public JoinedGitHubContribution JoinedGitHubContribution => this.CreateProperty(x => x.JoinedGitHubContribution, Octokit.GraphQL.Model.JoinedGitHubContribution.Create);
 
         /// <summary>
         /// The date of the most recent restricted contribution the user made in this time period. Can only be non-null when the user has enabled private contribution counts.

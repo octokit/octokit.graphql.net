@@ -26,9 +26,14 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
-        /// Identifies the description of the release.
+        /// The description of the release.
         /// </summary>
         public string Description { get; }
+
+        /// <summary>
+        /// The description of this release rendered to HTML.
+        /// </summary>
+        public string DescriptionHTML { get; }
 
         public ID Id { get; }
 
@@ -43,7 +48,7 @@ namespace Octokit.GraphQL.Model
         public bool IsPrerelease { get; }
 
         /// <summary>
-        /// Identifies the title of the release.
+        /// The title of the release.
         /// </summary>
         public string Name { get; }
 
@@ -66,6 +71,12 @@ namespace Octokit.GraphQL.Model
         /// The HTTP path for this issue
         /// </summary>
         public string ResourcePath { get; }
+
+        /// <summary>
+        /// A description of the release, rendered to HTML without any links in it.
+        /// </summary>
+        /// <param name="limit">How many characters to return.</param>
+        public string ShortDescriptionHTML(Arg<int>? limit = null) => default;
 
         /// <summary>
         /// The Git tag the release points to

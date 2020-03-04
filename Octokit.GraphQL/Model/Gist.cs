@@ -79,6 +79,11 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset? PushedAt { get; }
 
         /// <summary>
+        /// The HTML path to this resource.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -92,6 +97,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL for this Gist.
+        /// </summary>
+        public string Url { get; }
 
         /// <summary>
         /// Returns a boolean indicating whether the viewing user has starred this starrable.
