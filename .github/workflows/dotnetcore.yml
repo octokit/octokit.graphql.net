@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
 
-    - run: dotnet build Octokit.GraphQL.sln
+    - run: dotnet build Octokit.GraphQL.sln -c Release
       
     - uses: nuget/setup-nuget@v1
       with:
