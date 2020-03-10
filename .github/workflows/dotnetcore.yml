@@ -1,4 +1,4 @@
-name: .NET
+name: Build and Publish
 
 on:
   push:
@@ -8,13 +8,11 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v2
       
-    - name: Setup .NET Core
+    - name: Setup .NET Core and GitHub Packages
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
@@ -22,14 +20,18 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     
-    - run: dotnet build Octokit.GraphQL.sln -c Release
-      
-    - uses: nuget/setup-nuget@v1
-      with:
-        nuget-version: '5.x'
-    - run: nuget pack
-    - run: dotnet nuget push *.nupkg
-                
+    - name: Build using .NET Core
+      run: dotnet build Octokit.GraphQL.sln -c Release
+                      
     - run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
     - run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
     - run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
+
+    - name: Create NuGet package
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: '5.x'
+    - run: nuget pack
+
+    - name: Publish to GitHub Packages
+      run: dotnet nuget push *.nupkg
