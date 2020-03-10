@@ -276,11 +276,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Organization(login: "octokit")
                 .Select(organization => new
                 {
-                    Member = organization.Members(10, null, null, null).Nodes
+                    Member = organization.MembersWithRole(10, null, null, null).Nodes
                         .Select(fragment).ToList().OrderBy(o => o.StringField1).First(),
 
                     MentionableUser = organization.Repository("octokit.net")
-                        .MentionableUsers(10, null, null, null).Nodes
+                        .MentionableUsers(10, null, null, null, null).Nodes
                         .Select(fragment).ToList().OrderBy(o => o.StringField1).First()
                 });
 
@@ -296,7 +296,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Repository(owner: Var("owner"), name: Var("name"))
                 .Select(repository => new
                 {
-                    Issues = repository.Issues(null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
+                    Issues = repository.Issues(null, null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
                     PullRequests = repository.PullRequests(null, null, null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
                 })
                 .Compile();
@@ -319,8 +319,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Repository(owner: Var("owner"), name: Var("name"))
                 .Select(repository => new 
                 {
-                    StringList1 = repository.Issues(null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
-                    StringList2 = repository.Issues(null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
+                    StringList1 = repository.Issues(null, null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
+                    StringList2 = repository.Issues(null, null, null, null, null, null, null, null).AllPages().Select(issue => issue.Title).ToList(),
                 })
                 .Compile();
             var vars = new Dictionary<string, object>

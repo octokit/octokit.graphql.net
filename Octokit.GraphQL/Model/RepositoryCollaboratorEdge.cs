@@ -27,6 +27,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RepositoryPermission Permission { get; }
 
+        /// <summary>
+        /// A list of sources for the user's access to the repository.
+        /// </summary>
+        public IQueryableList<PermissionSource> PermissionSources => this.CreateProperty(x => x.PermissionSources);
+
         internal static RepositoryCollaboratorEdge Create(Expression expression)
         {
             return new RepositoryCollaboratorEdge(expression);

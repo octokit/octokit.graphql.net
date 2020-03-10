@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A team or user who has the ability to push to a protected branch.
+    /// A team, user or app who has the ability to push to a protected branch.
     /// </summary>
     public class PushAllowance : QueryableValue<PushAllowance>
     {

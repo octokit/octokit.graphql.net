@@ -10,13 +10,13 @@ namespace Octokit.GraphQL.Core.Syntax
         public OperationDefinition Root { get; private set; }
 
         public ISelectionSet Head { get; private set; }
-        public IList<FieldSelection> FieldStack { get; private set; }
+        public IList<SelectionSet> SelectionStack { get; private set; }
 
         public OperationDefinition AddRoot(OperationType type, string name)
         {
             Root = new OperationDefinition(type, name);
             Head = Root;
-            FieldStack = new List<FieldSelection>();
+            SelectionStack = new List<SelectionSet>();
             return Root;
         }
 
@@ -59,6 +59,7 @@ namespace Octokit.GraphQL.Core.Syntax
             }
 
             Head.Selections.Add(result);
+            SelectionStack.Add(result);
             Head = result;
             return result;
         }
@@ -88,12 +89,12 @@ namespace Octokit.GraphQL.Core.Syntax
         public IDisposable Bookmark()
         {
             var oldHead = Head;
-            var oldStack = FieldStack.ToList();
+            var oldStack = SelectionStack.ToList();
 
             return Disposable.Create(() =>
             {
                 Head = oldHead;
-                FieldStack = oldStack;
+                SelectionStack = oldStack;
             });
         }
 
@@ -117,7 +118,7 @@ namespace Octokit.GraphQL.Core.Syntax
             if (updateHead)
             {
                 Head = field;
-                FieldStack.Add(field);
+                SelectionStack.Add(field);
             }
 
             return field;

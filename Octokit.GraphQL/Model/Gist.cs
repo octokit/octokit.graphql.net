@@ -38,7 +38,18 @@ namespace Octokit.GraphQL.Model
         /// The files in this gist.
         /// </summary>
         /// <param name="limit">The maximum number of files to return.</param>
-        public IQueryableList<GistFile> Files(Arg<int>? limit = null) => this.CreateMethodCall(x => x.Files(limit));
+        /// <param name="oid">The oid of the files to return</param>
+        public IQueryableList<GistFile> Files(Arg<int>? limit = null, Arg<string>? oid = null) => this.CreateMethodCall(x => x.Files(limit, oid));
+
+        /// <summary>
+        /// A list of forks associated with the gist
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for gists returned from the connection</param>
+        public GistConnection Forks(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<GistOrder>? orderBy = null) => this.CreateMethodCall(x => x.Forks(first, after, last, before, orderBy), Octokit.GraphQL.Model.GistConnection.Create);
 
         public ID Id { get; }
 
@@ -68,6 +79,11 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset? PushedAt { get; }
 
         /// <summary>
+        /// The HTML path to this resource.
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
         /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -81,6 +97,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL for this Gist.
+        /// </summary>
+        public string Url { get; }
 
         /// <summary>
         /// Returns a boolean indicating whether the viewing user has starred this starrable.

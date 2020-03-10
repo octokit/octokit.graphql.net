@@ -38,6 +38,11 @@ namespace Octokit.GraphQL.Model
         public IQueryableList<SecurityAdvisoryIdentifier> Identifiers => this.CreateProperty(x => x.Identifiers);
 
         /// <summary>
+        /// The organization that originated the advisory
+        /// </summary>
+        public string Origin { get; }
+
+        /// <summary>
         /// When the advisory was published
         /// </summary>
         public DateTimeOffset PublishedAt { get; }

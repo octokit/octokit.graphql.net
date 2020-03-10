@@ -9,9 +9,14 @@ namespace Octokit.GraphQL.Model
     public class AddPullRequestReviewCommentInput
     {
         /// <summary>
+        /// The node ID of the pull request reviewing
+        /// </summary>
+        public ID? PullRequestId { get; set; }
+
+        /// <summary>
         /// The Node ID of the review to modify.
         /// </summary>
-        public ID PullRequestReviewId { get; set; }
+        public ID? PullRequestReviewId { get; set; }
 
         /// <summary>
         /// The SHA of the commit to comment on.

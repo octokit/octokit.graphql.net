@@ -6,25 +6,25 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// The possible states in which authentication can be configured with an Identity Provider.
+    /// The possible states in which authentication can be configured with an identity provider.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum IdentityProviderConfigurationState
     {
         /// <summary>
-        /// Authentication with an Identity Provider is configured and enforced.
+        /// Authentication with an identity provider is configured and enforced.
         /// </summary>
         [EnumMember(Value = "ENFORCED")]
         Enforced,
 
         /// <summary>
-        /// Authentication with an Identity Provider is configured but not enforced.
+        /// Authentication with an identity provider is configured but not enforced.
         /// </summary>
         [EnumMember(Value = "CONFIGURED")]
         Configured,
 
         /// <summary>
-        /// Authentication with an Identity Provider is not configured.
+        /// Authentication with an identity provider is not configured.
         /// </summary>
         [EnumMember(Value = "UNCONFIGURED")]
         Unconfigured,
