@@ -5,6 +5,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+    
 
 jobs:
   build:
@@ -29,7 +30,11 @@ jobs:
       run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
     - name: Run Octokit.GraphQL.Core.Generation.UnitTests
       run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
-
+  publish:
+    needs: [build]
+    if: github.ref == 'refs/heads/master'
+    runs-on: windows-latest
+    steps:
     - name: Setup NuGet
       uses: nuget/setup-nuget@v1
       with:
@@ -39,5 +44,4 @@ jobs:
       run: nuget pack
 
     - name: Publish to GitHub Packages
-      if: github.ref == 'refs/heads/master'
       run: dotnet nuget push *.nupkg
