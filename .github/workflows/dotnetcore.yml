@@ -1,11 +1,10 @@
-name: Build and Publish
+name: Build, test and publish
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-    
 
 jobs:
   build:
@@ -22,8 +21,11 @@ jobs:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     
     - name: Build using .NET Core
-      run: dotnet build Octokit.GraphQL.sln -c Release
-                      
+      run: dotnet build Octokit.GraphQL.sln -c Release                      
+  test:
+    needs: [build]
+    runs-on: windows-latest
+    steps:
     - name: Run Octokit.GraphQL.UnitTests
       run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
     - name: Run Octokit.GraphQL.Core.UnitTests
@@ -31,7 +33,7 @@ jobs:
     - name: Run Octokit.GraphQL.Core.Generation.UnitTests
       run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
   publish:
-    needs: [build]
+    needs: [build,test]
     if: github.ref == 'refs/heads/master'
     runs-on: windows-latest
     steps:
