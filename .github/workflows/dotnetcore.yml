@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  config: Release
+
 jobs:
   build:
     runs-on: windows-latest
@@ -17,7 +20,7 @@ jobs:
         dotnet-version: 3.1.101
     
     - name: Build using .NET Core
-      run: dotnet build Octokit.GraphQL.sln -c Release                      
+      run: dotnet build Octokit.GraphQL.sln -c ${{ env.config }}                      
   test:
     needs: [build]
     runs-on: windows-latest
@@ -29,11 +32,11 @@ jobs:
         dotnet-version: 3.1.101
     
     - name: Run Octokit.GraphQL.UnitTests
-      run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
+      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
     - name: Run Octokit.GraphQL.Core.UnitTests
-      run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
+      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
     - name: Run Octokit.GraphQL.Core.Generation.UnitTests
-      run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
+      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
   publish:
     needs: [build,test]
     if: github.ref == 'refs/heads/master'
@@ -51,6 +54,9 @@ jobs:
       uses: nuget/setup-nuget@v1
       with:
         nuget-version: '5.x'
+
+    - name: Build using .NET Core
+      run: dotnet build Octokit.GraphQL.sln -c ${{ env.config }}                      
 
     - name: Create NuGet package
       run: nuget pack
