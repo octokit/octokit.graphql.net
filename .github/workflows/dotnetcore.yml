@@ -11,14 +11,10 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-      
     - name: Setup .NET Core and GitHub Packages
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-        source-url: https://nuget.pkg.github.com/octokit/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     
     - name: Build using .NET Core
       run: dotnet build Octokit.GraphQL.sln -c Release                      
@@ -26,6 +22,12 @@ jobs:
     needs: [build]
     runs-on: windows-latest
     steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core and GitHub Packages
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    
     - name: Run Octokit.GraphQL.UnitTests
       run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
     - name: Run Octokit.GraphQL.Core.UnitTests
@@ -37,6 +39,14 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: windows-latest
     steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core and GitHub Packages
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+        source-url: https://nuget.pkg.github.com/octokit/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Setup NuGet
       uses: nuget/setup-nuget@v1
       with:
