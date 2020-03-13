@@ -126,7 +126,6 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
                         case "Float": return "double" + question;
                         case "String": return "string";
                         case "Boolean": return "bool" + question;
-                        case "ID": return "ID" + question;
                         case "GitTimeStamp": return "DateTimeOffset" + question;
                         case "DateTime": return "DateTimeOffset" + question;
                         default: return "string";
@@ -152,12 +151,7 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
         private static bool IsValueType(TypeModel type)
         {
             return type.Kind == TypeKind.Enum ||
-                (type.Kind == TypeKind.Scalar && 
-                   (type.Name == "Int" ||
-                    type.Name == "Float" || 
-                    type.Name == "Boolean" || 
-                    type.Name == "DateTime" ||
-                    type.Name == "ID"));
+                (type.Kind == TypeKind.Scalar && (type.Name == "Int" || type.Name == "Float" || type.Name == "Boolean" || type.Name == "DateTime"));
         }
     }
 }

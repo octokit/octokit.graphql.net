@@ -68,15 +68,6 @@ namespace Octokit.GraphQL.Core.Generation.Models
             };
         }
 
-        public static TypeModel ID()
-        {
-            return new TypeModel
-            {
-                Kind = TypeKind.Scalar,
-                Name = "ID",
-            };
-        }
-
         public static TypeModel Interface(string name)
         {
             return new TypeModel

@@ -182,54 +182,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
-        public void Generates_Property_For_ID_Field()
-        {
-            var expected = FormatMemberTemplate("public ID? Foo { get; }");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Object,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.ID(),
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            CompareModel("Entity.cs", expected, result);
-        }
-
-        [Fact]
-        public void Generates_Property_For_NonNull_ID_Field()
-        {
-            var expected = FormatMemberTemplate("public ID Foo { get; }");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Object,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.NonNull(TypeModel.ID())
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            CompareModel("Entity.cs", expected, result);
-        }
-
-        [Fact]
         public void Generates_Property_For_Object_Field()
         {
             var expected = FormatMemberTemplate("public Other Foo => this.CreateProperty(x => x.Foo, Test.Other.Create);");
@@ -829,38 +781,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
         }
 
         [Fact]
-        public void Generates_Method_For_Object_Field_With_ID_Arg()
-        {
-            var expected = FormatMemberTemplate("public Other Foo(Arg<ID> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Object,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.Object("Other"),
-                        Args = new[]
-                        {
-                            new InputValueModel
-                            {
-                                Name = "bar",
-                                Type = TypeModel.NonNull(TypeModel.ID()),
-                            }
-                        }
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            CompareModel("Entity.cs", expected, result);
-        }
-
-        [Fact]
         public void Generates_Method_For_NonNull_Object_Field_With_Args()
         {
             var expected = FormatMemberTemplate("public Other Foo(Arg<int> bar) => this.CreateMethodCall(x => x.Foo(bar), Test.Other.Create);");
@@ -1230,70 +1150,6 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
                     {
                         Name = "foo",
                         Type = TypeModel.NonNull(TypeModel.Int()),
-                        Args = new[]
-                        {
-                            new InputValueModel
-                            {
-                                Name = "bar",
-                                Type = TypeModel.Int(),
-                            }
-                        }
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            CompareModel("Entity.cs", expected, result);
-        }
-
-        [Fact]
-        public void Generates_Method_For_ID_Field()
-        {
-            var expected = FormatMemberTemplate("public ID? Foo(Arg<int>? bar = null) => default;");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Object,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.ID(),
-                        Args = new[]
-                        {
-                            new InputValueModel
-                            {
-                                Name = "bar",
-                                Type = TypeModel.Int(),
-                            }
-                        }
-                    },
-                }
-            };
-
-            var result = CodeGenerator.Generate(model, "Test", null);
-
-            CompareModel("Entity.cs", expected, result);
-        }
-
-        [Fact]
-        public void Generates_Method_For_NonNull_ID_Field()
-        {
-            var expected = FormatMemberTemplate("public ID Foo(Arg<int>? bar = null) => default;");
-
-            var model = new TypeModel
-            {
-                Name = "Entity",
-                Kind = TypeKind.Object,
-                Fields = new[]
-                {
-                    new FieldModel
-                    {
-                        Name = "foo",
-                        Type = TypeModel.NonNull(TypeModel.ID()),
                         Args = new[]
                         {
                             new InputValueModel

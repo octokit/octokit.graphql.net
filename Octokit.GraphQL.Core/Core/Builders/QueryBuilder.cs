@@ -1098,7 +1098,7 @@ namespace Octokit.GraphQL.Core.Builders
                 rootExpression,
                 "Node",
                 null,
-                Expression.Constant(new Arg<ID>("__id", false)));
+                Expression.Constant(new Arg<string>("__id", false)));
 
             // Add `.Cast<nodeType>`.
             rewritten = Expression.Call(
