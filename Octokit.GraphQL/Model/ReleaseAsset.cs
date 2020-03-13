@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DownloadUrl { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the title of the release asset.

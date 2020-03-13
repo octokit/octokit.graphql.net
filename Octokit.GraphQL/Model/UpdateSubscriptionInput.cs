@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the subscribable object to modify.
         /// </summary>
-        public ID SubscribableId { get; set; }
+        public string SubscribableId { get; set; }
 
         /// <summary>
         /// The new state of the subscription.

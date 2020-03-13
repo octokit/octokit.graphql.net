@@ -25,7 +25,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="skip">Skips the first _n_ elements in the list.</param>
         public PullRequestReviewCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<int>? skip = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before, skip), Octokit.GraphQL.Model.PullRequestReviewCommentConnection.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Whether this thread has been resolved

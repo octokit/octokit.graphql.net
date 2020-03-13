@@ -39,7 +39,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool DismissesStaleReviews { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Can admins overwrite branch protection.

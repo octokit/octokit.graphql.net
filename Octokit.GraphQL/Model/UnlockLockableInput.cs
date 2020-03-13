@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the issue or pull request to be unlocked.
         /// </summary>
-        public ID LockableId { get; set; }
+        public string LockableId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

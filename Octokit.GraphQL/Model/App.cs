@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Description { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The hex color code, without the leading '#', for the logo background.

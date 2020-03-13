@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the enterprise on which to set the repository projects setting.
         /// </summary>
-        public ID EnterpriseId { get; set; }
+        public string EnterpriseId { get; set; }
 
         /// <summary>
         /// The value for the repository projects setting on the enterprise.

@@ -62,7 +62,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="from">Only contributions made at this time or later will be counted. If omitted, defaults to a year ago.</param>
         /// <param name="organizationID">The ID of the organization used to filter contributions.</param>
         /// <param name="to">Only contributions made before and up to and including this time will be counted. If omitted, defaults to the current time.</param>
-        public ContributionsCollection ContributionsCollection(Arg<DateTimeOffset>? from = null, Arg<ID>? organizationID = null, Arg<DateTimeOffset>? to = null) => this.CreateMethodCall(x => x.ContributionsCollection(from, organizationID, to), Octokit.GraphQL.Model.ContributionsCollection.Create);
+        public ContributionsCollection ContributionsCollection(Arg<DateTimeOffset>? from = null, Arg<string>? organizationID = null, Arg<DateTimeOffset>? to = null) => this.CreateMethodCall(x => x.ContributionsCollection(from, organizationID, to), Octokit.GraphQL.Model.ContributionsCollection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -127,9 +127,9 @@ namespace Octokit.GraphQL.Model
         /// The hovercard information for this user in a given context
         /// </summary>
         /// <param name="primarySubjectId">The ID of the subject to get the hovercard in the context of</param>
-        public Hovercard Hovercard(Arg<ID>? primarySubjectId = null) => this.CreateMethodCall(x => x.Hovercard(primarySubjectId), Octokit.GraphQL.Model.Hovercard.Create);
+        public Hovercard Hovercard(Arg<string>? primarySubjectId = null) => this.CreateMethodCall(x => x.Hovercard(primarySubjectId), Octokit.GraphQL.Model.Hovercard.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Whether or not this user is a participant in the GitHub Security Bug Bounty.
@@ -326,7 +326,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="publicOnly">Filter registry package by whether it is publicly visible</param>
         /// <param name="registryPackageType">Filter registry package by type (string).</param>
         /// <param name="repositoryId">Find registry packages in a repository.</param>
-        public RegistryPackageConnection RegistryPackages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? name = null, Arg<IEnumerable<string>>? names = null, Arg<RegistryPackageType>? packageType = null, Arg<bool>? publicOnly = null, Arg<string>? registryPackageType = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.RegistryPackages(first, after, last, before, name, names, packageType, publicOnly, registryPackageType, repositoryId), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
+        public RegistryPackageConnection RegistryPackages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? name = null, Arg<IEnumerable<string>>? names = null, Arg<RegistryPackageType>? packageType = null, Arg<bool>? publicOnly = null, Arg<string>? registryPackageType = null, Arg<string>? repositoryId = null) => this.CreateMethodCall(x => x.RegistryPackages(first, after, last, before, name, names, packageType, publicOnly, registryPackageType, repositoryId), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
 
         /// <summary>
         /// A list of registry packages for a particular search query.

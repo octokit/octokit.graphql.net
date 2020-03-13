@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         internal static BaseRefChangedEvent Create(Expression expression)
         {

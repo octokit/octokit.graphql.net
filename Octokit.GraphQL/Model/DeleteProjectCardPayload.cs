@@ -28,7 +28,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The deleted card ID.
         /// </summary>
-        public ID? DeletedCardId { get; }
+        public string DeletedCardId { get; }
 
         internal static DeleteProjectCardPayload Create(Expression expression)
         {

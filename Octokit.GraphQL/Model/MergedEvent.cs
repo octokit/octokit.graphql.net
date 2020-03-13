@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the Ref associated with the `merge` event.

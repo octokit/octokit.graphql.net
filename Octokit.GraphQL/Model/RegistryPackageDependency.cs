@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         [Obsolete(@"Renaming GitHub Packages fields and objects. Use the `PackageDependency` object instead. Removal on 2020-04-01 UTC.")]
         public RegistryPackageDependencyType DependencyType { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the name of the dependency.

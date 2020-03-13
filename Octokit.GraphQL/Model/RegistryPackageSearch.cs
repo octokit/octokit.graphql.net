@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public interface IRegistryPackageSearch : IQueryableValue<IRegistryPackageSearch>, IQueryableInterface
     {
-        ID Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// A list of registry packages for a particular search query.
@@ -42,7 +42,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public RegistryPackageConnection RegistryPackagesForQuery(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RegistryPackageType>? packageType = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.RegistryPackagesForQuery(first, after, last, before, packageType, query), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
 

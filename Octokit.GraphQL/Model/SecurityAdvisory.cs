@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string GhsaId { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// A list of identifiers for this advisory

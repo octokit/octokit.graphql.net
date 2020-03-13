@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DescriptionHTML { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// How much this tier costs per month in cents.

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the enterprise to which you want to invite an administrator.
         /// </summary>
-        public ID EnterpriseId { get; set; }
+        public string EnterpriseId { get; set; }
 
         /// <summary>
         /// The login of a user to invite as an administrator.

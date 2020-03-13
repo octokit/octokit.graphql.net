@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="size">The size of the resulting square image.</param>
         string AvatarUrl(Arg<int>? size = null);
 
-        ID Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// The username used to login.
@@ -89,7 +89,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string AvatarUrl(Arg<int>? size = null) => default;
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public string Login { get; }
 

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the enterprise on which to set the members can create repositories setting.
         /// </summary>
-        public ID EnterpriseId { get; set; }
+        public string EnterpriseId { get; set; }
 
         /// <summary>
         /// Value for the members can create repositories setting on the enterprise. This or the granular public/private/internal allowed fields (but not both) must be provided.

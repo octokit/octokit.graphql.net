@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public RegistryPackageFileConnection Files(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Files(first, after, last, before), Octokit.GraphQL.Model.RegistryPackageFileConnection.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// A single line of text to install this package version.

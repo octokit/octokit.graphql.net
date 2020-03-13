@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public ExternalIdentityConnection ExternalIdentities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ExternalIdentities(first, after, last, before), Octokit.GraphQL.Model.ExternalIdentityConnection.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The x509 certificate used by the Identity Provder to sign assertions and responses.

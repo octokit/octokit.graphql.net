@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset? DueOn { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Just for debugging on review-lab

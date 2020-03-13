@@ -11,17 +11,17 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the pull request to modify.
         /// </summary>
-        public ID PullRequestId { get; set; }
+        public string PullRequestId { get; set; }
 
         /// <summary>
         /// The Node IDs of the user to request.
         /// </summary>
-        public IEnumerable<ID> UserIds { get; set; }
+        public IEnumerable<string> UserIds { get; set; }
 
         /// <summary>
         /// The Node IDs of the team to request.
         /// </summary>
-        public IEnumerable<ID> TeamIds { get; set; }
+        public IEnumerable<string> TeamIds { get; set; }
 
         /// <summary>
         /// Add users to the set rather than replace.

@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The username of the actor.

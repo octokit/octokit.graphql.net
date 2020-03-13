@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ProjectCard ID to convert.
         /// </summary>
-        public ID ProjectCardId { get; set; }
+        public string ProjectCardId { get; set; }
 
         /// <summary>
         /// The ID of the repository to create the issue in.
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// The title of the newly created issue. Defaults to the card's note text.

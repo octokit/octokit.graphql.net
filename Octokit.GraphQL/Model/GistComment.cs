@@ -65,7 +65,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Gist Gist => this.CreateProperty(x => x.Gist, Octokit.GraphQL.Model.Gist.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Check if this comment was edited and includes an edit with the creation data

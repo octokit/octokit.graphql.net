@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the repository.
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// The Node ID of the check suite.
         /// </summary>
-        public ID CheckSuiteId { get; set; }
+        public string CheckSuiteId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

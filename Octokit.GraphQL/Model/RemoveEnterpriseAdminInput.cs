@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Enterprise ID from which to remove the administrator.
         /// </summary>
-        public ID EnterpriseId { get; set; }
+        public string EnterpriseId { get; set; }
 
         /// <summary>
         /// The login of the user to remove as an administrator.

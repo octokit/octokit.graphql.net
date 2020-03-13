@@ -60,7 +60,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DigestMethodUrl { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The SAML provider's issuer URL.

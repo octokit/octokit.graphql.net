@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the enterprise on which to set the team discussions setting.
         /// </summary>
-        public ID EnterpriseId { get; set; }
+        public string EnterpriseId { get; set; }
 
         /// <summary>
         /// The value for the team discussions setting on the enterprise.

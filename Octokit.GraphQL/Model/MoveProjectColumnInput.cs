@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The id of the column to move.
         /// </summary>
-        public ID ColumnId { get; set; }
+        public string ColumnId { get; set; }
 
         /// <summary>
         /// Place the new column after the column with this id. Pass null to place it at the front.
         /// </summary>
-        public ID? AfterColumnId { get; set; }
+        public string AfterColumnId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

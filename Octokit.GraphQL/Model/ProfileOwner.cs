@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         string Email { get; }
 
-        ID Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// Showcases a selection of repositories and gists that the profile owner has either curated or that have been selected automatically based on popularity.
@@ -101,7 +101,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string Email { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public ProfileItemShowcase ItemShowcase => this.CreateProperty(x => x.ItemShowcase, Octokit.GraphQL.Model.ProfileItemShowcase.Create);
 

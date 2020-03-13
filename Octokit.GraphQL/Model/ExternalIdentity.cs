@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Guid { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Organization invitation for this SCIM-provisioned external identity

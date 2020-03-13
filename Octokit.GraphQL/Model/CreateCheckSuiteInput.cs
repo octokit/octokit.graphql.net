@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the repository.
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// The SHA of the head commit.

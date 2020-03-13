@@ -70,7 +70,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EnterpriseUrl { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The corresponding operation type for the action

@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DescriptionHTML { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Whether or not the release is a draft

@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         [Obsolete(@"Renaming GitHub Packages fields and objects. Use the `PackageFile` object instead. Removal on 2020-04-01 UTC.")]
         public string Guid { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the md5.

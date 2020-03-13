@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EnvironmentUrl { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the log URL of the deployment.

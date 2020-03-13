@@ -46,7 +46,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Description { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The state of this status context.

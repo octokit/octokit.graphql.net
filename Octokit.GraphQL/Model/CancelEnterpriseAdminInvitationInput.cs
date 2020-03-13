@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the pending enterprise administrator invitation.
         /// </summary>
-        public ID InvitationId { get; set; }
+        public string InvitationId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

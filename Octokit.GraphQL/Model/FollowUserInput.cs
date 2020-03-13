@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the user to follow.
         /// </summary>
-        public ID UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the team to which the discussion belongs.
         /// </summary>
-        public ID TeamId { get; set; }
+        public string TeamId { get; set; }
 
         /// <summary>
         /// The title of the discussion.

@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Description { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Indicates whether or not this is a default label.

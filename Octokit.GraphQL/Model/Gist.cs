@@ -51,7 +51,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for gists returned from the connection</param>
         public GistConnection Forks(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<GistOrder>? orderBy = null) => this.CreateMethodCall(x => x.Forks(first, after, last, before, orderBy), Octokit.GraphQL.Model.GistConnection.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies if the gist is a fork.

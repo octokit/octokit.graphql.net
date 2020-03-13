@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The global relay id of the branch protection rule to be updated.
         /// </summary>
-        public ID BranchProtectionRuleId { get; set; }
+        public string BranchProtectionRuleId { get; set; }
 
         /// <summary>
         /// The glob-like pattern used to determine matching branches.
@@ -66,7 +66,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of User or Team IDs allowed to dismiss reviews on pull requests targeting matching branches.
         /// </summary>
-        public IEnumerable<ID> ReviewDismissalActorIds { get; set; }
+        public IEnumerable<string> ReviewDismissalActorIds { get; set; }
 
         /// <summary>
         /// Is pushing to matching branches restricted.
@@ -76,7 +76,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of User, Team or App IDs allowed to push to matching branches.
         /// </summary>
-        public IEnumerable<ID> PushActorIds { get; set; }
+        public IEnumerable<string> PushActorIds { get; set; }
 
         /// <summary>
         /// List of required status check contexts that must pass for commits to be accepted to matching branches.

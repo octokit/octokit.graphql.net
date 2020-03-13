@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IQueryableList<TreeEntry> Entries => this.CreateProperty(x => x.Entries);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The Git object ID

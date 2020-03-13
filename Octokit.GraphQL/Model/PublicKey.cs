@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Fingerprint { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Whether this PublicKey is read-only or not. Values will be null for keys not owned by the user.

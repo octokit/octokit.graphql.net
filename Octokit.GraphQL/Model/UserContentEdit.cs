@@ -45,7 +45,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

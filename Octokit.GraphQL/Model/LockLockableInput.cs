@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the issue or pull request to be locked.
         /// </summary>
-        public ID LockableId { get; set; }
+        public string LockableId { get; set; }
 
         /// <summary>
         /// A reason for why the issue or pull request will be locked.

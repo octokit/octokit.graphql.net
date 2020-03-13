@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the thread to unresolve
         /// </summary>
-        public ID ThreadId { get; set; }
+        public string ThreadId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

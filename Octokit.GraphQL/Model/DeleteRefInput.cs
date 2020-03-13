@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the Ref to be deleted.
         /// </summary>
-        public ID RefId { get; set; }
+        public string RefId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

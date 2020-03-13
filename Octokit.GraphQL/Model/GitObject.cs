@@ -28,7 +28,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         string CommitUrl { get; }
 
-        ID Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// The Git object ID
@@ -62,7 +62,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string CommitUrl { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public string Oid { get; }
 

@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Repository FromRepository => this.CreateProperty(x => x.FromRepository, Octokit.GraphQL.Model.Repository.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the issue associated with the event.

@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string CommitUrl { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The Git tag message.

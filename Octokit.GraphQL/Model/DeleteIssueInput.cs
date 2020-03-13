@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the issue to delete.
         /// </summary>
-        public ID IssueId { get; set; }
+        public string IssueId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

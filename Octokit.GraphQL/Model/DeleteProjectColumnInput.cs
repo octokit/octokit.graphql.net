@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The id of the column to delete.
         /// </summary>
-        public ID ColumnId { get; set; }
+        public string ColumnId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

@@ -36,7 +36,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Email { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The username of the actor.

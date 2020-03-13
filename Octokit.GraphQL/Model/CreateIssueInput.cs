@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the repository.
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// The title for the issue.
@@ -26,22 +26,22 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID for the user assignee for this issue.
         /// </summary>
-        public IEnumerable<ID> AssigneeIds { get; set; }
+        public IEnumerable<string> AssigneeIds { get; set; }
 
         /// <summary>
         /// The Node ID of the milestone for this issue.
         /// </summary>
-        public ID? MilestoneId { get; set; }
+        public string MilestoneId { get; set; }
 
         /// <summary>
         /// An array of Node IDs of labels for this issue.
         /// </summary>
-        public IEnumerable<ID> LabelIds { get; set; }
+        public IEnumerable<string> LabelIds { get; set; }
 
         /// <summary>
         /// An array of Node IDs for projects associated with this issue.
         /// </summary>
-        public IEnumerable<ID> ProjectIds { get; set; }
+        public IEnumerable<string> ProjectIds { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

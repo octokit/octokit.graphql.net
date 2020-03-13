@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the issue to be transferred
         /// </summary>
-        public ID IssueId { get; set; }
+        public string IssueId { get; set; }
 
         /// <summary>
         /// The Node ID of the repository the issue should be transferred to
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

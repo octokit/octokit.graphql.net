@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The id of the labelable object to add labels to.
         /// </summary>
-        public ID LabelableId { get; set; }
+        public string LabelableId { get; set; }
 
         /// <summary>
         /// The ids of the labels to add.
         /// </summary>
-        public IEnumerable<ID> LabelIds { get; set; }
+        public IEnumerable<string> LabelIds { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

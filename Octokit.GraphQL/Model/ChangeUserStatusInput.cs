@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the organization whose members will be allowed to see the status. If omitted, the status will be publicly visible.
         /// </summary>
-        public ID? OrganizationId { get; set; }
+        public string OrganizationId { get; set; }
 
         /// <summary>
         /// Whether this status should indicate you are not fully available on GitHub, e.g., you are away.

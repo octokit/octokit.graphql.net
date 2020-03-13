@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the comment to modify.
         /// </summary>
-        public ID PullRequestReviewCommentId { get; set; }
+        public string PullRequestReviewCommentId { get; set; }
 
         /// <summary>
         /// The text of the comment.

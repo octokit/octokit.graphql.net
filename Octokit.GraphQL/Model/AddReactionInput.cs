@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the subject to modify.
         /// </summary>
-        public ID SubjectId { get; set; }
+        public string SubjectId { get; set; }
 
         /// <summary>
         /// The name of the emoji to react with.

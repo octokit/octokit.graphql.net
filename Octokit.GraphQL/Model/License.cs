@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool Hidden { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Instructions on how to implement the license

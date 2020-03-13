@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The id of the invitation being accepted
         /// </summary>
-        public ID InvitationId { get; set; }
+        public string InvitationId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

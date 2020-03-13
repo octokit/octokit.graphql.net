@@ -99,7 +99,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="includeNotificationContexts">Whether or not to include notification contexts</param>
         public Hovercard Hovercard(Arg<bool>? includeNotificationContexts = null) => this.CreateMethodCall(x => x.Hovercard(includeNotificationContexts), Octokit.GraphQL.Model.Hovercard.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Check if this comment was edited and includes an edit with the creation data

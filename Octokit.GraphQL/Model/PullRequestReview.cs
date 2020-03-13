@@ -74,7 +74,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Check if this comment was edited and includes an edit with the creation data

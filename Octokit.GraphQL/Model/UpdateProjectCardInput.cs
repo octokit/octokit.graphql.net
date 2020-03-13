@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ProjectCard ID to update.
         /// </summary>
-        public ID ProjectCardId { get; set; }
+        public string ProjectCardId { get; set; }
 
         /// <summary>
         /// Whether or not the ProjectCard should be archived

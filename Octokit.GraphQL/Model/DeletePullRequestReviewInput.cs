@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the pull request review to delete.
         /// </summary>
-        public ID PullRequestReviewId { get; set; }
+        public string PullRequestReviewId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

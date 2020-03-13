@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the pull request.
         /// </summary>
-        public ID PullRequestId { get; set; }
+        public string PullRequestId { get; set; }
 
         /// <summary>
         /// The name of the branch you want your changes pulled into. This should be an existing branch
@@ -42,22 +42,22 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// An array of Node IDs of users for this pull request.
         /// </summary>
-        public IEnumerable<ID> AssigneeIds { get; set; }
+        public IEnumerable<string> AssigneeIds { get; set; }
 
         /// <summary>
         /// The Node ID of the milestone for this pull request.
         /// </summary>
-        public ID? MilestoneId { get; set; }
+        public string MilestoneId { get; set; }
 
         /// <summary>
         /// An array of Node IDs of labels for this pull request.
         /// </summary>
-        public IEnumerable<ID> LabelIds { get; set; }
+        public IEnumerable<string> LabelIds { get; set; }
 
         /// <summary>
         /// An array of Node IDs for projects associated with this pull request.
         /// </summary>
-        public IEnumerable<ID> ProjectIds { get; set; }
+        public IEnumerable<string> ProjectIds { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

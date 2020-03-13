@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the ProjectColumn.
         /// </summary>
-        public ID ProjectColumnId { get; set; }
+        public string ProjectColumnId { get; set; }
 
         /// <summary>
         /// The content of the card. Must be a member of the ProjectCardItem union
         /// </summary>
-        public ID? ContentId { get; set; }
+        public string ContentId { get; set; }
 
         /// <summary>
         /// The note on the card.

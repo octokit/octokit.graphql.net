@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The owner ID to create the project under.
         /// </summary>
-        public ID TargetOwnerId { get; set; }
+        public string TargetOwnerId { get; set; }
 
         /// <summary>
         /// The source project to clone.
         /// </summary>
-        public ID SourceId { get; set; }
+        public string SourceId { get; set; }
 
         /// <summary>
         /// Whether or not to clone the source project's workflows.

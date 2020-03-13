@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string CreatedAt { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The email address used to invite a billing manager for the organization.

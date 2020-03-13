@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Starrable ID to unstar.
         /// </summary>
-        public ID StarrableId { get; set; }
+        public string StarrableId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

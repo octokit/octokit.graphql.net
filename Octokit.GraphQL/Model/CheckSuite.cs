@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// A list of open pull requests matching the check suite.

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The owner ID to create the project under.
         /// </summary>
-        public ID OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         /// <summary>
         /// The name of project.
@@ -31,7 +31,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A list of repository IDs to create as linked repositories for the project
         /// </summary>
-        public IEnumerable<ID> RepositoryIds { get; set; }
+        public IEnumerable<string> RepositoryIds { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

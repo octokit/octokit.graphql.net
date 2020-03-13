@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Enterprise Enterprise => this.CreateProperty(x => x.Enterprise, Octokit.GraphQL.Model.Enterprise.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The user who was invited to the enterprise.

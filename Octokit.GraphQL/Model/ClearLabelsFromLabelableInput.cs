@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The id of the labelable object to clear the labels from.
         /// </summary>
-        public ID LabelableId { get; set; }
+        public string LabelableId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

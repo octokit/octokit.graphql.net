@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the Ref to be updated.
         /// </summary>
-        public ID RefId { get; set; }
+        public string RefId { get; set; }
 
         /// <summary>
         /// The GitObjectID that the Ref shall be updated to target.

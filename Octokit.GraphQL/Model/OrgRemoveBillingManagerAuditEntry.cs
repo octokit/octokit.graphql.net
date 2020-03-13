@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string CreatedAt { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The corresponding operation type for the action

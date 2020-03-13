@@ -53,7 +53,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         IActor Editor { get; }
 
-        ID Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// Check if this comment was edited and includes an edit with the creation data
@@ -121,7 +121,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public bool IncludesCreatedEdit { get; }
 

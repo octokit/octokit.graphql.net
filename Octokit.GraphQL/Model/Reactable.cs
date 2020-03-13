@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         int? DatabaseId { get; }
 
-        ID Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// A list of reactions grouped by content left on the subject.
@@ -59,7 +59,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public int? DatabaseId { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
 

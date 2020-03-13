@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the comment to delete.
         /// </summary>
-        public ID Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

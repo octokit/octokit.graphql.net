@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the pull request to be merged.
         /// </summary>
-        public ID PullRequestId { get; set; }
+        public string PullRequestId { get; set; }
 
         /// <summary>
         /// Commit headline to use for the merge commit; if omitted, a default message will be used.

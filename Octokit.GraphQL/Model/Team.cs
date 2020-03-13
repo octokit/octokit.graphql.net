@@ -94,7 +94,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EditTeamUrl { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// A list of pending invitations for users to this team

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ProjectColumn ID to update.
         /// </summary>
-        public ID ProjectColumnId { get; set; }
+        public string ProjectColumnId { get; set; }
 
         /// <summary>
         /// The name of project column.

@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the discussion to modify.
         /// </summary>
-        public ID Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The updated title of the discussion.

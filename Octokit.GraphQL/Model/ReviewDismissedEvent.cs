@@ -40,7 +40,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DismissalMessageHTML { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Identifies the previous state of the review with the 'review_dismissed' event.

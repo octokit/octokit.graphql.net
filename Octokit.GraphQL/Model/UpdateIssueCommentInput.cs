@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the IssueComment to modify.
         /// </summary>
-        public ID Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The updated text of the comment.

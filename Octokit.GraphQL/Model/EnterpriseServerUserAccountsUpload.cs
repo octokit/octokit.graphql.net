@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public EnterpriseServerInstallation EnterpriseServerInstallation => this.CreateProperty(x => x.EnterpriseServerInstallation, Octokit.GraphQL.Model.EnterpriseServerInstallation.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The name of the file uploaded.

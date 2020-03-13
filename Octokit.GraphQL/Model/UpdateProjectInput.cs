@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Project ID to update.
         /// </summary>
-        public ID ProjectId { get; set; }
+        public string ProjectId { get; set; }
 
         /// <summary>
         /// The name of project.

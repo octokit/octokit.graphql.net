@@ -38,7 +38,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the object.
         /// </summary>
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Whether this status indicates the user is not fully available on GitHub.

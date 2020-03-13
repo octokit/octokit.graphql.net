@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the template repository.
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// The name of the new repository.
@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the owner for the new repository.
         /// </summary>
-        public ID OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         /// <summary>
         /// A short description of the new repository.

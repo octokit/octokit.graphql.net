@@ -25,7 +25,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Email { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Indicates whether this is the primary email of the associated user account.

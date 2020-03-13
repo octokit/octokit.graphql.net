@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the owner for the new repository.
         /// </summary>
-        public ID? OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         /// <summary>
         /// A short description of the new repository.
@@ -51,7 +51,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// When an organization is specified as the owner, this ID identifies the team that should be granted access to the new repository.
         /// </summary>
-        public ID? TeamId { get; set; }
+        public string TeamId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

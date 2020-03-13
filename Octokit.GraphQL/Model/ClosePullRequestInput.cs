@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the pull request to be closed.
         /// </summary>
-        public ID PullRequestId { get; set; }
+        public string PullRequestId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

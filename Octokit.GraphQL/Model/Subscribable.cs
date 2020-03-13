@@ -13,7 +13,7 @@ namespace Octokit.GraphQL.Model
     /// </summary>
     public interface ISubscribable : IQueryableValue<ISubscribable>, IQueryableInterface
     {
-        ID Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// Check if the viewer is able to change their subscription status for the repository.
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public bool ViewerCanSubscribe { get; }
 

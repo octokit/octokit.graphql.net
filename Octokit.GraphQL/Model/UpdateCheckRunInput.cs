@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The node ID of the repository.
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// The node of the check.
         /// </summary>
-        public ID CheckRunId { get; set; }
+        public string CheckRunId { get; set; }
 
         /// <summary>
         /// The name of the check.

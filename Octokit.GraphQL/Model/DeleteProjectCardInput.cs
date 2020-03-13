@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The id of the card to delete.
         /// </summary>
-        public ID CardId { get; set; }
+        public string CardId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

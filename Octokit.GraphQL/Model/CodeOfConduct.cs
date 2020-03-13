@@ -20,7 +20,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Body { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The key for the Code of Conduct

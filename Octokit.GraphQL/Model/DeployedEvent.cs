@@ -35,7 +35,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Deployment Deployment => this.CreateProperty(x => x.Deployment, Octokit.GraphQL.Model.Deployment.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// PullRequest referenced by event.

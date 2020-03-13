@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         [Obsolete(@"Renaming GitHub Packages fields and objects. Use the `Package` object instead. Removal on 2020-04-01 UTC.")]
         public string Color { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Find the latest version for the package.

@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the Project to link to a Repository
         /// </summary>
-        public ID ProjectId { get; set; }
+        public string ProjectId { get; set; }
 
         /// <summary>
         /// The ID of the Repository to link to a Project.
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public string RepositoryId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

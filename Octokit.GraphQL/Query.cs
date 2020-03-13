@@ -100,7 +100,7 @@ namespace Octokit.GraphQL
         /// <param name="useTopicAliases">Also check topic aliases for the category slug</param>
         /// <param name="viewerCanAdmin">Select listings to which user has admin access. If omitted, listings visible to the viewer are returned.</param>
         /// <param name="withFreeTrialsOnly">Select only listings that offer a free trial.</param>
-        public MarketplaceListingConnection MarketplaceListings(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ID>? adminId = null, Arg<bool>? allStates = null, Arg<string>? categorySlug = null, Arg<ID>? organizationId = null, Arg<bool>? primaryCategoryOnly = null, Arg<IEnumerable<string>>? slugs = null, Arg<bool>? useTopicAliases = null, Arg<bool>? viewerCanAdmin = null, Arg<bool>? withFreeTrialsOnly = null) => this.CreateMethodCall(x => x.MarketplaceListings(first, after, last, before, adminId, allStates, categorySlug, organizationId, primaryCategoryOnly, slugs, useTopicAliases, viewerCanAdmin, withFreeTrialsOnly), Octokit.GraphQL.Model.MarketplaceListingConnection.Create);
+        public MarketplaceListingConnection MarketplaceListings(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? adminId = null, Arg<bool>? allStates = null, Arg<string>? categorySlug = null, Arg<string>? organizationId = null, Arg<bool>? primaryCategoryOnly = null, Arg<IEnumerable<string>>? slugs = null, Arg<bool>? useTopicAliases = null, Arg<bool>? viewerCanAdmin = null, Arg<bool>? withFreeTrialsOnly = null) => this.CreateMethodCall(x => x.MarketplaceListings(first, after, last, before, adminId, allStates, categorySlug, organizationId, primaryCategoryOnly, slugs, useTopicAliases, viewerCanAdmin, withFreeTrialsOnly), Octokit.GraphQL.Model.MarketplaceListingConnection.Create);
 
         /// <summary>
         /// Return information about the GitHub instance
@@ -111,13 +111,13 @@ namespace Octokit.GraphQL
         /// Fetches an object given its ID.
         /// </summary>
         /// <param name="id">ID of the object.</param>
-        public INode Node(Arg<ID> id) => this.CreateMethodCall(x => x.Node(id), Octokit.GraphQL.Model.Internal.StubINode.Create);
+        public INode Node(Arg<string> id) => this.CreateMethodCall(x => x.Node(id), Octokit.GraphQL.Model.Internal.StubINode.Create);
 
         /// <summary>
         /// Lookup nodes by a list of IDs.
         /// </summary>
         /// <param name="ids">The list of node IDs.</param>
-        public IQueryableList<INode> Nodes(Arg<IEnumerable<ID>> ids) => this.CreateMethodCall(x => x.Nodes(ids));
+        public IQueryableList<INode> Nodes(Arg<IEnumerable<string>> ids) => this.CreateMethodCall(x => x.Nodes(ids));
 
         /// <summary>
         /// Lookup a organization by login.

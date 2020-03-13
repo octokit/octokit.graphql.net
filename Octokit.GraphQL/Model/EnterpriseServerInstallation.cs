@@ -30,7 +30,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HostName { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Whether or not the installation is connected to an Enterprise Server installation via GitHub Connect.

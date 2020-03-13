@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The node ID of the pull request reviewing
         /// </summary>
-        public ID? PullRequestId { get; set; }
+        public string PullRequestId { get; set; }
 
         /// <summary>
         /// The Node ID of the review to modify.
         /// </summary>
-        public ID? PullRequestReviewId { get; set; }
+        public string PullRequestReviewId { get; set; }
 
         /// <summary>
         /// The SHA of the commit to comment on.
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The comment id to reply to.
         /// </summary>
-        public ID? InReplyTo { get; set; }
+        public string InReplyTo { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

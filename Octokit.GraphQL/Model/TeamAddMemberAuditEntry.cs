@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string CreatedAt { get; }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Whether the team was mapped to an LDAP Group.

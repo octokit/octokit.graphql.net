@@ -25,7 +25,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public BranchProtectionRule BranchProtectionRule => this.CreateProperty(x => x.BranchProtectionRule, Octokit.GraphQL.Model.BranchProtectionRule.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         internal static ReviewDismissalAllowance Create(Expression expression)
         {

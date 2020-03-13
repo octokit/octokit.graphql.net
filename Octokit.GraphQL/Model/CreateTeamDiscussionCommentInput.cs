@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The ID of the discussion to which the comment belongs.
         /// </summary>
-        public ID DiscussionId { get; set; }
+        public string DiscussionId { get; set; }
 
         /// <summary>
         /// The content of the comment.

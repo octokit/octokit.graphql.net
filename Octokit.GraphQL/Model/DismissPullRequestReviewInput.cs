@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The Node ID of the pull request review to modify.
         /// </summary>
-        public ID PullRequestReviewId { get; set; }
+        public string PullRequestReviewId { get; set; }
 
         /// <summary>
         /// The contents of the pull request review dismissal message.

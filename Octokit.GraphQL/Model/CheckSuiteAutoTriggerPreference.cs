@@ -11,7 +11,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The node ID of the application that owns the check suite.
         /// </summary>
-        public ID AppId { get; set; }
+        public string AppId { get; set; }
 
         /// <summary>
         /// Set to `true` to enable automatic creation of CheckSuite events upon pushes to the repository.

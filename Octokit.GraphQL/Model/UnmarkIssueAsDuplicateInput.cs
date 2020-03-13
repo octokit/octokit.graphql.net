@@ -11,12 +11,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// ID of the issue or pull request currently marked as a duplicate.
         /// </summary>
-        public ID DuplicateId { get; set; }
+        public string DuplicateId { get; set; }
 
         /// <summary>
         /// ID of the issue or pull request currently considered canonical/authoritative/original.
         /// </summary>
-        public ID CanonicalId { get; set; }
+        public string CanonicalId { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.
