@@ -5,7 +5,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     public interface IRepositoryOwner : IQueryableValue<IRepositoryOwner>, IQueryableInterface
     {
-        ID Id { get; }
+        string Id { get; }
         string Login { get; }
 
         RepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null);
@@ -36,7 +36,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public string Login { get; }
 

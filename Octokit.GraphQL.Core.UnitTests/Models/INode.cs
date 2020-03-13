@@ -5,7 +5,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 {
     public interface INode : IQueryableInterface
     {
-        ID Id { get; }
+        string Id { get; }
     }
 
     internal class StubINode : QueryableValue<StubINode>, INode
@@ -14,7 +14,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         {
         }
 
-        public ID Id { get; }
+        public string Id { get; }
 
         internal static StubINode Create(Expression expression)
         {

@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.IntegrationTests
                 .Search("language:JavaScript stars:>10000", SearchType.Issue, first: 3)
                 .Nodes
                 .Select(item => item.Switch<string>(when =>
-                    when.Issue(issue => issue.Id.Value)));
+                    when.Issue(issue => issue.Id)));
 
             var queryBuilder = new QueryBuilder();
             var queryString = queryBuilder.Build(query);;

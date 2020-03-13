@@ -28,7 +28,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var results = (await Connection.Run(query)).ToArray();
 
             Assert.Single(results);
-            Assert.Equal("MDY6Q29tbWl0NzUyODY3OTpkYWZhYjhhZjA0ODM5NDU1ODM4Y2QzZmRlMTFkMTM5MTc0MTYyZmFh", results[0].Id.Value);
+            Assert.Equal("MDY6Q29tbWl0NzUyODY3OTpkYWZhYjhhZjA0ODM5NDU1ODM4Y2QzZmRlMTFkMTM5MTc0MTYyZmFh", results[0].Id);
             var expectedMessage = "Adding README, CONTRIBUTING, LICENSE\n\nWe plan to release this code under the MIT license so might as well get\nthe right things in place early.";
             Assert.Equal(expectedMessage, results[0].Message);
             Assert.Equal("Haacked", results[0].Name);
@@ -44,7 +44,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                         .AllPages(1)
                         .Select(pullRequestCommit => new
                         {
-                            PullRequestCommitId = pullRequestCommit.Id.Value,
+                            PullRequestCommitId = pullRequestCommit.Id,
                             pullRequestCommit.Commit.Id,
                             pullRequestCommit.Commit.Message,
                             pullRequestCommit.Commit.Author.Name
@@ -96,7 +96,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                                 CheckRuns = suite.CheckRuns(null, null, null, null, null).AllPages(10)
                                     .Select(run => new 
                                     {
-                                        CheckRunId = run.Id.Value,
+                                        CheckRunId = run.Id,
                                         Name = run.Name,
                                         Annotations = run.Annotations(null, null, null, null).AllPages()
                                             .Select(annotation => new 
@@ -218,7 +218,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             .Select(page => 
                 page.Nodes.Select(pr => new 
                 {
-                    Id = pr.Id.Value,
+                    Id = pr.Id,
                     LastCommit = pr.Commits(null, null, 1, null).Nodes.Select(commit => new
                     {
                         commit.Id,

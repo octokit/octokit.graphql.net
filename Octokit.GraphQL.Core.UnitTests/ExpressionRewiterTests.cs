@@ -189,7 +189,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Nodes_OfType()
         {
             var query = new Query()
-                .Nodes(new[] { new ID("123") })
+                .Nodes(new[] { new string("123") })
                 .OfType<Issue>()
                 .Select(x => new
                 {
@@ -211,7 +211,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Node_OfType()
         {
             var query = new Query()
-                .Node(new ID("123"))
+                .Node(new string("123"))
                 .Cast<Issue>()
                 .Select(x => x.Body);
 

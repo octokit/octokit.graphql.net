@@ -47,7 +47,7 @@ namespace Octokit.GraphQL.UnitTests
             var query = new QueryBuilder().Build(expression);
             var result = query.Deserialize(data);
 
-            Assert.Equal("1234", result.Id.Value);
+            Assert.Equal("1234", result.Id);
             Assert.Equal("Octokit.GraphQL.Core", result.Name);
             Assert.Equal("grokys", result.Owner.Login);
             Assert.False(result.IsFork);
@@ -111,14 +111,14 @@ namespace Octokit.GraphQL.UnitTests
             var result = query.Deserialize(data).ToList();
 
             var item = result.ElementAt(0);
-            Assert.Equal("1234", item.Id.Value);
+            Assert.Equal("1234", item.Id);
             Assert.Equal("Octokit.GraphQL.Core", item.Name);
             Assert.Equal("grokys", item.Owner.Login);
             Assert.False(item.IsFork);
             Assert.False(item.IsPrivate);
 
             item = result.ElementAt(1);
-            Assert.Equal("2345", item.Id.Value);
+            Assert.Equal("2345", item.Id);
             Assert.Equal("Avalonia", item.Name);
             Assert.Equal("grokys", item.Owner.Login);
             Assert.True(item.IsFork);

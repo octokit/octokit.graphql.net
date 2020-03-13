@@ -11,8 +11,8 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         }
 
         public IQueryableList<License> Licenses => this.CreateProperty(x => x.Licenses);
-        public INode Node(Arg<ID> id) => this.CreateMethodCall(x => x.Node(id), Models.StubINode.Create);
-        public IQueryableList<INode> Nodes(Arg<IEnumerable<ID>> ids) => this.CreateMethodCall(x => x.Nodes(ids));
+        public INode Node(Arg<string> id) => this.CreateMethodCall(x => x.Node(id), Models.StubINode.Create);
+        public IQueryableList<INode> Nodes(Arg<IEnumerable<string>> ids) => this.CreateMethodCall(x => x.Nodes(ids));
         public RateLimit RateLimit(Arg<bool>? dryRun = null) => this.CreateMethodCall(x => x.RateLimit(dryRun), Models.RateLimit.Create);
         public Repository Repository(Arg<string> owner, Arg<string> name) => this.CreateMethodCall(x => x.Repository(owner, name), Models.Repository.Create);
         public IRepositoryOwner RepositoryOwner(Arg<string> login) => this.CreateMethodCall(x => x.RepositoryOwner(login), Models.StubIRepositoryOwner.Create);

@@ -14,7 +14,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
 
         public CheckSuite CheckSuite => this.CreateProperty(x => x.CheckSuite, Models.CheckSuite.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         public string Name { get; }
 

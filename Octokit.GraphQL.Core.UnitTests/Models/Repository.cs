@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         public string Description { get; }
         public int ForkCount { get; }
         public bool HasIssuesEnabled { get; }
-        public ID Id { get; }
+        public string Id { get; }
         public string Name { get; }
         public Repository Parent => this.CreateProperty(x => x.Parent, Create);
         public Issue Issue(Arg<int> number) => this.CreateMethodCall(x => x.Issue(number), Models.Issue.Create);

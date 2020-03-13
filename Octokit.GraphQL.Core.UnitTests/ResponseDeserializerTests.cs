@@ -314,7 +314,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void Nodes_Repository_Fragment()
         {
             var expression = new Query()
-                .Nodes(new[] { new ID("123") })
+                .Nodes(new[] { new string("123") })
                 .OfType<Repository>()
                 .Select(x => new
                 {

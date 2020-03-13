@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.Core.UnitTests.Models
         /// </summary>
         public Commit Commit => this.CreateProperty(x => x.Commit, Models.Commit.Create);
 
-        public ID Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The pull request this commit belongs to

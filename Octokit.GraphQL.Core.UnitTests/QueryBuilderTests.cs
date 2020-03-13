@@ -255,7 +255,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var expected = "query{nodes(ids:[\"123\"]){__typename ... on Issue{number items: comments{nodes{body}}}}}";
 
             var expression = new Query()
-                .Nodes(new[] { new ID("123") })
+                .Nodes(new[] { new string("123") })
                 .OfType<Issue>()
                 .Select(x => new
                 {
@@ -355,7 +355,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             var expected = "query{node(id:\"123\"){__typename ... on Repository{name}}}";
 
             var expression = new Query()
-                .Node(new ID("123"))
+                .Node(new string("123"))
                 .Cast<Repository>()
                 .Select(x => x.Name);
 
@@ -373,7 +373,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 Body = "body",
                 ClientMutationId = "1",
-                SubjectId = new ID("x"),
+                SubjectId = new string("x"),
             };
 
             var expression = new Query()
@@ -394,7 +394,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             {
                 Body = null,
                 ClientMutationId = "1",
-                SubjectId = new ID("x"),
+                SubjectId = new string("x"),
             };
 
             var expression = new Query()
@@ -416,7 +416,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 {
                     Body = "body",
                     ClientMutationId = "1",
-                    SubjectId = new ID("x"),
+                    SubjectId = new string("x"),
                 })
                 .Select(x => x.Body);
 
@@ -431,7 +431,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 {
                     Body = "different body",
                     ClientMutationId = "1",
-                    SubjectId = new ID("x"),
+                    SubjectId = new string("x"),
                 })
                 .Select(x => x.Body);
 
@@ -495,7 +495,7 @@ namespace Octokit.GraphQL.Core.UnitTests
   }
 }";
             var expression = new Query()
-                .Node(new ID("123"))
+                .Node(new string("123"))
                 .Cast<Repository>()
                 .Select(x => x.Name);
 
@@ -564,7 +564,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Double_Quotes_In_InputObject_Arg_Are_Escaped()
         {
-            var expected = "query{addComment(input:{subjectId:\"\",body:null,clientMutationId:\"string with \\\"quotes\\\" in it\"}){body}}";
+            var expected = "query{addComment(input:{subjectId:null,body:null,clientMutationId:\"string with \\\"quotes\\\" in it\"}){body}}";
 
             var expression = new Query()
                 .AddComment(new AddCommentInput { ClientMutationId = "string with \"quotes\" in it" })
@@ -578,7 +578,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Backslash_In_InputObject_Arg_Is_Escaped()
         {
-            var expected = "query{addComment(input:{subjectId:\"\",body:null,clientMutationId:\"string with \\\\ in it\"}){body}}";
+            var expected = "query{addComment(input:{subjectId:null,body:null,clientMutationId:\"string with \\\\ in it\"}){body}}";
 
             var expression = new Query()
                 .AddComment(new AddCommentInput { ClientMutationId = "string with \\ in it" })
@@ -1232,7 +1232,7 @@ fragment issueTitle on Issue {
                                 CheckRuns = suite.CheckRuns(null, null, null, null, null).AllPages(10)
                                     .Select(run => new
                                     {
-                                        CheckRunId = run.Id.Value,
+                                        CheckRunId = run.Id,
                                         Name = run.Name,
                                         Annotations = run.Annotations(null, null, null, null).AllPages()
                                             .Select(annotation => new
