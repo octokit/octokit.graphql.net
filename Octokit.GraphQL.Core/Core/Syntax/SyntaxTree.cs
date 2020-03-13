@@ -75,7 +75,7 @@ namespace Octokit.GraphQL.Core.Syntax
         {
             var result = Root.VariableDefinitions.SingleOrDefault(x => x.Name == name);
 
-            if (result != null && result.Type != VariableDefinition.ToTypeName(type, isNullable))
+            if (result != null && result.Type != VariableDefinition.ToTypeName(type, isNullable, name))
             {
                 throw new InvalidOperationException(
                     $"A variable called '{name}' has already been added with a different type.");

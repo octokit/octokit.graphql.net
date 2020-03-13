@@ -8,16 +8,16 @@ namespace Octokit.GraphQL.Core.Syntax
     {
         public VariableDefinition(Type type, bool isNullable, string name)
         {
-            Type = ToTypeName(type, isNullable);
+            Type = ToTypeName(type, isNullable, name);
             Name = name;
         }
 
         public string Type { get; }
         public string Name { get; }
 
-        public static string ToTypeName(Type type, bool isNullable)
+        public static string ToTypeName(Type type, bool isNullable, string variableName)
         {
-            var name = type.Name;
+            var name = (variableName?.Equals("__id") == true || variableName?.EndsWith("Id") == true) && type == typeof(string) ? "ID" : type.Name;
 
             if (type == typeof(int))
             {
@@ -33,7 +33,7 @@ namespace Octokit.GraphQL.Core.Syntax
             }
             else if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
-                var inner = ToTypeName(type.GenericTypeArguments[0], false);
+                var inner = ToTypeName(type.GenericTypeArguments[0], false, variableName?.TrimEnd('s'));
                 name = '[' + inner + ']';
             }
 
