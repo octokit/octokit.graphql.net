@@ -196,10 +196,6 @@ namespace Octokit.GraphQL.Core.Serializers
             {
                 builder.Append(value);
             }
-            else if (value is ID id)
-            {
-                builder.Append(JsonConvert.ToString(id.Value, '"'));
-            }
             else if (value is IEnumerable)
             {
                 builder.Append("[");
