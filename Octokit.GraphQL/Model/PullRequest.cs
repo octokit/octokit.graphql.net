@@ -200,6 +200,11 @@ namespace Octokit.GraphQL.Model
         public bool IsCrossRepository { get; }
 
         /// <summary>
+        /// Identifies if the pull request is a draft.
+        /// </summary>
+        public bool IsDraft { get; }
+
+        /// <summary>
         /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -328,6 +333,11 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL for reverting this pull request.
         /// </summary>
         public string RevertUrl { get; }
+
+        /// <summary>
+        /// The current status of this pull request with respect to code review.
+        /// </summary>
+        public PullRequestReviewDecision? ReviewDecision { get; }
 
         /// <summary>
         /// A list of review requests associated with the pull request.

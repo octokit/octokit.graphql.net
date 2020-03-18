@@ -141,6 +141,11 @@ namespace Octokit.GraphQL
         public CreateEnterpriseOrganizationPayload CreateEnterpriseOrganization(Arg<CreateEnterpriseOrganizationInput> input) => this.CreateMethodCall(x => x.CreateEnterpriseOrganization(input), Octokit.GraphQL.Model.CreateEnterpriseOrganizationPayload.Create);
 
         /// <summary>
+        /// Creates a new IP allow list entry.
+        /// </summary>
+        public CreateIpAllowListEntryPayload CreateIpAllowListEntry(Arg<CreateIpAllowListEntryInput> input) => this.CreateMethodCall(x => x.CreateIpAllowListEntry(input), Octokit.GraphQL.Model.CreateIpAllowListEntryPayload.Create);
+
+        /// <summary>
         /// Creates a new issue.
         /// </summary>
         public CreateIssuePayload CreateIssue(Arg<CreateIssueInput> input) => this.CreateMethodCall(x => x.CreateIssue(input), Octokit.GraphQL.Model.CreateIssuePayload.Create);
@@ -184,6 +189,16 @@ namespace Octokit.GraphQL
         /// Delete a branch protection rule
         /// </summary>
         public DeleteBranchProtectionRulePayload DeleteBranchProtectionRule(Arg<DeleteBranchProtectionRuleInput> input) => this.CreateMethodCall(x => x.DeleteBranchProtectionRule(input), Octokit.GraphQL.Model.DeleteBranchProtectionRulePayload.Create);
+
+        /// <summary>
+        /// Deletes a deployment.
+        /// </summary>
+        public DeleteDeploymentPayload DeleteDeployment(Arg<DeleteDeploymentInput> input) => this.CreateMethodCall(x => x.DeleteDeployment(input), Octokit.GraphQL.Model.DeleteDeploymentPayload.Create);
+
+        /// <summary>
+        /// Deletes an IP allow list entry.
+        /// </summary>
+        public DeleteIpAllowListEntryPayload DeleteIpAllowListEntry(Arg<DeleteIpAllowListEntryInput> input) => this.CreateMethodCall(x => x.DeleteIpAllowListEntry(input), Octokit.GraphQL.Model.DeleteIpAllowListEntryPayload.Create);
 
         /// <summary>
         /// Deletes an Issue object.
@@ -261,6 +276,11 @@ namespace Octokit.GraphQL
         public LockLockablePayload LockLockable(Arg<LockLockableInput> input) => this.CreateMethodCall(x => x.LockLockable(input), Octokit.GraphQL.Model.LockLockablePayload.Create);
 
         /// <summary>
+        /// Marks a pull request ready for review.
+        /// </summary>
+        public MarkPullRequestReadyForReviewPayload MarkPullRequestReadyForReview(Arg<MarkPullRequestReadyForReviewInput> input) => this.CreateMethodCall(x => x.MarkPullRequestReadyForReview(input), Octokit.GraphQL.Model.MarkPullRequestReadyForReviewPayload.Create);
+
+        /// <summary>
         /// Merge a head into a branch.
         /// </summary>
         public MergeBranchPayload MergeBranch(Arg<MergeBranchInput> input) => this.CreateMethodCall(x => x.MergeBranch(input), Octokit.GraphQL.Model.MergeBranchPayload.Create);
@@ -294,6 +314,11 @@ namespace Octokit.GraphQL
         /// Removes an administrator from the enterprise.
         /// </summary>
         public RemoveEnterpriseAdminPayload RemoveEnterpriseAdmin(Arg<RemoveEnterpriseAdminInput> input) => this.CreateMethodCall(x => x.RemoveEnterpriseAdmin(input), Octokit.GraphQL.Model.RemoveEnterpriseAdminPayload.Create);
+
+        /// <summary>
+        /// Removes the identity provider from an enterprise
+        /// </summary>
+        public RemoveEnterpriseIdentityProviderPayload RemoveEnterpriseIdentityProvider(Arg<RemoveEnterpriseIdentityProviderInput> input) => this.CreateMethodCall(x => x.RemoveEnterpriseIdentityProvider(input), Octokit.GraphQL.Model.RemoveEnterpriseIdentityProviderPayload.Create);
 
         /// <summary>
         /// Removes an organization from the enterprise
@@ -344,6 +369,11 @@ namespace Octokit.GraphQL
         /// Marks a review thread as resolved.
         /// </summary>
         public ResolveReviewThreadPayload ResolveReviewThread(Arg<ResolveReviewThreadInput> input) => this.CreateMethodCall(x => x.ResolveReviewThread(input), Octokit.GraphQL.Model.ResolveReviewThreadPayload.Create);
+
+        /// <summary>
+        /// Creates or updates the identity provider for an enterprise.
+        /// </summary>
+        public SetEnterpriseIdentityProviderPayload SetEnterpriseIdentityProvider(Arg<SetEnterpriseIdentityProviderInput> input) => this.CreateMethodCall(x => x.SetEnterpriseIdentityProvider(input), Octokit.GraphQL.Model.SetEnterpriseIdentityProviderPayload.Create);
 
         /// <summary>
         /// Submits a pending pull request review.
@@ -484,6 +514,16 @@ namespace Octokit.GraphQL
         /// Sets whether two factor authentication is required for all users in an enterprise.
         /// </summary>
         public UpdateEnterpriseTwoFactorAuthenticationRequiredSettingPayload UpdateEnterpriseTwoFactorAuthenticationRequiredSetting(Arg<UpdateEnterpriseTwoFactorAuthenticationRequiredSettingInput> input) => this.CreateMethodCall(x => x.UpdateEnterpriseTwoFactorAuthenticationRequiredSetting(input), Octokit.GraphQL.Model.UpdateEnterpriseTwoFactorAuthenticationRequiredSettingPayload.Create);
+
+        /// <summary>
+        /// Sets whether an IP allow list is enabled on an owner.
+        /// </summary>
+        public UpdateIpAllowListEnabledSettingPayload UpdateIpAllowListEnabledSetting(Arg<UpdateIpAllowListEnabledSettingInput> input) => this.CreateMethodCall(x => x.UpdateIpAllowListEnabledSetting(input), Octokit.GraphQL.Model.UpdateIpAllowListEnabledSettingPayload.Create);
+
+        /// <summary>
+        /// Updates an IP allow list entry.
+        /// </summary>
+        public UpdateIpAllowListEntryPayload UpdateIpAllowListEntry(Arg<UpdateIpAllowListEntryInput> input) => this.CreateMethodCall(x => x.UpdateIpAllowListEntry(input), Octokit.GraphQL.Model.UpdateIpAllowListEntryPayload.Create);
 
         /// <summary>
         /// Updates an Issue.
