@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The user who initiated the action
         /// </summary>
-        IQueryableList<AuditEntryActor> Actor { get; }
+        AuditEntryActor Actor { get; }
 
         /// <summary>
         /// The IP address of the actor
