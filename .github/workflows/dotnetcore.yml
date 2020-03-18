@@ -10,36 +10,7 @@ env:
   config: Release
 
 jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core and GitHub Packages
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    
-    - name: Build using .NET Core
-      run: dotnet build Octokit.GraphQL.sln -c ${{ env.config }}                      
-  test:
-    needs: [build]
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core and GitHub Packages
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    
-    - name: Run Octokit.GraphQL.UnitTests
-      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
-    - name: Run Octokit.GraphQL.Core.UnitTests
-      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
-    - name: Run Octokit.GraphQL.Core.Generation.UnitTests
-      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
-  publish:
-    needs: [build,test]
-    if: github.ref == 'refs/heads/master'
+  build-test-publish:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -56,7 +27,14 @@ jobs:
         nuget-version: '5.x'
 
     - name: Build using .NET Core
-      run: dotnet build Octokit.GraphQL.sln -c ${{ env.config }}                      
+      run: dotnet build Octokit.GraphQL.sln -c ${{ env.config }}
+
+    - name: Run Octokit.GraphQL.UnitTests
+      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.UnitTests\Octokit.GraphQL.UnitTests.csproj
+    - name: Run Octokit.GraphQL.Core.UnitTests
+      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.UnitTests\Octokit.GraphQL.Core.UnitTests.csproj
+    - name: Run Octokit.GraphQL.Core.Generation.UnitTests
+      run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
 
     - name: Create NuGet package
       run: nuget pack
