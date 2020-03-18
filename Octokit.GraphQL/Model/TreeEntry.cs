@@ -41,6 +41,11 @@ namespace Octokit.GraphQL.Model
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
+        /// If the TreeEntry is for a directory occupied by a submodule project, this returns the corresponding submodule
+        /// </summary>
+        public Submodule Submodule => this.CreateProperty(x => x.Submodule, Octokit.GraphQL.Model.Submodule.Create);
+
+        /// <summary>
         /// Entry file type.
         /// </summary>
         public string Type { get; }

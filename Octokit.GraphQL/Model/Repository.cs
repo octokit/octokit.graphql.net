@@ -490,6 +490,15 @@ namespace Octokit.GraphQL.Model
         public StargazerConnection Stargazers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<StarOrder>? orderBy = null) => this.CreateMethodCall(x => x.Stargazers(first, after, last, before, orderBy), Octokit.GraphQL.Model.StargazerConnection.Create);
 
         /// <summary>
+        /// Returns a list of all submodules in this repository parsed from the .gitmodules file as of the default branch's HEAD commit.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public SubmoduleConnection Submodules(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Submodules(first, after, last, before), Octokit.GraphQL.Model.SubmoduleConnection.Create);
+
+        /// <summary>
         /// Temporary authentication token for cloning this repository.
         /// </summary>
         public string TempCloneToken { get; }
