@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
@@ -77,6 +79,24 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             //PrivateGists
             //PublicGists
             //TotalPrivateRepos
+        }
+
+        [IntegrationTest]
+        public async Task DateTime_Filter_Works()
+        {
+            var query = new GraphQL.Query()
+                        .Viewer.ContributionsCollection(from: Variable.Var("start"))
+                        .Select(c => c.User.Name);
+
+            var vars = new Dictionary<string, object>
+            {
+                { "start", new DateTimeOffset(2000, 1, 2, 3, 4, 5, default) }
+            };
+
+            var response = await Connection.Run(query.Compile(), vars);
+
+            // no server error
+            Assert.NotNull(response);
         }
     }
 }
