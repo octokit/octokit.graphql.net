@@ -94,6 +94,11 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
+        /// The URL-friendly identifier for the enterprise.
+        /// </summary>
+        public string Slug { get; }
+
+        /// <summary>
         /// The HTTP URL for this enterprise.
         /// </summary>
         public string Url { get; }

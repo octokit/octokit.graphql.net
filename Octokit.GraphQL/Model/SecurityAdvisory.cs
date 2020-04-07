@@ -43,6 +43,11 @@ namespace Octokit.GraphQL.Model
         public string Origin { get; }
 
         /// <summary>
+        /// The permalink for the advisory
+        /// </summary>
+        public string Permalink { get; }
+
+        /// <summary>
         /// When the advisory was published
         /// </summary>
         public DateTimeOffset PublishedAt { get; }

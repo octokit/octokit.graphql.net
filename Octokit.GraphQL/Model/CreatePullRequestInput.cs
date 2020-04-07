@@ -42,6 +42,11 @@ namespace Octokit.GraphQL.Model
         public bool? MaintainerCanModify { get; set; }
 
         /// <summary>
+        /// Indicates whether this pull request should be a draft.
+        /// </summary>
+        public bool? Draft { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

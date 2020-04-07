@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The user who initiated the action
         /// </summary>
-        IQueryableList<AuditEntryActor> Actor { get; }
+        AuditEntryActor Actor { get; }
 
         /// <summary>
         /// The IP address of the actor
@@ -96,7 +96,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public string Action { get; }
 
-        public IQueryableList<AuditEntryActor> Actor => this.CreateProperty(x => x.Actor);
+        public AuditEntryActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Model.AuditEntryActor.Create);
 
         public string ActorIp { get; }
 
