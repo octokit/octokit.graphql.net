@@ -473,7 +473,6 @@ namespace Octokit.GraphQL.Core.UnitTests
         public void DateTimeOffsetValue_Variable()
         {
             var expected = "query{repository(owner:\"foo\",name:\"bar\"){issueByCreation(createdSince:\"2000-01-02T03:04:05+00:00\"){body}}}";
-
             var expression = new Query()
                 .Repository("foo", "bar")
                 .IssueByCreation(new DateTimeOffset(2000,1,2,3,4,5, default))
