@@ -291,6 +291,24 @@ namespace Octokit.GraphQL.UnitTests
             Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
 
+        [Fact]
+        public void Viewer_ContributionsCollection_FromToWithVariables()
+        {
+            var expected = @"query($start: DateTime, $end: DateTime) {
+  viewer {
+    contributionsCollection(from: $start, to: $end)
+  }
+}";
+
+            var expression = new Query()
+                .Viewer
+                .ContributionsCollection(from: Variable.Var("start"), to: Variable.Var("end"));
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
+        }
+
         [Fact(Skip = "Not yet working")]
         public void Search_User_Name_Via_Edges()
         {
