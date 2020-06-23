@@ -36,8 +36,8 @@ jobs:
     - name: Run Octokit.GraphQL.Core.Generation.UnitTests
       run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
 
-    - name: Create NuGet package
-      run: nuget pack
+    - name: Create package using .nuspec
+      run: dotnet pack pack.csproj --output .
 
     - name: Publish to GitHub Packages
       if: github.ref == 'refs/heads/master'
