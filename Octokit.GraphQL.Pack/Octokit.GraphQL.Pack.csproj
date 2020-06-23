@@ -3,6 +3,7 @@
     <TargetFramework>netstandard1.1</TargetFramework>
     <NoBuild>true</NoBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <NuspecFile>Octokit.GraphQL.nuspec</NuspecFile>
+    <NuspecFile>../Octokit.GraphQL.nuspec</NuspecFile>
+    <NuspecBasePath>..</NuspecBasePath>
   </PropertyGroup>
 </Project>
