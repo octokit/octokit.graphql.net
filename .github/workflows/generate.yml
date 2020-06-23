@@ -1,0 +1,28 @@
+name: Generate Schema
+
+on:
+  push:
+    branches: [ generate ]
+  watch:
+    types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 1.1.2
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Generate
+      run: dotnet run --project .\Tools\Generate\Generate.csproj -- ${{ secrets.GITHUB_TOKEN }} .\Octokit.GraphQL\
+
+    - name: Build
+      run: dotnet build
