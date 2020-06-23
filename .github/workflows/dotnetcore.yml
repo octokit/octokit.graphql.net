@@ -48,4 +48,8 @@ jobs:
 
     - name: Publish to GitHub Packages
       if: github.ref == 'refs/heads/master'
-      run: dotnet nuget push *.nupkg
+      run: dotnet nuget push ${{ env.PackageOutputPath }}/*.nupkg
+
+    - name: Publish to nuget.org
+      if: github.ref == 'refs/heads/master'
+      run: dotnet nuget push ${{ env.PackageOutputPath }}/*.nupkg --source nuget.org -k ${{ secrets.NUGET_TOKEN }}
