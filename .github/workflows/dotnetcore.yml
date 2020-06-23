@@ -8,6 +8,7 @@ on:
 
 env:
   config: Release
+  PackageOutputPath: nupkg
 
 jobs:
   build-test-publish:
@@ -36,9 +37,19 @@ jobs:
     - name: Run Octokit.GraphQL.Core.Generation.UnitTests
       run: dotnet test -c ${{ env.config }} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" .\Octokit.GraphQL.Core.Generation.UnitTests\Octokit.GraphQL.Core.Generation.UnitTests.csproj
 
-    - name: Create NuGet package
-      run: nuget pack
+    - name: Create package using .nuspec
+      run: dotnet pack Octokit.GraphQL.Pack/Octokit.GraphQL.Pack.csproj --output ${{ env.PackageOutputPath }}
+      
+    - name: Upload nupkg artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ${{ env.PackageOutputPath }}/*.nupkg
 
     - name: Publish to GitHub Packages
       if: github.ref == 'refs/heads/master'
-      run: dotnet nuget push *.nupkg
+      run: dotnet nuget push ${{ env.PackageOutputPath }}/*.nupkg
+
+    - name: Publish to nuget.org
+      if: github.ref == 'refs/heads/master'
+      run: dotnet nuget push ${{ env.PackageOutputPath }}/*.nupkg --source nuget.org -k ${{ secrets.NUGET_TOKEN }}
