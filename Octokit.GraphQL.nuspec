@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Octokit.GraphQL</id>
-    <version>0.1.5-beta</version>
+    <version>0.1.6-beta</version>
     <authors>GitHub</authors>
     <owners>GitHub</owners>
     <repository type="git" url="https://github.com/octokit/octokit.graphql.net" />
