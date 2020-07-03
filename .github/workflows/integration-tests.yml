@@ -3,6 +3,14 @@ name: Integration tests
 on:
   push:
 
+  # Runs at 00:00 UTC every day
+  schedule:
+    - cron: '0 */24 * * *'  
+
+  # Runs when repository is starred
+  watch:
+    types: [started]  
+
 env:
   config: Release
 
