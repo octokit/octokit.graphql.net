@@ -41,8 +41,10 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         [IntegrationTest]
         public async Task Should_Throw_Correct_Error_For_Invalid_Repository_Name()
         {
+            var owner = "octokit";
+            var name = "bad_repository";
             var query = new Query()
-                .Repository(owner: "octokit", name: "bad_repository")
+                .Repository(owner: owner, name: name)
                 .Issues(first: 3)
                 .Nodes
                 .Select(i => new
@@ -52,7 +54,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 });
 
             var ex = await Assert.ThrowsAnyAsync<ResponseDeserializerException>(async () => await Connection.Run(query));
-            Assert.Equal("Could not resolve to a Repository with the name 'bad_repository'.", ex.Message);
+            Assert.Equal($"Could not resolve to a Repository with the name '{owner}/{name}'.", ex.Message);
             Assert.Equal(1, ex.Line);
             Assert.Equal(7, ex.Column);
         }
