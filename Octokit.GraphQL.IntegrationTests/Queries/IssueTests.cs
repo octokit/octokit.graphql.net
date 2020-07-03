@@ -184,7 +184,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
-                .Issues().AllPages()
+                .Issues().AllPages(50)
                 .Select(issue => new
                 {
                     issue.Id,
