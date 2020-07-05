@@ -188,13 +188,50 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Select(issue => new
                 {
                     issue.Id,
+                    Comments = issue.Comments(null, null, null, null).AllPages(10).Select(comment => comment.Body).ToList(),
+                });
+
+            var result = (await Connection.Run(query)).ToList();
+
+            Assert.Contains(result, x => x.Comments.Count > 20);
+        }
+
+        [IntegrationTest]
+        public async Task Can_AutoPage_Issues_Comments_With_Subquery()
+        {
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues().AllPages(50)
+                .Select(issue => new
+                {
+                    issue.Id,
+                    Comments = issue.Comments(null, null, null, null).AllPages(10).Select(comment => new
+                    {
+                        comment.Body,
+                        Reactions = comment.Reactions(null, null, null, null, null, null).AllPages().Select(r => r.Id).ToList()
+                    }).ToList(),
+                });
+
+            var result = (await Connection.Run(query)).ToList();
+
+            Assert.Contains(result, x => x.Comments.Count > 20);
+        }
+
+        [IntegrationTest]
+        public async Task Can_AutoPage_Issues_With_Subquery()
+        {
+            var query = new Query()
+                .Repository(owner: "octokit", name: "octokit.net")
+                .Issues().AllPages(50)
+                .Select(issue => new
+                {
+                    issue.Id,
                     Comments = issue.Comments(null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
                 });
 
             var result = (await Connection.Run(query)).ToList();
 
             Assert.True(result.Count > 100);
-            Assert.Contains(result, x => x.Comments.Count > 100);
         }
 
         class ActorModel
