@@ -29,6 +29,11 @@ namespace Octokit.GraphQL.Model
         public string CommitMessage { get; set; }
 
         /// <summary>
+        /// The email address to associate with this commit.
+        /// </summary>
+        public string AuthorEmail { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

@@ -171,6 +171,11 @@ namespace Octokit.GraphQL.Model
         public bool IsDisabled { get; }
 
         /// <summary>
+        /// Returns whether or not this repository is empty.
+        /// </summary>
+        public bool IsEmpty { get; }
+
+        /// <summary>
         /// Identifies if the repository is a fork.
         /// </summary>
         public bool IsFork { get; }
@@ -286,8 +291,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for milestones.</param>
+        /// <param name="query">Filters milestones with a query on the title</param>
         /// <param name="states">Filter by the state of the milestones.</param>
-        public MilestoneConnection Milestones(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<MilestoneOrder>? orderBy = null, Arg<IEnumerable<MilestoneState>>? states = null) => this.CreateMethodCall(x => x.Milestones(first, after, last, before, orderBy, states), Octokit.GraphQL.Model.MilestoneConnection.Create);
+        public MilestoneConnection Milestones(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<MilestoneOrder>? orderBy = null, Arg<string>? query = null, Arg<IEnumerable<MilestoneState>>? states = null) => this.CreateMethodCall(x => x.Milestones(first, after, last, before, orderBy, query, states), Octokit.GraphQL.Model.MilestoneConnection.Create);
 
         /// <summary>
         /// The repository's original mirror URL.
@@ -532,6 +538,16 @@ namespace Octokit.GraphQL.Model
         public bool ViewerCanUpdateTopics { get; }
 
         /// <summary>
+        /// The last commit email for the viewer.
+        /// </summary>
+        public string ViewerDefaultCommitEmail { get; }
+
+        /// <summary>
+        /// The last used merge method by the viewer or the default for the repository.
+        /// </summary>
+        public PullRequestMergeMethod ViewerDefaultMergeMethod { get; }
+
+        /// <summary>
         /// Returns a boolean indicating whether the viewing user has starred this starrable.
         /// </summary>
         public bool ViewerHasStarred { get; }
@@ -540,6 +556,11 @@ namespace Octokit.GraphQL.Model
         /// The users permission level on the repository. Will return null if authenticated as an GitHub App.
         /// </summary>
         public RepositoryPermission? ViewerPermission { get; }
+
+        /// <summary>
+        /// A list of emails this viewer can commit with.
+        /// </summary>
+        public IEnumerable<string> ViewerPossibleCommitEmails { get; }
 
         /// <summary>
         /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.

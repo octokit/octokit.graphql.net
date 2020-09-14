@@ -38,12 +38,9 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// Indicates whether the Blob is binary or text
-        /// **Upcoming Change on 2019-07-01 UTC**
-        /// **Description:** Type for `isBinary` will change from `Boolean!` to `Boolean`.
-        /// **Reason:** The `isBinary` field may return `null` when it cannot determine if a Blob is binary.
+        /// Indicates whether the Blob is binary or text. Returns null if unable to determine the encoding.
         /// </summary>
-        public bool IsBinary { get; }
+        public bool? IsBinary { get; }
 
         /// <summary>
         /// Indicates whether the contents is truncated

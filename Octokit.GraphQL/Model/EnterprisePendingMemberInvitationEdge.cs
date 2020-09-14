@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Whether the invitation has a license for the enterprise.
         /// </summary>
+        [Obsolete(@"All pending members consume a license Removal on 2020-07-01 UTC.")]
         public bool IsUnlicensed { get; }
 
         /// <summary>

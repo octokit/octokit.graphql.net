@@ -45,6 +45,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> BaseRefChangedEvent(Func<BaseRefChangedEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'base_ref_deleted' event on a given pull request.
+            /// </summary>
+            public Selector<T> BaseRefDeletedEvent(Func<BaseRefDeletedEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'base_ref_force_pushed' event on a given pull request.
             /// </summary>
             public Selector<T> BaseRefForcePushedEvent(Func<BaseRefForcePushedEvent, T> selector) => default;

@@ -66,6 +66,12 @@ namespace Octokit.GraphQL.Model
         BaseRefForcePushedEvent,
 
         /// <summary>
+        /// Represents a 'base_ref_deleted' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "BASE_REF_DELETED_EVENT")]
+        BaseRefDeletedEvent,
+
+        /// <summary>
         /// Represents a 'deployed' event on a given pull request.
         /// </summary>
         [EnumMember(Value = "DEPLOYED_EVENT")]

@@ -47,10 +47,7 @@ namespace Octokit.GraphQL.Model
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
-        /// The object the ref points to.
-        /// **Upcoming Change on 2019-07-01 UTC**
-        /// **Description:** Type for `target` will change from `GitObject!` to `GitObject`.
-        /// **Reason:** The `target` field may return `null` values and is changing to nullable
+        /// The object the ref points to. Returns null when object does not exist.
         /// </summary>
         public IGitObject Target => this.CreateProperty(x => x.Target, Octokit.GraphQL.Model.Internal.StubIGitObject.Create);
 
