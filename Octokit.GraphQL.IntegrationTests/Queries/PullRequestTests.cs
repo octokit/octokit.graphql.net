@@ -138,11 +138,22 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
                 .PullRequest(number: 1)
-                .Select(pr => pr.BaseRef != null ? pr.BaseRef.Name : null);
+                .Select(pr => new
+                {
+                    BaseRefName = pr.BaseRef != null ? pr.BaseRef.Name : null,
+                    BaseRefNotNull = pr.BaseRef != null
+                });
 
             var result = await Connection.Run(query);
 
-            Assert.Equal("master", result);
+            if (result.BaseRefNotNull)
+            {
+                Assert.Equal("main", result.BaseRefName);
+            }
+            else
+            {
+                Assert.Null(result.BaseRefName);
+            }
         }
 
         [IntegrationTest]
@@ -151,11 +162,22 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
                 .PullRequest(number: 1)
-                .Select(pr => pr.BaseRef != null ? pr.BaseRef.Repository.Owner.Login : null);
+                .Select(pr => new
+                {
+                    Owner = pr.BaseRef != null ? pr.BaseRef.Repository.Owner.Login : null,
+                    BaseRefNotNull = pr.BaseRef != null
+                });
 
             var result = await Connection.Run(query);
 
-            Assert.Equal("octokit", result);
+            if (result.BaseRefNotNull)
+            {
+                Assert.Equal("octokit", result.Owner);
+            }
+            else
+            {
+                Assert.Null(result.Owner);
+            }
         }
 
         [IntegrationTest]

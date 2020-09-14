@@ -200,6 +200,11 @@ namespace Octokit.GraphQL.Model
         public bool IsCrossRepository { get; }
 
         /// <summary>
+        /// Identifies if the pull request is a draft.
+        /// </summary>
+        public bool IsDraft { get; }
+
+        /// <summary>
         /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -330,6 +335,11 @@ namespace Octokit.GraphQL.Model
         public string RevertUrl { get; }
 
         /// <summary>
+        /// The current status of this pull request with respect to code review.
+        /// </summary>
+        public PullRequestReviewDecision? ReviewDecision { get; }
+
+        /// <summary>
         /// A list of review requests associated with the pull request.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -443,6 +453,18 @@ namespace Octokit.GraphQL.Model
         /// Did the viewer author this comment.
         /// </summary>
         public bool ViewerDidAuthor { get; }
+
+        /// <summary>
+        /// The merge body text for the viewer and method.
+        /// </summary>
+        /// <param name="mergeType">The merge method for the message.</param>
+        public string ViewerMergeBodyText(Arg<PullRequestMergeMethod>? mergeType = null) => default;
+
+        /// <summary>
+        /// The merge headline text for the viewer and method.
+        /// </summary>
+        /// <param name="mergeType">The merge method for the message.</param>
+        public string ViewerMergeHeadlineText(Arg<PullRequestMergeMethod>? mergeType = null) => default;
 
         /// <summary>
         /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.

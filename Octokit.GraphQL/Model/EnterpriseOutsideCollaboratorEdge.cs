@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Whether the outside collaborator does not have a license for the enterprise.
         /// </summary>
+        [Obsolete(@"All outside collaborators consume a license Removal on 2021-01-01 UTC.")]
         public bool IsUnlicensed { get; }
 
         /// <summary>
