@@ -38,9 +38,9 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// Indicates whether the Blob is binary or text
+        /// Indicates whether the Blob is binary or text. Returns null if unable to determine the encoding.
         /// </summary>
-        public bool IsBinary { get; }
+        public bool? IsBinary { get; }
 
         /// <summary>
         /// Indicates whether the contents is truncated
