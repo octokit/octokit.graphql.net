@@ -81,7 +81,7 @@ namespace Octokit.GraphQL.Model
         public IpAllowListEntryConnection IpAllowListEntries(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IpAllowListEntryOrder>? orderBy = null) => this.CreateMethodCall(x => x.IpAllowListEntries(first, after, last, before, orderBy), Octokit.GraphQL.Model.IpAllowListEntryConnection.Create);
 
         /// <summary>
-        /// Whether the organization has verified its profile email and website.
+        /// Whether the organization has verified its profile email and website, always false on Enterprise.
         /// </summary>
         public bool IsVerified { get; }
 

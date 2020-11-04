@@ -30,6 +30,11 @@ namespace Octokit.GraphQL.Model
         public IQueryableList<Topic> RelatedTopics(Arg<int>? first = null) => this.CreateMethodCall(x => x.RelatedTopics(first));
 
         /// <summary>
+        /// Returns a count of how many stargazers there are on this object
+        /// </summary>
+        public int StargazerCount { get; }
+
+        /// <summary>
         /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

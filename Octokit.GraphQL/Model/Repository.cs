@@ -60,6 +60,11 @@ namespace Octokit.GraphQL.Model
         public CommitCommentConnection CommitComments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.CommitComments(first, after, last, before), Octokit.GraphQL.Model.CommitCommentConnection.Create);
 
         /// <summary>
+        /// Returns a list of contact links associated to the repository
+        /// </summary>
+        public IQueryableList<RepositoryContactLink> ContactLinks => this.CreateProperty(x => x.ContactLinks);
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
@@ -166,6 +171,11 @@ namespace Octokit.GraphQL.Model
         public bool IsArchived { get; }
 
         /// <summary>
+        /// Returns true if blank issue creation is allowed
+        /// </summary>
+        public bool IsBlankIssuesEnabled { get; }
+
+        /// <summary>
         /// Returns whether or not this repository disabled.
         /// </summary>
         public bool IsDisabled { get; }
@@ -179,6 +189,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies if the repository is a fork.
         /// </summary>
         public bool IsFork { get; }
+
+        /// <summary>
+        /// Indicates if a repository is either owned by an organization, or is a private fork of an organization repository.
+        /// </summary>
+        public bool IsInOrganization { get; }
 
         /// <summary>
         /// Indicates if the repository has been locked or not.
@@ -196,9 +211,19 @@ namespace Octokit.GraphQL.Model
         public bool IsPrivate { get; }
 
         /// <summary>
+        /// Returns true if this repository has a security policy
+        /// </summary>
+        public bool? IsSecurityPolicyEnabled { get; }
+
+        /// <summary>
         /// Identifies if the repository is a template that can be used to generate new repositories.
         /// </summary>
         public bool IsTemplate { get; }
+
+        /// <summary>
+        /// Is this repository a user configuration repository?
+        /// </summary>
+        public bool IsUserConfigurationRepository { get; }
 
         /// <summary>
         /// Returns a single issue from the current repository by number.
@@ -211,6 +236,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         /// <param name="number">The number for the issue to be returned.</param>
         public IssueOrPullRequest IssueOrPullRequest(Arg<int> number) => this.CreateMethodCall(x => x.IssueOrPullRequest(number), Octokit.GraphQL.Model.IssueOrPullRequest.Create);
+
+        /// <summary>
+        /// Returns a list of issue templates associated to the repository
+        /// </summary>
+        public IQueryableList<IssueTemplate> IssueTemplates => this.CreateProperty(x => x.IssueTemplates);
 
         /// <summary>
         /// A list of issues that have been opened in the repository.
@@ -458,6 +488,11 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
+        /// The security policy URL.
+        /// </summary>
+        public string SecurityPolicyUrl { get; }
+
+        /// <summary>
         /// A description of the repository, rendered to HTML without any links in it.
         /// </summary>
         /// <param name="limit">How many characters to return.</param>
@@ -472,6 +507,11 @@ namespace Octokit.GraphQL.Model
         /// The SSH URL to clone this repository
         /// </summary>
         public string SshUrl { get; }
+
+        /// <summary>
+        /// Returns a count of how many stargazers there are on this object
+        /// </summary>
+        public int StargazerCount { get; }
 
         /// <summary>
         /// A list of users who have starred this starrable.

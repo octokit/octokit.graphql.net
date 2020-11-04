@@ -64,6 +64,11 @@ namespace Octokit.GraphQL.Model
         bool IsFork { get; }
 
         /// <summary>
+        /// Indicates if a repository is either owned by an organization, or is a private fork of an organization repository.
+        /// </summary>
+        bool IsInOrganization { get; }
+
+        /// <summary>
         /// Indicates if the repository has been locked or not.
         /// </summary>
         bool IsLocked { get; }
@@ -184,6 +189,8 @@ namespace Octokit.GraphQL.Model.Internal
         public bool IsArchived { get; }
 
         public bool IsFork { get; }
+
+        public bool IsInOrganization { get; }
 
         public bool IsLocked { get; }
 

@@ -16,6 +16,16 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The extension of the file
+        /// </summary>
+        public string Extension { get; }
+
+        /// <summary>
+        /// Whether or not this tree entry is generated
+        /// </summary>
+        public bool IsGenerated { get; }
+
+        /// <summary>
         /// Entry file mode.
         /// </summary>
         public int Mode { get; }
@@ -34,6 +44,11 @@ namespace Octokit.GraphQL.Model
         /// Entry file Git object ID.
         /// </summary>
         public string Oid { get; }
+
+        /// <summary>
+        /// The full path of the file.
+        /// </summary>
+        public string Path { get; }
 
         /// <summary>
         /// The Repository the tree entry belongs to

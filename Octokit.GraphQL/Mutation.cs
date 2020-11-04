@@ -281,6 +281,11 @@ namespace Octokit.GraphQL
         public LockLockablePayload LockLockable(Arg<LockLockableInput> input) => this.CreateMethodCall(x => x.LockLockable(input), Octokit.GraphQL.Model.LockLockablePayload.Create);
 
         /// <summary>
+        /// Mark a pull request file as viewed
+        /// </summary>
+        public MarkFileAsViewedPayload MarkFileAsViewed(Arg<MarkFileAsViewedInput> input) => this.CreateMethodCall(x => x.MarkFileAsViewed(input), Octokit.GraphQL.Model.MarkFileAsViewedPayload.Create);
+
+        /// <summary>
         /// Marks a pull request ready for review.
         /// </summary>
         public MarkPullRequestReadyForReviewPayload MarkPullRequestReadyForReview(Arg<MarkPullRequestReadyForReviewInput> input) => this.CreateMethodCall(x => x.MarkPullRequestReadyForReview(input), Octokit.GraphQL.Model.MarkPullRequestReadyForReviewPayload.Create);
@@ -416,6 +421,11 @@ namespace Octokit.GraphQL
         public UnlockLockablePayload UnlockLockable(Arg<UnlockLockableInput> input) => this.CreateMethodCall(x => x.UnlockLockable(input), Octokit.GraphQL.Model.UnlockLockablePayload.Create);
 
         /// <summary>
+        /// Unmark a pull request file as viewed
+        /// </summary>
+        public UnmarkFileAsViewedPayload UnmarkFileAsViewed(Arg<UnmarkFileAsViewedInput> input) => this.CreateMethodCall(x => x.UnmarkFileAsViewed(input), Octokit.GraphQL.Model.UnmarkFileAsViewedPayload.Create);
+
+        /// <summary>
         /// Unmark an issue as a duplicate of another issue.
         /// </summary>
         public UnmarkIssueAsDuplicatePayload UnmarkIssueAsDuplicate(Arg<UnmarkIssueAsDuplicateInput> input) => this.CreateMethodCall(x => x.UnmarkIssueAsDuplicate(input), Octokit.GraphQL.Model.UnmarkIssueAsDuplicatePayload.Create);
@@ -444,11 +454,6 @@ namespace Octokit.GraphQL
         /// Modifies the settings of an existing check suite
         /// </summary>
         public UpdateCheckSuitePreferencesPayload UpdateCheckSuitePreferences(Arg<UpdateCheckSuitePreferencesInput> input) => this.CreateMethodCall(x => x.UpdateCheckSuitePreferences(input), Octokit.GraphQL.Model.UpdateCheckSuitePreferencesPayload.Create);
-
-        /// <summary>
-        /// Sets the action execution capability setting for an enterprise.
-        /// </summary>
-        public UpdateEnterpriseActionExecutionCapabilitySettingPayload UpdateEnterpriseActionExecutionCapabilitySetting(Arg<UpdateEnterpriseActionExecutionCapabilitySettingInput> input) => this.CreateMethodCall(x => x.UpdateEnterpriseActionExecutionCapabilitySetting(input), Octokit.GraphQL.Model.UpdateEnterpriseActionExecutionCapabilitySettingPayload.Create);
 
         /// <summary>
         /// Updates the role of an enterprise administrator.

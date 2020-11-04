@@ -51,6 +51,16 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset AuthoredDate { get; }
 
         /// <summary>
+        /// The list of authors for this commit based on the git author and the Co-authored-by
+        /// message trailer. The git author will always be first.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public GitActorConnection Authors(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Authors(first, after, last, before), Octokit.GraphQL.Model.GitActorConnection.Create);
+
+        /// <summary>
         /// Fetches `git blame` information.
         /// </summary>
         /// <param name="path">The file whose Git blame information you want.</param>
@@ -120,6 +130,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="environments">Environments to list deployments for</param>
         /// <param name="orderBy">Ordering options for deployments returned from the connection.</param>
         public DeploymentConnection Deployments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? environments = null, Arg<DeploymentOrder>? orderBy = null) => this.CreateMethodCall(x => x.Deployments(first, after, last, before, environments, orderBy), Octokit.GraphQL.Model.DeploymentConnection.Create);
+
+        /// <summary>
+        /// The tree entry representing the file located at the given path.
+        /// </summary>
+        /// <param name="path">The path for the file</param>
+        public TreeEntry File(Arg<string> path) => this.CreateMethodCall(x => x.File(path), Octokit.GraphQL.Model.TreeEntry.Create);
 
         /// <summary>
         /// The linear commit history starting from (and including) this commit, in the same order as `git log`.
