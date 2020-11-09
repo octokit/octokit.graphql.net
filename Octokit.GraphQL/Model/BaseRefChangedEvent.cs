@@ -26,26 +26,11 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
-        /// Identifies the name of the base ref for the pull request after it was changed.
-        /// </summary>
-        public string CurrentRefName { get; }
-
-        /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
         public int? DatabaseId { get; }
 
         public ID Id { get; }
-
-        /// <summary>
-        /// Identifies the name of the base ref for the pull request before it was changed.
-        /// </summary>
-        public string PreviousRefName { get; }
-
-        /// <summary>
-        /// PullRequest referenced by event.
-        /// </summary>
-        public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
 
         internal static BaseRefChangedEvent Create(Expression expression)
         {

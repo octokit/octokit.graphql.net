@@ -29,11 +29,6 @@ namespace Octokit.GraphQL.Model
         /// <param name="states">A list of states to filter the pull requests by.</param>
         public PullRequestConnection AssociatedPullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? baseRefName = null, Arg<string>? headRefName = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<PullRequestState>>? states = null) => this.CreateMethodCall(x => x.AssociatedPullRequests(first, after, last, before, baseRefName, headRefName, labels, orderBy, states), Octokit.GraphQL.Model.PullRequestConnection.Create);
 
-        /// <summary>
-        /// Branch protection rules for this ref
-        /// </summary>
-        public BranchProtectionRule BranchProtectionRule => this.CreateProperty(x => x.BranchProtectionRule, Octokit.GraphQL.Model.BranchProtectionRule.Create);
-
         public ID Id { get; }
 
         /// <summary>
@@ -45,11 +40,6 @@ namespace Octokit.GraphQL.Model
         /// The ref's prefix, such as `refs/heads/` or `refs/tags/`.
         /// </summary>
         public string Prefix { get; }
-
-        /// <summary>
-        /// Branch protection rules that are viewable by non-admins
-        /// </summary>
-        public RefUpdateRule RefUpdateRule => this.CreateProperty(x => x.RefUpdateRule, Octokit.GraphQL.Model.RefUpdateRule.Create);
 
         /// <summary>
         /// The repository the ref belongs to.

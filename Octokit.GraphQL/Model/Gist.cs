@@ -84,11 +84,6 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
-        /// Returns a count of how many stargazers there are on this object
-        /// </summary>
-        public int StargazerCount { get; }
-
-        /// <summary>
         /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

@@ -16,11 +16,6 @@ namespace Octokit.GraphQL.Model
         ID Id { get; }
 
         /// <summary>
-        /// Returns a count of how many stargazers there are on this object
-        /// </summary>
-        int StargazerCount { get; }
-
-        /// <summary>
         /// A list of users who have starred this starrable.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -52,8 +47,6 @@ namespace Octokit.GraphQL.Model.Internal
         }
 
         public ID Id { get; }
-
-        public int StargazerCount { get; }
 
         public StargazerConnection Stargazers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<StarOrder>? orderBy = null) => this.CreateMethodCall(x => x.Stargazers(first, after, last, before, orderBy), Octokit.GraphQL.Model.StargazerConnection.Create);
 

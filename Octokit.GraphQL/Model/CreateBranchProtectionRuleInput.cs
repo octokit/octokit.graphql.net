@@ -34,21 +34,6 @@ namespace Octokit.GraphQL.Model
         public bool? RequiresCommitSignatures { get; set; }
 
         /// <summary>
-        /// Are merge commits prohibited from being pushed to this branch.
-        /// </summary>
-        public bool? RequiresLinearHistory { get; set; }
-
-        /// <summary>
-        /// Are force pushes allowed on this branch.
-        /// </summary>
-        public bool? AllowsForcePushes { get; set; }
-
-        /// <summary>
-        /// Can this branch be deleted.
-        /// </summary>
-        public bool? AllowsDeletions { get; set; }
-
-        /// <summary>
         /// Can admins overwrite branch protection.
         /// </summary>
         public bool? IsAdminEnforced { get; set; }

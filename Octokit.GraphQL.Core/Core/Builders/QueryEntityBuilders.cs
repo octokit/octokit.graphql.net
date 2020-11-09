@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Octokit.GraphQL.Core.Utilities;
 
 namespace Octokit.GraphQL.Core.Builders
 {
@@ -50,26 +47,6 @@ namespace Octokit.GraphQL.Core.Builders
             return new QueryableValue<TValue>(
                 Expression.Call(
                     Expression.Constant(o),
-                    methodCall.Method,
-                    arguments));
-        }
-
-        public static IEnumerable<TValue> CreateMethodCall<TObject, TValue>(
-            this TObject o,
-            Expression<Func<TObject, IEnumerable<TValue>>> selector)
-            where TObject : IQueryableValue
-        {
-            var methodCall = (MethodCallExpression)selector.Body;
-            var arguments = new List<ConstantExpression>();
-
-            foreach (MemberExpression arg in methodCall.Arguments)
-            {
-                var expression = (ConstantExpression)arg.Expression;
-                var value = ((FieldInfo)arg.Member).GetValue(expression.Value);
-                arguments.Add(Expression.Constant(value, arg.Type));
-            }
-
-            return (IEnumerable<TValue>)(Expression.Call(Expression.Constant(o),
                     methodCall.Method,
                     arguments));
         }

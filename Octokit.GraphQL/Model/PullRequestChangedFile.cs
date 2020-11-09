@@ -30,11 +30,6 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Path { get; }
 
-        /// <summary>
-        /// The state of the file for the viewer.
-        /// </summary>
-        public FileViewedState ViewerViewedState { get; }
-
         internal static PullRequestChangedFile Create(Expression expression)
         {
             return new PullRequestChangedFile(expression);

@@ -50,19 +50,9 @@ namespace Octokit.GraphQL.Model
         public string BodyHTML { get; }
 
         /// <summary>
-        /// The http path for this issue body
-        /// </summary>
-        public string BodyResourcePath { get; }
-
-        /// <summary>
         /// Identifies the body of the issue rendered to text.
         /// </summary>
         public string BodyText { get; }
-
-        /// <summary>
-        /// The http URL for this issue body
-        /// </summary>
-        public string BodyUrl { get; }
 
         /// <summary>
         /// `true` if the object is closed (definition of closed may depend on type)
@@ -115,11 +105,6 @@ namespace Octokit.GraphQL.Model
         /// Check if this comment was edited and includes an edit with the creation data
         /// </summary>
         public bool IncludesCreatedEdit { get; }
-
-        /// <summary>
-        /// Is this issue read by the viewer
-        /// </summary>
-        public bool? IsReadByViewer { get; }
 
         /// <summary>
         /// A list of labels associated with the object.

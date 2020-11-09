@@ -205,11 +205,6 @@ namespace Octokit.GraphQL.Model
         public bool IsDraft { get; }
 
         /// <summary>
-        /// Is this pull request read by the viewer
-        /// </summary>
-        public bool? IsReadByViewer { get; }
-
-        /// <summary>
         /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -223,25 +218,6 @@ namespace Octokit.GraphQL.Model
         /// The moment the editor made the last edit
         /// </summary>
         public DateTimeOffset? LastEditedAt { get; }
-
-        /// <summary>
-        /// A list of latest reviews per user associated with the pull request.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="writersOnly">Only return reviews from user who have write access to the repository</param>
-        public PullRequestReviewConnection LatestOpinionatedReviews(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? writersOnly = null) => this.CreateMethodCall(x => x.LatestOpinionatedReviews(first, after, last, before, writersOnly), Octokit.GraphQL.Model.PullRequestReviewConnection.Create);
-
-        /// <summary>
-        /// A list of latest reviews per user associated with the pull request that are not also pending review.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public PullRequestReviewConnection LatestReviews(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.LatestReviews(first, after, last, before), Octokit.GraphQL.Model.PullRequestReviewConnection.Create);
 
         /// <summary>
         /// `true` if the pull request is locked
@@ -452,11 +428,6 @@ namespace Octokit.GraphQL.Model
         /// Whether or not the viewer can apply suggestion.
         /// </summary>
         public bool ViewerCanApplySuggestion { get; }
-
-        /// <summary>
-        /// Check if the viewer can restore the deleted head ref.
-        /// </summary>
-        public bool ViewerCanDeleteHeadRef { get; }
 
         /// <summary>
         /// Can user react to this subject

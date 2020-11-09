@@ -26,11 +26,6 @@ namespace Octokit.GraphQL.Model
         public CommentAuthorAssociation AuthorAssociation { get; }
 
         /// <summary>
-        /// Indicates whether the author of this review has push access to the repository.
-        /// </summary>
-        public bool AuthorCanPushToRepository { get; }
-
-        /// <summary>
         /// Identifies the pull request review body.
         /// </summary>
         public string Body { get; }
