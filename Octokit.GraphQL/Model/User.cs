@@ -218,7 +218,7 @@ namespace Octokit.GraphQL.Model
         /// Verified email addresses that match verified domains for a specified organization the user is a member of.
         /// </summary>
         /// <param name="login">The login of the organization to match verified domains from.</param>
-        //public IEnumerable<string> OrganizationVerifiedDomainEmails(Arg<string> login) => this.CreateMethodCall(x => x.OrganizationVerifiedDomainEmails(login));
+        public IEnumerable<string> OrganizationVerifiedDomainEmails(Arg<string> login) => this.CreateMethodCall(x => x.OrganizationVerifiedDomainEmails(login));
 
         /// <summary>
         /// A list of organizations the user belongs to.
