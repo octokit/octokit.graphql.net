@@ -95,6 +95,21 @@ namespace Octokit.GraphQL.Model
         public EnterpriseServerInstallationConnection EnterpriseServerInstallations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? connectedOnly = null, Arg<EnterpriseServerInstallationOrder>? orderBy = null) => this.CreateMethodCall(x => x.EnterpriseServerInstallations(first, after, last, before, connectedOnly, orderBy), Octokit.GraphQL.Model.EnterpriseServerInstallationConnection.Create);
 
         /// <summary>
+        /// The setting value for whether the enterprise has an IP allow list enabled.
+        /// </summary>
+        public IpAllowListEnabledSettingValue IpAllowListEnabledSetting { get; }
+
+        /// <summary>
+        /// The IP addresses that are allowed to access resources owned by the enterprise.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for IP allow list entries returned.</param>
+        public IpAllowListEntryConnection IpAllowListEntries(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IpAllowListEntryOrder>? orderBy = null) => this.CreateMethodCall(x => x.IpAllowListEntries(first, after, last, before, orderBy), Octokit.GraphQL.Model.IpAllowListEntryConnection.Create);
+
+        /// <summary>
         /// Whether or not the default repository permission is currently being updated.
         /// </summary>
         public bool IsUpdatingDefaultRepositoryPermission { get; }
@@ -276,6 +291,17 @@ namespace Octokit.GraphQL.Model
         /// <param name="query">The search string to look for.</param>
         /// <param name="role">The role to filter by.</param>
         public EnterpriseAdministratorInvitationConnection PendingAdminInvitations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<EnterpriseAdministratorInvitationOrder>? orderBy = null, Arg<string>? query = null, Arg<EnterpriseAdministratorRole>? role = null) => this.CreateMethodCall(x => x.PendingAdminInvitations(first, after, last, before, orderBy, query, role), Octokit.GraphQL.Model.EnterpriseAdministratorInvitationConnection.Create);
+
+        /// <summary>
+        /// A list of pending collaborator invitations across the repositories in the enterprise.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for pending repository collaborator invitations returned from the connection.</param>
+        /// <param name="query">The search string to look for.</param>
+        public RepositoryInvitationConnection PendingCollaboratorInvitations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RepositoryInvitationOrder>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.PendingCollaboratorInvitations(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.RepositoryInvitationConnection.Create);
 
         /// <summary>
         /// A list of pending collaborators across the repositories in the enterprise.

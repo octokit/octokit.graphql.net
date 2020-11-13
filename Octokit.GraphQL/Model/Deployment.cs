@@ -46,16 +46,26 @@ namespace Octokit.GraphQL.Model
         public string Description { get; }
 
         /// <summary>
-        /// The environment to which this deployment was made.
+        /// The latest environment to which this deployment was made.
         /// </summary>
         public string Environment { get; }
 
         public ID Id { get; }
 
         /// <summary>
+        /// The latest environment to which this deployment was made.
+        /// </summary>
+        public string LatestEnvironment { get; }
+
+        /// <summary>
         /// The latest status of this deployment.
         /// </summary>
         public DeploymentStatus LatestStatus => this.CreateProperty(x => x.LatestStatus, Octokit.GraphQL.Model.DeploymentStatus.Create);
+
+        /// <summary>
+        /// The original environment to which this deployment was made.
+        /// </summary>
+        public string OriginalEnvironment { get; }
 
         /// <summary>
         /// Extra information that a deployment system might need.

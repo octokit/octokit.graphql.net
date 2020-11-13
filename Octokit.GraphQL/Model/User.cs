@@ -215,6 +215,12 @@ namespace Octokit.GraphQL.Model
         public Organization Organization(Arg<string> login) => this.CreateMethodCall(x => x.Organization(login), Octokit.GraphQL.Model.Organization.Create);
 
         /// <summary>
+        /// Verified email addresses that match verified domains for a specified organization the user is a member of.
+        /// </summary>
+        /// <param name="login">The login of the organization to match verified domains from.</param>
+        public IEnumerable<string> OrganizationVerifiedDomainEmails(Arg<string> login) => this.CreateMethodCall(x => x.OrganizationVerifiedDomainEmails(login));
+
+        /// <summary>
         /// A list of organizations the user belongs to.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -222,6 +228,19 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public OrganizationConnection Organizations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Organizations(first, after, last, before), Octokit.GraphQL.Model.OrganizationConnection.Create);
+
+        /// <summary>
+        /// A list of packages under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="names">Find packages by their names.</param>
+        /// <param name="orderBy">Ordering of the returned packages.</param>
+        /// <param name="packageType">Filter registry package by type.</param>
+        /// <param name="repositoryId">Find packages in a repository by ID.</param>
+        public PackageConnection Packages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? names = null, Arg<PackageOrder>? orderBy = null, Arg<PackageType>? packageType = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.Packages(first, after, last, before, names, orderBy, packageType, repositoryId), Octokit.GraphQL.Model.PackageConnection.Create);
 
         /// <summary>
         /// A list of repositories and gists this profile owner can pin to their profile.
@@ -247,20 +266,6 @@ namespace Octokit.GraphQL.Model
         /// Returns how many more items this profile owner can pin to their profile.
         /// </summary>
         public int PinnedItemsRemaining { get; }
-
-        /// <summary>
-        /// A list of repositories this user has pinned to their profile
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="affiliations">Array of viewer's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the current viewer owns.</param>
-        /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
-        /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
-        /// <param name="ownerAffiliations">Array of owner's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the organization or user being viewed owns.</param>
-        /// <param name="privacy">If non-null, filters repositories according to privacy</param>
-        public RepositoryConnection PinnedRepositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.PinnedRepositories(first, after, last, before, affiliations, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Find project by number.
@@ -312,32 +317,6 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
         /// <param name="states">A list of states to filter the pull requests by.</param>
         public PullRequestConnection PullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? baseRefName = null, Arg<string>? headRefName = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<PullRequestState>>? states = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, baseRefName, headRefName, labels, orderBy, states), Octokit.GraphQL.Model.PullRequestConnection.Create);
-
-        /// <summary>
-        /// A list of registry packages under the owner.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="name">Find registry package by name.</param>
-        /// <param name="names">Find registry packages by their names.</param>
-        /// <param name="packageType">Filter registry package by type.</param>
-        /// <param name="publicOnly">Filter registry package by whether it is publicly visible</param>
-        /// <param name="registryPackageType">Filter registry package by type (string).</param>
-        /// <param name="repositoryId">Find registry packages in a repository.</param>
-        public RegistryPackageConnection RegistryPackages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? name = null, Arg<IEnumerable<string>>? names = null, Arg<RegistryPackageType>? packageType = null, Arg<bool>? publicOnly = null, Arg<string>? registryPackageType = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.RegistryPackages(first, after, last, before, name, names, packageType, publicOnly, registryPackageType, repositoryId), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
-
-        /// <summary>
-        /// A list of registry packages for a particular search query.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="packageType">Filter registry package by type.</param>
-        /// <param name="query">Find registry package by search query.</param>
-        public RegistryPackageConnection RegistryPackagesForQuery(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<RegistryPackageType>? packageType = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.RegistryPackagesForQuery(first, after, last, before, packageType, query), Octokit.GraphQL.Model.RegistryPackageConnection.Create);
 
         /// <summary>
         /// A list of repositories that the user owns.
@@ -443,6 +422,11 @@ namespace Octokit.GraphQL.Model
         public RepositoryConnection TopRepositories(Arg<RepositoryOrder> orderBy, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<DateTimeOffset>? since = null) => this.CreateMethodCall(x => x.TopRepositories(orderBy, first, after, last, before, since), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
+        /// The user's Twitter username.
+        /// </summary>
+        public string TwitterUsername { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
@@ -479,7 +463,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="affiliations">Affiliation options for repositories returned from the connection</param>
+        /// <param name="affiliations">Affiliation options for repositories returned from the connection. If none specified, the results will include repositories for which the current viewer is an owner or collaborator, or member.</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="ownerAffiliations">Array of owner's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the organization or user being viewed owns.</param>

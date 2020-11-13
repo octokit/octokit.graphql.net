@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Octicon { get; }
 
+        /// <summary>
+        /// The current status of the pull request with respect to code review.
+        /// </summary>
+        public PullRequestReviewDecision? ReviewDecision { get; }
+
         internal static ReviewStatusHovercardContext Create(Expression expression)
         {
             return new ReviewStatusHovercardContext(expression);

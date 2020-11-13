@@ -24,6 +24,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The permission level the team has on the repository
+        /// **Upcoming Change on 2020-10-01 UTC**
+        /// **Description:** Type for `permission` will change from `RepositoryPermission!` to `String`.
+        /// **Reason:** This field may return additional values
         /// </summary>
         public RepositoryPermission Permission { get; }
 

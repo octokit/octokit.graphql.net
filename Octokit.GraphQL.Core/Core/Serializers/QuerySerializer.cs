@@ -200,6 +200,10 @@ namespace Octokit.GraphQL.Core.Serializers
             {
                 builder.Append(JsonConvert.ToString(id.Value, '"'));
             }
+            else if (value is DateTimeOffset dto)
+            {
+                builder.Append(JsonConvert.ToString(dto, DateFormatHandling.IsoDateFormat));
+            }
             else if (value is IEnumerable)
             {
                 builder.Append("[");

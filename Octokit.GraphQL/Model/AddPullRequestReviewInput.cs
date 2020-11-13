@@ -34,6 +34,11 @@ namespace Octokit.GraphQL.Model
         public IEnumerable<DraftPullRequestReviewComment> Comments { get; set; }
 
         /// <summary>
+        /// The review line comment threads.
+        /// </summary>
+        public IEnumerable<DraftPullRequestReviewThread> Threads { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

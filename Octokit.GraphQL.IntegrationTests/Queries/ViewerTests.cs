@@ -53,8 +53,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.NotNull(graphqlUser);
 
             Assert.Equal(apiUser.AvatarUrl, graphqlUser.AvatarUrl);
-            Assert.Equal(apiUser.Bio ?? string.Empty, graphqlUser.Bio);
-            Assert.Equal(apiUser.Company ?? string.Empty, graphqlUser.Company);
+            Assert.Equal(apiUser.Bio, graphqlUser.Bio);
+            Assert.Equal(apiUser.Company, graphqlUser.Company);
 
             Assert.Equal(apiUser.CreatedAt.ToUniversalTime(), graphqlUser.CreatedAt.ToUniversalTime());
 
@@ -77,6 +77,16 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             //PrivateGists
             //PublicGists
             //TotalPrivateRepos
+        }
+
+        [IntegrationTest]
+        public async Task Viewer_Has_No_OrganizationVerifiedDomainEmails_For_Octokit()
+        {
+            var query = new GraphQL.Query().Viewer.Select(user => user.OrganizationVerifiedDomainEmails("octokit").ToList());
+
+            var emails = await Connection.Run(query);
+
+            Assert.Empty(emails);
         }
     }
 }

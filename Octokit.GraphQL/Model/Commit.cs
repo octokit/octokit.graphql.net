@@ -167,6 +167,11 @@ namespace Octokit.GraphQL.Model
         public string Oid { get; }
 
         /// <summary>
+        /// The organization this commit was made on behalf of.
+        /// </summary>
+        public Organization OnBehalfOf => this.CreateProperty(x => x.OnBehalfOf, Octokit.GraphQL.Model.Organization.Create);
+
+        /// <summary>
         /// The parents of a commit.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -199,6 +204,20 @@ namespace Octokit.GraphQL.Model
         /// Status information for this commit
         /// </summary>
         public Status Status => this.CreateProperty(x => x.Status, Octokit.GraphQL.Model.Status.Create);
+
+        /// <summary>
+        /// Check and Status rollup information for this commit.
+        /// </summary>
+        public StatusCheckRollup StatusCheckRollup => this.CreateProperty(x => x.StatusCheckRollup, Octokit.GraphQL.Model.StatusCheckRollup.Create);
+
+        /// <summary>
+        /// Returns a list of all submodules in this repository as of this Commit parsed from the .gitmodules file.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public SubmoduleConnection Submodules(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Submodules(first, after, last, before), Octokit.GraphQL.Model.SubmoduleConnection.Create);
 
         /// <summary>
         /// Returns a URL to download a tarball archive for a repository.

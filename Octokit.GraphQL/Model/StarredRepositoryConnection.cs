@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public IQueryableList<StarredRepositoryEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
+        /// Is the list of stars for this user truncated? This is true for users that have many stars.
+        /// </summary>
+        public bool IsOverLimit { get; }
+
+        /// <summary>
         /// A list of nodes.
         /// </summary>
         public IQueryableList<Repository> Nodes => this.CreateProperty(x => x.Nodes);
