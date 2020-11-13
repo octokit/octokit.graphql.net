@@ -5,8 +5,6 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  watch:
-    types: [started]
   schedule:
   - cron: “0 0 * * *” # Run at 00:00 UTC everyday
 
