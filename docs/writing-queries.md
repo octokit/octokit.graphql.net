@@ -1,6 +1,6 @@
 # Writing Queries
 
-Note that this guide assumes you are familiar withthe  GraphQL query syntax. If you're not,
+Note that this guide assumes you are familiar with the GraphQL query syntax. If you're not,
 you can read more about it [here](https://graphql.org/learn/).
 
 ## The Root Query
