@@ -2,7 +2,9 @@ name: Generate Schema
 
 on:
   push:
-    branches: [ generate-schema ]
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
   watch:
     types: [started]
   schedule:
