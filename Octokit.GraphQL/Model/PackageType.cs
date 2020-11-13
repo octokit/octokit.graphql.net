@@ -6,25 +6,25 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// The possible types of a registry package.
+    /// The possible types of a package.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum RegistryPackageType
+    public enum PackageType
     {
         /// <summary>
-        /// An npm registry package.
+        /// An npm package.
         /// </summary>
         [EnumMember(Value = "NPM")]
         Npm,
 
         /// <summary>
-        /// A rubygems registry package.
+        /// A rubygems package.
         /// </summary>
         [EnumMember(Value = "RUBYGEMS")]
         Rubygems,
 
         /// <summary>
-        /// A maven registry package.
+        /// A maven package.
         /// </summary>
         [EnumMember(Value = "MAVEN")]
         Maven,
@@ -50,7 +50,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A python package.
         /// </summary>
-        [EnumMember(Value = "PYTHON")]
-        Python,
+        [EnumMember(Value = "PYPI")]
+        Pypi,
     }
 }

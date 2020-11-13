@@ -9,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class RegistryPackageEdge : QueryableValue<RegistryPackageEdge>
+    public class PackageVersionEdge : QueryableValue<PackageVersionEdge>
     {
-        internal RegistryPackageEdge(Expression expression) : base(expression)
+        internal PackageVersionEdge(Expression expression) : base(expression)
         {
         }
 
@@ -23,11 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public RegistryPackage Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.RegistryPackage.Create);
+        public PackageVersion Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.PackageVersion.Create);
 
-        internal static RegistryPackageEdge Create(Expression expression)
+        internal static PackageVersionEdge Create(Expression expression)
         {
-            return new RegistryPackageEdge(expression);
+            return new PackageVersionEdge(expression);
         }
     }
 }

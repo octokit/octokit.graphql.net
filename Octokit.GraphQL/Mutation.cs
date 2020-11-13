@@ -66,6 +66,11 @@ namespace Octokit.GraphQL
         public AddPullRequestReviewCommentPayload AddPullRequestReviewComment(Arg<AddPullRequestReviewCommentInput> input) => this.CreateMethodCall(x => x.AddPullRequestReviewComment(input), Octokit.GraphQL.Model.AddPullRequestReviewCommentPayload.Create);
 
         /// <summary>
+        /// Adds a new thread to a pending Pull Request Review.
+        /// </summary>
+        public AddPullRequestReviewThreadPayload AddPullRequestReviewThread(Arg<AddPullRequestReviewThreadInput> input) => this.CreateMethodCall(x => x.AddPullRequestReviewThread(input), Octokit.GraphQL.Model.AddPullRequestReviewThreadPayload.Create);
+
+        /// <summary>
         /// Adds a reaction to a subject.
         /// </summary>
         public AddReactionPayload AddReaction(Arg<AddReactionInput> input) => this.CreateMethodCall(x => x.AddReaction(input), Octokit.GraphQL.Model.AddReactionPayload.Create);
@@ -291,6 +296,11 @@ namespace Octokit.GraphQL
         public MergePullRequestPayload MergePullRequest(Arg<MergePullRequestInput> input) => this.CreateMethodCall(x => x.MergePullRequest(input), Octokit.GraphQL.Model.MergePullRequestPayload.Create);
 
         /// <summary>
+        /// Minimizes a comment on an Issue, Commit, Pull Request, or Gist
+        /// </summary>
+        public MinimizeCommentPayload MinimizeComment(Arg<MinimizeCommentInput> input) => this.CreateMethodCall(x => x.MinimizeComment(input), Octokit.GraphQL.Model.MinimizeCommentPayload.Create);
+
+        /// <summary>
         /// Moves a project card to another place.
         /// </summary>
         public MoveProjectCardPayload MoveProjectCard(Arg<MoveProjectCardInput> input) => this.CreateMethodCall(x => x.MoveProjectCard(input), Octokit.GraphQL.Model.MoveProjectCardPayload.Create);
@@ -409,6 +419,11 @@ namespace Octokit.GraphQL
         /// Unmark an issue as a duplicate of another issue.
         /// </summary>
         public UnmarkIssueAsDuplicatePayload UnmarkIssueAsDuplicate(Arg<UnmarkIssueAsDuplicateInput> input) => this.CreateMethodCall(x => x.UnmarkIssueAsDuplicate(input), Octokit.GraphQL.Model.UnmarkIssueAsDuplicatePayload.Create);
+
+        /// <summary>
+        /// Unminimizes a comment on an Issue, Commit, Pull Request, or Gist
+        /// </summary>
+        public UnminimizeCommentPayload UnminimizeComment(Arg<UnminimizeCommentInput> input) => this.CreateMethodCall(x => x.UnminimizeComment(input), Octokit.GraphQL.Model.UnminimizeCommentPayload.Create);
 
         /// <summary>
         /// Marks a review thread as unresolved.

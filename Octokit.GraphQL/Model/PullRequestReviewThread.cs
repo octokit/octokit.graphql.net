@@ -25,12 +25,32 @@ namespace Octokit.GraphQL.Model
         /// <param name="skip">Skips the first _n_ elements in the list.</param>
         public PullRequestReviewCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<int>? skip = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before, skip), Octokit.GraphQL.Model.PullRequestReviewCommentConnection.Create);
 
+        /// <summary>
+        /// The side of the diff on which this thread was placed.
+        /// </summary>
+        public DiffSide DiffSide { get; }
+
         public ID Id { get; }
 
         /// <summary>
         /// Whether this thread has been resolved
         /// </summary>
         public bool IsResolved { get; }
+
+        /// <summary>
+        /// The line in the file to which this thread refers
+        /// </summary>
+        public int? Line { get; }
+
+        /// <summary>
+        /// The original line in the file to which this thread refers.
+        /// </summary>
+        public int? OriginalLine { get; }
+
+        /// <summary>
+        /// The original start line in the file to which this thread refers (multi-line only).
+        /// </summary>
+        public int? OriginalStartLine { get; }
 
         /// <summary>
         /// Identifies the pull request associated with this thread.
@@ -46,6 +66,16 @@ namespace Octokit.GraphQL.Model
         /// The user who resolved this thread
         /// </summary>
         public User ResolvedBy => this.CreateProperty(x => x.ResolvedBy, Octokit.GraphQL.Model.User.Create);
+
+        /// <summary>
+        /// The side of the diff that the first line of the thread starts on (multi-line only)
+        /// </summary>
+        public DiffSide? StartDiffSide { get; }
+
+        /// <summary>
+        /// The start line in the file to which this thread refers (multi-line only)
+        /// </summary>
+        public int? StartLine { get; }
 
         /// <summary>
         /// Whether or not the viewer can resolve this thread

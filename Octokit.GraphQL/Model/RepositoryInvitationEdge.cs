@@ -9,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class RegistryPackageDependencyEdge : QueryableValue<RegistryPackageDependencyEdge>
+    public class RepositoryInvitationEdge : QueryableValue<RepositoryInvitationEdge>
     {
-        internal RegistryPackageDependencyEdge(Expression expression) : base(expression)
+        internal RepositoryInvitationEdge(Expression expression) : base(expression)
         {
         }
 
@@ -23,11 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public RegistryPackageDependency Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.RegistryPackageDependency.Create);
+        public RepositoryInvitation Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.RepositoryInvitation.Create);
 
-        internal static RegistryPackageDependencyEdge Create(Expression expression)
+        internal static RepositoryInvitationEdge Create(Expression expression)
         {
-            return new RegistryPackageDependencyEdge(expression);
+            return new RepositoryInvitationEdge(expression);
         }
     }
 }

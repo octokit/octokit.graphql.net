@@ -34,9 +34,15 @@ namespace Octokit.GraphQL.Model
         public SponsorshipPrivacy PrivacyLevel { get; }
 
         /// <summary>
-        /// The entity that is sponsoring. Returns null if the sponsorship is private
+        /// The user that is sponsoring. Returns null if the sponsorship is private or if sponsor is not a user.
         /// </summary>
+        [Obsolete(@"`Sponsorship.sponsor` will be removed. Use `Sponsorship.sponsorEntity` instead. Removal on 2020-10-01 UTC.")]
         public User Sponsor => this.CreateProperty(x => x.Sponsor, Octokit.GraphQL.Model.User.Create);
+
+        /// <summary>
+        /// The user or organization that is sponsoring. Returns null if the sponsorship is private.
+        /// </summary>
+        public Sponsor SponsorEntity => this.CreateProperty(x => x.SponsorEntity, Octokit.GraphQL.Model.Sponsor.Create);
 
         /// <summary>
         /// The entity that is being sponsored

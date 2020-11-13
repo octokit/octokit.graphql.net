@@ -20,6 +20,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Order repository invitations by invitee login
         /// </summary>
+        [Obsolete(@"`INVITEE_LOGIN` is no longer a valid field value. Repository invitations can now be associated with an email, not only an invitee. Removal on 2020-10-01 UTC.")]
         [EnumMember(Value = "INVITEE_LOGIN")]
         InviteeLogin,
     }

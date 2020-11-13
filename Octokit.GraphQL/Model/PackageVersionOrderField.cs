@@ -6,15 +6,15 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// Properties by which contribution connections can be ordered.
+    /// Properties by which package version connections can be ordered.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum ContributionOrderField
+    public enum PackageVersionOrderField
     {
         /// <summary>
-        /// Order contributions by when they were made.
+        /// Order package versions by creation time
         /// </summary>
-        [EnumMember(Value = "OCCURRED_AT")]
-        OccurredAt,
+        [EnumMember(Value = "CREATED_AT")]
+        CreatedAt,
     }
 }

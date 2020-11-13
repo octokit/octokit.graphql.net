@@ -9,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class RegistryPackageFileEdge : QueryableValue<RegistryPackageFileEdge>
+    public class PackageFileEdge : QueryableValue<PackageFileEdge>
     {
-        internal RegistryPackageFileEdge(Expression expression) : base(expression)
+        internal PackageFileEdge(Expression expression) : base(expression)
         {
         }
 
@@ -23,11 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public RegistryPackageFile Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.RegistryPackageFile.Create);
+        public PackageFile Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.PackageFile.Create);
 
-        internal static RegistryPackageFileEdge Create(Expression expression)
+        internal static PackageFileEdge Create(Expression expression)
         {
-            return new RegistryPackageFileEdge(expression);
+            return new PackageFileEdge(expression);
         }
     }
 }

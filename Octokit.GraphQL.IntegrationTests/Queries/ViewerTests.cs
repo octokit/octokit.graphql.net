@@ -78,5 +78,15 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             //PublicGists
             //TotalPrivateRepos
         }
+
+        [IntegrationTest]
+        public async Task Viewer_Has_No_OrganizationVerifiedDomainEmails_For_Octokit()
+        {
+            var query = new GraphQL.Query().Viewer.Select(user => user.OrganizationVerifiedDomainEmails("octokit").ToList());
+
+            var emails = await Connection.Run(query);
+
+            Assert.Empty(emails);
+        }
     }
 }

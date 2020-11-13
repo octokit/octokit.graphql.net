@@ -28,5 +28,17 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "SAML_SSO_ENFORCEMENT_REQUIRES_EXTERNAL_IDENTITY")]
         SamlSsoEnforcementRequiresExternalIdentity,
+
+        /// <summary>
+        /// User account has been deleted
+        /// </summary>
+        [EnumMember(Value = "USER_ACCOUNT_DELETED")]
+        UserAccountDeleted,
+
+        /// <summary>
+        /// User was removed from organization during account recovery
+        /// </summary>
+        [EnumMember(Value = "TWO_FACTOR_ACCOUNT_RECOVERY")]
+        TwoFactorAccountRecovery,
     }
 }
