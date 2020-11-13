@@ -53,7 +53,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public RefConnection MatchingRefs(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.MatchingRefs(first, after, last, before), Octokit.GraphQL.Model.RefConnection.Create);
+        /// <param name="query">Filters refs with query on name</param>
+        public RefConnection MatchingRefs(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.MatchingRefs(first, after, last, before, query), Octokit.GraphQL.Model.RefConnection.Create);
 
         /// <summary>
         /// Identifies the protection rule pattern.

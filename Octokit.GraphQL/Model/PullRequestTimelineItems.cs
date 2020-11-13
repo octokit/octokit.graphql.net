@@ -30,9 +30,24 @@ namespace Octokit.GraphQL.Model
             public Selector<T> AssignedEvent(Func<AssignedEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'automatic_base_change_failed' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutomaticBaseChangeFailedEvent(Func<AutomaticBaseChangeFailedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'automatic_base_change_succeeded' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutomaticBaseChangeSucceededEvent(Func<AutomaticBaseChangeSucceededEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'base_ref_changed' event on a given issue or pull request.
             /// </summary>
             public Selector<T> BaseRefChangedEvent(Func<BaseRefChangedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'base_ref_deleted' event on a given pull request.
+            /// </summary>
+            public Selector<T> BaseRefDeletedEvent(Func<BaseRefDeletedEvent, T> selector) => default;
 
             /// <summary>
             /// Represents a 'base_ref_force_pushed' event on a given pull request.
@@ -53,6 +68,11 @@ namespace Octokit.GraphQL.Model
             /// Represents a 'connected' event on a given issue or pull request.
             /// </summary>
             public Selector<T> ConnectedEvent(Func<ConnectedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'convert_to_draft' event on a given pull request.
+            /// </summary>
+            public Selector<T> ConvertToDraftEvent(Func<ConvertToDraftEvent, T> selector) => default;
 
             /// <summary>
             /// Represents a 'converted_note_to_issue' event on a given issue or pull request.

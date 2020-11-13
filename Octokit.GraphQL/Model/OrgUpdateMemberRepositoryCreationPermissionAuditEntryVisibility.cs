@@ -22,5 +22,41 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "PUBLIC")]
         Public,
+
+        /// <summary>
+        /// All organization members are allowed to create any repositories.
+        /// </summary>
+        [EnumMember(Value = "NONE")]
+        None,
+
+        /// <summary>
+        /// All organization members are restricted from creating private repositories.
+        /// </summary>
+        [EnumMember(Value = "PRIVATE")]
+        Private,
+
+        /// <summary>
+        /// All organization members are restricted from creating internal repositories.
+        /// </summary>
+        [EnumMember(Value = "INTERNAL")]
+        Internal,
+
+        /// <summary>
+        /// All organization members are restricted from creating public or internal repositories.
+        /// </summary>
+        [EnumMember(Value = "PUBLIC_INTERNAL")]
+        PublicInternal,
+
+        /// <summary>
+        /// All organization members are restricted from creating private or internal repositories.
+        /// </summary>
+        [EnumMember(Value = "PRIVATE_INTERNAL")]
+        PrivateInternal,
+
+        /// <summary>
+        /// All organization members are restricted from creating public or private repositories.
+        /// </summary>
+        [EnumMember(Value = "PUBLIC_PRIVATE")]
+        PublicPrivate,
     }
 }

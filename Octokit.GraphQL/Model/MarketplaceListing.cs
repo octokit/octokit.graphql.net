@@ -61,12 +61,6 @@ namespace Octokit.GraphQL.Model
         public string FullDescriptionHTML { get; }
 
         /// <summary>
-        /// Whether this listing has been submitted for review from GitHub for approval to be displayed in the Marketplace.
-        /// </summary>
-        [Obsolete(@"`hasApprovalBeenRequested` will be removed. Use `isVerificationPendingFromDraft` instead. Removal on 2019-10-01 UTC.")]
-        public bool HasApprovalBeenRequested { get; }
-
-        /// <summary>
         /// Does this listing have any plans with a free trial?
         /// </summary>
         public bool HasPublishedFreeTrialPlans { get; }
@@ -99,21 +93,9 @@ namespace Octokit.GraphQL.Model
         public bool InstalledForViewer { get; }
 
         /// <summary>
-        /// Whether this listing has been approved for display in the Marketplace.
-        /// </summary>
-        [Obsolete(@"`isApproved` will be removed. Use `isPublic` instead. Removal on 2019-10-01 UTC.")]
-        public bool IsApproved { get; }
-
-        /// <summary>
         /// Whether this listing has been removed from the Marketplace.
         /// </summary>
         public bool IsArchived { get; }
-
-        /// <summary>
-        /// Whether this listing has been removed from the Marketplace.
-        /// </summary>
-        [Obsolete(@"`isDelisted` will be removed. Use `isArchived` instead. Removal on 2019-10-01 UTC.")]
-        public bool IsDelisted { get; }
 
         /// <summary>
         /// Whether this listing is still an editable draft that has not been submitted for review and is not publicly visible in the Marketplace.
