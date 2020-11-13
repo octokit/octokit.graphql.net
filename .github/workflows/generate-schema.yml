@@ -1,4 +1,4 @@
-name: Generate Schema
+name: Test Generate Schema
 
 on:
   push:
