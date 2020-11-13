@@ -167,6 +167,11 @@ namespace Octokit.GraphQL.Model
         public string Oid { get; }
 
         /// <summary>
+        /// The organization this commit was made on behalf of.
+        /// </summary>
+        public Organization OnBehalfOf => this.CreateProperty(x => x.OnBehalfOf, Octokit.GraphQL.Model.Organization.Create);
+
+        /// <summary>
         /// The parents of a commit.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

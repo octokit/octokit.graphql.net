@@ -7,23 +7,23 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for RegistryPackageFile.
+    /// The connection type for PackageFile.
     /// </summary>
-    public class RegistryPackageFileConnection : QueryableValue<RegistryPackageFileConnection>, IPagingConnection<RegistryPackageFile>
+    public class PackageFileConnection : QueryableValue<PackageFileConnection>, IPagingConnection<PackageFile>
     {
-        internal RegistryPackageFileConnection(Expression expression) : base(expression)
+        internal PackageFileConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryableList<RegistryPackageFileEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<PackageFileEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryableList<RegistryPackageFile> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<PackageFile> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -37,9 +37,9 @@ namespace Octokit.GraphQL.Model
 
         IPageInfo IPagingConnection.PageInfo => PageInfo;
 
-        internal static RegistryPackageFileConnection Create(Expression expression)
+        internal static PackageFileConnection Create(Expression expression)
         {
-            return new RegistryPackageFileConnection(expression);
+            return new PackageFileConnection(expression);
         }
     }
 }

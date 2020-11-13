@@ -53,6 +53,11 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
+        /// Identifies the primary key from the database.
+        /// </summary>
+        public int? DatabaseId { get; }
+
+        /// <summary>
         /// The description of the team.
         /// </summary>
         public string Description { get; }

@@ -455,6 +455,18 @@ namespace Octokit.GraphQL.Model
         public bool ViewerDidAuthor { get; }
 
         /// <summary>
+        /// The merge body text for the viewer and method.
+        /// </summary>
+        /// <param name="mergeType">The merge method for the message.</param>
+        public string ViewerMergeBodyText(Arg<PullRequestMergeMethod>? mergeType = null) => default;
+
+        /// <summary>
+        /// The merge headline text for the viewer and method.
+        /// </summary>
+        /// <param name="mergeType">The merge method for the message.</param>
+        public string ViewerMergeHeadlineText(Arg<PullRequestMergeMethod>? mergeType = null) => default;
+
+        /// <summary>
         /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
         public SubscriptionState? ViewerSubscription { get; }

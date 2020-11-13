@@ -16,9 +16,34 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The emails associated with the SAML identity
+        /// </summary>
+        public IQueryableList<UserEmailMetadata> Emails => this.CreateProperty(x => x.Emails);
+
+        /// <summary>
+        /// Family name of the SAML identity
+        /// </summary>
+        public string FamilyName { get; }
+
+        /// <summary>
+        /// Given name of the SAML identity
+        /// </summary>
+        public string GivenName { get; }
+
+        /// <summary>
+        /// The groups linked to this identity in IDP
+        /// </summary>
+        public IEnumerable<string> Groups { get; }
+
+        /// <summary>
         /// The NameID of the SAML identity
         /// </summary>
         public string NameId { get; }
+
+        /// <summary>
+        /// The userName of the SAML identity
+        /// </summary>
+        public string Username { get; }
 
         internal static ExternalIdentitySamlAttributes Create(Expression expression)
         {

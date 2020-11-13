@@ -9,9 +9,9 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An edge in a connection.
     /// </summary>
-    public class TopicEdge : QueryableValue<TopicEdge>
+    public class PackageEdge : QueryableValue<PackageEdge>
     {
-        internal TopicEdge(Expression expression) : base(expression)
+        internal PackageEdge(Expression expression) : base(expression)
         {
         }
 
@@ -23,11 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The item at the end of the edge.
         /// </summary>
-        public Topic Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Topic.Create);
+        public Package Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.Package.Create);
 
-        internal static TopicEdge Create(Expression expression)
+        internal static PackageEdge Create(Expression expression)
         {
-            return new TopicEdge(expression);
+            return new PackageEdge(expression);
         }
     }
 }

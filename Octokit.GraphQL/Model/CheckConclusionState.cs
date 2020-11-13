@@ -48,7 +48,7 @@ namespace Octokit.GraphQL.Model
         Neutral,
 
         /// <summary>
-        /// The check suite or run was skipped by GitHub. Only GitHub can use this conclusion.
+        /// The check suite or run was skipped.
         /// </summary>
         [EnumMember(Value = "SKIPPED")]
         Skipped,

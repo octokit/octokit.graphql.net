@@ -40,6 +40,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset ResetAt { get; }
 
+        /// <summary>
+        /// The number of points used in the current rate limit window.
+        /// </summary>
+        public int Used { get; }
+
         internal static RateLimit Create(Expression expression)
         {
             return new RateLimit(expression);

@@ -42,6 +42,18 @@ namespace Octokit.GraphQL.Model
         PullRequestRevisionMarker,
 
         /// <summary>
+        /// Represents a 'automatic_base_change_failed' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTOMATIC_BASE_CHANGE_FAILED_EVENT")]
+        AutomaticBaseChangeFailedEvent,
+
+        /// <summary>
+        /// Represents a 'automatic_base_change_succeeded' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTOMATIC_BASE_CHANGE_SUCCEEDED_EVENT")]
+        AutomaticBaseChangeSucceededEvent,
+
+        /// <summary>
         /// Represents a 'base_ref_changed' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "BASE_REF_CHANGED_EVENT")]
@@ -52,6 +64,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "BASE_REF_FORCE_PUSHED_EVENT")]
         BaseRefForcePushedEvent,
+
+        /// <summary>
+        /// Represents a 'base_ref_deleted' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "BASE_REF_DELETED_EVENT")]
+        BaseRefDeletedEvent,
 
         /// <summary>
         /// Represents a 'deployed' event on a given pull request.
@@ -112,6 +130,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "READY_FOR_REVIEW_EVENT")]
         ReadyForReviewEvent,
+
+        /// <summary>
+        /// Represents a 'convert_to_draft' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "CONVERT_TO_DRAFT_EVENT")]
+        ConvertToDraftEvent,
 
         /// <summary>
         /// Represents a comment on an Issue.
