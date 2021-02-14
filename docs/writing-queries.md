@@ -76,7 +76,9 @@ var query = new Query()
     {
         r.Name,
         r.Description,
-        Issues = r.Issues(100, null, null, null, null, null, null).Select(i => new
+        Issues = r.Issues(100, null, null, null, null, null, null)
+        .Nodes
+        .Select(i => new
         {
             i.Number,
             i.Title,
@@ -155,7 +157,9 @@ var query = new Query()
     {
         r.Name,
         r.Description,
-        Issues = r.Issues(100, null, null, null, null, null, null).Select(i => new IssueModel
+        Issues = r.Issues(100, null, null, null, null, null, null)
+        .Nodes
+        .Select(i => new IssueModel
         {
             i.Number,
             i.Title,
