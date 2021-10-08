@@ -45,6 +45,11 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
+        /// The corresponding deployment for this job, if any
+        /// </summary>
+        public Deployment Deployment => this.CreateProperty(x => x.Deployment, Octokit.GraphQL.Model.Deployment.Create);
+
+        /// <summary>
         /// The URL from which to find full details of the check run on the integrator's site.
         /// </summary>
         public string DetailsUrl { get; }
@@ -57,9 +62,21 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether this is required to pass before merging for a specific pull request.
+        /// </summary>
+        /// <param name="pullRequestId">The id of the pull request this is required for</param>
+        /// <param name="pullRequestNumber">The number of the pull request this is required for</param>
+        public bool IsRequired(Arg<ID>? pullRequestId = null, Arg<int>? pullRequestNumber = null) => default;
+
+        /// <summary>
         /// The name of the check for this check run.
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// Information about a pending deployment, if any, in this check run
+        /// </summary>
+        public DeploymentRequest PendingDeploymentRequest => this.CreateProperty(x => x.PendingDeploymentRequest, Octokit.GraphQL.Model.DeploymentRequest.Create);
 
         /// <summary>
         /// The permalink to the check run summary.
@@ -85,6 +102,16 @@ namespace Octokit.GraphQL.Model
         /// The current status of the check run.
         /// </summary>
         public CheckStatusState Status { get; }
+
+        /// <summary>
+        /// The check run's steps
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="number">Step number</param>
+        public CheckStepConnection Steps(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<int>? number = null) => this.CreateMethodCall(x => x.Steps(first, after, last, before, number), Octokit.GraphQL.Model.CheckStepConnection.Create);
 
         /// <summary>
         /// A string representing the check run's summary

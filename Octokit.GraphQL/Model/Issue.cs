@@ -50,9 +50,19 @@ namespace Octokit.GraphQL.Model
         public string BodyHTML { get; }
 
         /// <summary>
+        /// The http path for this issue body
+        /// </summary>
+        public string BodyResourcePath { get; }
+
+        /// <summary>
         /// Identifies the body of the issue rendered to text.
         /// </summary>
         public string BodyText { get; }
+
+        /// <summary>
+        /// The http URL for this issue body
+        /// </summary>
+        public string BodyUrl { get; }
 
         /// <summary>
         /// `true` if the object is closed (definition of closed may depend on type)
@@ -71,7 +81,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public IssueCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before), Octokit.GraphQL.Model.IssueCommentConnection.Create);
+        /// <param name="orderBy">Ordering options for issue comments returned from the connection.</param>
+        public IssueCommentConnection Comments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IssueCommentOrder>? orderBy = null) => this.CreateMethodCall(x => x.Comments(first, after, last, before, orderBy), Octokit.GraphQL.Model.IssueCommentConnection.Create);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -105,6 +116,16 @@ namespace Octokit.GraphQL.Model
         /// Check if this comment was edited and includes an edit with the creation data
         /// </summary>
         public bool IncludesCreatedEdit { get; }
+
+        /// <summary>
+        /// Indicates whether or not this issue is currently pinned to the repository issues list
+        /// </summary>
+        public bool? IsPinned { get; }
+
+        /// <summary>
+        /// Is this issue read by the viewer
+        /// </summary>
+        public bool? IsReadByViewer { get; }
 
         /// <summary>
         /// A list of labels associated with the object.
@@ -217,6 +238,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the issue title.
         /// </summary>
         public string Title { get; }
+
+        /// <summary>
+        /// Identifies the issue title rendered to HTML.
+        /// </summary>
+        public string TitleHTML { get; }
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         public string Body { get; set; }
 
         /// <summary>
-        /// If true, restricts the visiblity of this discussion to team members and organization admins. If false or not specified, allows any organization member to view this discussion.
+        /// If true, restricts the visibility of this discussion to team members and organization admins. If false or not specified, allows any organization member to view this discussion.
         /// </summary>
         public bool? Private { get; set; }
 

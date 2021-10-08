@@ -71,6 +71,11 @@ namespace Octokit.GraphQL.Model
         public bool HasTermsOfService { get; }
 
         /// <summary>
+        /// Whether the creator of the app is a verified org
+        /// </summary>
+        public bool HasVerifiedOwner { get; }
+
+        /// <summary>
         /// A technical description of how this app works with GitHub.
         /// </summary>
         public string HowItWorks { get; }

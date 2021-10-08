@@ -199,10 +199,17 @@ namespace Octokit.GraphQL
         public SecurityVulnerabilityConnection SecurityVulnerabilities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? ecosystem = null, Arg<SecurityVulnerabilityOrder>? orderBy = null, Arg<string>? package = null, Arg<IEnumerable<SecurityAdvisorySeverity>>? severities = null) => this.CreateMethodCall(x => x.SecurityVulnerabilities(first, after, last, before, ecosystem, orderBy, package, severities), Octokit.GraphQL.Model.SecurityVulnerabilityConnection.Create);
 
         /// <summary>
-        /// Look up a single Sponsors Listing
+        /// Users and organizations who can be sponsored via GitHub Sponsors.
         /// </summary>
-        /// <param name="slug">Select the Sponsors listing which matches this slug</param>
-        public SponsorsListing SponsorsListing(Arg<string> slug) => this.CreateMethodCall(x => x.SponsorsListing(slug), Octokit.GraphQL.Model.SponsorsListing.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="dependencyEcosystem">Optional filter for which dependencies should be checked for sponsorable owners. Only sponsorable owners of dependencies in this ecosystem will be included. Used when onlyDependencies = true.</param>
+        /// <param name="onlyDependencies">Whether only sponsorables who own the viewer's dependencies will be returned. Must be authenticated to use. Can check an organization instead for their dependencies owned by sponsorables by passing orgLoginForDependencies.</param>
+        /// <param name="orderBy">Ordering options for users and organizations returned from the connection.</param>
+        /// <param name="orgLoginForDependencies">Optional organization username for whose dependencies should be checked. Used when onlyDependencies = true. Omit to check your own dependencies. If you are not an administrator of the organization, only dependencies from its public repositories will be considered.</param>
+        public SponsorableItemConnection Sponsorables(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? dependencyEcosystem = null, Arg<bool>? onlyDependencies = null, Arg<SponsorableOrder>? orderBy = null, Arg<string>? orgLoginForDependencies = null) => this.CreateMethodCall(x => x.Sponsorables(first, after, last, before, dependencyEcosystem, onlyDependencies, orderBy, orgLoginForDependencies), Octokit.GraphQL.Model.SponsorableItemConnection.Create);
 
         /// <summary>
         /// Look up a topic by name.

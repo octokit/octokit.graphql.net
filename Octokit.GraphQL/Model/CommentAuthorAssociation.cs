@@ -24,6 +24,12 @@ namespace Octokit.GraphQL.Model
         Owner,
 
         /// <summary>
+        /// Author is a placeholder for an unclaimed user.
+        /// </summary>
+        [EnumMember(Value = "MANNEQUIN")]
+        Mannequin,
+
+        /// <summary>
         /// Author has been invited to collaborate on the repository.
         /// </summary>
         [EnumMember(Value = "COLLABORATOR")]

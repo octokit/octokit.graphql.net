@@ -35,9 +35,6 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset? ExpiresAt { get; }
 
-        /// <summary>
-        /// ID of the object.
-        /// </summary>
         public ID Id { get; }
 
         /// <summary>

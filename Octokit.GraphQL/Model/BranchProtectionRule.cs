@@ -16,6 +16,16 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Can this branch be deleted.
+        /// </summary>
+        public bool AllowsDeletions { get; }
+
+        /// <summary>
+        /// Are force pushes allowed on this branch.
+        /// </summary>
+        public bool AllowsForcePushes { get; }
+
+        /// <summary>
         /// A list of conflicts matching branches protection rule and other branch protection rules
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -99,6 +109,16 @@ namespace Octokit.GraphQL.Model
         /// Are commits required to be signed.
         /// </summary>
         public bool RequiresCommitSignatures { get; }
+
+        /// <summary>
+        /// Are conversations required to be resolved before merging.
+        /// </summary>
+        public bool RequiresConversationResolution { get; }
+
+        /// <summary>
+        /// Are merge commits prohibited from being pushed to this branch.
+        /// </summary>
+        public bool RequiresLinearHistory { get; }
 
         /// <summary>
         /// Are status checks required to update matching branches.
