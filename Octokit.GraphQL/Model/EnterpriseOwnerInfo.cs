@@ -16,16 +16,6 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
-        /// A list of enterprise organizations configured with the provided action execution capabilities setting value.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="orderBy">Ordering options for organizations with this setting.</param>
-        public OrganizationConnection ActionExecutionCapabilitySettingOrganizations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null) => this.CreateMethodCall(x => x.ActionExecutionCapabilitySettingOrganizations(first, after, last, before, orderBy), Octokit.GraphQL.Model.OrganizationConnection.Create);
-
-        /// <summary>
         /// A list of all of the administrators for this enterprise.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -73,7 +63,7 @@ namespace Octokit.GraphQL.Model
         public EnterpriseDefaultRepositoryPermissionSettingValue DefaultRepositoryPermissionSetting { get; }
 
         /// <summary>
-        /// A list of enterprise organizations configured with the provided default repository permission.
+        /// A list of enterprise organizations configured with the provided base repository permission.
         /// </summary>
         /// <param name="value">The permission to find organizations for.</param>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -82,6 +72,18 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for organizations with this setting.</param>
         public OrganizationConnection DefaultRepositoryPermissionSettingOrganizations(Arg<DefaultRepositoryPermissionField> value, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null) => this.CreateMethodCall(x => x.DefaultRepositoryPermissionSettingOrganizations(value, first, after, last, before, orderBy), Octokit.GraphQL.Model.OrganizationConnection.Create);
+
+        /// <summary>
+        /// A list of domains owned by the enterprise.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="isApproved">Filter whether or not the domain is approved.</param>
+        /// <param name="isVerified">Filter whether or not the domain is verified.</param>
+        /// <param name="orderBy">Ordering options for verifiable domains returned.</param>
+        public VerifiableDomainConnection Domains(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? isApproved = null, Arg<bool>? isVerified = null, Arg<VerifiableDomainOrder>? orderBy = null) => this.CreateMethodCall(x => x.Domains(first, after, last, before, isApproved, isVerified, orderBy), Octokit.GraphQL.Model.VerifiableDomainConnection.Create);
 
         /// <summary>
         /// Enterprise Server installations owned by the enterprise.
@@ -110,7 +112,12 @@ namespace Octokit.GraphQL.Model
         public IpAllowListEntryConnection IpAllowListEntries(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IpAllowListEntryOrder>? orderBy = null) => this.CreateMethodCall(x => x.IpAllowListEntries(first, after, last, before, orderBy), Octokit.GraphQL.Model.IpAllowListEntryConnection.Create);
 
         /// <summary>
-        /// Whether or not the default repository permission is currently being updated.
+        /// The setting value for whether the enterprise has IP allow list configuration for installed GitHub Apps enabled.
+        /// </summary>
+        public IpAllowListForInstalledAppsEnabledSettingValue IpAllowListForInstalledAppsEnabledSetting { get; }
+
+        /// <summary>
+        /// Whether or not the base repository permission is currently being updated.
         /// </summary>
         public bool IsUpdatingDefaultRepositoryPermission { get; }
 
@@ -252,6 +259,11 @@ namespace Octokit.GraphQL.Model
         public OrganizationConnection MembersCanViewDependencyInsightsSettingOrganizations(Arg<bool> value, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null) => this.CreateMethodCall(x => x.MembersCanViewDependencyInsightsSettingOrganizations(value, first, after, last, before, orderBy), Octokit.GraphQL.Model.OrganizationConnection.Create);
 
         /// <summary>
+        /// Indicates if email notification delivery for this enterprise is restricted to verified or approved domains.
+        /// </summary>
+        public NotificationRestrictionSettingValue NotificationDeliveryRestrictionEnabledSetting { get; }
+
+        /// <summary>
         /// The setting value for whether organization projects are enabled for organizations in this enterprise.
         /// </summary>
         public EnterpriseEnabledDisabledSettingValue OrganizationProjectsSetting { get; }
@@ -355,6 +367,16 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for organizations with this setting.</param>
         public OrganizationConnection SamlIdentityProviderSettingOrganizations(Arg<IdentityProviderConfigurationState> value, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null) => this.CreateMethodCall(x => x.SamlIdentityProviderSettingOrganizations(value, first, after, last, before, orderBy), Octokit.GraphQL.Model.OrganizationConnection.Create);
+
+        /// <summary>
+        /// A list of members with a support entitlement.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for support entitlement users returned from the connection.</param>
+        public EnterpriseMemberConnection SupportEntitlements(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<EnterpriseMemberOrder>? orderBy = null) => this.CreateMethodCall(x => x.SupportEntitlements(first, after, last, before, orderBy), Octokit.GraphQL.Model.EnterpriseMemberConnection.Create);
 
         /// <summary>
         /// The setting value for whether team discussions are enabled for organizations in this enterprise.

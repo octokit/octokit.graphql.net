@@ -54,6 +54,30 @@ namespace Octokit.GraphQL.Model
         AutomaticBaseChangeSucceededEvent,
 
         /// <summary>
+        /// Represents a 'auto_merge_disabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_MERGE_DISABLED_EVENT")]
+        AutoMergeDisabledEvent,
+
+        /// <summary>
+        /// Represents a 'auto_merge_enabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_MERGE_ENABLED_EVENT")]
+        AutoMergeEnabledEvent,
+
+        /// <summary>
+        /// Represents a 'auto_rebase_enabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_REBASE_ENABLED_EVENT")]
+        AutoRebaseEnabledEvent,
+
+        /// <summary>
+        /// Represents a 'auto_squash_enabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_SQUASH_ENABLED_EVENT")]
+        AutoSquashEnabledEvent,
+
+        /// <summary>
         /// Represents a 'base_ref_changed' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "BASE_REF_CHANGED_EVENT")]

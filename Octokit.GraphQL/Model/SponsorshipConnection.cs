@@ -35,6 +35,16 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
+        /// <summary>
+        /// The total amount in cents of all recurring sponsorships in the connection whose amount you can view. Does not include one-time sponsorships.
+        /// </summary>
+        public int TotalRecurringMonthlyPriceInCents { get; }
+
+        /// <summary>
+        /// The total amount in USD of all recurring sponsorships in the connection whose amount you can view. Does not include one-time sponsorships.
+        /// </summary>
+        public int TotalRecurringMonthlyPriceInDollars { get; }
+
         IPageInfo IPagingConnection.PageInfo => PageInfo;
 
         internal static SponsorshipConnection Create(Expression expression)

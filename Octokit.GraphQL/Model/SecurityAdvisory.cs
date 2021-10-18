@@ -16,6 +16,20 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The CVSS associated with this advisory
+        /// </summary>
+        public CVSS Cvss => this.CreateProperty(x => x.Cvss, Octokit.GraphQL.Model.CVSS.Create);
+
+        /// <summary>
+        /// CWEs associated with this Advisory
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public CWEConnection Cwes(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Cwes(first, after, last, before), Octokit.GraphQL.Model.CWEConnection.Create);
+
+        /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
         public int? DatabaseId { get; }
@@ -36,6 +50,11 @@ namespace Octokit.GraphQL.Model
         /// A list of identifiers for this advisory
         /// </summary>
         public IQueryableList<SecurityAdvisoryIdentifier> Identifiers => this.CreateProperty(x => x.Identifiers);
+
+        /// <summary>
+        /// The permalink for the advisory's dependabot alerts page
+        /// </summary>
+        public string NotificationsPermalink { get; }
 
         /// <summary>
         /// The organization that originated the advisory

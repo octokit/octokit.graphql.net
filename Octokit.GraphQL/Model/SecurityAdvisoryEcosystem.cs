@@ -12,22 +12,16 @@ namespace Octokit.GraphQL.Model
     public enum SecurityAdvisoryEcosystem
     {
         /// <summary>
-        /// Ruby gems hosted at RubyGems.org
+        /// PHP packages hosted at packagist.org
         /// </summary>
-        [EnumMember(Value = "RUBYGEMS")]
-        Rubygems,
+        [EnumMember(Value = "COMPOSER")]
+        Composer,
 
         /// <summary>
-        /// JavaScript packages hosted at npmjs.com
+        /// Go modules
         /// </summary>
-        [EnumMember(Value = "NPM")]
-        Npm,
-
-        /// <summary>
-        /// Python packages hosted at PyPI.org
-        /// </summary>
-        [EnumMember(Value = "PIP")]
-        Pip,
+        [EnumMember(Value = "GO")]
+        Go,
 
         /// <summary>
         /// Java artifacts hosted at the Maven central repository
@@ -36,15 +30,33 @@ namespace Octokit.GraphQL.Model
         Maven,
 
         /// <summary>
+        /// JavaScript packages hosted at npmjs.com
+        /// </summary>
+        [EnumMember(Value = "NPM")]
+        Npm,
+
+        /// <summary>
         /// .NET packages hosted at the NuGet Gallery
         /// </summary>
         [EnumMember(Value = "NUGET")]
         Nuget,
 
         /// <summary>
-        /// PHP packages hosted at packagist.org
+        /// Python packages hosted at PyPI.org
         /// </summary>
-        [EnumMember(Value = "COMPOSER")]
-        Composer,
+        [EnumMember(Value = "PIP")]
+        Pip,
+
+        /// <summary>
+        /// Ruby gems hosted at RubyGems.org
+        /// </summary>
+        [EnumMember(Value = "RUBYGEMS")]
+        Rubygems,
+
+        /// <summary>
+        /// Rust crates
+        /// </summary>
+        [EnumMember(Value = "RUST")]
+        Rust,
     }
 }

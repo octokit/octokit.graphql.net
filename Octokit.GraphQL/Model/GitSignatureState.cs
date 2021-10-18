@@ -96,7 +96,7 @@ namespace Octokit.GraphQL.Model
         OcspPending,
 
         /// <summary>
-        /// Valid siganture, though certificate revocation check failed
+        /// Valid signature, though certificate revocation check failed
         /// </summary>
         [EnumMember(Value = "OCSP_ERROR")]
         OcspError,

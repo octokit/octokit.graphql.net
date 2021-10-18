@@ -30,6 +30,26 @@ namespace Octokit.GraphQL.Model
             public Selector<T> AssignedEvent(Func<AssignedEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'auto_merge_disabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoMergeDisabledEvent(Func<AutoMergeDisabledEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'auto_merge_enabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoMergeEnabledEvent(Func<AutoMergeEnabledEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'auto_rebase_enabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoRebaseEnabledEvent(Func<AutoRebaseEnabledEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'auto_squash_enabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoSquashEnabledEvent(Func<AutoSquashEnabledEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'automatic_base_change_failed' event on a given pull request.
             /// </summary>
             public Selector<T> AutomaticBaseChangeFailedEvent(Func<AutomaticBaseChangeFailedEvent, T> selector) => default;

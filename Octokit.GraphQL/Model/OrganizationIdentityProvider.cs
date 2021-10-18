@@ -27,12 +27,13 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ExternalIdentityConnection ExternalIdentities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ExternalIdentities(first, after, last, before), Octokit.GraphQL.Model.ExternalIdentityConnection.Create);
+        /// <param name="membersOnly">Filter to external identities with valid org membership only</param>
+        public ExternalIdentityConnection ExternalIdentities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? membersOnly = null) => this.CreateMethodCall(x => x.ExternalIdentities(first, after, last, before, membersOnly), Octokit.GraphQL.Model.ExternalIdentityConnection.Create);
 
         public ID Id { get; }
 
         /// <summary>
-        /// The x509 certificate used by the Identity Provder to sign assertions and responses.
+        /// The x509 certificate used by the Identity Provider to sign assertions and responses.
         /// </summary>
         public string IdpCertificate { get; }
 

@@ -28,5 +28,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "USER")]
         User,
+
+        /// <summary>
+        /// Returns matching discussions in repositories.
+        /// </summary>
+        [EnumMember(Value = "DISCUSSION")]
+        Discussion,
     }
 }

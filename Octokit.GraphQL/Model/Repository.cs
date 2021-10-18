@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public UserConnection AssignableUsers(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.AssignableUsers(first, after, last, before, query), Octokit.GraphQL.Model.UserConnection.Create);
 
         /// <summary>
+        /// Whether or not Auto-merge can be enabled on pull requests in this repository.
+        /// </summary>
+        public bool AutoMergeAllowed { get; }
+
+        /// <summary>
         /// A list of branch protection rules for this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -58,6 +63,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public CommitCommentConnection CommitComments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.CommitComments(first, after, last, before), Octokit.GraphQL.Model.CommitCommentConnection.Create);
+
+        /// <summary>
+        /// Returns a list of contact links associated to the repository
+        /// </summary>
+        public IQueryableList<RepositoryContactLink> ContactLinks => this.CreateProperty(x => x.ContactLinks);
 
         /// <summary>
         /// Identifies the date and time when the object was created.
@@ -110,14 +120,60 @@ namespace Octokit.GraphQL.Model
         public string DescriptionHTML { get; }
 
         /// <summary>
+        /// Returns a single discussion from the current repository by number.
+        /// </summary>
+        /// <param name="number">The number for the discussion to be returned.</param>
+        public Discussion Discussion(Arg<int> number) => this.CreateMethodCall(x => x.Discussion(number), Octokit.GraphQL.Model.Discussion.Create);
+
+        /// <summary>
+        /// A list of discussion categories that are available in the repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public DiscussionCategoryConnection DiscussionCategories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.DiscussionCategories(first, after, last, before), Octokit.GraphQL.Model.DiscussionCategoryConnection.Create);
+
+        /// <summary>
+        /// A list of discussions that have been opened in the repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="categoryId">Only include discussions that belong to the category with this ID.</param>
+        /// <param name="orderBy">Ordering options for discussions returned from the connection.</param>
+        public DiscussionConnection Discussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ID>? categoryId = null, Arg<DiscussionOrder>? orderBy = null) => this.CreateMethodCall(x => x.Discussions(first, after, last, before, categoryId, orderBy), Octokit.GraphQL.Model.DiscussionConnection.Create);
+
+        /// <summary>
         /// The number of kilobytes this repository occupies on disk.
         /// </summary>
         public int? DiskUsage { get; }
 
         /// <summary>
+        /// Returns a single active environment from the current repository by name.
+        /// </summary>
+        /// <param name="name">The name of the environment to be returned.</param>
+        public Environment Environment(Arg<string> name) => this.CreateMethodCall(x => x.Environment(name), Octokit.GraphQL.Model.Environment.Create);
+
+        /// <summary>
+        /// A list of environments that are in this repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public EnvironmentConnection Environments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Environments(first, after, last, before), Octokit.GraphQL.Model.EnvironmentConnection.Create);
+
+        /// <summary>
         /// Returns how many forks there are of this repository in the whole network.
         /// </summary>
         public int ForkCount { get; }
+
+        /// <summary>
+        /// Whether this repository allows forks.
+        /// </summary>
+        public bool ForkingAllowed { get; }
 
         /// <summary>
         /// A list of direct forked repositories.
@@ -161,9 +217,19 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// The interaction ability settings for this repository.
+        /// </summary>
+        public RepositoryInteractionAbility InteractionAbility => this.CreateProperty(x => x.InteractionAbility, Octokit.GraphQL.Model.RepositoryInteractionAbility.Create);
+
+        /// <summary>
         /// Indicates if the repository is unmaintained.
         /// </summary>
         public bool IsArchived { get; }
+
+        /// <summary>
+        /// Returns true if blank issue creation is allowed
+        /// </summary>
+        public bool IsBlankIssuesEnabled { get; }
 
         /// <summary>
         /// Returns whether or not this repository disabled.
@@ -181,6 +247,11 @@ namespace Octokit.GraphQL.Model
         public bool IsFork { get; }
 
         /// <summary>
+        /// Indicates if a repository is either owned by an organization, or is a private fork of an organization repository.
+        /// </summary>
+        public bool IsInOrganization { get; }
+
+        /// <summary>
         /// Indicates if the repository has been locked or not.
         /// </summary>
         public bool IsLocked { get; }
@@ -191,14 +262,24 @@ namespace Octokit.GraphQL.Model
         public bool IsMirror { get; }
 
         /// <summary>
-        /// Identifies if the repository is private.
+        /// Identifies if the repository is private or internal.
         /// </summary>
         public bool IsPrivate { get; }
+
+        /// <summary>
+        /// Returns true if this repository has a security policy
+        /// </summary>
+        public bool? IsSecurityPolicyEnabled { get; }
 
         /// <summary>
         /// Identifies if the repository is a template that can be used to generate new repositories.
         /// </summary>
         public bool IsTemplate { get; }
+
+        /// <summary>
+        /// Is this repository a user configuration repository?
+        /// </summary>
+        public bool IsUserConfigurationRepository { get; }
 
         /// <summary>
         /// Returns a single issue from the current repository by number.
@@ -211,6 +292,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         /// <param name="number">The number for the issue to be returned.</param>
         public IssueOrPullRequest IssueOrPullRequest(Arg<int> number) => this.CreateMethodCall(x => x.IssueOrPullRequest(number), Octokit.GraphQL.Model.IssueOrPullRequest.Create);
+
+        /// <summary>
+        /// Returns a list of issue templates associated to the repository
+        /// </summary>
+        public IQueryableList<IssueTemplate> IssueTemplates => this.CreateProperty(x => x.IssueTemplates);
 
         /// <summary>
         /// A list of issues that have been opened in the repository.
@@ -251,6 +337,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Order for connection</param>
         public LanguageConnection Languages(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<LanguageOrder>? orderBy = null) => this.CreateMethodCall(x => x.Languages(first, after, last, before, orderBy), Octokit.GraphQL.Model.LanguageConnection.Create);
+
+        /// <summary>
+        /// Get the latest release for the repository if one exists.
+        /// </summary>
+        public Release LatestRelease => this.CreateProperty(x => x.LatestRelease, Octokit.GraphQL.Model.Release.Create);
 
         /// <summary>
         /// The license associated with the repository
@@ -346,6 +437,24 @@ namespace Octokit.GraphQL.Model
         public Repository Parent => this.CreateProperty(x => x.Parent, Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
+        /// A list of discussions that have been pinned in this repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public PinnedDiscussionConnection PinnedDiscussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PinnedDiscussions(first, after, last, before), Octokit.GraphQL.Model.PinnedDiscussionConnection.Create);
+
+        /// <summary>
+        /// A list of pinned issues for this repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public PinnedIssueConnection PinnedIssues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PinnedIssues(first, after, last, before), Octokit.GraphQL.Model.PinnedIssueConnection.Create);
+
+        /// <summary>
         /// The primary language of the repository's code.
         /// </summary>
         public Language PrimaryLanguage => this.CreateProperty(x => x.PrimaryLanguage, Octokit.GraphQL.Model.Language.Create);
@@ -383,6 +492,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         /// <param name="number">The number for the pull request to be returned.</param>
         public PullRequest PullRequest(Arg<int> number) => this.CreateMethodCall(x => x.PullRequest(number), Octokit.GraphQL.Model.PullRequest.Create);
+
+        /// <summary>
+        /// Returns a list of pull request templates associated to the repository
+        /// </summary>
+        public IQueryableList<PullRequestTemplate> PullRequestTemplates => this.CreateProperty(x => x.PullRequestTemplates);
 
         /// <summary>
         /// A list of pull requests that have been opened in the repository.
@@ -458,6 +572,11 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
+        /// The security policy URL.
+        /// </summary>
+        public string SecurityPolicyUrl { get; }
+
+        /// <summary>
         /// A description of the repository, rendered to HTML without any links in it.
         /// </summary>
         /// <param name="limit">How many characters to return.</param>
@@ -472,6 +591,11 @@ namespace Octokit.GraphQL.Model
         /// The SSH URL to clone this repository
         /// </summary>
         public string SshUrl { get; }
+
+        /// <summary>
+        /// Returns a count of how many stargazers there are on this object
+        /// </summary>
+        public int StargazerCount { get; }
 
         /// <summary>
         /// A list of users who have starred this starrable.
@@ -566,6 +690,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
         /// </summary>
         public SubscriptionState? ViewerSubscription { get; }
+
+        /// <summary>
+        /// Indicates the repository's visibility level.
+        /// </summary>
+        public RepositoryVisibility Visibility { get; }
 
         /// <summary>
         /// A list of vulnerability alerts that are on this repository.

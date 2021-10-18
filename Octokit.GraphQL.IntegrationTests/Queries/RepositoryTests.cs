@@ -51,8 +51,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             };
 
             var result = await Connection.Run(query, vars);
-            Assert.Equal(result.Login, "octokit");
-            Assert.Equal(result.Name, "octokit.graphql.net");
+            Assert.Equal("octokit", result.Login);
+            Assert.Equal("octokit.graphql.net", result.Name);
         }
 
         [IntegrationTest]
@@ -69,8 +69,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var repository = await Connection.Run(query);
 
             Assert.NotNull(repository);
-            Assert.Equal(repository.Name, "octokit.net");
-            Assert.Equal(repository.DatabaseId, 7528679);
+            Assert.Equal("octokit.net", repository.Name);
+            Assert.Equal(7528679, repository.DatabaseId);
         }
 
         [IntegrationTest]
@@ -86,11 +86,11 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var repositoryNames = (await Connection.Run(query)).ToArray();
 
-            Assert.Contains("discussions", repositoryNames);
-            Assert.Contains("go-octokit", repositoryNames);
-            Assert.Contains("octokit.net", repositoryNames);
-            Assert.Contains("octokit.objc", repositoryNames);
-            Assert.Contains("octokit.rb", repositoryNames);
+            Assert.Contains(".github", repositoryNames);
+            Assert.Contains("action.js", repositoryNames);
+            Assert.Contains("app-permissions", repositoryNames);
+            Assert.Contains("app.js", repositoryNames);
+            Assert.Contains("auth-action.js", repositoryNames);
         }
 
         [IntegrationTest]
@@ -175,7 +175,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var repositoryName = (await Connection.Run(query)).OrderByDescending(s => s).First();
 
-            Assert.Equal("webhooks.js", repositoryName);
+            Assert.Equal("webhooks-methods.js", repositoryName);
         }
 
         [IntegrationTest]
@@ -260,7 +260,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var testModelObject = (await Connection.Run(query)).OrderByDescending(s => s.StringField1).First();
 
-            Assert.Equal("webhooks.js", testModelObject.StringField1);
+            Assert.Equal("webhooks-methods.js", testModelObject.StringField1);
         }
 
         [IntegrationTest]

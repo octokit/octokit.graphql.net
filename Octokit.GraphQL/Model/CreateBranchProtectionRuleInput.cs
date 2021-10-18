@@ -34,6 +34,21 @@ namespace Octokit.GraphQL.Model
         public bool? RequiresCommitSignatures { get; set; }
 
         /// <summary>
+        /// Are merge commits prohibited from being pushed to this branch.
+        /// </summary>
+        public bool? RequiresLinearHistory { get; set; }
+
+        /// <summary>
+        /// Are force pushes allowed on this branch.
+        /// </summary>
+        public bool? AllowsForcePushes { get; set; }
+
+        /// <summary>
+        /// Can this branch be deleted.
+        /// </summary>
+        public bool? AllowsDeletions { get; set; }
+
+        /// <summary>
         /// Can admins overwrite branch protection.
         /// </summary>
         public bool? IsAdminEnforced { get; set; }
@@ -82,6 +97,11 @@ namespace Octokit.GraphQL.Model
         /// List of required status check contexts that must pass for commits to be accepted to matching branches.
         /// </summary>
         public IEnumerable<string> RequiredStatusCheckContexts { get; set; }
+
+        /// <summary>
+        /// Are conversations required to be resolved before merging.
+        /// </summary>
+        public bool? RequiresConversationResolution { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

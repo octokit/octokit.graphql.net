@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public SponsorsTierAdminInfo AdminInfo => this.CreateProperty(x => x.AdminInfo, Octokit.GraphQL.Model.SponsorsTierAdminInfo.Create);
 
         /// <summary>
+        /// Get a different tier for this tier's maintainer that is at the same frequency as this tier but with an equal or lesser cost. Returns the published tier with the monthly price closest to this tier's without going over.
+        /// </summary>
+        public SponsorsTier ClosestLesserValueTier => this.CreateProperty(x => x.ClosestLesserValueTier, Octokit.GraphQL.Model.SponsorsTier.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
@@ -38,12 +43,22 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether this tier was chosen at checkout time by the sponsor rather than defined ahead of time by the maintainer who manages the Sponsors listing.
+        /// </summary>
+        public bool IsCustomAmount { get; }
+
+        /// <summary>
+        /// Whether this tier is only for use with one-time sponsorships.
+        /// </summary>
+        public bool IsOneTime { get; }
+
+        /// <summary>
         /// How much this tier costs per month in cents.
         /// </summary>
         public int MonthlyPriceInCents { get; }
 
         /// <summary>
-        /// How much this tier costs per month in dollars.
+        /// How much this tier costs per month in USD.
         /// </summary>
         public int MonthlyPriceInDollars { get; }
 

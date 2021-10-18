@@ -23,6 +23,16 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether this sponsorship represents a one-time payment versus a recurring sponsorship.
+        /// </summary>
+        public bool IsOneTimePayment { get; }
+
+        /// <summary>
+        /// Check if the sponsor has chosen to receive sponsorship update emails sent from the sponsorable. Only returns a non-null value when the viewer has permission to know this.
+        /// </summary>
+        public bool? IsSponsorOptedIntoEmail { get; }
+
+        /// <summary>
         /// The entity that is being sponsored
         /// </summary>
         [Obsolete(@"`Sponsorship.maintainer` will be removed. Use `Sponsorship.sponsorable` instead. Removal on 2020-04-01 UTC.")]
@@ -40,7 +50,7 @@ namespace Octokit.GraphQL.Model
         public User Sponsor => this.CreateProperty(x => x.Sponsor, Octokit.GraphQL.Model.User.Create);
 
         /// <summary>
-        /// The user or organization that is sponsoring. Returns null if the sponsorship is private.
+        /// The user or organization that is sponsoring, if you have permission to view them.
         /// </summary>
         public Sponsor SponsorEntity => this.CreateProperty(x => x.SponsorEntity, Octokit.GraphQL.Model.Sponsor.Create);
 
@@ -53,6 +63,11 @@ namespace Octokit.GraphQL.Model
         /// The associated sponsorship tier
         /// </summary>
         public SponsorsTier Tier => this.CreateProperty(x => x.Tier, Octokit.GraphQL.Model.SponsorsTier.Create);
+
+        /// <summary>
+        /// Identifies the date and time when the current tier was chosen for this sponsorship.
+        /// </summary>
+        public DateTimeOffset? TierSelectedAt { get; }
 
         internal static Sponsorship Create(Expression expression)
         {

@@ -32,6 +32,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// A docker image.
         /// </summary>
+        [Obsolete(@"DOCKER will be removed from this enum as this type will be migrated to only be used by the Packages REST API. Removal on 2021-06-21 UTC.")]
         [EnumMember(Value = "DOCKER")]
         Docker,
 
