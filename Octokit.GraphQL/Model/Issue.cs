@@ -177,6 +177,33 @@ namespace Octokit.GraphQL.Model
         public ProjectCardConnection ProjectCards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null) => this.CreateMethodCall(x => x.ProjectCards(first, after, last, before, archivedStates), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>
+        /// Find a project by project (beta) number.
+        /// </summary>
+        /// <param name="number">The project (beta) number.</param>
+        public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
+
+        /// <summary>
+        /// List of project (beta) items associated with this issue.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="includeArchived">Include archived items.</param>
+        public ProjectNextItemConnection ProjectNextItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includeArchived = null) => this.CreateMethodCall(x => x.ProjectNextItems(first, after, last, before, includeArchived), Octokit.GraphQL.Model.ProjectNextItemConnection.Create);
+
+        /// <summary>
+        /// A list of projects (beta) under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="query">A project (beta) to search for under the the owner.</param>
+        /// <param name="sortBy">How to order the returned projects (beta).</param>
+        public ProjectNextConnection ProjectsNext(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<ProjectNextOrderField>? sortBy = null) => this.CreateMethodCall(x => x.ProjectsNext(first, after, last, before, query, sortBy), Octokit.GraphQL.Model.ProjectNextConnection.Create);
+
+        /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
         public DateTimeOffset? PublishedAt { get; }
@@ -243,6 +270,30 @@ namespace Octokit.GraphQL.Model
         /// Identifies the issue title rendered to HTML.
         /// </summary>
         public string TitleHTML { get; }
+
+        /// <summary>
+        /// A list of issues that track this issue
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public IssueConnection TrackedInIssues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.TrackedInIssues(first, after, last, before), Octokit.GraphQL.Model.IssueConnection.Create);
+
+        /// <summary>
+        /// A list of issues tracked inside the current issue
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public IssueConnection TrackedIssues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.TrackedIssues(first, after, last, before), Octokit.GraphQL.Model.IssueConnection.Create);
+
+        /// <summary>
+        /// The number of tracked issues for this issue
+        /// </summary>
+        /// <param name="states">Limit the count to tracked issues with the specified states.</param>
+        public int TrackedIssuesCount(Arg<IEnumerable<TrackedIssueStates?>>? states = null) => default;
 
         /// <summary>
         /// Identifies the date and time when the object was last updated.

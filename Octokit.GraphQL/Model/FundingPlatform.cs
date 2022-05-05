@@ -66,6 +66,12 @@ namespace Octokit.GraphQL.Model
         Otechie,
 
         /// <summary>
+        /// LFX Crowdfunding funding platform.
+        /// </summary>
+        [EnumMember(Value = "LFX_CROWDFUNDING")]
+        LfxCrowdfunding,
+
+        /// <summary>
         /// Custom funding platform.
         /// </summary>
         [EnumMember(Value = "CUSTOM")]

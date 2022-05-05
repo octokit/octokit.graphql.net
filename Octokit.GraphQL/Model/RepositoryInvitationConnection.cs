@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for RepositoryInvitation.
+    /// A list of repository invitations.
     /// </summary>
     public class RepositoryInvitationConnection : QueryableValue<RepositoryInvitationConnection>, IPagingConnection<RepositoryInvitation>
     {

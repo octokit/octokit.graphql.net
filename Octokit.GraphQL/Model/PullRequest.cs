@@ -117,7 +117,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for issues returned from the connection</param>
-        public IssueConnection ClosingIssuesReferences(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IssueOrder>? orderBy = null) => this.CreateMethodCall(x => x.ClosingIssuesReferences(first, after, last, before, orderBy), Octokit.GraphQL.Model.IssueConnection.Create);
+        /// <param name="userLinkedOnly">Return only manually linked Issues</param>
+        public IssueConnection ClosingIssuesReferences(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IssueOrder>? orderBy = null, Arg<bool>? userLinkedOnly = null) => this.CreateMethodCall(x => x.ClosingIssuesReferences(first, after, last, before, orderBy, userLinkedOnly), Octokit.GraphQL.Model.IssueConnection.Create);
 
         /// <summary>
         /// A list of comments associated with the pull request.
@@ -334,6 +335,33 @@ namespace Octokit.GraphQL.Model
         public ProjectCardConnection ProjectCards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null) => this.CreateMethodCall(x => x.ProjectCards(first, after, last, before, archivedStates), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>
+        /// Find a project by project (beta) number.
+        /// </summary>
+        /// <param name="number">The project (beta) number.</param>
+        public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
+
+        /// <summary>
+        /// List of project (beta) items associated with this pull request.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="includeArchived">Include archived items.</param>
+        public ProjectNextItemConnection ProjectNextItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includeArchived = null) => this.CreateMethodCall(x => x.ProjectNextItems(first, after, last, before, includeArchived), Octokit.GraphQL.Model.ProjectNextItemConnection.Create);
+
+        /// <summary>
+        /// A list of projects (beta) under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="query">A project (beta) to search for under the the owner.</param>
+        /// <param name="sortBy">How to order the returned projects (beta).</param>
+        public ProjectNextConnection ProjectsNext(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<ProjectNextOrderField>? sortBy = null) => this.CreateMethodCall(x => x.ProjectsNext(first, after, last, before, query, sortBy), Octokit.GraphQL.Model.ProjectNextConnection.Create);
+
+        /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
         public DateTimeOffset? PublishedAt { get; }
@@ -488,6 +516,11 @@ namespace Octokit.GraphQL.Model
         /// Whether or not the viewer can enable auto-merge
         /// </summary>
         public bool ViewerCanEnableAutoMerge { get; }
+
+        /// <summary>
+        /// Indicates whether the viewer can bypass branch protections and merge the pull request immediately
+        /// </summary>
+        public bool ViewerCanMergeAsAdmin { get; }
 
         /// <summary>
         /// Can user react to this subject

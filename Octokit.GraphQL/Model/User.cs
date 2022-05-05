@@ -322,6 +322,12 @@ namespace Octokit.GraphQL.Model
         public Project Project(Arg<int> number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
 
         /// <summary>
+        /// Find a project by project (beta) number.
+        /// </summary>
+        /// <param name="number">The project (beta) number.</param>
+        public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
+
+        /// <summary>
         /// A list of projects under the owner.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -332,6 +338,17 @@ namespace Octokit.GraphQL.Model
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
         public ProjectConnection Projects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectOrder>? orderBy = null, Arg<string>? search = null, Arg<IEnumerable<ProjectState>>? states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
+
+        /// <summary>
+        /// A list of projects (beta) under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="query">A project (beta) to search for under the the owner.</param>
+        /// <param name="sortBy">How to order the returned projects (beta).</param>
+        public ProjectNextConnection ProjectsNext(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<ProjectNextOrderField>? sortBy = null) => this.CreateMethodCall(x => x.ProjectsNext(first, after, last, before, query, sortBy), Octokit.GraphQL.Model.ProjectNextConnection.Create);
 
         /// <summary>
         /// The HTTP path listing user's projects
@@ -399,7 +416,8 @@ namespace Octokit.GraphQL.Model
         /// Find Repository.
         /// </summary>
         /// <param name="name">Name of Repository to find.</param>
-        public Repository Repository(Arg<string> name) => this.CreateMethodCall(x => x.Repository(name), Octokit.GraphQL.Model.Repository.Create);
+        /// <param name="followRenames">Follow repository renames. If disabled, a repository referenced by its old name will return an error.</param>
+        public Repository Repository(Arg<string> name, Arg<bool>? followRenames = null) => this.CreateMethodCall(x => x.Repository(name, followRenames), Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
         /// Discussion comments this user has authored.

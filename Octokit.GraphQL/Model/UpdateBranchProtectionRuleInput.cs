@@ -39,6 +39,11 @@ namespace Octokit.GraphQL.Model
         public bool? RequiresLinearHistory { get; set; }
 
         /// <summary>
+        /// Is branch creation a protected operation.
+        /// </summary>
+        public bool? BlocksCreations { get; set; }
+
+        /// <summary>
         /// Are force pushes allowed on this branch.
         /// </summary>
         public bool? AllowsForcePushes { get; set; }
@@ -84,6 +89,16 @@ namespace Octokit.GraphQL.Model
         public IEnumerable<ID> ReviewDismissalActorIds { get; set; }
 
         /// <summary>
+        /// A list of User or Team IDs allowed to bypass pull requests targeting matching branches.
+        /// </summary>
+        public IEnumerable<ID> BypassPullRequestActorIds { get; set; }
+
+        /// <summary>
+        /// A list of User or Team IDs allowed to bypass force push targeting matching branches.
+        /// </summary>
+        public IEnumerable<ID> BypassForcePushActorIds { get; set; }
+
+        /// <summary>
         /// Is pushing to matching branches restricted.
         /// </summary>
         public bool? RestrictsPushes { get; set; }
@@ -97,6 +112,11 @@ namespace Octokit.GraphQL.Model
         /// List of required status check contexts that must pass for commits to be accepted to matching branches.
         /// </summary>
         public IEnumerable<string> RequiredStatusCheckContexts { get; set; }
+
+        /// <summary>
+        /// The list of required status checks
+        /// </summary>
+        public IEnumerable<RequiredStatusCheckInput> RequiredStatusChecks { get; set; }
 
         /// <summary>
         /// Are conversations required to be resolved before merging.

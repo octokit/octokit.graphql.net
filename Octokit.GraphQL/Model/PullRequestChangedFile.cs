@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public int Additions { get; }
 
         /// <summary>
+        /// How the file was changed in this PullRequest
+        /// </summary>
+        public PatchStatus ChangeType { get; }
+
+        /// <summary>
         /// The number of deletions to the file.
         /// </summary>
         public int Deletions { get; }
