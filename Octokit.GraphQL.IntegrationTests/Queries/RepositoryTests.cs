@@ -153,7 +153,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var query = new Query()
                 .Select(q => new
                 {
-                    Name = q.Repository("octokit.net", "octokit").Select(fragment).SingleOrDefault()
+                    Name = q.Repository("octokit.net", "octokit", null).Select(fragment).SingleOrDefault()
                 });
 
 
@@ -210,8 +210,8 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var query = new Query()
                 .Select(q => new
                 {
-                    repo1 = q.Repository("octokit.net", "octokit").Select(fragment).Single(),
-                    repo2 = q.Repository("octokit.graphql.net", "octokit").Select(fragment).Single(),
+                    repo1 = q.Repository("octokit.net", "octokit", null).Select(fragment).Single(),
+                    repo2 = q.Repository("octokit.graphql.net", "octokit", null).Select(fragment).Single(),
                 });
 
             var result = await Connection.Run(query);
@@ -233,7 +233,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var query = new Query()
                 .Select(q => new
                 {
-                    TestModel = q.Repository("octokit.net", "octokit").Select(fragment).SingleOrDefault()
+                    TestModel = q.Repository("octokit.net", "octokit", null).Select(fragment).SingleOrDefault()
                 });
 
 
@@ -279,7 +279,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                     Member = organization.MembersWithRole(10, null, null, null).Nodes
                         .Select(fragment).ToList().OrderBy(o => o.StringField1).First(),
 
-                    MentionableUser = organization.Repository("octokit.net")
+                    MentionableUser = organization.Repository("octokit.net", null)
                         .MentionableUsers(10, null, null, null, null).Nodes
                         .Select(fragment).ToList().OrderBy(o => o.StringField1).First()
                 });
@@ -370,7 +370,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var query = new Query().Select(q => new
             {
                 repoOwner = q
-                    .Repository("octokit.net", "octokit")
+                    .Repository("octokit.net", "octokit", null)
                     .Owner
                     .Select(fragment)
                     .SingleOrDefault()
