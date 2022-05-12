@@ -1,5 +1,7 @@
 ## Updating the schema
 
+Note: the OAuth token referenced below represents a [legacy personal access token](https://github.com/settings/tokens)
+
 1. Delete the `Model` folder from `Octokit.GraphQL`
 2. Set the Application arguments for the `Tools\Generate` project to `[OAuth Token] [Octokit.GraphQL Project Path]`
 3. Build and run the `Tools\Generate` project
