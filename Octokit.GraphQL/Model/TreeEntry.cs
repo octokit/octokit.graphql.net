@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public bool IsGenerated { get; }
 
         /// <summary>
+        /// Number of lines in the file.
+        /// </summary>
+        public int? LineCount { get; }
+
+        /// <summary>
         /// Entry file mode.
         /// </summary>
         public int Mode { get; }

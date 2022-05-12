@@ -141,7 +141,8 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="name">The name of the repository</param>
         /// <param name="owner">The login field of a user or organization</param>
-        public Repository Repository(Arg<string> name, Arg<string> owner) => this.CreateMethodCall(x => x.Repository(name, owner), Octokit.GraphQL.Model.Repository.Create);
+        /// <param name="followRenames">Follow repository renames. If disabled, a repository referenced by its old name will return an error.</param>
+        public Repository Repository(Arg<string> name, Arg<string> owner, Arg<bool>? followRenames = null) => this.CreateMethodCall(x => x.Repository(name, owner, followRenames), Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
         /// Lookup a repository owner (ie. either a User or an Organization) by login.
@@ -205,11 +206,12 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="dependencyEcosystem">Optional filter for which dependencies should be checked for sponsorable owners. Only sponsorable owners of dependencies in this ecosystem will be included. Used when onlyDependencies = true.</param>
+        /// <param name="dependencyEcosystem">Optional filter for which dependencies should be checked for sponsorable owners. Only sponsorable owners of dependencies in this ecosystem will be included. Used when onlyDependencies = true. **Upcoming Change on 2022-07-01 UTC** **Description:** `dependencyEcosystem` will be removed. Use the ecosystem argument instead. **Reason:** The type is switching from SecurityAdvisoryEcosystem to DependencyGraphEcosystem.</param>
+        /// <param name="ecosystem">Optional filter for which dependencies should be checked for sponsorable owners. Only sponsorable owners of dependencies in this ecosystem will be included. Used when onlyDependencies = true.</param>
         /// <param name="onlyDependencies">Whether only sponsorables who own the viewer's dependencies will be returned. Must be authenticated to use. Can check an organization instead for their dependencies owned by sponsorables by passing orgLoginForDependencies.</param>
         /// <param name="orderBy">Ordering options for users and organizations returned from the connection.</param>
         /// <param name="orgLoginForDependencies">Optional organization username for whose dependencies should be checked. Used when onlyDependencies = true. Omit to check your own dependencies. If you are not an administrator of the organization, only dependencies from its public repositories will be considered.</param>
-        public SponsorableItemConnection Sponsorables(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? dependencyEcosystem = null, Arg<bool>? onlyDependencies = null, Arg<SponsorableOrder>? orderBy = null, Arg<string>? orgLoginForDependencies = null) => this.CreateMethodCall(x => x.Sponsorables(first, after, last, before, dependencyEcosystem, onlyDependencies, orderBy, orgLoginForDependencies), Octokit.GraphQL.Model.SponsorableItemConnection.Create);
+        public SponsorableItemConnection Sponsorables(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? dependencyEcosystem = null, Arg<DependencyGraphEcosystem>? ecosystem = null, Arg<bool>? onlyDependencies = null, Arg<SponsorableOrder>? orderBy = null, Arg<string>? orgLoginForDependencies = null) => this.CreateMethodCall(x => x.Sponsorables(first, after, last, before, dependencyEcosystem, ecosystem, onlyDependencies, orderBy, orgLoginForDependencies), Octokit.GraphQL.Model.SponsorableItemConnection.Create);
 
         /// <summary>
         /// Look up a topic by name.

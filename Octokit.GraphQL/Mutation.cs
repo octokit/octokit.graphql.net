@@ -21,6 +21,12 @@ namespace Octokit.GraphQL
         }
 
         /// <summary>
+        /// Clear all of a customer's queued migrations
+        /// </summary>
+        /// <param name="input">Parameters for AbortQueuedMigrations</param>
+        public AbortQueuedMigrationsPayload AbortQueuedMigrations(Arg<AbortQueuedMigrationsInput> input) => this.CreateMethodCall(x => x.AbortQueuedMigrations(input), Octokit.GraphQL.Model.AbortQueuedMigrationsPayload.Create);
+
+        /// <summary>
         /// Accepts a pending invitation for a user to become an administrator of an enterprise.
         /// </summary>
         /// <param name="input">Parameters for AcceptEnterpriseAdministratorInvitation</param>
@@ -73,6 +79,18 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for AddProjectColumn</param>
         public AddProjectColumnPayload AddProjectColumn(Arg<AddProjectColumnInput> input) => this.CreateMethodCall(x => x.AddProjectColumn(input), Octokit.GraphQL.Model.AddProjectColumnPayload.Create);
+
+        /// <summary>
+        /// Creates a new draft issue and add it to a Project.
+        /// </summary>
+        /// <param name="input">Parameters for AddProjectDraftIssue</param>
+        public AddProjectDraftIssuePayload AddProjectDraftIssue(Arg<AddProjectDraftIssueInput> input) => this.CreateMethodCall(x => x.AddProjectDraftIssue(input), Octokit.GraphQL.Model.AddProjectDraftIssuePayload.Create);
+
+        /// <summary>
+        /// Adds an existing item (Issue or PullRequest) to a Project.
+        /// </summary>
+        /// <param name="input">Parameters for AddProjectNextItem</param>
+        public AddProjectNextItemPayload AddProjectNextItem(Arg<AddProjectNextItemInput> input) => this.CreateMethodCall(x => x.AddProjectNextItem(input), Octokit.GraphQL.Model.AddProjectNextItemPayload.Create);
 
         /// <summary>
         /// Adds a review to a Pull Request.
@@ -277,6 +295,12 @@ namespace Octokit.GraphQL
         public CreateIssuePayload CreateIssue(Arg<CreateIssueInput> input) => this.CreateMethodCall(x => x.CreateIssue(input), Octokit.GraphQL.Model.CreateIssuePayload.Create);
 
         /// <summary>
+        /// Creates an Octoshift migration source.
+        /// </summary>
+        /// <param name="input">Parameters for CreateMigrationSource</param>
+        public CreateMigrationSourcePayload CreateMigrationSource(Arg<CreateMigrationSourceInput> input) => this.CreateMethodCall(x => x.CreateMigrationSource(input), Octokit.GraphQL.Model.CreateMigrationSourcePayload.Create);
+
+        /// <summary>
         /// Creates a new project.
         /// </summary>
         /// <param name="input">Parameters for CreateProject</param>
@@ -299,6 +323,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for CreateRepository</param>
         public CreateRepositoryPayload CreateRepository(Arg<CreateRepositoryInput> input) => this.CreateMethodCall(x => x.CreateRepository(input), Octokit.GraphQL.Model.CreateRepositoryPayload.Create);
+
+        /// <summary>
+        /// Create a new payment tier for your GitHub Sponsors profile.
+        /// </summary>
+        /// <param name="input">Parameters for CreateSponsorsTier</param>
+        public CreateSponsorsTierPayload CreateSponsorsTier(Arg<CreateSponsorsTierInput> input) => this.CreateMethodCall(x => x.CreateSponsorsTier(input), Octokit.GraphQL.Model.CreateSponsorsTierPayload.Create);
 
         /// <summary>
         /// Start a new sponsorship of a maintainer in GitHub Sponsors, or reactivate a past sponsorship.
@@ -391,6 +421,12 @@ namespace Octokit.GraphQL
         public DeleteProjectColumnPayload DeleteProjectColumn(Arg<DeleteProjectColumnInput> input) => this.CreateMethodCall(x => x.DeleteProjectColumn(input), Octokit.GraphQL.Model.DeleteProjectColumnPayload.Create);
 
         /// <summary>
+        /// Deletes an item from a Project.
+        /// </summary>
+        /// <param name="input">Parameters for DeleteProjectNextItem</param>
+        public DeleteProjectNextItemPayload DeleteProjectNextItem(Arg<DeleteProjectNextItemInput> input) => this.CreateMethodCall(x => x.DeleteProjectNextItem(input), Octokit.GraphQL.Model.DeleteProjectNextItemPayload.Create);
+
+        /// <summary>
         /// Deletes a pull request review.
         /// </summary>
         /// <param name="input">Parameters for DeletePullRequestReview</param>
@@ -439,16 +475,40 @@ namespace Octokit.GraphQL
         public DismissPullRequestReviewPayload DismissPullRequestReview(Arg<DismissPullRequestReviewInput> input) => this.CreateMethodCall(x => x.DismissPullRequestReview(input), Octokit.GraphQL.Model.DismissPullRequestReviewPayload.Create);
 
         /// <summary>
+        /// Dismisses the Dependabot alert.
+        /// </summary>
+        /// <param name="input">Parameters for DismissRepositoryVulnerabilityAlert</param>
+        public DismissRepositoryVulnerabilityAlertPayload DismissRepositoryVulnerabilityAlert(Arg<DismissRepositoryVulnerabilityAlertInput> input) => this.CreateMethodCall(x => x.DismissRepositoryVulnerabilityAlert(input), Octokit.GraphQL.Model.DismissRepositoryVulnerabilityAlertPayload.Create);
+
+        /// <summary>
         /// Enable the default auto-merge on a pull request.
         /// </summary>
         /// <param name="input">Parameters for EnablePullRequestAutoMerge</param>
         public EnablePullRequestAutoMergePayload EnablePullRequestAutoMerge(Arg<EnablePullRequestAutoMergeInput> input) => this.CreateMethodCall(x => x.EnablePullRequestAutoMerge(input), Octokit.GraphQL.Model.EnablePullRequestAutoMergePayload.Create);
 
         /// <summary>
+        /// Follow an organization.
+        /// </summary>
+        /// <param name="input">Parameters for FollowOrganization</param>
+        public FollowOrganizationPayload FollowOrganization(Arg<FollowOrganizationInput> input) => this.CreateMethodCall(x => x.FollowOrganization(input), Octokit.GraphQL.Model.FollowOrganizationPayload.Create);
+
+        /// <summary>
         /// Follow a user.
         /// </summary>
         /// <param name="input">Parameters for FollowUser</param>
         public FollowUserPayload FollowUser(Arg<FollowUserInput> input) => this.CreateMethodCall(x => x.FollowUser(input), Octokit.GraphQL.Model.FollowUserPayload.Create);
+
+        /// <summary>
+        /// Grant the migrator role to a user for all organizations under an enterprise account.
+        /// </summary>
+        /// <param name="input">Parameters for GrantEnterpriseOrganizationsMigratorRole</param>
+        public GrantEnterpriseOrganizationsMigratorRolePayload GrantEnterpriseOrganizationsMigratorRole(Arg<GrantEnterpriseOrganizationsMigratorRoleInput> input) => this.CreateMethodCall(x => x.GrantEnterpriseOrganizationsMigratorRole(input), Octokit.GraphQL.Model.GrantEnterpriseOrganizationsMigratorRolePayload.Create);
+
+        /// <summary>
+        /// Grant the migrator role to a user or a team.
+        /// </summary>
+        /// <param name="input">Parameters for GrantMigratorRole</param>
+        public GrantMigratorRolePayload GrantMigratorRole(Arg<GrantMigratorRoleInput> input) => this.CreateMethodCall(x => x.GrantMigratorRole(input), Octokit.GraphQL.Model.GrantMigratorRolePayload.Create);
 
         /// <summary>
         /// Invite someone to become an administrator of the enterprise.
@@ -631,6 +691,18 @@ namespace Octokit.GraphQL
         public ResolveReviewThreadPayload ResolveReviewThread(Arg<ResolveReviewThreadInput> input) => this.CreateMethodCall(x => x.ResolveReviewThread(input), Octokit.GraphQL.Model.ResolveReviewThreadPayload.Create);
 
         /// <summary>
+        /// Revoke the migrator role to a user for all organizations under an enterprise account.
+        /// </summary>
+        /// <param name="input">Parameters for RevokeEnterpriseOrganizationsMigratorRole</param>
+        public RevokeEnterpriseOrganizationsMigratorRolePayload RevokeEnterpriseOrganizationsMigratorRole(Arg<RevokeEnterpriseOrganizationsMigratorRoleInput> input) => this.CreateMethodCall(x => x.RevokeEnterpriseOrganizationsMigratorRole(input), Octokit.GraphQL.Model.RevokeEnterpriseOrganizationsMigratorRolePayload.Create);
+
+        /// <summary>
+        /// Revoke the migrator role from a user or a team.
+        /// </summary>
+        /// <param name="input">Parameters for RevokeMigratorRole</param>
+        public RevokeMigratorRolePayload RevokeMigratorRole(Arg<RevokeMigratorRoleInput> input) => this.CreateMethodCall(x => x.RevokeMigratorRole(input), Octokit.GraphQL.Model.RevokeMigratorRolePayload.Create);
+
+        /// <summary>
         /// Creates or updates the identity provider for an enterprise.
         /// </summary>
         /// <param name="input">Parameters for SetEnterpriseIdentityProvider</param>
@@ -655,6 +727,12 @@ namespace Octokit.GraphQL
         public SetUserInteractionLimitPayload SetUserInteractionLimit(Arg<SetUserInteractionLimitInput> input) => this.CreateMethodCall(x => x.SetUserInteractionLimit(input), Octokit.GraphQL.Model.SetUserInteractionLimitPayload.Create);
 
         /// <summary>
+        /// Start a repository migration.
+        /// </summary>
+        /// <param name="input">Parameters for StartRepositoryMigration</param>
+        public StartRepositoryMigrationPayload StartRepositoryMigration(Arg<StartRepositoryMigrationInput> input) => this.CreateMethodCall(x => x.StartRepositoryMigration(input), Octokit.GraphQL.Model.StartRepositoryMigrationPayload.Create);
+
+        /// <summary>
         /// Submits a pending pull request review.
         /// </summary>
         /// <param name="input">Parameters for SubmitPullRequestReview</param>
@@ -671,6 +749,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for UnarchiveRepository</param>
         public UnarchiveRepositoryPayload UnarchiveRepository(Arg<UnarchiveRepositoryInput> input) => this.CreateMethodCall(x => x.UnarchiveRepository(input), Octokit.GraphQL.Model.UnarchiveRepositoryPayload.Create);
+
+        /// <summary>
+        /// Unfollow an organization.
+        /// </summary>
+        /// <param name="input">Parameters for UnfollowOrganization</param>
+        public UnfollowOrganizationPayload UnfollowOrganization(Arg<UnfollowOrganizationInput> input) => this.CreateMethodCall(x => x.UnfollowOrganization(input), Octokit.GraphQL.Model.UnfollowOrganizationPayload.Create);
 
         /// <summary>
         /// Unfollow a user.
@@ -829,6 +913,12 @@ namespace Octokit.GraphQL
         public UpdateEnterpriseOrganizationProjectsSettingPayload UpdateEnterpriseOrganizationProjectsSetting(Arg<UpdateEnterpriseOrganizationProjectsSettingInput> input) => this.CreateMethodCall(x => x.UpdateEnterpriseOrganizationProjectsSetting(input), Octokit.GraphQL.Model.UpdateEnterpriseOrganizationProjectsSettingPayload.Create);
 
         /// <summary>
+        /// Updates the role of an enterprise owner with an organization.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateEnterpriseOwnerOrganizationRole</param>
+        public UpdateEnterpriseOwnerOrganizationRolePayload UpdateEnterpriseOwnerOrganizationRole(Arg<UpdateEnterpriseOwnerOrganizationRoleInput> input) => this.CreateMethodCall(x => x.UpdateEnterpriseOwnerOrganizationRole(input), Octokit.GraphQL.Model.UpdateEnterpriseOwnerOrganizationRolePayload.Create);
+
+        /// <summary>
         /// Updates an enterprise's profile.
         /// </summary>
         /// <param name="input">Parameters for UpdateEnterpriseProfile</param>
@@ -895,6 +985,12 @@ namespace Octokit.GraphQL
         public UpdateNotificationRestrictionSettingPayload UpdateNotificationRestrictionSetting(Arg<UpdateNotificationRestrictionSettingInput> input) => this.CreateMethodCall(x => x.UpdateNotificationRestrictionSetting(input), Octokit.GraphQL.Model.UpdateNotificationRestrictionSettingPayload.Create);
 
         /// <summary>
+        /// Sets whether private repository forks are enabled for an organization.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateOrganizationAllowPrivateRepositoryForkingSetting</param>
+        public UpdateOrganizationAllowPrivateRepositoryForkingSettingPayload UpdateOrganizationAllowPrivateRepositoryForkingSetting(Arg<UpdateOrganizationAllowPrivateRepositoryForkingSettingInput> input) => this.CreateMethodCall(x => x.UpdateOrganizationAllowPrivateRepositoryForkingSetting(input), Octokit.GraphQL.Model.UpdateOrganizationAllowPrivateRepositoryForkingSettingPayload.Create);
+
+        /// <summary>
         /// Updates an existing project.
         /// </summary>
         /// <param name="input">Parameters for UpdateProject</param>
@@ -913,10 +1009,34 @@ namespace Octokit.GraphQL
         public UpdateProjectColumnPayload UpdateProjectColumn(Arg<UpdateProjectColumnInput> input) => this.CreateMethodCall(x => x.UpdateProjectColumn(input), Octokit.GraphQL.Model.UpdateProjectColumnPayload.Create);
 
         /// <summary>
+        /// Updates a draft issue within a Project.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectDraftIssue</param>
+        public UpdateProjectDraftIssuePayload UpdateProjectDraftIssue(Arg<UpdateProjectDraftIssueInput> input) => this.CreateMethodCall(x => x.UpdateProjectDraftIssue(input), Octokit.GraphQL.Model.UpdateProjectDraftIssuePayload.Create);
+
+        /// <summary>
+        /// Updates an existing project (beta).
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectNext</param>
+        public UpdateProjectNextPayload UpdateProjectNext(Arg<UpdateProjectNextInput> input) => this.CreateMethodCall(x => x.UpdateProjectNext(input), Octokit.GraphQL.Model.UpdateProjectNextPayload.Create);
+
+        /// <summary>
+        /// Updates a field of an item from a Project.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectNextItemField</param>
+        public UpdateProjectNextItemFieldPayload UpdateProjectNextItemField(Arg<UpdateProjectNextItemFieldInput> input) => this.CreateMethodCall(x => x.UpdateProjectNextItemField(input), Octokit.GraphQL.Model.UpdateProjectNextItemFieldPayload.Create);
+
+        /// <summary>
         /// Update a pull request
         /// </summary>
         /// <param name="input">Parameters for UpdatePullRequest</param>
         public UpdatePullRequestPayload UpdatePullRequest(Arg<UpdatePullRequestInput> input) => this.CreateMethodCall(x => x.UpdatePullRequest(input), Octokit.GraphQL.Model.UpdatePullRequestPayload.Create);
+
+        /// <summary>
+        /// Merge HEAD from upstream branch into pull request branch
+        /// </summary>
+        /// <param name="input">Parameters for UpdatePullRequestBranch</param>
+        public UpdatePullRequestBranchPayload UpdatePullRequestBranch(Arg<UpdatePullRequestBranchInput> input) => this.CreateMethodCall(x => x.UpdatePullRequestBranch(input), Octokit.GraphQL.Model.UpdatePullRequestBranchPayload.Create);
 
         /// <summary>
         /// Updates the body of a pull request review.

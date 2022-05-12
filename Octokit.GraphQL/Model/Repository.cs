@@ -45,6 +45,12 @@ namespace Octokit.GraphQL.Model
         public CodeOfConduct CodeOfConduct => this.CreateProperty(x => x.CodeOfConduct, Octokit.GraphQL.Model.CodeOfConduct.Create);
 
         /// <summary>
+        /// Information extracted from the repository's `CODEOWNERS` file.
+        /// </summary>
+        /// <param name="refName">The ref name used to return the associated `CODEOWNERS` file.</param>
+        public RepositoryCodeowners Codeowners(Arg<string>? refName = null) => this.CreateMethodCall(x => x.Codeowners(refName), Octokit.GraphQL.Model.RepositoryCodeowners.Create);
+
+        /// <summary>
         /// A list of collaborators associated with the repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -132,7 +138,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public DiscussionCategoryConnection DiscussionCategories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.DiscussionCategories(first, after, last, before), Octokit.GraphQL.Model.DiscussionCategoryConnection.Create);
+        /// <param name="filterByAssignable">Filter by categories that are assignable by the viewer.</param>
+        public DiscussionCategoryConnection DiscussionCategories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? filterByAssignable = null) => this.CreateMethodCall(x => x.DiscussionCategories(first, after, last, before, filterByAssignable), Octokit.GraphQL.Model.DiscussionCategoryConnection.Create);
 
         /// <summary>
         /// A list of discussions that have been opened in the repository.
@@ -466,6 +473,12 @@ namespace Octokit.GraphQL.Model
         public Project Project(Arg<int> number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
 
         /// <summary>
+        /// Finds and returns the Project (beta) according to the provided Project (beta) number.
+        /// </summary>
+        /// <param name="number">The ProjectNext number.</param>
+        public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
+
+        /// <summary>
         /// A list of projects under the owner.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -476,6 +489,17 @@ namespace Octokit.GraphQL.Model
         /// <param name="search">Query to search projects by, currently only searching by name.</param>
         /// <param name="states">A list of states to filter the projects by.</param>
         public ProjectConnection Projects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectOrder>? orderBy = null, Arg<string>? search = null, Arg<IEnumerable<ProjectState>>? states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
+
+        /// <summary>
+        /// List of projects (beta) linked to this repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="query">A project (beta) to search for linked to the repo.</param>
+        /// <param name="sortBy">How to order the returned project (beta) objects.</param>
+        public ProjectNextConnection ProjectsNext(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<ProjectNextOrderField>? sortBy = null) => this.CreateMethodCall(x => x.ProjectsNext(first, after, last, before, query, sortBy), Octokit.GraphQL.Model.ProjectNextConnection.Create);
 
         /// <summary>
         /// The HTTP path listing the repository's projects
@@ -703,7 +727,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public RepositoryVulnerabilityAlertConnection VulnerabilityAlerts(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.VulnerabilityAlerts(first, after, last, before), Octokit.GraphQL.Model.RepositoryVulnerabilityAlertConnection.Create);
+        /// <param name="states">Filter by the state of the alert</param>
+        public RepositoryVulnerabilityAlertConnection VulnerabilityAlerts(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryVulnerabilityAlertState>>? states = null) => this.CreateMethodCall(x => x.VulnerabilityAlerts(first, after, last, before, states), Octokit.GraphQL.Model.RepositoryVulnerabilityAlertConnection.Create);
 
         /// <summary>
         /// A list of users watching the repository.

@@ -7,23 +7,23 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for User.
+    /// The connection type for RepositoryMigration.
     /// </summary>
-    public class EnterprisePendingCollaboratorConnection : QueryableValue<EnterprisePendingCollaboratorConnection>, IPagingConnection<User>
+    public class RepositoryMigrationConnection : QueryableValue<RepositoryMigrationConnection>, IPagingConnection<RepositoryMigration>
     {
-        internal EnterprisePendingCollaboratorConnection(Expression expression) : base(expression)
+        internal RepositoryMigrationConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryableList<EnterprisePendingCollaboratorEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<RepositoryMigrationEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryableList<User> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<RepositoryMigration> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -37,9 +37,9 @@ namespace Octokit.GraphQL.Model
 
         IPageInfo IPagingConnection.PageInfo => PageInfo;
 
-        internal static EnterprisePendingCollaboratorConnection Create(Expression expression)
+        internal static RepositoryMigrationConnection Create(Expression expression)
         {
-            return new EnterprisePendingCollaboratorConnection(expression);
+            return new RepositoryMigrationConnection(expression);
         }
     }
 }

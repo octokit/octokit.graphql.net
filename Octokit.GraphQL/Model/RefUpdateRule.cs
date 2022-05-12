@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public bool AllowsForcePushes { get; }
 
         /// <summary>
+        /// Can matching branches be created.
+        /// </summary>
+        public bool BlocksCreations { get; }
+
+        /// <summary>
         /// Identifies the protection rule pattern.
         /// </summary>
         public string Pattern { get; }

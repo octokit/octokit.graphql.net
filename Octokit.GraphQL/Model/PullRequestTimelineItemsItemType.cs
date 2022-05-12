@@ -162,6 +162,18 @@ namespace Octokit.GraphQL.Model
         ConvertToDraftEvent,
 
         /// <summary>
+        /// Represents an 'added_to_merge_queue' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "ADDED_TO_MERGE_QUEUE_EVENT")]
+        AddedToMergeQueueEvent,
+
+        /// <summary>
+        /// Represents a 'removed_from_merge_queue' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "REMOVED_FROM_MERGE_QUEUE_EVENT")]
+        RemovedFromMergeQueueEvent,
+
+        /// <summary>
         /// Represents a comment on an Issue.
         /// </summary>
         [EnumMember(Value = "ISSUE_COMMENT")]
@@ -208,6 +220,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "CONVERTED_NOTE_TO_ISSUE_EVENT")]
         ConvertedNoteToIssueEvent,
+
+        /// <summary>
+        /// Represents a 'converted_to_discussion' event on a given issue.
+        /// </summary>
+        [EnumMember(Value = "CONVERTED_TO_DISCUSSION_EVENT")]
+        ConvertedToDiscussionEvent,
 
         /// <summary>
         /// Represents a 'demilestoned' event on a given issue or pull request.

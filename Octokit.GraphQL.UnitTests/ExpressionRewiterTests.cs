@@ -62,8 +62,8 @@ namespace Octokit.GraphQL.UnitTests
             var query = new Query()
                 .Select(q => new
                 {
-                    repo1 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault(),
-                    repo2 = q.Repository("foo", "bar").Select(fragment).SingleOrDefault()
+                    repo1 = q.Repository("foo", "bar", null).Select(fragment).SingleOrDefault(),
+                    repo2 = q.Repository("foo", "bar", null).Select(fragment).SingleOrDefault()
                 });
 
             Expression<Func<JObject, object>> expected = data =>
