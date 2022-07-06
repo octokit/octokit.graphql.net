@@ -18,6 +18,12 @@ namespace Octokit.GraphQL.Model
         Composer,
 
         /// <summary>
+        /// Erlang/Elixir packages hosted at hex.pm
+        /// </summary>
+        [EnumMember(Value = "ERLANG")]
+        Erlang,
+
+        /// <summary>
         /// Go modules
         /// </summary>
         [EnumMember(Value = "GO")]

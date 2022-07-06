@@ -21,12 +21,12 @@ namespace Octokit.GraphQL.Model
         public string AuthorEmail { get; }
 
         /// <summary>
-        /// The commit message of the auto-merge request.
+        /// The commit message of the auto-merge request. If a merge queue is required by the base branch, this value will be set by the merge queue when merging.
         /// </summary>
         public string CommitBody { get; }
 
         /// <summary>
-        /// The commit title of the auto-merge request.
+        /// The commit title of the auto-merge request. If a merge queue is required by the base branch, this value will be set by the merge queue when merging
         /// </summary>
         public string CommitHeadline { get; }
 
@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Model
         public IActor EnabledBy => this.CreateProperty(x => x.EnabledBy, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
         /// <summary>
-        /// The merge method of the auto-merge request.
+        /// The merge method of the auto-merge request. If a merge queue is required by the base branch, this value will be set by the merge queue when merging.
         /// </summary>
         public PullRequestMergeMethod MergeMethod { get; }
 

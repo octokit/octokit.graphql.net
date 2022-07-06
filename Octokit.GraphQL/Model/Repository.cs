@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Whether or not a pull request head branch that is behind its base branch can always be updated even if it is not required to be up to date before merging.
+        /// </summary>
+        public bool AllowUpdateBranch { get; }
+
+        /// <summary>
         /// A list of users that can be assigned to issues in this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -479,6 +484,12 @@ namespace Octokit.GraphQL.Model
         public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
 
         /// <summary>
+        /// Finds and returns the Project according to the provided Project number.
+        /// </summary>
+        /// <param name="number">The Project number.</param>
+        public ProjectV2 ProjectV2(Arg<int> number) => this.CreateMethodCall(x => x.ProjectV2(number), Octokit.GraphQL.Model.ProjectV2.Create);
+
+        /// <summary>
         /// A list of projects under the owner.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -510,6 +521,17 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL listing the repository's projects
         /// </summary>
         public string ProjectsUrl { get; }
+
+        /// <summary>
+        /// List of projects linked to this repository.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">How to order the returned projects.</param>
+        /// <param name="query">A project to search for linked to the repo.</param>
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// Returns a single pull request from the current repository by number.
@@ -545,6 +567,15 @@ namespace Octokit.GraphQL.Model
         /// Whether or not rebase-merging is enabled on this repository.
         /// </summary>
         public bool RebaseMergeAllowed { get; }
+
+        /// <summary>
+        /// Recent projects that this user has modified in the context of the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public ProjectV2Connection RecentProjects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.RecentProjects(first, after, last, before), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// Fetch a given ref from the repository
@@ -610,6 +641,11 @@ namespace Octokit.GraphQL.Model
         /// Whether or not squash-merging is enabled on this repository.
         /// </summary>
         public bool SquashMergeAllowed { get; }
+
+        /// <summary>
+        /// Whether a squash merge commit can use the pull request title as default.
+        /// </summary>
+        public bool SquashPrTitleUsedAsDefault { get; }
 
         /// <summary>
         /// The SSH URL to clone this repository
@@ -727,8 +763,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="dependencyScopes">Filter by the scope of the alert's dependency</param>
         /// <param name="states">Filter by the state of the alert</param>
-        public RepositoryVulnerabilityAlertConnection VulnerabilityAlerts(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryVulnerabilityAlertState>>? states = null) => this.CreateMethodCall(x => x.VulnerabilityAlerts(first, after, last, before, states), Octokit.GraphQL.Model.RepositoryVulnerabilityAlertConnection.Create);
+        public RepositoryVulnerabilityAlertConnection VulnerabilityAlerts(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryVulnerabilityAlertDependencyScope>>? dependencyScopes = null, Arg<IEnumerable<RepositoryVulnerabilityAlertState>>? states = null) => this.CreateMethodCall(x => x.VulnerabilityAlerts(first, after, last, before, dependencyScopes, states), Octokit.GraphQL.Model.RepositoryVulnerabilityAlertConnection.Create);
 
         /// <summary>
         /// A list of users watching the repository.

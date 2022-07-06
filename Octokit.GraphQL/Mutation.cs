@@ -57,6 +57,12 @@ namespace Octokit.GraphQL
         public AddDiscussionCommentPayload AddDiscussionComment(Arg<AddDiscussionCommentInput> input) => this.CreateMethodCall(x => x.AddDiscussionComment(input), Octokit.GraphQL.Model.AddDiscussionCommentPayload.Create);
 
         /// <summary>
+        /// Vote for an option in a discussion poll.
+        /// </summary>
+        /// <param name="input">Parameters for AddDiscussionPollVote</param>
+        public AddDiscussionPollVotePayload AddDiscussionPollVote(Arg<AddDiscussionPollVoteInput> input) => this.CreateMethodCall(x => x.AddDiscussionPollVote(input), Octokit.GraphQL.Model.AddDiscussionPollVotePayload.Create);
+
+        /// <summary>
         /// Adds a support entitlement to an enterprise member.
         /// </summary>
         /// <param name="input">Parameters for AddEnterpriseSupportEntitlement</param>
@@ -91,6 +97,18 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for AddProjectNextItem</param>
         public AddProjectNextItemPayload AddProjectNextItem(Arg<AddProjectNextItemInput> input) => this.CreateMethodCall(x => x.AddProjectNextItem(input), Octokit.GraphQL.Model.AddProjectNextItemPayload.Create);
+
+        /// <summary>
+        /// Creates a new draft issue and add it to a Project.
+        /// </summary>
+        /// <param name="input">Parameters for AddProjectV2DraftIssue</param>
+        public AddProjectV2DraftIssuePayload AddProjectV2DraftIssue(Arg<AddProjectV2DraftIssueInput> input) => this.CreateMethodCall(x => x.AddProjectV2DraftIssue(input), Octokit.GraphQL.Model.AddProjectV2DraftIssuePayload.Create);
+
+        /// <summary>
+        /// Links an existing content instance to a Project.
+        /// </summary>
+        /// <param name="input">Parameters for AddProjectV2ItemById</param>
+        public AddProjectV2ItemByIdPayload AddProjectV2ItemById(Arg<AddProjectV2ItemByIdInput> input) => this.CreateMethodCall(x => x.AddProjectV2ItemById(input), Octokit.GraphQL.Model.AddProjectV2ItemByIdPayload.Create);
 
         /// <summary>
         /// Adds a review to a Pull Request.
@@ -307,6 +325,12 @@ namespace Octokit.GraphQL
         public CreateProjectPayload CreateProject(Arg<CreateProjectInput> input) => this.CreateMethodCall(x => x.CreateProject(input), Octokit.GraphQL.Model.CreateProjectPayload.Create);
 
         /// <summary>
+        /// Creates a new project.
+        /// </summary>
+        /// <param name="input">Parameters for CreateProjectV2</param>
+        public CreateProjectV2Payload CreateProjectV2(Arg<CreateProjectV2Input> input) => this.CreateMethodCall(x => x.CreateProjectV2(input), Octokit.GraphQL.Model.CreateProjectV2Payload.Create);
+
+        /// <summary>
         /// Create a new pull request
         /// </summary>
         /// <param name="input">Parameters for CreatePullRequest</param>
@@ -425,6 +449,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for DeleteProjectNextItem</param>
         public DeleteProjectNextItemPayload DeleteProjectNextItem(Arg<DeleteProjectNextItemInput> input) => this.CreateMethodCall(x => x.DeleteProjectNextItem(input), Octokit.GraphQL.Model.DeleteProjectNextItemPayload.Create);
+
+        /// <summary>
+        /// Deletes an item from a Project.
+        /// </summary>
+        /// <param name="input">Parameters for DeleteProjectV2Item</param>
+        public DeleteProjectV2ItemPayload DeleteProjectV2Item(Arg<DeleteProjectV2ItemInput> input) => this.CreateMethodCall(x => x.DeleteProjectV2Item(input), Octokit.GraphQL.Model.DeleteProjectV2ItemPayload.Create);
 
         /// <summary>
         /// Deletes a pull request review.
@@ -1027,13 +1057,37 @@ namespace Octokit.GraphQL
         public UpdateProjectNextItemFieldPayload UpdateProjectNextItemField(Arg<UpdateProjectNextItemFieldInput> input) => this.CreateMethodCall(x => x.UpdateProjectNextItemField(input), Octokit.GraphQL.Model.UpdateProjectNextItemFieldPayload.Create);
 
         /// <summary>
+        /// Updates an existing project (beta).
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectV2</param>
+        public UpdateProjectV2Payload UpdateProjectV2(Arg<UpdateProjectV2Input> input) => this.CreateMethodCall(x => x.UpdateProjectV2(input), Octokit.GraphQL.Model.UpdateProjectV2Payload.Create);
+
+        /// <summary>
+        /// Updates a draft issue within a Project.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectV2DraftIssue</param>
+        public UpdateProjectV2DraftIssuePayload UpdateProjectV2DraftIssue(Arg<UpdateProjectV2DraftIssueInput> input) => this.CreateMethodCall(x => x.UpdateProjectV2DraftIssue(input), Octokit.GraphQL.Model.UpdateProjectV2DraftIssuePayload.Create);
+
+        /// <summary>
+        /// This mutation updates the value of a field for an item in a Project. Currently only single-select, text, number, date, and iteration fields are supported.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectV2ItemFieldValue</param>
+        public UpdateProjectV2ItemFieldValuePayload UpdateProjectV2ItemFieldValue(Arg<UpdateProjectV2ItemFieldValueInput> input) => this.CreateMethodCall(x => x.UpdateProjectV2ItemFieldValue(input), Octokit.GraphQL.Model.UpdateProjectV2ItemFieldValuePayload.Create);
+
+        /// <summary>
+        /// This mutation updates the position of the item in the project, where the position represents the priority of an item.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectV2ItemPosition</param>
+        public UpdateProjectV2ItemPositionPayload UpdateProjectV2ItemPosition(Arg<UpdateProjectV2ItemPositionInput> input) => this.CreateMethodCall(x => x.UpdateProjectV2ItemPosition(input), Octokit.GraphQL.Model.UpdateProjectV2ItemPositionPayload.Create);
+
+        /// <summary>
         /// Update a pull request
         /// </summary>
         /// <param name="input">Parameters for UpdatePullRequest</param>
         public UpdatePullRequestPayload UpdatePullRequest(Arg<UpdatePullRequestInput> input) => this.CreateMethodCall(x => x.UpdatePullRequest(input), Octokit.GraphQL.Model.UpdatePullRequestPayload.Create);
 
         /// <summary>
-        /// Merge HEAD from upstream branch into pull request branch
+        /// Merge or Rebase HEAD from upstream branch into pull request branch
         /// </summary>
         /// <param name="input">Parameters for UpdatePullRequestBranch</param>
         public UpdatePullRequestBranchPayload UpdatePullRequestBranch(Arg<UpdatePullRequestBranchInput> input) => this.CreateMethodCall(x => x.UpdatePullRequestBranch(input), Octokit.GraphQL.Model.UpdatePullRequestBranchPayload.Create);
@@ -1085,6 +1139,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for UpdateTeamDiscussionComment</param>
         public UpdateTeamDiscussionCommentPayload UpdateTeamDiscussionComment(Arg<UpdateTeamDiscussionCommentInput> input) => this.CreateMethodCall(x => x.UpdateTeamDiscussionComment(input), Octokit.GraphQL.Model.UpdateTeamDiscussionCommentPayload.Create);
+
+        /// <summary>
+        /// Update team repository.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateTeamsRepository</param>
+        public UpdateTeamsRepositoryPayload UpdateTeamsRepository(Arg<UpdateTeamsRepositoryInput> input) => this.CreateMethodCall(x => x.UpdateTeamsRepository(input), Octokit.GraphQL.Model.UpdateTeamsRepositoryPayload.Create);
 
         /// <summary>
         /// Replaces the repository's topics with the given topics.

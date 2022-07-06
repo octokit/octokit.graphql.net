@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A team, user or app who has the ability to push to a protected branch.
+    /// A team, user, or app who has the ability to push to a protected branch.
     /// </summary>
     public class PushAllowance : QueryableValue<PushAllowance>
     {
@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         public PushAllowanceActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Model.PushAllowanceActor.Create);
 
         /// <summary>
-        /// Identifies the branch protection rule associated with the allowed user or team.
+        /// Identifies the branch protection rule associated with the allowed user, team, or app.
         /// </summary>
         public BranchProtectionRule BranchProtectionRule => this.CreateProperty(x => x.BranchProtectionRule, Octokit.GraphQL.Model.BranchProtectionRule.Create);
 

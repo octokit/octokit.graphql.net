@@ -174,11 +174,12 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="classifications">A list of classifications to filter advisories by.</param>
         /// <param name="identifier">Filter advisories by identifier, e.g. GHSA or CVE.</param>
         /// <param name="orderBy">Ordering options for the returned topics.</param>
         /// <param name="publishedSince">Filter advisories to those published since a time in the past.</param>
         /// <param name="updatedSince">Filter advisories to those updated since a time in the past.</param>
-        public SecurityAdvisoryConnection SecurityAdvisories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryIdentifierFilter>? identifier = null, Arg<SecurityAdvisoryOrder>? orderBy = null, Arg<DateTimeOffset>? publishedSince = null, Arg<DateTimeOffset>? updatedSince = null) => this.CreateMethodCall(x => x.SecurityAdvisories(first, after, last, before, identifier, orderBy, publishedSince, updatedSince), Octokit.GraphQL.Model.SecurityAdvisoryConnection.Create);
+        public SecurityAdvisoryConnection SecurityAdvisories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SecurityAdvisoryClassification>>? classifications = null, Arg<SecurityAdvisoryIdentifierFilter>? identifier = null, Arg<SecurityAdvisoryOrder>? orderBy = null, Arg<DateTimeOffset>? publishedSince = null, Arg<DateTimeOffset>? updatedSince = null) => this.CreateMethodCall(x => x.SecurityAdvisories(first, after, last, before, classifications, identifier, orderBy, publishedSince, updatedSince), Octokit.GraphQL.Model.SecurityAdvisoryConnection.Create);
 
         /// <summary>
         /// Fetch a Security Advisory by its GHSA ID
@@ -193,11 +194,12 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="classifications">A list of advisory classifications to filter vulnerabilities by.</param>
         /// <param name="ecosystem">An ecosystem to filter vulnerabilities by.</param>
         /// <param name="orderBy">Ordering options for the returned topics.</param>
         /// <param name="package">A package name to filter vulnerabilities by.</param>
         /// <param name="severities">A list of severities to filter vulnerabilities by.</param>
-        public SecurityVulnerabilityConnection SecurityVulnerabilities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? ecosystem = null, Arg<SecurityVulnerabilityOrder>? orderBy = null, Arg<string>? package = null, Arg<IEnumerable<SecurityAdvisorySeverity>>? severities = null) => this.CreateMethodCall(x => x.SecurityVulnerabilities(first, after, last, before, ecosystem, orderBy, package, severities), Octokit.GraphQL.Model.SecurityVulnerabilityConnection.Create);
+        public SecurityVulnerabilityConnection SecurityVulnerabilities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SecurityAdvisoryClassification>>? classifications = null, Arg<SecurityAdvisoryEcosystem>? ecosystem = null, Arg<SecurityVulnerabilityOrder>? orderBy = null, Arg<string>? package = null, Arg<IEnumerable<SecurityAdvisorySeverity>>? severities = null) => this.CreateMethodCall(x => x.SecurityVulnerabilities(first, after, last, before, classifications, ecosystem, orderBy, package, severities), Octokit.GraphQL.Model.SecurityVulnerabilityConnection.Create);
 
         /// <summary>
         /// Users and organizations who can be sponsored via GitHub Sponsors.
