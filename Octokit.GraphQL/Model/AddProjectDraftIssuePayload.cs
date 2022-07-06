@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The draft issue added to the project.
         /// </summary>
+        [Obsolete(@"The `ProjectNext` API is deprecated in favour of the more capable `ProjectV2` API. Follow the ProjectV2 guide at https://github.blog/changelog/2022-06-23-the-new-github-issues-june-23rd-update/, to find a suitable replacement. Removal on 2022-10-01 UTC.")]
         public ProjectNextItem ProjectNextItem => this.CreateProperty(x => x.ProjectNextItem, Octokit.GraphQL.Model.ProjectNextItem.Create);
 
         internal static AddProjectDraftIssuePayload Create(Expression expression)

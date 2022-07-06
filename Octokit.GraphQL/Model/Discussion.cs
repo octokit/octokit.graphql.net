@@ -127,6 +127,11 @@ namespace Octokit.GraphQL.Model
         public int Number { get; }
 
         /// <summary>
+        /// The poll associated with this discussion, if one exists.
+        /// </summary>
+        public DiscussionPoll Poll => this.CreateProperty(x => x.Poll, Octokit.GraphQL.Model.DiscussionPoll.Create);
+
+        /// <summary>
         /// Identifies when the comment was published at.
         /// </summary>
         public DateTimeOffset? PublishedAt { get; }

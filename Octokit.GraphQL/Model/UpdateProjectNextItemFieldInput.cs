@@ -9,22 +9,31 @@ namespace Octokit.GraphQL.Model
     public class UpdateProjectNextItemFieldInput
     {
         /// <summary>
-        /// The ID of the Project.
+        /// The ID of the Project. This field is required.
         /// </summary>
-        public ID ProjectId { get; set; }
+        public ID? ProjectId { get; set; }
 
         /// <summary>
-        /// The id of the item to be updated.
+        /// The id of the item to be updated. This field is required.
+        /// **Upcoming Change on 2022-10-01 UTC**
+        /// **Description:** `itemId` will be removed. Follow the ProjectV2 guide at https://github.blog/changelog/2022-06-23-the-new-github-issues-june-23rd-update/, to find a suitable replacement.
+        /// **Reason:** The `ProjectNext` API is deprecated in favour of the more capable `ProjectV2` API.
         /// </summary>
-        public ID ItemId { get; set; }
+        public ID? ItemId { get; set; }
 
         /// <summary>
         /// The id of the field to be updated.
+        /// **Upcoming Change on 2022-10-01 UTC**
+        /// **Description:** `fieldId` will be removed. Follow the ProjectV2 guide at https://github.blog/changelog/2022-06-23-the-new-github-issues-june-23rd-update/, to find a suitable replacement.
+        /// **Reason:** The `ProjectNext` API is deprecated in favour of the more capable `ProjectV2` API.
         /// </summary>
         public ID? FieldId { get; set; }
 
         /// <summary>
-        /// The value which will be set on the field.
+        /// The value which will be set on the field. This field is required.
+        /// **Upcoming Change on 2022-10-01 UTC**
+        /// **Description:** `value` will be removed. Follow the ProjectV2 guide at https://github.blog/changelog/2022-06-23-the-new-github-issues-june-23rd-update/, to find a suitable replacement.
+        /// **Reason:** The `ProjectNext` API is deprecated in favour of the more capable `ProjectV2` API.
         /// </summary>
         public string Value { get; set; }
 

@@ -58,5 +58,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "ACTIONS")]
         Actions,
+
+        /// <summary>
+        /// Rust crates
+        /// </summary>
+        [EnumMember(Value = "RUST")]
+        Rust,
     }
 }

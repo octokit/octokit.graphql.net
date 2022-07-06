@@ -32,6 +32,11 @@ namespace Octokit.GraphQL.Model
 
         public ID Id { get; }
 
+        /// <summary>
+        /// The reason the issue state was changed to open.
+        /// </summary>
+        public IssueStateReason? StateReason { get; }
+
         internal static ReopenedEvent Create(Expression expression)
         {
             return new ReopenedEvent(expression);

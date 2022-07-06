@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A team or user who has the ability to bypass a pull request requirement on a protected branch.
+    /// A user, team, or app who has the ability to bypass a pull request requirement on a protected branch.
     /// </summary>
     public class BypassPullRequestAllowance : QueryableValue<BypassPullRequestAllowance>
     {
@@ -16,12 +16,12 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
-        /// The actor that can dismiss.
+        /// The actor that can bypass.
         /// </summary>
         public BranchActorAllowanceActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Model.BranchActorAllowanceActor.Create);
 
         /// <summary>
-        /// Identifies the branch protection rule associated with the allowed user or team.
+        /// Identifies the branch protection rule associated with the allowed user, team, or app.
         /// </summary>
         public BranchProtectionRule BranchProtectionRule => this.CreateProperty(x => x.BranchProtectionRule, Octokit.GraphQL.Model.BranchProtectionRule.Create);
 
