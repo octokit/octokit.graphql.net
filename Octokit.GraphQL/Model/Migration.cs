@@ -31,6 +31,11 @@ namespace Octokit.GraphQL.Model
         ID Id { get; }
 
         /// <summary>
+        /// The URL for the migration log (expires 1 day after migration completes).
+        /// </summary>
+        string MigrationLogUrl { get; }
+
+        /// <summary>
         /// The Octoshift migration source.
         /// </summary>
         MigrationSource MigrationSource { get; }
@@ -73,6 +78,8 @@ namespace Octokit.GraphQL.Model.Internal
         public string FailureReason { get; }
 
         public ID Id { get; }
+
+        public string MigrationLogUrl { get; }
 
         public MigrationSource MigrationSource => this.CreateProperty(x => x.MigrationSource, Octokit.GraphQL.Model.MigrationSource.Create);
 

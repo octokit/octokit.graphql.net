@@ -12,6 +12,12 @@ namespace Octokit.GraphQL.Model
     public enum OrgRemoveMemberAuditEntryMembershipType
     {
         /// <summary>
+        /// A suspended member.
+        /// </summary>
+        [EnumMember(Value = "SUSPENDED")]
+        Suspended,
+
+        /// <summary>
         /// A direct member is a user that is a member of the Organization.
         /// </summary>
         [EnumMember(Value = "DIRECT_MEMBER")]

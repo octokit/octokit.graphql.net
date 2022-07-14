@@ -12,13 +12,13 @@ namespace Octokit.GraphQL.Model
     public enum EnterpriseUserAccountMembershipRole
     {
         /// <summary>
-        /// The user is a member of the enterprise membership.
+        /// The user is a member of an organization in the enterprise.
         /// </summary>
         [EnumMember(Value = "MEMBER")]
         Member,
 
         /// <summary>
-        /// The user is an owner of the enterprise membership.
+        /// The user is an owner of an organization in the enterprise.
         /// </summary>
         [EnumMember(Value = "OWNER")]
         Owner,

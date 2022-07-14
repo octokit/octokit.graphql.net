@@ -40,5 +40,17 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "FAILED")]
         Failed,
+
+        /// <summary>
+        /// The Octoshift migration needs to have its credentials validated.
+        /// </summary>
+        [EnumMember(Value = "PENDING_VALIDATION")]
+        PendingValidation,
+
+        /// <summary>
+        /// The Octoshift migration has invalid credentials.
+        /// </summary>
+        [EnumMember(Value = "FAILED_VALIDATION")]
+        FailedValidation,
     }
 }

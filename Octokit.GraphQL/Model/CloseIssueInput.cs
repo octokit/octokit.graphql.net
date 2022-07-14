@@ -14,6 +14,11 @@ namespace Octokit.GraphQL.Model
         public ID IssueId { get; set; }
 
         /// <summary>
+        /// The reason the issue is to be closed.
+        /// </summary>
+        public IssueClosedStateReason? StateReason { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
