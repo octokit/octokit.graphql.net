@@ -18,9 +18,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.dll" target="lib\netstandard1.1"/>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.xml" target="lib\netstandard1.1"/>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.dll" target="lib\netstandard1.1"/>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.xml" target="lib\netstandard1.1"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.dll" target="lib\netstandard2.0"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.xml" target="lib\netstandard2.0"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.dll" target="lib\netstandard2.0"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.xml" target="lib\netstandard2.0"/>
   </files>
 </package>
