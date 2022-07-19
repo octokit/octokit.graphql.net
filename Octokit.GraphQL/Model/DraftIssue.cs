@@ -62,6 +62,24 @@ namespace Octokit.GraphQL.Model
         public ProjectNextItem ProjectItem => this.CreateProperty(x => x.ProjectItem, Octokit.GraphQL.Model.ProjectNextItem.Create);
 
         /// <summary>
+        /// List of items linked with the draft issue (currently draft issue can be linked to only one item).
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public ProjectV2ItemConnection ProjectV2Items(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ProjectV2Items(first, after, last, before), Octokit.GraphQL.Model.ProjectV2ItemConnection.Create);
+
+        /// <summary>
+        /// Projects that link to this draft issue (currently draft issue can be linked to only one project).
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before), Octokit.GraphQL.Model.ProjectV2Connection.Create);
+
+        /// <summary>
         /// The title of the draft issue
         /// </summary>
         public string Title { get; }
