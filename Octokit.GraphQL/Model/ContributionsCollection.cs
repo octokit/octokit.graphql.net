@@ -156,7 +156,8 @@ namespace Octokit.GraphQL.Model
         public IQueryableList<PullRequestContributionsByRepository> PullRequestContributionsByRepository(Arg<bool>? excludeFirst = null, Arg<bool>? excludePopular = null, Arg<int>? maxRepositories = null) => this.CreateMethodCall(x => x.PullRequestContributionsByRepository(excludeFirst, excludePopular, maxRepositories));
 
         /// <summary>
-        /// Pull request review contributions made by the user.
+        /// Pull request review contributions made by the user. Returns the most recently
+        /// submitted review for each PR reviewed by the user.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>

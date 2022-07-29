@@ -84,17 +84,17 @@ namespace Octokit.GraphQL.Model
         public bool? RestrictsReviewDismissals { get; set; }
 
         /// <summary>
-        /// A list of User or Team IDs allowed to dismiss reviews on pull requests targeting matching branches.
+        /// A list of User, Team, or App IDs allowed to dismiss reviews on pull requests targeting matching branches.
         /// </summary>
         public IEnumerable<ID> ReviewDismissalActorIds { get; set; }
 
         /// <summary>
-        /// A list of User or Team IDs allowed to bypass pull requests targeting matching branches.
+        /// A list of User, Team, or App IDs allowed to bypass pull requests targeting matching branches.
         /// </summary>
         public IEnumerable<ID> BypassPullRequestActorIds { get; set; }
 
         /// <summary>
-        /// A list of User or Team IDs allowed to bypass force push targeting matching branches.
+        /// A list of User, Team, or App IDs allowed to bypass force push targeting matching branches.
         /// </summary>
         public IEnumerable<ID> BypassForcePushActorIds { get; set; }
 
@@ -104,7 +104,7 @@ namespace Octokit.GraphQL.Model
         public bool? RestrictsPushes { get; set; }
 
         /// <summary>
-        /// A list of User, Team or App IDs allowed to push to matching branches.
+        /// A list of User, Team, or App IDs allowed to push to matching branches.
         /// </summary>
         public IEnumerable<ID> PushActorIds { get; set; }
 
