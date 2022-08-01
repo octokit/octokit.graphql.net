@@ -9,12 +9,12 @@ namespace Octokit.GraphQL.Model
     public class UpdateEnterpriseDefaultRepositoryPermissionSettingInput
     {
         /// <summary>
-        /// The ID of the enterprise on which to set the default repository permission setting.
+        /// The ID of the enterprise on which to set the base repository permission setting.
         /// </summary>
         public ID EnterpriseId { get; set; }
 
         /// <summary>
-        /// The value for the default repository permission setting on the enterprise.
+        /// The value for the base repository permission setting on the enterprise.
         /// </summary>
         public EnterpriseDefaultRepositoryPermissionSettingValue SettingValue { get; set; }
 

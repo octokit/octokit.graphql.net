@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Octokit.GraphQL</id>
-    <version>0.1.7-beta</version>
+    <version>0.1.9-beta</version>
     <authors>GitHub</authors>
     <owners>GitHub</owners>
     <repository type="git" url="https://github.com/octokit/octokit.graphql.net" />
@@ -18,9 +18,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.dll" target="lib\netstandard1.1"/>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.xml" target="lib\netstandard1.1"/>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.dll" target="lib\netstandard1.1"/>
-    <file src="Octokit.GraphQL\bin\Release\netstandard1.1\Octokit.GraphQL.Core.xml" target="lib\netstandard1.1"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard2.0\Octokit.GraphQL.dll" target="lib\netstandard2.0"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard2.0\Octokit.GraphQL.xml" target="lib\netstandard2.0"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard2.0\Octokit.GraphQL.Core.dll" target="lib\netstandard2.0"/>
+    <file src="Octokit.GraphQL\bin\Release\netstandard2.0\Octokit.GraphQL.Core.xml" target="lib\netstandard2.0"/>
   </files>
 </package>

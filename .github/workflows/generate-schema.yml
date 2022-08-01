@@ -1,0 +1,30 @@
+name: Test Generate Schema
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "0 0 * * *" # Run at 00:00 UTC everyday
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Generate
+      run: dotnet run --project ./Tools/Generate/Generate.csproj -- ${{ github.token }} ./Octokit.GraphQL/
+
+    - name: Build
+      run: dotnet build

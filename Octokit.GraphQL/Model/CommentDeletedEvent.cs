@@ -30,6 +30,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// The user who authored the deleted comment.
+        /// </summary>
+        public IActor DeletedCommentAuthor => this.CreateProperty(x => x.DeletedCommentAuthor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
+
         public ID Id { get; }
 
         internal static CommentDeletedEvent Create(Expression expression)

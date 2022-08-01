@@ -20,6 +20,11 @@ namespace Octokit.GraphQL.Model
         public class Selector<T>
         {
             /// <summary>
+            /// A GitHub App.
+            /// </summary>
+            public Selector<T> App(Func<App, T> selector) => default;
+
+            /// <summary>
             /// An account to manage multiple organizations with consolidated policy and billing.
             /// </summary>
             public Selector<T> Enterprise(Func<Enterprise, T> selector) => default;

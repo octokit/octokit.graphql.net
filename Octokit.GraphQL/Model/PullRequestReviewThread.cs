@@ -33,6 +33,16 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether or not the thread has been collapsed (resolved)
+        /// </summary>
+        public bool IsCollapsed { get; }
+
+        /// <summary>
+        /// Indicates whether this thread was outdated by newer changes.
+        /// </summary>
+        public bool IsOutdated { get; }
+
+        /// <summary>
         /// Whether this thread has been resolved
         /// </summary>
         public bool IsResolved { get; }
@@ -51,6 +61,11 @@ namespace Octokit.GraphQL.Model
         /// The original start line in the file to which this thread refers (multi-line only).
         /// </summary>
         public int? OriginalStartLine { get; }
+
+        /// <summary>
+        /// Identifies the file path of this thread.
+        /// </summary>
+        public string Path { get; }
 
         /// <summary>
         /// Identifies the pull request associated with this thread.
@@ -76,6 +91,11 @@ namespace Octokit.GraphQL.Model
         /// The start line in the file to which this thread refers (multi-line only)
         /// </summary>
         public int? StartLine { get; }
+
+        /// <summary>
+        /// Indicates whether the current viewer can reply to this thread.
+        /// </summary>
+        public bool ViewerCanReply { get; }
 
         /// <summary>
         /// Whether or not the viewer can resolve this thread

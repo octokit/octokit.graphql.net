@@ -18,7 +18,7 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// Identifies if the repository is private.
+        /// Identifies if the repository is private or internal.
         /// </summary>
         public bool IsPrivate { get; }
 

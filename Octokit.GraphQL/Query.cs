@@ -141,7 +141,8 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="name">The name of the repository</param>
         /// <param name="owner">The login field of a user or organization</param>
-        public Repository Repository(Arg<string> name, Arg<string> owner) => this.CreateMethodCall(x => x.Repository(name, owner), Octokit.GraphQL.Model.Repository.Create);
+        /// <param name="followRenames">Follow repository renames. If disabled, a repository referenced by its old name will return an error.</param>
+        public Repository Repository(Arg<string> name, Arg<string> owner, Arg<bool>? followRenames = null) => this.CreateMethodCall(x => x.Repository(name, owner, followRenames), Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
         /// Lookup a repository owner (ie. either a User or an Organization) by login.
@@ -173,11 +174,12 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="classifications">A list of classifications to filter advisories by.</param>
         /// <param name="identifier">Filter advisories by identifier, e.g. GHSA or CVE.</param>
         /// <param name="orderBy">Ordering options for the returned topics.</param>
         /// <param name="publishedSince">Filter advisories to those published since a time in the past.</param>
         /// <param name="updatedSince">Filter advisories to those updated since a time in the past.</param>
-        public SecurityAdvisoryConnection SecurityAdvisories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryIdentifierFilter>? identifier = null, Arg<SecurityAdvisoryOrder>? orderBy = null, Arg<DateTimeOffset>? publishedSince = null, Arg<DateTimeOffset>? updatedSince = null) => this.CreateMethodCall(x => x.SecurityAdvisories(first, after, last, before, identifier, orderBy, publishedSince, updatedSince), Octokit.GraphQL.Model.SecurityAdvisoryConnection.Create);
+        public SecurityAdvisoryConnection SecurityAdvisories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SecurityAdvisoryClassification>>? classifications = null, Arg<SecurityAdvisoryIdentifierFilter>? identifier = null, Arg<SecurityAdvisoryOrder>? orderBy = null, Arg<DateTimeOffset>? publishedSince = null, Arg<DateTimeOffset>? updatedSince = null) => this.CreateMethodCall(x => x.SecurityAdvisories(first, after, last, before, classifications, identifier, orderBy, publishedSince, updatedSince), Octokit.GraphQL.Model.SecurityAdvisoryConnection.Create);
 
         /// <summary>
         /// Fetch a Security Advisory by its GHSA ID
@@ -192,17 +194,26 @@ namespace Octokit.GraphQL
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="classifications">A list of advisory classifications to filter vulnerabilities by.</param>
         /// <param name="ecosystem">An ecosystem to filter vulnerabilities by.</param>
         /// <param name="orderBy">Ordering options for the returned topics.</param>
         /// <param name="package">A package name to filter vulnerabilities by.</param>
         /// <param name="severities">A list of severities to filter vulnerabilities by.</param>
-        public SecurityVulnerabilityConnection SecurityVulnerabilities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? ecosystem = null, Arg<SecurityVulnerabilityOrder>? orderBy = null, Arg<string>? package = null, Arg<IEnumerable<SecurityAdvisorySeverity>>? severities = null) => this.CreateMethodCall(x => x.SecurityVulnerabilities(first, after, last, before, ecosystem, orderBy, package, severities), Octokit.GraphQL.Model.SecurityVulnerabilityConnection.Create);
+        public SecurityVulnerabilityConnection SecurityVulnerabilities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SecurityAdvisoryClassification>>? classifications = null, Arg<SecurityAdvisoryEcosystem>? ecosystem = null, Arg<SecurityVulnerabilityOrder>? orderBy = null, Arg<string>? package = null, Arg<IEnumerable<SecurityAdvisorySeverity>>? severities = null) => this.CreateMethodCall(x => x.SecurityVulnerabilities(first, after, last, before, classifications, ecosystem, orderBy, package, severities), Octokit.GraphQL.Model.SecurityVulnerabilityConnection.Create);
 
         /// <summary>
-        /// Look up a single Sponsors Listing
+        /// Users and organizations who can be sponsored via GitHub Sponsors.
         /// </summary>
-        /// <param name="slug">Select the Sponsors listing which matches this slug</param>
-        public SponsorsListing SponsorsListing(Arg<string> slug) => this.CreateMethodCall(x => x.SponsorsListing(slug), Octokit.GraphQL.Model.SponsorsListing.Create);
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="dependencyEcosystem">Optional filter for which dependencies should be checked for sponsorable owners. Only sponsorable owners of dependencies in this ecosystem will be included. Used when onlyDependencies = true. **Upcoming Change on 2022-07-01 UTC** **Description:** `dependencyEcosystem` will be removed. Use the ecosystem argument instead. **Reason:** The type is switching from SecurityAdvisoryEcosystem to DependencyGraphEcosystem.</param>
+        /// <param name="ecosystem">Optional filter for which dependencies should be checked for sponsorable owners. Only sponsorable owners of dependencies in this ecosystem will be included. Used when onlyDependencies = true.</param>
+        /// <param name="onlyDependencies">Whether only sponsorables who own the viewer's dependencies will be returned. Must be authenticated to use. Can check an organization instead for their dependencies owned by sponsorables by passing orgLoginForDependencies.</param>
+        /// <param name="orderBy">Ordering options for users and organizations returned from the connection.</param>
+        /// <param name="orgLoginForDependencies">Optional organization username for whose dependencies should be checked. Used when onlyDependencies = true. Omit to check your own dependencies. If you are not an administrator of the organization, only dependencies from its public repositories will be considered.</param>
+        public SponsorableItemConnection Sponsorables(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SecurityAdvisoryEcosystem>? dependencyEcosystem = null, Arg<DependencyGraphEcosystem>? ecosystem = null, Arg<bool>? onlyDependencies = null, Arg<SponsorableOrder>? orderBy = null, Arg<string>? orgLoginForDependencies = null) => this.CreateMethodCall(x => x.Sponsorables(first, after, last, before, dependencyEcosystem, ecosystem, onlyDependencies, orderBy, orgLoginForDependencies), Octokit.GraphQL.Model.SponsorableItemConnection.Create);
 
         /// <summary>
         /// Look up a topic by name.

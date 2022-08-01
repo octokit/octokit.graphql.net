@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     public class UnlockLockableInput
     {
         /// <summary>
-        /// ID of the issue or pull request to be unlocked.
+        /// ID of the item to be unlocked.
         /// </summary>
         public ID LockableId { get; set; }
 

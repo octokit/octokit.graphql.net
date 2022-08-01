@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The current goal the maintainer is trying to reach with GitHub Sponsors, if any.
+        /// </summary>
+        public SponsorsGoal ActiveGoal => this.CreateProperty(x => x.ActiveGoal, Octokit.GraphQL.Model.SponsorsGoal.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
@@ -33,9 +38,19 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether this listing is publicly visible.
+        /// </summary>
+        public bool IsPublic { get; }
+
+        /// <summary>
         /// The listing's full name.
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// A future date on which this listing is eligible to receive a payout.
+        /// </summary>
+        public string NextPayoutDate { get; }
 
         /// <summary>
         /// The short description of the listing.
@@ -46,6 +61,11 @@ namespace Octokit.GraphQL.Model
         /// The short name of the listing.
         /// </summary>
         public string Slug { get; }
+
+        /// <summary>
+        /// The entity this listing represents who can be sponsored on GitHub Sponsors.
+        /// </summary>
+        public ISponsorable Sponsorable => this.CreateProperty(x => x.Sponsorable, Octokit.GraphQL.Model.Internal.StubISponsorable.Create);
 
         /// <summary>
         /// The published tiers for this GitHub Sponsors listing.

@@ -25,6 +25,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> App(Func<App, T> selector) => default;
 
             /// <summary>
+            /// A discussion in a repository.
+            /// </summary>
+            public Selector<T> Discussion(Func<Discussion, T> selector) => default;
+
+            /// <summary>
             /// An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project.
             /// </summary>
             public Selector<T> Issue(Func<Issue, T> selector) => default;

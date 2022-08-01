@@ -43,6 +43,11 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
+        /// The reason the issue state was changed to closed.
+        /// </summary>
+        public IssueStateReason? StateReason { get; }
+
+        /// <summary>
         /// The HTTP URL for this closed event.
         /// </summary>
         public string Url { get; }

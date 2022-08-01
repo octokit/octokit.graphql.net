@@ -26,12 +26,6 @@ namespace Octokit.GraphQL.Model
         public int AssetPacks { get; }
 
         /// <summary>
-        /// The number of available seats across all owned organizations based on the unique number of billable users.
-        /// </summary>
-        [Obsolete(@"`availableSeats` will be replaced with `totalAvailableLicenses` to provide more clarity on the value being returned Use EnterpriseBillingInfo.totalAvailableLicenses instead. Removal on 2020-01-01 UTC.")]
-        public int AvailableSeats { get; }
-
-        /// <summary>
         /// The bandwidth quota in GB for all organizations owned by the enterprise.
         /// </summary>
         public double BandwidthQuota { get; }
@@ -45,12 +39,6 @@ namespace Octokit.GraphQL.Model
         /// The bandwidth usage as a percentage of the bandwidth quota.
         /// </summary>
         public int BandwidthUsagePercentage { get; }
-
-        /// <summary>
-        /// The total seats across all organizations owned by the enterprise.
-        /// </summary>
-        [Obsolete(@"`seats` will be replaced with `totalLicenses` to provide more clarity on the value being returned Use EnterpriseBillingInfo.totalLicenses instead. Removal on 2020-01-01 UTC.")]
-        public int Seats { get; }
 
         /// <summary>
         /// The storage quota in GB for all organizations owned by the enterprise.

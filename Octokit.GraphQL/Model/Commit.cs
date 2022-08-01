@@ -26,7 +26,7 @@ namespace Octokit.GraphQL.Model
         public int Additions { get; }
 
         /// <summary>
-        /// The pull requests associated with a commit
+        /// The merged Pull Request that introduced the commit to the repository. If the commit is not present in the default branch, additionally returns open Pull Requests associated with the commit
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
@@ -49,6 +49,16 @@ namespace Octokit.GraphQL.Model
         /// The datetime when this commit was authored.
         /// </summary>
         public DateTimeOffset AuthoredDate { get; }
+
+        /// <summary>
+        /// The list of authors for this commit based on the git author and the Co-authored-by
+        /// message trailer. The git author will always be first.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public GitActorConnection Authors(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Authors(first, after, last, before), Octokit.GraphQL.Model.GitActorConnection.Create);
 
         /// <summary>
         /// Fetches `git blame` information.
@@ -96,12 +106,12 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset CommittedDate { get; }
 
         /// <summary>
-        /// Check if commited via GitHub web UI.
+        /// Check if committed via GitHub web UI.
         /// </summary>
         public bool CommittedViaWeb { get; }
 
         /// <summary>
-        /// Committership details of the commit.
+        /// Committer details of the commit.
         /// </summary>
         public GitActor Committer => this.CreateProperty(x => x.Committer, Octokit.GraphQL.Model.GitActor.Create);
 
@@ -120,6 +130,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="environments">Environments to list deployments for</param>
         /// <param name="orderBy">Ordering options for deployments returned from the connection.</param>
         public DeploymentConnection Deployments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? environments = null, Arg<DeploymentOrder>? orderBy = null) => this.CreateMethodCall(x => x.Deployments(first, after, last, before, environments, orderBy), Octokit.GraphQL.Model.DeploymentConnection.Create);
+
+        /// <summary>
+        /// The tree entry representing the file located at the given path.
+        /// </summary>
+        /// <param name="path">The path for the file</param>
+        public TreeEntry File(Arg<string> path) => this.CreateMethodCall(x => x.File(path), Octokit.GraphQL.Model.TreeEntry.Create);
 
         /// <summary>
         /// The linear commit history starting from (and including) this commit, in the same order as `git log`.

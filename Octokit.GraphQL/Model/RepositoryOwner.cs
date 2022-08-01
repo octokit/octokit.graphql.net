@@ -45,7 +45,8 @@ namespace Octokit.GraphQL.Model
         /// Find Repository.
         /// </summary>
         /// <param name="name">Name of Repository to find.</param>
-        Repository Repository(Arg<string> name);
+        /// <param name="followRenames">Follow repository renames. If disabled, a repository referenced by its old name will return an error.</param>
+        Repository Repository(Arg<string> name, Arg<bool>? followRenames = null);
 
         /// <summary>
         /// The HTTP URL for the owner.
@@ -81,7 +82,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public RepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isFork = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, affiliations, isFork, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
-        public Repository Repository(Arg<string> name) => this.CreateMethodCall(x => x.Repository(name), Octokit.GraphQL.Model.Repository.Create);
+        public Repository Repository(Arg<string> name, Arg<bool>? followRenames = null) => this.CreateMethodCall(x => x.Repository(name, followRenames), Octokit.GraphQL.Model.Repository.Create);
 
         public string ResourcePath { get; }
 

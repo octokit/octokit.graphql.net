@@ -54,6 +54,30 @@ namespace Octokit.GraphQL.Model
         AutomaticBaseChangeSucceededEvent,
 
         /// <summary>
+        /// Represents a 'auto_merge_disabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_MERGE_DISABLED_EVENT")]
+        AutoMergeDisabledEvent,
+
+        /// <summary>
+        /// Represents a 'auto_merge_enabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_MERGE_ENABLED_EVENT")]
+        AutoMergeEnabledEvent,
+
+        /// <summary>
+        /// Represents a 'auto_rebase_enabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_REBASE_ENABLED_EVENT")]
+        AutoRebaseEnabledEvent,
+
+        /// <summary>
+        /// Represents a 'auto_squash_enabled' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "AUTO_SQUASH_ENABLED_EVENT")]
+        AutoSquashEnabledEvent,
+
+        /// <summary>
         /// Represents a 'base_ref_changed' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "BASE_REF_CHANGED_EVENT")]
@@ -138,6 +162,18 @@ namespace Octokit.GraphQL.Model
         ConvertToDraftEvent,
 
         /// <summary>
+        /// Represents an 'added_to_merge_queue' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "ADDED_TO_MERGE_QUEUE_EVENT")]
+        AddedToMergeQueueEvent,
+
+        /// <summary>
+        /// Represents a 'removed_from_merge_queue' event on a given pull request.
+        /// </summary>
+        [EnumMember(Value = "REMOVED_FROM_MERGE_QUEUE_EVENT")]
+        RemovedFromMergeQueueEvent,
+
+        /// <summary>
         /// Represents a comment on an Issue.
         /// </summary>
         [EnumMember(Value = "ISSUE_COMMENT")]
@@ -184,6 +220,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "CONVERTED_NOTE_TO_ISSUE_EVENT")]
         ConvertedNoteToIssueEvent,
+
+        /// <summary>
+        /// Represents a 'converted_to_discussion' event on a given issue.
+        /// </summary>
+        [EnumMember(Value = "CONVERTED_TO_DISCUSSION_EVENT")]
+        ConvertedToDiscussionEvent,
 
         /// <summary>
         /// Represents a 'demilestoned' event on a given issue or pull request.

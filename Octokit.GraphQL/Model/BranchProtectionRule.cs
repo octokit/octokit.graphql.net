@@ -16,6 +16,21 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Can this branch be deleted.
+        /// </summary>
+        public bool AllowsDeletions { get; }
+
+        /// <summary>
+        /// Are force pushes allowed on this branch.
+        /// </summary>
+        public bool AllowsForcePushes { get; }
+
+        /// <summary>
+        /// Is branch creation a protected operation.
+        /// </summary>
+        public bool BlocksCreations { get; }
+
+        /// <summary>
         /// A list of conflicts matching branches protection rule and other branch protection rules
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -23,6 +38,24 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public BranchProtectionRuleConflictConnection BranchProtectionRuleConflicts(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.BranchProtectionRuleConflicts(first, after, last, before), Octokit.GraphQL.Model.BranchProtectionRuleConflictConnection.Create);
+
+        /// <summary>
+        /// A list of actors able to force push for this branch protection rule.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public BypassForcePushAllowanceConnection BypassForcePushAllowances(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.BypassForcePushAllowances(first, after, last, before), Octokit.GraphQL.Model.BypassForcePushAllowanceConnection.Create);
+
+        /// <summary>
+        /// A list of actors able to bypass PRs for this branch protection rule.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public BypassPullRequestAllowanceConnection BypassPullRequestAllowances(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.BypassPullRequestAllowances(first, after, last, before), Octokit.GraphQL.Model.BypassPullRequestAllowanceConnection.Create);
 
         /// <summary>
         /// The actor who created this branch protection rule.
@@ -86,6 +119,11 @@ namespace Octokit.GraphQL.Model
         public IEnumerable<string> RequiredStatusCheckContexts { get; }
 
         /// <summary>
+        /// List of required status checks that must pass for commits to be accepted to matching branches.
+        /// </summary>
+        public IQueryableList<RequiredStatusCheckDescription> RequiredStatusChecks => this.CreateProperty(x => x.RequiredStatusChecks);
+
+        /// <summary>
         /// Are approving reviews required to update matching branches.
         /// </summary>
         public bool RequiresApprovingReviews { get; }
@@ -99,6 +137,16 @@ namespace Octokit.GraphQL.Model
         /// Are commits required to be signed.
         /// </summary>
         public bool RequiresCommitSignatures { get; }
+
+        /// <summary>
+        /// Are conversations required to be resolved before merging.
+        /// </summary>
+        public bool RequiresConversationResolution { get; }
+
+        /// <summary>
+        /// Are merge commits prohibited from being pushed to this branch.
+        /// </summary>
+        public bool RequiresLinearHistory { get; }
 
         /// <summary>
         /// Are status checks required to update matching branches.

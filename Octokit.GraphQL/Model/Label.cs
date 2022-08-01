@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A label for categorizing Issues or Milestones with a given Repository.
+    /// A label for categorizing Issues, Pull Requests, Milestones, or Discussions with a given Repository.
     /// </summary>
     public class Label : QueryableValue<Label>
     {

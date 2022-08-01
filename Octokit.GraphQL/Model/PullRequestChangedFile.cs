@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public int Additions { get; }
 
         /// <summary>
+        /// How the file was changed in this PullRequest
+        /// </summary>
+        public PatchStatus ChangeType { get; }
+
+        /// <summary>
         /// The number of deletions to the file.
         /// </summary>
         public int Deletions { get; }
@@ -29,6 +34,11 @@ namespace Octokit.GraphQL.Model
         /// The path of the file.
         /// </summary>
         public string Path { get; }
+
+        /// <summary>
+        /// The state of the file for the viewer.
+        /// </summary>
+        public FileViewedState ViewerViewedState { get; }
 
         internal static PullRequestChangedFile Create(Expression expression)
         {

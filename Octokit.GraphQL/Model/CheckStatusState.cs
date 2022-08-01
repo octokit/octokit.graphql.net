@@ -30,6 +30,18 @@ namespace Octokit.GraphQL.Model
         Completed,
 
         /// <summary>
+        /// The check suite or run is in waiting state.
+        /// </summary>
+        [EnumMember(Value = "WAITING")]
+        Waiting,
+
+        /// <summary>
+        /// The check suite or run is in pending state.
+        /// </summary>
+        [EnumMember(Value = "PENDING")]
+        Pending,
+
+        /// <summary>
         /// The check suite or run has been requested.
         /// </summary>
         [EnumMember(Value = "REQUESTED")]

@@ -49,3 +49,53 @@ var result =  await connection.Run(query, vars);
 
 Console.WriteLine(result.Login + " & " + result.Name + " Rocks!");
 ```
+
+```csharp
+using Octokit.GraphQL;
+using Octokit.GraphQL.Model;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Octokit
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            var productInformation = new ProductHeaderValue("ExampleCode", "1.0");
+
+            // Personal Access Token - needs a scope of 'read:user'
+            var connection = new Connection(productInformation, "LOGGED_IN_GITHUB_USER_TOKEN");
+
+            // A query to list out who you are actively sponsoring
+            // That auto pages through all sponsors
+            var query = new Query()
+                .Viewer
+                .SponsorshipsAsSponsor()
+                .AllPages()
+                .Select(sponsoring => new
+                {
+                    User = sponsoring.Sponsorable
+                            .Cast<User>()
+                            .Select(x => new { 
+                                x.Login,
+                                x.Name,
+                                x.Id
+                            })
+                            .Single()
+                })
+                .Compile();
+
+            var result = await connection.Run(query);
+
+            // Sponsoring 'warrenbuckley' ?
+            var activeSponsor = result.SingleOrDefault(x => x.User.Login.ToLowerInvariant() == "warrenbuckley");
+            if(activeSponsor != null)
+            {
+                Console.WriteLine("Thanks for sponsoring Warren");
+            }
+        }
+    }
+}
+```
