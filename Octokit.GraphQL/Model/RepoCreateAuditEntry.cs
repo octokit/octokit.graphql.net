@@ -61,7 +61,7 @@ namespace Octokit.GraphQL.Model
         public string ForkParentName { get; }
 
         /// <summary>
-        /// The name of the root repository for this netork.
+        /// The name of the root repository for this network.
         /// </summary>
         public string ForkSourceName { get; }
 

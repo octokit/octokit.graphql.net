@@ -54,6 +54,12 @@ namespace Octokit.GraphQL.Model
         Skipped,
 
         /// <summary>
+        /// The check suite or run has failed at startup.
+        /// </summary>
+        [EnumMember(Value = "STARTUP_FAILURE")]
+        StartupFailure,
+
+        /// <summary>
         /// The check suite or run was marked stale by GitHub. Only GitHub can use this conclusion.
         /// </summary>
         [EnumMember(Value = "STALE")]

@@ -6,7 +6,7 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// The possible default permissions for repositories.
+    /// The possible base permissions for repositories.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum DefaultRepositoryPermissionField

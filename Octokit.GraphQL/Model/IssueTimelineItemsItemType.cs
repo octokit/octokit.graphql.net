@@ -60,6 +60,12 @@ namespace Octokit.GraphQL.Model
         ConvertedNoteToIssueEvent,
 
         /// <summary>
+        /// Represents a 'converted_to_discussion' event on a given issue.
+        /// </summary>
+        [EnumMember(Value = "CONVERTED_TO_DISCUSSION_EVENT")]
+        ConvertedToDiscussionEvent,
+
+        /// <summary>
         /// Represents a 'demilestoned' event on a given issue or pull request.
         /// </summary>
         [EnumMember(Value = "DEMILESTONED_EVENT")]

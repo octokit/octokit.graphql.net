@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// An item in an pull request timeline
+    /// An item in a pull request timeline
     /// </summary>
     public class PullRequestTimelineItem : QueryableValue<PullRequestTimelineItem>, IUnion
     {

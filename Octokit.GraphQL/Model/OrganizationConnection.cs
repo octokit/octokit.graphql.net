@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for Organization.
+    /// A list of organizations managed by an enterprise.
     /// </summary>
     public class OrganizationConnection : QueryableValue<OrganizationConnection>, IPagingConnection<Organization>
     {

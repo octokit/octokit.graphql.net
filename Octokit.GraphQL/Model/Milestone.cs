@@ -48,11 +48,6 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// Just for debugging on review-lab
-        /// </summary>
-        public string IssuePrioritiesDebug { get; }
-
-        /// <summary>
         /// A list of issues associated with the milestone.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -69,6 +64,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the number of the milestone.
         /// </summary>
         public int Number { get; }
+
+        /// <summary>
+        /// Identifies the percentage complete for the milestone
+        /// </summary>
+        public double ProgressPercentage { get; }
 
         /// <summary>
         /// A list of pull requests associated with the milestone.

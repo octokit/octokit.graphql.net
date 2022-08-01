@@ -29,9 +29,14 @@ namespace Octokit.GraphQL.Model
         public string Mentioned { get; set; }
 
         /// <summary>
-        /// List issues by given milestone argument. If an string representation of an integer is passed, it should refer to a milestone by its number field. Pass in `null` for issues with no milestone, and `*` for issues that are assigned to any milestone.
+        /// List issues by given milestone argument. If an string representation of an integer is passed, it should refer to a milestone by its database ID. Pass in `null` for issues with no milestone, and `*` for issues that are assigned to any milestone.
         /// </summary>
         public string Milestone { get; set; }
+
+        /// <summary>
+        /// List issues by given milestone argument. If an string representation of an integer is passed, it should refer to a milestone by its number field. Pass in `null` for issues with no milestone, and `*` for issues that are assigned to any milestone.
+        /// </summary>
+        public string MilestoneNumber { get; set; }
 
         /// <summary>
         /// List issues that have been updated at or after the given date.

@@ -30,6 +30,26 @@ namespace Octokit.GraphQL.Model
             public Selector<T> AssignedEvent(Func<AssignedEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'auto_merge_disabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoMergeDisabledEvent(Func<AutoMergeDisabledEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'auto_merge_enabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoMergeEnabledEvent(Func<AutoMergeEnabledEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'auto_rebase_enabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoRebaseEnabledEvent(Func<AutoRebaseEnabledEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'auto_squash_enabled' event on a given pull request.
+            /// </summary>
+            public Selector<T> AutoSquashEnabledEvent(Func<AutoSquashEnabledEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'automatic_base_change_failed' event on a given pull request.
             /// </summary>
             public Selector<T> AutomaticBaseChangeFailedEvent(Func<AutomaticBaseChangeFailedEvent, T> selector) => default;
@@ -78,6 +98,11 @@ namespace Octokit.GraphQL.Model
             /// Represents a 'converted_note_to_issue' event on a given issue or pull request.
             /// </summary>
             public Selector<T> ConvertedNoteToIssueEvent(Func<ConvertedNoteToIssueEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'converted_to_discussion' event on a given issue.
+            /// </summary>
+            public Selector<T> ConvertedToDiscussionEvent(Func<ConvertedToDiscussionEvent, T> selector) => default;
 
             /// <summary>
             /// Represents a mention made by one issue or pull request to another.

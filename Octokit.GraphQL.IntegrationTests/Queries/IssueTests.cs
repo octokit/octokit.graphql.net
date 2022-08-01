@@ -122,7 +122,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments(100, null, null, null).Select(page => new
+                    Comments = issue.Comments(100, null, null, null, null).Select(page => new
                     {
                         page.PageInfo.HasNextPage,
                         page.PageInfo.EndCursor,
@@ -171,7 +171,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments(null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
+                    Comments = issue.Comments(null, null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
                 });
 
             var result = await Connection.Run(query);
@@ -226,7 +226,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments(null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
+                    Comments = issue.Comments(null, null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
                 });
 
             var result = (await Connection.Run(query)).ToList();

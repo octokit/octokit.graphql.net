@@ -10,3 +10,4 @@
 5. [Fragments](fragments.md)
 6. [Unions](unions.md)
 7. [Contributing](contributing.md)
+8. [Releasing](releasing.md)

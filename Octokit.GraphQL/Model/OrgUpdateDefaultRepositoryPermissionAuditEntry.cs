@@ -83,12 +83,12 @@ namespace Octokit.GraphQL.Model
         public string OrganizationUrl { get; }
 
         /// <summary>
-        /// The new default repository permission level for the organization.
+        /// The new base repository permission level for the organization.
         /// </summary>
         public OrgUpdateDefaultRepositoryPermissionAuditEntryPermission? Permission { get; }
 
         /// <summary>
-        /// The former default repository permission level for the organization.
+        /// The former base repository permission level for the organization.
         /// </summary>
         public OrgUpdateDefaultRepositoryPermissionAuditEntryPermission? PermissionWas { get; }
 

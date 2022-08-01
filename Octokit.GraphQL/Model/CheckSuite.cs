@@ -51,6 +51,11 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset CreatedAt { get; }
 
         /// <summary>
+        /// The user who triggered the check suite.
+        /// </summary>
+        public User Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Model.User.Create);
+
+        /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
         public int? DatabaseId { get; }
@@ -100,6 +105,11 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL for this check suite
         /// </summary>
         public string Url { get; }
+
+        /// <summary>
+        /// The workflow run associated with this check suite.
+        /// </summary>
+        public WorkflowRun WorkflowRun => this.CreateProperty(x => x.WorkflowRun, Octokit.GraphQL.Model.WorkflowRun.Create);
 
         internal static CheckSuite Create(Expression expression)
         {

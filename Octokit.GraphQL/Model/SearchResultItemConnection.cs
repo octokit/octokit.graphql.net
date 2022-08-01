@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public int CodeCount { get; }
 
         /// <summary>
+        /// The number of discussions that matched the search query.
+        /// </summary>
+        public int DiscussionCount { get; }
+
+        /// <summary>
         /// A list of edges.
         /// </summary>
         public IQueryableList<SearchResultItemEdge> Edges => this.CreateProperty(x => x.Edges);

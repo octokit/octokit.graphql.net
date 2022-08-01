@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// SAML Identity attributes
+        /// </summary>
+        public IQueryableList<ExternalIdentityAttribute> Attributes => this.CreateProperty(x => x.Attributes);
+
+        /// <summary>
         /// The emails associated with the SAML identity
         /// </summary>
         public IQueryableList<UserEmailMetadata> Emails => this.CreateProperty(x => x.Emails);

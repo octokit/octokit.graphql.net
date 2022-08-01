@@ -9,12 +9,12 @@ namespace Octokit.GraphQL.Model
     public class LockLockableInput
     {
         /// <summary>
-        /// ID of the issue or pull request to be locked.
+        /// ID of the item to be locked.
         /// </summary>
         public ID LockableId { get; set; }
 
         /// <summary>
-        /// A reason for why the issue or pull request will be locked.
+        /// A reason for why the item will be locked.
         /// </summary>
         public LockReason? LockReason { get; set; }
 

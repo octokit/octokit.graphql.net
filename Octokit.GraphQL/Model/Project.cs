@@ -87,6 +87,11 @@ namespace Octokit.GraphQL.Model
         public ProjectCardConnection PendingCards(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<ProjectCardArchivedState?>>? archivedStates = null) => this.CreateMethodCall(x => x.PendingCards(first, after, last, before, archivedStates), Octokit.GraphQL.Model.ProjectCardConnection.Create);
 
         /// <summary>
+        /// Project progress details.
+        /// </summary>
+        public ProjectProgress Progress => this.CreateProperty(x => x.Progress, Octokit.GraphQL.Model.ProjectProgress.Create);
+
+        /// <summary>
         /// The HTTP path for this project
         /// </summary>
         public string ResourcePath { get; }

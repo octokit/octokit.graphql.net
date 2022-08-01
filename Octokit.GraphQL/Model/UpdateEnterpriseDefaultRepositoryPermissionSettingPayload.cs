@@ -21,12 +21,12 @@ namespace Octokit.GraphQL.Model
         public string ClientMutationId { get; }
 
         /// <summary>
-        /// The enterprise with the updated default repository permission setting.
+        /// The enterprise with the updated base repository permission setting.
         /// </summary>
         public Enterprise Enterprise => this.CreateProperty(x => x.Enterprise, Octokit.GraphQL.Model.Enterprise.Create);
 
         /// <summary>
-        /// A message confirming the result of updating the default repository permission setting.
+        /// A message confirming the result of updating the base repository permission setting.
         /// </summary>
         public string Message { get; }
 
