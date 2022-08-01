@@ -1264,6 +1264,26 @@ fragment issueTitle on Issue {
             Assert.Equal(expected, actual, ignoreLineEndingDifferences: true);
         }
 
+        [Fact]
+        public void Repository_Parent_ConditionalExpression()
+        {
+            var expected = @"query {
+  repository(owner: ""foo"", name: ""bar"") {
+    parent {
+      name
+    }
+  }
+}";
+
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .Select(repository => repository.Parent == null ? null : repository.Parent.Name);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(2), ignoreLineEndingDifferences: true);
+        }
+
         class TestModelObject
         {
             public string StringField1;
