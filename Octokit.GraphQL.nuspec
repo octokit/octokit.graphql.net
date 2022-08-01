@@ -14,7 +14,7 @@
     <copyright>Copyright GitHub 2018</copyright>
     <tags>GitHub API Octokit GraphQL</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="9.0.1" />
+      <dependency id="Newtonsoft.Json" version="13.0.1" />
     </dependencies>
   </metadata>
   <files>
