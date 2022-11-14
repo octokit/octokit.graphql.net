@@ -34,6 +34,26 @@ namespace Octokit.GraphQL.Model
         public bool? RequiresCommitSignatures { get; set; }
 
         /// <summary>
+        /// Are merge commits prohibited from being pushed to this branch.
+        /// </summary>
+        public bool? RequiresLinearHistory { get; set; }
+
+        /// <summary>
+        /// Is branch creation a protected operation.
+        /// </summary>
+        public bool? BlocksCreations { get; set; }
+
+        /// <summary>
+        /// Are force pushes allowed on this branch.
+        /// </summary>
+        public bool? AllowsForcePushes { get; set; }
+
+        /// <summary>
+        /// Can this branch be deleted.
+        /// </summary>
+        public bool? AllowsDeletions { get; set; }
+
+        /// <summary>
         /// Can admins overwrite branch protection.
         /// </summary>
         public bool? IsAdminEnforced { get; set; }
@@ -64,9 +84,19 @@ namespace Octokit.GraphQL.Model
         public bool? RestrictsReviewDismissals { get; set; }
 
         /// <summary>
-        /// A list of User or Team IDs allowed to dismiss reviews on pull requests targeting matching branches.
+        /// A list of User, Team, or App IDs allowed to dismiss reviews on pull requests targeting matching branches.
         /// </summary>
         public IEnumerable<ID> ReviewDismissalActorIds { get; set; }
+
+        /// <summary>
+        /// A list of User, Team, or App IDs allowed to bypass pull requests targeting matching branches.
+        /// </summary>
+        public IEnumerable<ID> BypassPullRequestActorIds { get; set; }
+
+        /// <summary>
+        /// A list of User, Team, or App IDs allowed to bypass force push targeting matching branches.
+        /// </summary>
+        public IEnumerable<ID> BypassForcePushActorIds { get; set; }
 
         /// <summary>
         /// Is pushing to matching branches restricted.
@@ -74,7 +104,7 @@ namespace Octokit.GraphQL.Model
         public bool? RestrictsPushes { get; set; }
 
         /// <summary>
-        /// A list of User, Team or App IDs allowed to push to matching branches.
+        /// A list of User, Team, or App IDs allowed to push to matching branches.
         /// </summary>
         public IEnumerable<ID> PushActorIds { get; set; }
 
@@ -82,6 +112,16 @@ namespace Octokit.GraphQL.Model
         /// List of required status check contexts that must pass for commits to be accepted to matching branches.
         /// </summary>
         public IEnumerable<string> RequiredStatusCheckContexts { get; set; }
+
+        /// <summary>
+        /// The list of required status checks
+        /// </summary>
+        public IEnumerable<RequiredStatusCheckInput> RequiredStatusChecks { get; set; }
+
+        /// <summary>
+        /// Are conversations required to be resolved before merging.
+        /// </summary>
+        public bool? RequiresConversationResolution { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

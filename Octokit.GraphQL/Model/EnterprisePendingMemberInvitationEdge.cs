@@ -21,12 +21,6 @@ namespace Octokit.GraphQL.Model
         public string Cursor { get; }
 
         /// <summary>
-        /// Whether the invitation has a license for the enterprise.
-        /// </summary>
-        [Obsolete(@"All pending members consume a license Removal on 2020-07-01 UTC.")]
-        public bool IsUnlicensed { get; }
-
-        /// <summary>
         /// The item at the end of the edge.
         /// </summary>
         public OrganizationInvitation Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.OrganizationInvitation.Create);

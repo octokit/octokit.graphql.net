@@ -6,13 +6,13 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// The possible values for the enterprise default repository permission setting.
+    /// The possible values for the enterprise base repository permission setting.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum EnterpriseDefaultRepositoryPermissionSettingValue
     {
         /// <summary>
-        /// Organizations in the enterprise choose default repository permissions for their members.
+        /// Organizations in the enterprise choose base repository permissions for their members.
         /// </summary>
         [EnumMember(Value = "NO_POLICY")]
         NoPolicy,

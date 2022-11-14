@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public int ContributionCount { get; }
 
         /// <summary>
+        /// Indication of contributions, relative to other days. Can be used to indicate which color to represent this day on a calendar.
+        /// </summary>
+        public ContributionLevel ContributionLevel { get; }
+
+        /// <summary>
         /// The day this square represents.
         /// </summary>
         public string Date { get; }

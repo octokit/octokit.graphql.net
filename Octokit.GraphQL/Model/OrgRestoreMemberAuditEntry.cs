@@ -88,7 +88,7 @@ namespace Octokit.GraphQL.Model
         public int? RestoredCustomEmailRoutingsCount { get; }
 
         /// <summary>
-        /// The number of issue assignemnts for the restored member.
+        /// The number of issue assignments for the restored member.
         /// </summary>
         public int? RestoredIssueAssignmentsCount { get; }
 

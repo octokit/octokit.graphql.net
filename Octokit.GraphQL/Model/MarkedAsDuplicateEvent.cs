@@ -21,11 +21,26 @@ namespace Octokit.GraphQL.Model
         public IActor Actor => this.CreateProperty(x => x.Actor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
         /// <summary>
+        /// The authoritative issue or pull request which has been duplicated by another.
+        /// </summary>
+        public IssueOrPullRequest Canonical => this.CreateProperty(x => x.Canonical, Octokit.GraphQL.Model.IssueOrPullRequest.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
 
+        /// <summary>
+        /// The issue or pull request which has been marked as a duplicate of another.
+        /// </summary>
+        public IssueOrPullRequest Duplicate => this.CreateProperty(x => x.Duplicate, Octokit.GraphQL.Model.IssueOrPullRequest.Create);
+
         public ID Id { get; }
+
+        /// <summary>
+        /// Canonical and duplicate belong to different repositories.
+        /// </summary>
+        public bool IsCrossRepository { get; }
 
         internal static MarkedAsDuplicateEvent Create(Expression expression)
         {

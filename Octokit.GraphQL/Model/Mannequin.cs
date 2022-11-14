@@ -22,6 +22,11 @@ namespace Octokit.GraphQL.Model
         public string AvatarUrl(Arg<int>? size = null) => default;
 
         /// <summary>
+        /// The user that has claimed the data attributed to this mannequin.
+        /// </summary>
+        public User Claimant => this.CreateProperty(x => x.Claimant, Octokit.GraphQL.Model.User.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }

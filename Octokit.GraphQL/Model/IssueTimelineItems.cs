@@ -50,6 +50,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> ConvertedNoteToIssueEvent(Func<ConvertedNoteToIssueEvent, T> selector) => default;
 
             /// <summary>
+            /// Represents a 'converted_to_discussion' event on a given issue.
+            /// </summary>
+            public Selector<T> ConvertedToDiscussionEvent(Func<ConvertedToDiscussionEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a mention made by one issue or pull request to another.
             /// </summary>
             public Selector<T> CrossReferencedEvent(Func<CrossReferencedEvent, T> selector) => default;

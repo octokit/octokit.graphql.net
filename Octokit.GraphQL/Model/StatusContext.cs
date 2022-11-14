@@ -49,6 +49,13 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether this is required to pass before merging for a specific pull request.
+        /// </summary>
+        /// <param name="pullRequestId">The id of the pull request this is required for</param>
+        /// <param name="pullRequestNumber">The number of the pull request this is required for</param>
+        public bool IsRequired(Arg<ID>? pullRequestId = null, Arg<int>? pullRequestNumber = null) => default;
+
+        /// <summary>
         /// The state of this status context.
         /// </summary>
         public StatusState State { get; }

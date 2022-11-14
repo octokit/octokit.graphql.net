@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Octokit.GraphQL.Core;
 using Octokit.GraphQL.IntegrationTests.Utilities;
@@ -52,7 +54,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             Assert.NotNull(graphqlUser);
 
-            Assert.Equal(apiUser.AvatarUrl, graphqlUser.AvatarUrl);
+            Assert.Equal(apiUser.AvatarUrl.Split("?").First(), graphqlUser.AvatarUrl.Split("?").First());
             Assert.Equal(apiUser.Bio, graphqlUser.Bio);
             Assert.Equal(apiUser.Company, graphqlUser.Company);
 
@@ -87,6 +89,24 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             var emails = await Connection.Run(query);
 
             Assert.Empty(emails);
+        }
+
+        [IntegrationTest(Skip = "This is a fragile integration test and we need to validate if it is still useful/correct. It is currently failing")]
+        public async Task DateTime_Filter_Works()
+        {
+            var query = new GraphQL.Query()
+                        .Viewer.ContributionsCollection(from: Variable.Var("start"))
+                        .Select(c => c.User.Name);
+
+            var vars = new Dictionary<string, object>
+            {
+                { "start", new DateTimeOffset(2000, 1, 2, 3, 4, 5, default) }
+            };
+
+            var response = await Connection.Run(query.Compile(), vars);
+
+            // no server error
+            Assert.NotNull(response);
         }
     }
 }

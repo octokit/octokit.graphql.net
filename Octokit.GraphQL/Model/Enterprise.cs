@@ -81,7 +81,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for organizations returned from the connection.</param>
         /// <param name="query">The search string to look for.</param>
-        public OrganizationConnection Organizations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.Organizations(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.OrganizationConnection.Create);
+        /// <param name="viewerOrganizationRole">The viewer's role in an organization.</param>
+        public OrganizationConnection Organizations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null, Arg<string>? query = null, Arg<RoleInOrganization>? viewerOrganizationRole = null) => this.CreateMethodCall(x => x.Organizations(first, after, last, before, orderBy, query, viewerOrganizationRole), Octokit.GraphQL.Model.OrganizationConnection.Create);
 
         /// <summary>
         /// Enterprise information only visible to enterprise owners.

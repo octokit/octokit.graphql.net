@@ -33,10 +33,12 @@ namespace Octokit.GraphQL.Model
         public User Inviter => this.CreateProperty(x => x.Inviter, Octokit.GraphQL.Model.User.Create);
 
         /// <summary>
+        /// The permalink for this repository invitation.
+        /// </summary>
+        public string Permalink { get; }
+
+        /// <summary>
         /// The permission granted on this repository by this invitation.
-        /// **Upcoming Change on 2020-10-01 UTC**
-        /// **Description:** Type for `permission` will change from `RepositoryPermission!` to `String`.
-        /// **Reason:** This field may return additional values
         /// </summary>
         public RepositoryPermission Permission { get; }
 

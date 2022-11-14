@@ -21,12 +21,6 @@ namespace Octokit.GraphQL.Model
         public string Cursor { get; }
 
         /// <summary>
-        /// Whether the outside collaborator does not have a license for the enterprise.
-        /// </summary>
-        [Obsolete(@"All outside collaborators consume a license Removal on 2021-01-01 UTC.")]
-        public bool IsUnlicensed { get; }
-
-        /// <summary>
         /// The item at the end of the edge.
         /// </summary>
         public User Node => this.CreateProperty(x => x.Node, Octokit.GraphQL.Model.User.Create);

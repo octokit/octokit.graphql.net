@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Entites that can sponsor others via GitHub Sponsors
+    /// Entities that can sponsor others via GitHub Sponsors
     /// </summary>
     public class Sponsor : QueryableValue<Sponsor>, IUnion
     {

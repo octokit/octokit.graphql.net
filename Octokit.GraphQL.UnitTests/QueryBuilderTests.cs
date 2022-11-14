@@ -317,5 +317,26 @@ namespace Octokit.GraphQL.UnitTests
 
             Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
+
+        [Fact]
+        public void DateTimeOffsetVariable()
+        {
+            var expected = @"query($start: DateTime) {
+  user(login: ""grokys"") {
+    contributionsCollection(from: $start) {
+      latestRestrictedContributionDate
+    }
+  }
+}";
+
+            var expression = new Query()
+                             .User("grokys")
+                             .ContributionsCollection(@from: Variable.Var("start"))
+                             .Select(c => c.LatestRestrictedContributionDate);
+
+            var query = expression.Compile();
+
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
+        }
     }
 }

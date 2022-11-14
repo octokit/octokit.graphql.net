@@ -64,6 +64,11 @@ namespace Octokit.GraphQL.Model
         bool IsFork { get; }
 
         /// <summary>
+        /// Indicates if a repository is either owned by an organization, or is a private fork of an organization repository.
+        /// </summary>
+        bool IsInOrganization { get; }
+
+        /// <summary>
         /// Indicates if the repository has been locked or not.
         /// </summary>
         bool IsLocked { get; }
@@ -74,7 +79,7 @@ namespace Octokit.GraphQL.Model
         bool IsMirror { get; }
 
         /// <summary>
-        /// Identifies if the repository is private.
+        /// Identifies if the repository is private or internal.
         /// </summary>
         bool IsPrivate { get; }
 
@@ -148,6 +153,11 @@ namespace Octokit.GraphQL.Model
         /// Whether this repository has a custom image to use with Open Graph as opposed to being represented by the owner's avatar.
         /// </summary>
         bool UsesCustomOpenGraphImage { get; }
+
+        /// <summary>
+        /// Indicates the repository's visibility level.
+        /// </summary>
+        RepositoryVisibility Visibility { get; }
     }
 }
 
@@ -185,6 +195,8 @@ namespace Octokit.GraphQL.Model.Internal
 
         public bool IsFork { get; }
 
+        public bool IsInOrganization { get; }
+
         public bool IsLocked { get; }
 
         public bool IsMirror { get; }
@@ -218,6 +230,8 @@ namespace Octokit.GraphQL.Model.Internal
         public string Url { get; }
 
         public bool UsesCustomOpenGraphImage { get; }
+
+        public RepositoryVisibility Visibility { get; }
 
         internal static StubIRepositoryInfo Create(Expression expression)
         {

@@ -38,6 +38,12 @@ namespace Octokit.GraphQL.Model
         public string BioHTML { get; }
 
         /// <summary>
+        /// Could this user receive email notifications, if the organization had notification restrictions enabled?
+        /// </summary>
+        /// <param name="login">The login of the organization to check.</param>
+        public bool CanReceiveOrganizationEmailsWhenNotificationsRestricted(Arg<string> login) => default;
+
+        /// <summary>
         /// A list of commit comments made by this user.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -61,7 +67,7 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         /// <param name="from">Only contributions made at this time or later will be counted. If omitted, defaults to a year ago.</param>
         /// <param name="organizationID">The ID of the organization used to filter contributions.</param>
-        /// <param name="to">Only contributions made before and up to and including this time will be counted. If omitted, defaults to the current time.</param>
+        /// <param name="to">Only contributions made before and up to (including) this time will be counted. If omitted, defaults to the current time or one year from the provided from argument.</param>
         public ContributionsCollection ContributionsCollection(Arg<DateTimeOffset>? from = null, Arg<ID>? organizationID = null, Arg<DateTimeOffset>? to = null) => this.CreateMethodCall(x => x.ContributionsCollection(from, organizationID, to), Octokit.GraphQL.Model.ContributionsCollection.Create);
 
         /// <summary>
@@ -78,6 +84,11 @@ namespace Octokit.GraphQL.Model
         /// The user's publicly visible profile email.
         /// </summary>
         public string Email { get; }
+
+        /// <summary>
+        /// The estimated next GitHub Sponsors payout for this user/organization in cents (USD).
+        /// </summary>
+        public int EstimatedNextSponsorsPayoutInCents { get; }
 
         /// <summary>
         /// A list of users the given user is followed by.
@@ -124,12 +135,22 @@ namespace Octokit.GraphQL.Model
         public GistConnection Gists(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<GistOrder>? orderBy = null, Arg<GistPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Gists(first, after, last, before, orderBy, privacy), Octokit.GraphQL.Model.GistConnection.Create);
 
         /// <summary>
+        /// True if this user/organization has a GitHub Sponsors listing.
+        /// </summary>
+        public bool HasSponsorsListing { get; }
+
+        /// <summary>
         /// The hovercard information for this user in a given context
         /// </summary>
         /// <param name="primarySubjectId">The ID of the subject to get the hovercard in the context of</param>
         public Hovercard Hovercard(Arg<ID>? primarySubjectId = null) => this.CreateMethodCall(x => x.Hovercard(primarySubjectId), Octokit.GraphQL.Model.Hovercard.Create);
 
         public ID Id { get; }
+
+        /// <summary>
+        /// The interaction ability settings for this user.
+        /// </summary>
+        public RepositoryInteractionAbility InteractionAbility => this.CreateProperty(x => x.InteractionAbility, Octokit.GraphQL.Model.RepositoryInteractionAbility.Create);
 
         /// <summary>
         /// Whether or not this user is a participant in the GitHub Security Bug Bounty.
@@ -152,6 +173,16 @@ namespace Octokit.GraphQL.Model
         public bool IsEmployee { get; }
 
         /// <summary>
+        /// Whether or not this user is following the viewer. Inverse of viewer_is_following
+        /// </summary>
+        public bool IsFollowingViewer { get; }
+
+        /// <summary>
+        /// Whether or not this user is a member of the GitHub Stars Program.
+        /// </summary>
+        public bool IsGitHubStar { get; }
+
+        /// <summary>
         /// Whether or not the user has marked themselves as for hire.
         /// </summary>
         public bool IsHireable { get; }
@@ -160,6 +191,17 @@ namespace Octokit.GraphQL.Model
         /// Whether or not this user is a site administrator.
         /// </summary>
         public bool IsSiteAdmin { get; }
+
+        /// <summary>
+        /// Check if the given account is sponsoring this user/organization.
+        /// </summary>
+        /// <param name="accountLogin">The target account's login.</param>
+        public bool IsSponsoredBy(Arg<string> accountLogin) => default;
+
+        /// <summary>
+        /// True if the viewer is sponsored by this user/organization.
+        /// </summary>
+        public bool IsSponsoringViewer { get; }
 
         /// <summary>
         /// Whether or not this user is the viewing user.
@@ -173,7 +215,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public IssueCommentConnection IssueComments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.IssueComments(first, after, last, before), Octokit.GraphQL.Model.IssueCommentConnection.Create);
+        /// <param name="orderBy">Ordering options for issue comments returned from the connection.</param>
+        public IssueCommentConnection IssueComments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IssueCommentOrder>? orderBy = null) => this.CreateMethodCall(x => x.IssueComments(first, after, last, before, orderBy), Octokit.GraphQL.Model.IssueCommentConnection.Create);
 
         /// <summary>
         /// A list of issues associated with this user.
@@ -202,6 +245,11 @@ namespace Octokit.GraphQL.Model
         /// The username used to login.
         /// </summary>
         public string Login { get; }
+
+        /// <summary>
+        /// The estimated monthly GitHub Sponsors income for this user/organization in cents (USD).
+        /// </summary>
+        public int MonthlyEstimatedSponsorsIncomeInCents { get; }
 
         /// <summary>
         /// The user's public profile name.
@@ -274,6 +322,18 @@ namespace Octokit.GraphQL.Model
         public Project Project(Arg<int> number) => this.CreateMethodCall(x => x.Project(number), Octokit.GraphQL.Model.Project.Create);
 
         /// <summary>
+        /// Find a project by project (beta) number.
+        /// </summary>
+        /// <param name="number">The project (beta) number.</param>
+        public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
+
+        /// <summary>
+        /// Find a project by number.
+        /// </summary>
+        /// <param name="number">The project number.</param>
+        public ProjectV2 ProjectV2(Arg<int> number) => this.CreateMethodCall(x => x.ProjectV2(number), Octokit.GraphQL.Model.ProjectV2.Create);
+
+        /// <summary>
         /// A list of projects under the owner.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -286,6 +346,17 @@ namespace Octokit.GraphQL.Model
         public ProjectConnection Projects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectOrder>? orderBy = null, Arg<string>? search = null, Arg<IEnumerable<ProjectState>>? states = null) => this.CreateMethodCall(x => x.Projects(first, after, last, before, orderBy, search, states), Octokit.GraphQL.Model.ProjectConnection.Create);
 
         /// <summary>
+        /// A list of projects (beta) under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="query">A project (beta) to search for under the the owner.</param>
+        /// <param name="sortBy">How to order the returned projects (beta).</param>
+        public ProjectNextConnection ProjectsNext(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<ProjectNextOrderField>? sortBy = null) => this.CreateMethodCall(x => x.ProjectsNext(first, after, last, before, query, sortBy), Octokit.GraphQL.Model.ProjectNextConnection.Create);
+
+        /// <summary>
         /// The HTTP path listing user's projects
         /// </summary>
         public string ProjectsResourcePath { get; }
@@ -294,6 +365,17 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL listing user's projects
         /// </summary>
         public string ProjectsUrl { get; }
+
+        /// <summary>
+        /// A list of projects under the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">How to order the returned projects.</param>
+        /// <param name="query">A project to search for under the the owner.</param>
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// A list of public keys associated with this user.
@@ -317,6 +399,15 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for pull requests returned from the connection.</param>
         /// <param name="states">A list of states to filter the pull requests by.</param>
         public PullRequestConnection PullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? baseRefName = null, Arg<string>? headRefName = null, Arg<IEnumerable<string>>? labels = null, Arg<IssueOrder>? orderBy = null, Arg<IEnumerable<PullRequestState>>? states = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, baseRefName, headRefName, labels, orderBy, states), Octokit.GraphQL.Model.PullRequestConnection.Create);
+
+        /// <summary>
+        /// Recent projects that this user has modified in the context of the owner.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public ProjectV2Connection RecentProjects(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.RecentProjects(first, after, last, before), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// A list of repositories that the user owns.
@@ -351,7 +442,31 @@ namespace Octokit.GraphQL.Model
         /// Find Repository.
         /// </summary>
         /// <param name="name">Name of Repository to find.</param>
-        public Repository Repository(Arg<string> name) => this.CreateMethodCall(x => x.Repository(name), Octokit.GraphQL.Model.Repository.Create);
+        /// <param name="followRenames">Follow repository renames. If disabled, a repository referenced by its old name will return an error.</param>
+        public Repository Repository(Arg<string> name, Arg<bool>? followRenames = null) => this.CreateMethodCall(x => x.Repository(name, followRenames), Octokit.GraphQL.Model.Repository.Create);
+
+        /// <summary>
+        /// Discussion comments this user has authored.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="onlyAnswers">Filter discussion comments to only those that were marked as the answer</param>
+        /// <param name="repositoryId">Filter discussion comments to only those in a specific repository.</param>
+        public DiscussionCommentConnection RepositoryDiscussionComments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? onlyAnswers = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.RepositoryDiscussionComments(first, after, last, before, onlyAnswers, repositoryId), Octokit.GraphQL.Model.DiscussionCommentConnection.Create);
+
+        /// <summary>
+        /// Discussions this user has started.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="answered">Filter discussions to only those that have been answered or not. Defaults to including both answered and unanswered discussions.</param>
+        /// <param name="orderBy">Ordering options for discussions returned from the connection.</param>
+        /// <param name="repositoryId">Filter discussions to only those in a specific repository.</param>
+        public DiscussionConnection RepositoryDiscussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? answered = null, Arg<DiscussionOrder>? orderBy = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.RepositoryDiscussions(first, after, last, before, answered, orderBy, repositoryId), Octokit.GraphQL.Model.DiscussionConnection.Create);
 
         /// <summary>
         /// The HTTP path for this user
@@ -369,9 +484,61 @@ namespace Octokit.GraphQL.Model
         public SavedReplyConnection SavedReplies(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SavedReplyOrder>? orderBy = null) => this.CreateMethodCall(x => x.SavedReplies(first, after, last, before, orderBy), Octokit.GraphQL.Model.SavedReplyConnection.Create);
 
         /// <summary>
-        /// The GitHub Sponsors listing for this user.
+        /// List of users and organizations this entity is sponsoring.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for the users and organizations returned from the connection.</param>
+        public SponsorConnection Sponsoring(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorOrder>? orderBy = null) => this.CreateMethodCall(x => x.Sponsoring(first, after, last, before, orderBy), Octokit.GraphQL.Model.SponsorConnection.Create);
+
+        /// <summary>
+        /// List of sponsors for this user or organization.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for sponsors returned from the connection.</param>
+        /// <param name="tierId">If given, will filter for sponsors at the given tier. Will only return sponsors whose tier the viewer is permitted to see.</param>
+        public SponsorConnection Sponsors(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorOrder>? orderBy = null, Arg<ID>? tierId = null) => this.CreateMethodCall(x => x.Sponsors(first, after, last, before, orderBy, tierId), Octokit.GraphQL.Model.SponsorConnection.Create);
+
+        /// <summary>
+        /// Events involving this sponsorable, such as new sponsorships.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for activity returned from the connection.</param>
+        /// <param name="period">Filter activities returned to only those that occurred in a given time range.</param>
+        public SponsorsActivityConnection SponsorsActivities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorsActivityOrder>? orderBy = null, Arg<SponsorsActivityPeriod>? period = null) => this.CreateMethodCall(x => x.SponsorsActivities(first, after, last, before, orderBy, period), Octokit.GraphQL.Model.SponsorsActivityConnection.Create);
+
+        /// <summary>
+        /// The GitHub Sponsors listing for this user or organization.
         /// </summary>
         public SponsorsListing SponsorsListing => this.CreateProperty(x => x.SponsorsListing, Octokit.GraphQL.Model.SponsorsListing.Create);
+
+        /// <summary>
+        /// The sponsorship from the viewer to this user/organization; that is, the sponsorship where you're the sponsor. Only returns a sponsorship if it is active.
+        /// </summary>
+        public Sponsorship SponsorshipForViewerAsSponsor => this.CreateProperty(x => x.SponsorshipForViewerAsSponsor, Octokit.GraphQL.Model.Sponsorship.Create);
+
+        /// <summary>
+        /// The sponsorship from this user/organization to the viewer; that is, the sponsorship you're receiving. Only returns a sponsorship if it is active.
+        /// </summary>
+        public Sponsorship SponsorshipForViewerAsSponsorable => this.CreateProperty(x => x.SponsorshipForViewerAsSponsorable, Octokit.GraphQL.Model.Sponsorship.Create);
+
+        /// <summary>
+        /// List of sponsorship updates sent from this sponsorable to sponsors.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for sponsorship updates returned from the connection.</param>
+        public SponsorshipNewsletterConnection SponsorshipNewsletters(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorshipNewsletterOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipNewsletters(first, after, last, before, orderBy), Octokit.GraphQL.Model.SponsorshipNewsletterConnection.Create);
 
         /// <summary>
         /// This object's sponsorships as the maintainer.
@@ -452,9 +619,19 @@ namespace Octokit.GraphQL.Model
         public bool ViewerCanFollow { get; }
 
         /// <summary>
-        /// Whether or not this user is followed by the viewer.
+        /// Whether or not the viewer is able to sponsor this user/organization.
+        /// </summary>
+        public bool ViewerCanSponsor { get; }
+
+        /// <summary>
+        /// Whether or not this user is followed by the viewer. Inverse of is_following_viewer.
         /// </summary>
         public bool ViewerIsFollowing { get; }
+
+        /// <summary>
+        /// True if the viewer is sponsoring this user/organization.
+        /// </summary>
+        public bool ViewerIsSponsoring { get; }
 
         /// <summary>
         /// A list of repositories the given user is watching.
