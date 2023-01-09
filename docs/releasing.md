@@ -9,8 +9,8 @@ Creating a new release and deploying the package to nuget are administrative tas
 
 ### Prepare the changeset & publish to nuget.org
 
-1. Create a branch from `master` and update the version node [Octokit.GraphQL.nuspec](https://github.com/octokit/octokit.graphql.net/blob/master/Octokit.GraphQL.nuspec) with the next version.
-2. Push the branch to GitHub and create a pull request. This will kick off the CI builds to verify all of the changes in master.
+1. Create a branch from `main` and update the version node [Octokit.GraphQL.nuspec](https://github.com/octokit/octokit.graphql.net/blob/main/Octokit.GraphQL.nuspec) with the next version.
+2. Push the branch to GitHub and create a pull request. This will kick off the CI builds to verify all of the changes in main.
 3. Test!  This is when you might need to run the [generator](contributing.md) or tests or simply review the changes as a set.
 4. When you're satisfied with this release, create a tag `git tag v#.#.#-beta`. For example, to create a tag for 0.1.9-beta
 `git tag v0.1.9-beta`
@@ -19,7 +19,7 @@ Creating a new release and deploying the package to nuget are administrative tas
 7. When the tag and branch is successfully merged, the [publish workflow](https://github.com/octokit/octokit.graphql.net/actions/workflows/dotnetcore.yml) will run and build and push the package to nuget
 8. Verify that the package has been uploaded to [nuget.org](https://www.nuget.org/packages/Octokit.GraphQL/)
 9. Create a [new release](https://github.com/octokit/octokit.graphql.net/releases/new) using the tag you just created and click auto generate notes.  Cleanup the notes up as you see fit
-10. Check "This is a pre-release" and click "publish release" 🎉 
+10. Check "This is a pre-release" and click "publish release" 🎉
 
 
 ---
