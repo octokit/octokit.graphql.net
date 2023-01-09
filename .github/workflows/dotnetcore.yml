@@ -2,10 +2,10 @@ name: Build, test and publish
 "on":
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 env:
   config: Release
   PackageOutputPath: nupkg
@@ -49,11 +49,11 @@ jobs:
           name: nupkg
           path: ${{ env.PackageOutputPath }}/*.nupkg
       - name: Publish to GitHub Packages
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         shell: bash
         run: dotnet nuget push ${{ env.PackageOutputPath }}/*.nupkg
       - name: Publish to nuget.org
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         shell: bash
         run: >-
           dotnet nuget push ${{ env.PackageOutputPath }}/*.nupkg --source
