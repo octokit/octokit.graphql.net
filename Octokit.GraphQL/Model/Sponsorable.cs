@@ -9,7 +9,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Entities that can be sponsored through GitHub Sponsors
+    /// Entities that can sponsor or be sponsored through GitHub Sponsors.
     /// </summary>
     public interface ISponsorable : IQueryableValue<ISponsorable>, IQueryableInterface
     {
@@ -24,7 +24,7 @@ namespace Octokit.GraphQL.Model
         bool HasSponsorsListing { get; }
 
         /// <summary>
-        /// Check if the given account is sponsoring this user/organization.
+        /// Whether the given account is sponsoring this user/organization.
         /// </summary>
         /// <param name="accountLogin">The target account's login.</param>
         bool IsSponsoredBy(Arg<string> accountLogin);
@@ -67,9 +67,13 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="actions">Filter activities to only the specified actions.</param>
+        /// <param name="includeAsSponsor">Whether to include those events where this sponsorable acted as the sponsor. Defaults to only including events where this sponsorable was the recipient of a sponsorship.</param>
         /// <param name="orderBy">Ordering options for activity returned from the connection.</param>
-        /// <param name="period">Filter activities returned to only those that occurred in a given time range.</param>
-        SponsorsActivityConnection SponsorsActivities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorsActivityOrder>? orderBy = null, Arg<SponsorsActivityPeriod>? period = null);
+        /// <param name="period">Filter activities returned to only those that occurred in the most recent specified time period. Set to ALL to avoid filtering by when the activity occurred. Will be ignored if `since` or `until` is given.</param>
+        /// <param name="since">Filter activities to those that occurred on or after this time.</param>
+        /// <param name="until">Filter activities to those that occurred before this time.</param>
+        SponsorsActivityConnection SponsorsActivities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SponsorsActivityAction>>? actions = null, Arg<bool>? includeAsSponsor = null, Arg<SponsorsActivityOrder>? orderBy = null, Arg<SponsorsActivityPeriod>? period = null, Arg<DateTimeOffset>? since = null, Arg<DateTimeOffset>? until = null);
 
         /// <summary>
         /// The GitHub Sponsors listing for this user or organization.
@@ -77,14 +81,16 @@ namespace Octokit.GraphQL.Model
         SponsorsListing SponsorsListing { get; }
 
         /// <summary>
-        /// The sponsorship from the viewer to this user/organization; that is, the sponsorship where you're the sponsor. Only returns a sponsorship if it is active.
+        /// The sponsorship from the viewer to this user/organization; that is, the sponsorship where you're the sponsor.
         /// </summary>
-        Sponsorship SponsorshipForViewerAsSponsor { get; }
+        /// <param name="activeOnly">Whether to return the sponsorship only if it's still active. Pass false to get the viewer's sponsorship back even if it has been cancelled.</param>
+        Sponsorship SponsorshipForViewerAsSponsor(Arg<bool>? activeOnly = null);
 
         /// <summary>
-        /// The sponsorship from this user/organization to the viewer; that is, the sponsorship you're receiving. Only returns a sponsorship if it is active.
+        /// The sponsorship from this user/organization to the viewer; that is, the sponsorship you're receiving.
         /// </summary>
-        Sponsorship SponsorshipForViewerAsSponsorable { get; }
+        /// <param name="activeOnly">Whether to return the sponsorship only if it's still active. Pass false to get the sponsorship back even if it has been cancelled.</param>
+        Sponsorship SponsorshipForViewerAsSponsorable(Arg<bool>? activeOnly = null);
 
         /// <summary>
         /// List of sponsorship updates sent from this sponsorable to sponsors.
@@ -97,25 +103,36 @@ namespace Octokit.GraphQL.Model
         SponsorshipNewsletterConnection SponsorshipNewsletters(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorshipNewsletterOrder>? orderBy = null);
 
         /// <summary>
-        /// This object's sponsorships as the maintainer.
+        /// The sponsorships where this user or organization is the maintainer receiving the funds.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="activeOnly">Whether to include only sponsorships that are active right now, versus all sponsorships this maintainer has ever received.</param>
         /// <param name="includePrivate">Whether or not to include private sponsorships in the result set</param>
         /// <param name="orderBy">Ordering options for sponsorships returned from this connection. If left blank, the sponsorships will be ordered based on relevancy to the viewer.</param>
-        SponsorshipConnection SponsorshipsAsMaintainer(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includePrivate = null, Arg<SponsorshipOrder>? orderBy = null);
+        SponsorshipConnection SponsorshipsAsMaintainer(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? activeOnly = null, Arg<bool>? includePrivate = null, Arg<SponsorshipOrder>? orderBy = null);
 
         /// <summary>
-        /// This object's sponsorships as the sponsor.
+        /// The sponsorships where this user or organization is the funder.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="activeOnly">Whether to include only sponsorships that are active right now, versus all sponsorships this sponsor has ever made.</param>
+        /// <param name="maintainerLogins">Filter sponsorships returned to those for the specified maintainers. That is, the recipient of the sponsorship is a user or organization with one of the given logins.</param>
         /// <param name="orderBy">Ordering options for sponsorships returned from this connection. If left blank, the sponsorships will be ordered based on relevancy to the viewer.</param>
-        SponsorshipConnection SponsorshipsAsSponsor(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorshipOrder>? orderBy = null);
+        SponsorshipConnection SponsorshipsAsSponsor(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? activeOnly = null, Arg<IEnumerable<string>>? maintainerLogins = null, Arg<SponsorshipOrder>? orderBy = null);
+
+        /// <summary>
+        /// The amount in United States cents (e.g., 500 = $5.00 USD) that this entity has spent on GitHub to fund sponsorships. Only returns a value when viewed by the user themselves or by a user who can manage sponsorships for the requested organization.
+        /// </summary>
+        /// <param name="since">Filter payments to those that occurred on or after this time.</param>
+        /// <param name="sponsorableLogins">Filter payments to those made to the users or organizations with the specified usernames.</param>
+        /// <param name="until">Filter payments to those that occurred before this time.</param>
+        int? TotalSponsorshipAmountAsSponsorInCents(Arg<DateTimeOffset>? since = null, Arg<IEnumerable<string>>? sponsorableLogins = null, Arg<DateTimeOffset>? until = null);
 
         /// <summary>
         /// Whether or not the viewer is able to sponsor this user/organization.
@@ -157,19 +174,21 @@ namespace Octokit.GraphQL.Model.Internal
 
         public SponsorConnection Sponsors(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorOrder>? orderBy = null, Arg<ID>? tierId = null) => this.CreateMethodCall(x => x.Sponsors(first, after, last, before, orderBy, tierId), Octokit.GraphQL.Model.SponsorConnection.Create);
 
-        public SponsorsActivityConnection SponsorsActivities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorsActivityOrder>? orderBy = null, Arg<SponsorsActivityPeriod>? period = null) => this.CreateMethodCall(x => x.SponsorsActivities(first, after, last, before, orderBy, period), Octokit.GraphQL.Model.SponsorsActivityConnection.Create);
+        public SponsorsActivityConnection SponsorsActivities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SponsorsActivityAction>>? actions = null, Arg<bool>? includeAsSponsor = null, Arg<SponsorsActivityOrder>? orderBy = null, Arg<SponsorsActivityPeriod>? period = null, Arg<DateTimeOffset>? since = null, Arg<DateTimeOffset>? until = null) => this.CreateMethodCall(x => x.SponsorsActivities(first, after, last, before, actions, includeAsSponsor, orderBy, period, since, until), Octokit.GraphQL.Model.SponsorsActivityConnection.Create);
 
         public SponsorsListing SponsorsListing => this.CreateProperty(x => x.SponsorsListing, Octokit.GraphQL.Model.SponsorsListing.Create);
 
-        public Sponsorship SponsorshipForViewerAsSponsor => this.CreateProperty(x => x.SponsorshipForViewerAsSponsor, Octokit.GraphQL.Model.Sponsorship.Create);
+        public Sponsorship SponsorshipForViewerAsSponsor(Arg<bool>? activeOnly = null) => this.CreateMethodCall(x => x.SponsorshipForViewerAsSponsor(activeOnly), Octokit.GraphQL.Model.Sponsorship.Create);
 
-        public Sponsorship SponsorshipForViewerAsSponsorable => this.CreateProperty(x => x.SponsorshipForViewerAsSponsorable, Octokit.GraphQL.Model.Sponsorship.Create);
+        public Sponsorship SponsorshipForViewerAsSponsorable(Arg<bool>? activeOnly = null) => this.CreateMethodCall(x => x.SponsorshipForViewerAsSponsorable(activeOnly), Octokit.GraphQL.Model.Sponsorship.Create);
 
         public SponsorshipNewsletterConnection SponsorshipNewsletters(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorshipNewsletterOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipNewsletters(first, after, last, before, orderBy), Octokit.GraphQL.Model.SponsorshipNewsletterConnection.Create);
 
-        public SponsorshipConnection SponsorshipsAsMaintainer(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includePrivate = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsMaintainer(first, after, last, before, includePrivate, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
+        public SponsorshipConnection SponsorshipsAsMaintainer(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? activeOnly = null, Arg<bool>? includePrivate = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsMaintainer(first, after, last, before, activeOnly, includePrivate, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
 
-        public SponsorshipConnection SponsorshipsAsSponsor(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsSponsor(first, after, last, before, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
+        public SponsorshipConnection SponsorshipsAsSponsor(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? activeOnly = null, Arg<IEnumerable<string>>? maintainerLogins = null, Arg<SponsorshipOrder>? orderBy = null) => this.CreateMethodCall(x => x.SponsorshipsAsSponsor(first, after, last, before, activeOnly, maintainerLogins, orderBy), Octokit.GraphQL.Model.SponsorshipConnection.Create);
+
+        public int? TotalSponsorshipAmountAsSponsorInCents(Arg<DateTimeOffset>? since = null, Arg<IEnumerable<string>>? sponsorableLogins = null, Arg<DateTimeOffset>? until = null) => default;
 
         public bool ViewerCanSponsor { get; }
 

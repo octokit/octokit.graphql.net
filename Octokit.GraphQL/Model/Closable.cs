@@ -14,7 +14,7 @@ namespace Octokit.GraphQL.Model
     public interface IClosable : IQueryableValue<IClosable>, IQueryableInterface
     {
         /// <summary>
-        /// `true` if the object is closed (definition of closed may depend on type)
+        /// Indicates if the object is closed (definition of closed may depend on type)
         /// </summary>
         bool Closed { get; }
 
@@ -22,6 +22,16 @@ namespace Octokit.GraphQL.Model
         /// Identifies the date and time when the object was closed.
         /// </summary>
         DateTimeOffset? ClosedAt { get; }
+
+        /// <summary>
+        /// Indicates if the object can be closed by the viewer.
+        /// </summary>
+        bool ViewerCanClose { get; }
+
+        /// <summary>
+        /// Indicates if the object can be reopened by the viewer.
+        /// </summary>
+        bool ViewerCanReopen { get; }
     }
 }
 
@@ -42,6 +52,10 @@ namespace Octokit.GraphQL.Model.Internal
         public bool Closed { get; }
 
         public DateTimeOffset? ClosedAt { get; }
+
+        public bool ViewerCanClose { get; }
+
+        public bool ViewerCanReopen { get; }
 
         internal static StubIClosable Create(Expression expression)
         {

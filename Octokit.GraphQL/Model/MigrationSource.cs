@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// An Octoshift migration source.
+    /// A GitHub Enterprise Importer (GEI) migration source.
     /// </summary>
     public class MigrationSource : QueryableValue<MigrationSource>
     {
@@ -18,17 +18,17 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// The Octoshift migration source name.
+        /// The migration source name.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// The Octoshift migration source type.
+        /// The migration source type.
         /// </summary>
         public MigrationSourceType Type { get; }
 
         /// <summary>
-        /// The Octoshift migration source URL.
+        /// The migration source URL, for example `https://github.com` or `https://monalisa.ghe.com`.
         /// </summary>
         public string Url { get; }
 

@@ -109,6 +109,21 @@ namespace Octokit.GraphQL.Model
         public string ShortDescription { get; }
 
         /// <summary>
+        /// The teams the project is linked to.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for teams returned from this connection.</param>
+        public TeamConnection Teams(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<TeamOrder>? orderBy = null) => this.CreateMethodCall(x => x.Teams(first, after, last, before, orderBy), Octokit.GraphQL.Model.TeamConnection.Create);
+
+        /// <summary>
+        /// Returns true if this project is a template.
+        /// </summary>
+        public bool Template { get; }
+
+        /// <summary>
         /// The project's name.
         /// </summary>
         public string Title { get; }
@@ -124,6 +139,22 @@ namespace Octokit.GraphQL.Model
         public string Url { get; }
 
         /// <summary>
+        /// A view of the project
+        /// </summary>
+        /// <param name="number">The number of a view belonging to the project</param>
+        public ProjectV2View View(Arg<int> number) => this.CreateMethodCall(x => x.View(number), Octokit.GraphQL.Model.ProjectV2View.Create);
+
+        /// <summary>
+        /// Indicates if the object can be closed by the viewer.
+        /// </summary>
+        public bool ViewerCanClose { get; }
+
+        /// <summary>
+        /// Indicates if the object can be reopened by the viewer.
+        /// </summary>
+        public bool ViewerCanReopen { get; }
+
+        /// <summary>
         /// Check if the current viewer can update this object.
         /// </summary>
         public bool ViewerCanUpdate { get; }
@@ -137,6 +168,22 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for project v2 views returned from the connection</param>
         public ProjectV2ViewConnection Views(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2ViewOrder>? orderBy = null) => this.CreateMethodCall(x => x.Views(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2ViewConnection.Create);
+
+        /// <summary>
+        /// A workflow of the project
+        /// </summary>
+        /// <param name="number">The number of a workflow belonging to the project</param>
+        public ProjectV2Workflow Workflow(Arg<int> number) => this.CreateMethodCall(x => x.Workflow(number), Octokit.GraphQL.Model.ProjectV2Workflow.Create);
+
+        /// <summary>
+        /// List of the workflows in the project
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for project v2 workflows returned from the connection</param>
+        public ProjectV2WorkflowConnection Workflows(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2WorkflowOrder>? orderBy = null) => this.CreateMethodCall(x => x.Workflows(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2WorkflowConnection.Create);
 
         internal static ProjectV2 Create(Expression expression)
         {

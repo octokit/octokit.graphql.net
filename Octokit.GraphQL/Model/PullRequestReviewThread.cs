@@ -93,6 +93,11 @@ namespace Octokit.GraphQL.Model
         public int? StartLine { get; }
 
         /// <summary>
+        /// The level at which the comments in the corresponding thread are targeted, can be a diff line or a file
+        /// </summary>
+        public PullRequestReviewThreadSubjectType SubjectType { get; }
+
+        /// <summary>
         /// Indicates whether the current viewer can reply to this thread.
         /// </summary>
         public bool ViewerCanReply { get; }

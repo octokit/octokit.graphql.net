@@ -27,6 +27,11 @@ namespace Octokit.GraphQL.Model
         public string HeadRefName { get; set; }
 
         /// <summary>
+        /// The Node ID of the head repository.
+        /// </summary>
+        public ID? HeadRepositoryId { get; set; }
+
+        /// <summary>
         /// The title of the pull request.
         /// </summary>
         public string Title { get; set; }

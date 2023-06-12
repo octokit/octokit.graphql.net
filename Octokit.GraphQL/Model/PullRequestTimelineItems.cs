@@ -20,6 +20,11 @@ namespace Octokit.GraphQL.Model
         public class Selector<T>
         {
             /// <summary>
+            /// Represents an 'added_to_merge_queue' event on a given pull request.
+            /// </summary>
+            public Selector<T> AddedToMergeQueueEvent(Func<AddedToMergeQueueEvent, T> selector) => default;
+
+            /// <summary>
             /// Represents a 'added_to_project' event on a given issue or pull request.
             /// </summary>
             public Selector<T> AddedToProjectEvent(Func<AddedToProjectEvent, T> selector) => default;
@@ -223,6 +228,11 @@ namespace Octokit.GraphQL.Model
             /// Represents a 'referenced' event on a given `ReferencedSubject`.
             /// </summary>
             public Selector<T> ReferencedEvent(Func<ReferencedEvent, T> selector) => default;
+
+            /// <summary>
+            /// Represents a 'removed_from_merge_queue' event on a given pull request.
+            /// </summary>
+            public Selector<T> RemovedFromMergeQueueEvent(Func<RemovedFromMergeQueueEvent, T> selector) => default;
 
             /// <summary>
             /// Represents a 'removed_from_project' event on a given issue or pull request.

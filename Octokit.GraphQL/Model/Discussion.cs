@@ -66,6 +66,16 @@ namespace Octokit.GraphQL.Model
         public DiscussionCategory Category => this.CreateProperty(x => x.Category, Octokit.GraphQL.Model.DiscussionCategory.Create);
 
         /// <summary>
+        /// Indicates if the object is closed (definition of closed may depend on type)
+        /// </summary>
+        public bool Closed { get; }
+
+        /// <summary>
+        /// Identifies the date and time when the object was closed.
+        /// </summary>
+        public DateTimeOffset? ClosedAt { get; }
+
+        /// <summary>
         /// The replies to the discussion.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -163,6 +173,11 @@ namespace Octokit.GraphQL.Model
         public string ResourcePath { get; }
 
         /// <summary>
+        /// Identifies the reason for the discussion's state.
+        /// </summary>
+        public DiscussionStateReason? StateReason { get; }
+
+        /// <summary>
         /// The title of this discussion.
         /// </summary>
         public string Title { get; }
@@ -192,6 +207,11 @@ namespace Octokit.GraphQL.Model
         public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 
         /// <summary>
+        /// Indicates if the object can be closed by the viewer.
+        /// </summary>
+        public bool ViewerCanClose { get; }
+
+        /// <summary>
         /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
@@ -200,6 +220,11 @@ namespace Octokit.GraphQL.Model
         /// Can user react to this subject
         /// </summary>
         public bool ViewerCanReact { get; }
+
+        /// <summary>
+        /// Indicates if the object can be reopened by the viewer.
+        /// </summary>
+        public bool ViewerCanReopen { get; }
 
         /// <summary>
         /// Check if the viewer is able to change their subscription status for the repository.

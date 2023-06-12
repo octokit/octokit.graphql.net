@@ -47,6 +47,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset? Timestamp { get; }
 
+        /// <summary>
+        /// Was this sponsorship made alongside other sponsorships at the same time from the same sponsor?
+        /// </summary>
+        public bool ViaBulkSponsorship { get; }
+
         internal static SponsorsActivity Create(Expression expression)
         {
             return new SponsorsActivity(expression);

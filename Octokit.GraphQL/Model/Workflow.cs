@@ -33,9 +33,34 @@ namespace Octokit.GraphQL.Model
         public string Name { get; }
 
         /// <summary>
+        /// The HTTP path for this workflow
+        /// </summary>
+        public string ResourcePath { get; }
+
+        /// <summary>
+        /// The runs of the workflow.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for the connection</param>
+        public WorkflowRunConnection Runs(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<WorkflowRunOrder>? orderBy = null) => this.CreateMethodCall(x => x.Runs(first, after, last, before, orderBy), Octokit.GraphQL.Model.WorkflowRunConnection.Create);
+
+        /// <summary>
+        /// The state of the workflow.
+        /// </summary>
+        public WorkflowState State { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
+
+        /// <summary>
+        /// The HTTP URL for this workflow
+        /// </summary>
+        public string Url { get; }
 
         internal static Workflow Create(Expression expression)
         {

@@ -20,6 +20,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// Identifies the primary key from the database as a BigInt.
+        /// </summary>
+        public string FullDatabaseId { get; }
+
         public ID Id { get; }
 
         /// <summary>

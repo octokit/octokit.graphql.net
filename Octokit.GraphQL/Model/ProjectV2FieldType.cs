@@ -88,5 +88,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "TRACKS")]
         Tracks,
+
+        /// <summary>
+        /// Tracked by
+        /// </summary>
+        [EnumMember(Value = "TRACKED_BY")]
+        TrackedBy,
     }
 }

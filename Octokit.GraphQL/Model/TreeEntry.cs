@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public bool IsGenerated { get; }
 
         /// <summary>
+        /// The programming language this file is written in.
+        /// </summary>
+        public Language Language => this.CreateProperty(x => x.Language, Octokit.GraphQL.Model.Language.Create);
+
+        /// <summary>
         /// Number of lines in the file.
         /// </summary>
         public int? LineCount { get; }
@@ -39,6 +44,11 @@ namespace Octokit.GraphQL.Model
         /// Entry file name.
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// Entry file name. (Base64-encoded)
+        /// </summary>
+        public string NameRaw { get; }
 
         /// <summary>
         /// Entry file object.
@@ -56,9 +66,19 @@ namespace Octokit.GraphQL.Model
         public string Path { get; }
 
         /// <summary>
+        /// The full path of the file. (Base64-encoded)
+        /// </summary>
+        public string PathRaw { get; }
+
+        /// <summary>
         /// The Repository the tree entry belongs to
         /// </summary>
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
+
+        /// <summary>
+        /// Entry byte size
+        /// </summary>
+        public int Size { get; }
 
         /// <summary>
         /// If the TreeEntry is for a directory occupied by a submodule project, this returns the corresponding submodule

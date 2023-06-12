@@ -34,6 +34,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public BranchProtectionRule BranchProtectionRule => this.CreateProperty(x => x.BranchProtectionRule, Octokit.GraphQL.Model.BranchProtectionRule.Create);
 
+        /// <summary>
+        /// Compares the current ref as a base ref to another head ref, if the comparison can be made.
+        /// </summary>
+        /// <param name="headRef">The head ref to compare against.</param>
+        public Comparison Compare(Arg<string> headRef) => this.CreateMethodCall(x => x.Compare(headRef), Octokit.GraphQL.Model.Comparison.Create);
+
         public ID Id { get; }
 
         /// <summary>

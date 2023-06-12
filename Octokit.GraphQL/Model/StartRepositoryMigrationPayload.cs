@@ -21,7 +21,7 @@ namespace Octokit.GraphQL.Model
         public string ClientMutationId { get; }
 
         /// <summary>
-        /// The new Octoshift repository migration.
+        /// The new repository migration.
         /// </summary>
         public RepositoryMigration RepositoryMigration => this.CreateProperty(x => x.RepositoryMigration, Octokit.GraphQL.Model.RepositoryMigration.Create);
 

@@ -36,13 +36,20 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
-        /// List of field values
+        /// The field value of the first project field which matches the 'name' argument that is set on the item.
+        /// </summary>
+        /// <param name="name">The name of the field to return the field value of</param>
+        public ProjectV2ItemFieldValue FieldValueByName(Arg<string> name) => this.CreateMethodCall(x => x.FieldValueByName(name), Octokit.GraphQL.Model.ProjectV2ItemFieldValue.Create);
+
+        /// <summary>
+        /// The field values that are set on the item.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ProjectV2ItemFieldValueConnection FieldValues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.FieldValues(first, after, last, before), Octokit.GraphQL.Model.ProjectV2ItemFieldValueConnection.Create);
+        /// <param name="orderBy">Ordering options for project v2 item field values returned from the connection</param>
+        public ProjectV2ItemFieldValueConnection FieldValues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2ItemFieldValueOrder>? orderBy = null) => this.CreateMethodCall(x => x.FieldValues(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2ItemFieldValueConnection.Create);
 
         public ID Id { get; }
 

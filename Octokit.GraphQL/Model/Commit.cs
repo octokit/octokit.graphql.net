@@ -67,9 +67,15 @@ namespace Octokit.GraphQL.Model
         public Blame Blame(Arg<string> path) => this.CreateMethodCall(x => x.Blame(path), Octokit.GraphQL.Model.Blame.Create);
 
         /// <summary>
-        /// The number of changed files in this commit.
+        /// We recommend using the `changedFielsIfAvailable` field instead of `changedFiles`, as `changedFiles` will cause your request to return an error if GitHub is unable to calculate the number of changed files.
         /// </summary>
+        [Obsolete(@"`changedFiles` will be removed. Use `changedFilesIfAvailable` instead. Removal on 2023-01-01 UTC.")]
         public int ChangedFiles { get; }
+
+        /// <summary>
+        /// The number of changed files in this commit. If GitHub is unable to calculate the number of changed files (for example due to a timeout), this will return `null`. We recommend using this field instead of `changedFiles`.
+        /// </summary>
+        public int? ChangedFilesIfAvailable { get; }
 
         /// <summary>
         /// The check suites associated with a commit.
@@ -199,6 +205,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The datetime when this commit was pushed.
         /// </summary>
+        [Obsolete(@"`pushedDate` is no longer supported. Removal on 2023-07-01 UTC.")]
         public DateTimeOffset? PushedDate { get; }
 
         /// <summary>

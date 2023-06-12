@@ -28,6 +28,11 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// The source of the invitation.
+        /// </summary>
+        public OrganizationInvitationSource InvitationSource { get; }
+
+        /// <summary>
         /// The type of invitation that was sent (e.g. email, user).
         /// </summary>
         public OrganizationInvitationType InvitationType { get; }

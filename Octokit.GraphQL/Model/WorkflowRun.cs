@@ -39,6 +39,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public DeploymentReviewConnection DeploymentReviews(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.DeploymentReviews(first, after, last, before), Octokit.GraphQL.Model.DeploymentReviewConnection.Create);
 
+        /// <summary>
+        /// The event that triggered the workflow run
+        /// </summary>
+        public string Event { get; }
+
         public ID Id { get; }
 
         /// <summary>
