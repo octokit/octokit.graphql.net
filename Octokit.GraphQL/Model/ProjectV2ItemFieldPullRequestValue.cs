@@ -27,7 +27,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public PullRequestConnection PullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before), Octokit.GraphQL.Model.PullRequestConnection.Create);
+        /// <param name="orderBy">Ordering options for pull requests.</param>
+        public PullRequestConnection PullRequests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<PullRequestOrder>? orderBy = null) => this.CreateMethodCall(x => x.PullRequests(first, after, last, before, orderBy), Octokit.GraphQL.Model.PullRequestConnection.Create);
 
         internal static ProjectV2ItemFieldPullRequestValue Create(Expression expression)
         {

@@ -23,7 +23,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="answered">Filter discussions to only those that have been answered or not. Defaults to including both answered and unanswered discussions.</param>
         /// <param name="orderBy">Ordering options for discussions returned from the connection.</param>
         /// <param name="repositoryId">Filter discussions to only those in a specific repository.</param>
-        DiscussionConnection RepositoryDiscussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? answered = null, Arg<DiscussionOrder>? orderBy = null, Arg<ID>? repositoryId = null);
+        /// <param name="states">A list of states to filter the discussions by.</param>
+        DiscussionConnection RepositoryDiscussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? answered = null, Arg<DiscussionOrder>? orderBy = null, Arg<ID>? repositoryId = null, Arg<IEnumerable<DiscussionState>>? states = null);
     }
 }
 
@@ -41,7 +42,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public DiscussionConnection RepositoryDiscussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? answered = null, Arg<DiscussionOrder>? orderBy = null, Arg<ID>? repositoryId = null) => this.CreateMethodCall(x => x.RepositoryDiscussions(first, after, last, before, answered, orderBy, repositoryId), Octokit.GraphQL.Model.DiscussionConnection.Create);
+        public DiscussionConnection RepositoryDiscussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? answered = null, Arg<DiscussionOrder>? orderBy = null, Arg<ID>? repositoryId = null, Arg<IEnumerable<DiscussionState>>? states = null) => this.CreateMethodCall(x => x.RepositoryDiscussions(first, after, last, before, answered, orderBy, repositoryId, states), Octokit.GraphQL.Model.DiscussionConnection.Create);
 
         internal static StubIRepositoryDiscussionAuthor Create(Expression expression)
         {

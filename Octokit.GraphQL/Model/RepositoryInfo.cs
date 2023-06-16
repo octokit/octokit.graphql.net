@@ -14,6 +14,11 @@ namespace Octokit.GraphQL.Model
     public interface IRepositoryInfo : IQueryableValue<IRepositoryInfo>, IQueryableInterface
     {
         /// <summary>
+        /// Identifies the date and time when the repository was archived.
+        /// </summary>
+        DateTimeOffset? ArchivedAt { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         DateTimeOffset CreatedAt { get; }
@@ -32,6 +37,11 @@ namespace Octokit.GraphQL.Model
         /// Returns how many forks there are of this repository in the whole network.
         /// </summary>
         int ForkCount { get; }
+
+        /// <summary>
+        /// Indicates if the repository has the Discussions feature enabled.
+        /// </summary>
+        bool HasDiscussionsEnabled { get; }
 
         /// <summary>
         /// Indicates if the repository has issues feature enabled.
@@ -124,7 +134,7 @@ namespace Octokit.GraphQL.Model
         IRepositoryOwner Owner { get; }
 
         /// <summary>
-        /// Identifies when the repository was last pushed to.
+        /// Identifies the date and time when the repository was last pushed to.
         /// </summary>
         DateTimeOffset? PushedAt { get; }
 
@@ -175,6 +185,8 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
+        public DateTimeOffset? ArchivedAt { get; }
+
         public DateTimeOffset CreatedAt { get; }
 
         public string Description { get; }
@@ -182,6 +194,8 @@ namespace Octokit.GraphQL.Model.Internal
         public string DescriptionHTML { get; }
 
         public int ForkCount { get; }
+
+        public bool HasDiscussionsEnabled { get; }
 
         public bool HasIssuesEnabled { get; }
 

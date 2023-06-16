@@ -65,7 +65,7 @@ namespace Octokit.GraphQL.Model
         public string BodyUrl { get; }
 
         /// <summary>
-        /// `true` if the object is closed (definition of closed may depend on type)
+        /// Indicates if the object is closed (definition of closed may depend on type)
         /// </summary>
         public bool Closed { get; }
 
@@ -105,6 +105,11 @@ namespace Octokit.GraphQL.Model
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
         /// <summary>
+        /// Identifies the primary key from the database as a BigInt.
+        /// </summary>
+        public string FullDatabaseId { get; }
+
+        /// <summary>
         /// The hovercard information for this issue
         /// </summary>
         /// <param name="includeNotificationContexts">Whether or not to include notification contexts</param>
@@ -141,6 +146,15 @@ namespace Octokit.GraphQL.Model
         /// The moment the editor made the last edit
         /// </summary>
         public DateTimeOffset? LastEditedAt { get; }
+
+        /// <summary>
+        /// Branches linked to this issue.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public LinkedBranchConnection LinkedBranches(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.LinkedBranches(first, after, last, before), Octokit.GraphQL.Model.LinkedBranchConnection.Create);
 
         /// <summary>
         /// `true` if the object is locked
@@ -187,37 +201,10 @@ namespace Octokit.GraphQL.Model
         public ProjectV2ItemConnection ProjectItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includeArchived = null) => this.CreateMethodCall(x => x.ProjectItems(first, after, last, before, includeArchived), Octokit.GraphQL.Model.ProjectV2ItemConnection.Create);
 
         /// <summary>
-        /// Find a project by project (beta) number.
-        /// </summary>
-        /// <param name="number">The project (beta) number.</param>
-        public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
-
-        /// <summary>
-        /// List of project (beta) items associated with this issue.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="includeArchived">Include archived items.</param>
-        public ProjectNextItemConnection ProjectNextItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includeArchived = null) => this.CreateMethodCall(x => x.ProjectNextItems(first, after, last, before, includeArchived), Octokit.GraphQL.Model.ProjectNextItemConnection.Create);
-
-        /// <summary>
         /// Find a project by number.
         /// </summary>
         /// <param name="number">The project number.</param>
         public ProjectV2 ProjectV2(Arg<int> number) => this.CreateMethodCall(x => x.ProjectV2(number), Octokit.GraphQL.Model.ProjectV2.Create);
-
-        /// <summary>
-        /// A list of projects (beta) under the owner.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="query">A project (beta) to search for under the the owner.</param>
-        /// <param name="sortBy">How to order the returned projects (beta).</param>
-        public ProjectNextConnection ProjectsNext(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<ProjectNextOrderField>? sortBy = null) => this.CreateMethodCall(x => x.ProjectsNext(first, after, last, before, query, sortBy), Octokit.GraphQL.Model.ProjectNextConnection.Create);
 
         /// <summary>
         /// A list of projects under the owner.
@@ -347,9 +334,24 @@ namespace Octokit.GraphQL.Model
         public UserContentEditConnection UserContentEdits(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.UserContentEdits(first, after, last, before), Octokit.GraphQL.Model.UserContentEditConnection.Create);
 
         /// <summary>
+        /// Indicates if the object can be closed by the viewer.
+        /// </summary>
+        public bool ViewerCanClose { get; }
+
+        /// <summary>
+        /// Check if the current viewer can delete this object.
+        /// </summary>
+        public bool ViewerCanDelete { get; }
+
+        /// <summary>
         /// Can user react to this subject
         /// </summary>
         public bool ViewerCanReact { get; }
+
+        /// <summary>
+        /// Indicates if the object can be reopened by the viewer.
+        /// </summary>
+        public bool ViewerCanReopen { get; }
 
         /// <summary>
         /// Check if the viewer is able to change their subscription status for the repository.

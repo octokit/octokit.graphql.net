@@ -52,16 +52,6 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// The project (beta) that contains this draft issue.
-        /// </summary>
-        public ProjectNext Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Model.ProjectNext.Create);
-
-        /// <summary>
-        /// The project (beta) item that wraps this draft issue.
-        /// </summary>
-        public ProjectNextItem ProjectItem => this.CreateProperty(x => x.ProjectItem, Octokit.GraphQL.Model.ProjectNextItem.Create);
-
-        /// <summary>
         /// List of items linked with the draft issue (currently draft issue can be linked to only one item).
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

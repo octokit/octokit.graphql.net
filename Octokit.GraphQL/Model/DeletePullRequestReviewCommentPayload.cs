@@ -25,6 +25,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public PullRequestReview PullRequestReview => this.CreateProperty(x => x.PullRequestReview, Octokit.GraphQL.Model.PullRequestReview.Create);
 
+        /// <summary>
+        /// The deleted pull request review comment.
+        /// </summary>
+        public PullRequestReviewComment PullRequestReviewComment => this.CreateProperty(x => x.PullRequestReviewComment, Octokit.GraphQL.Model.PullRequestReviewComment.Create);
+
         internal static DeletePullRequestReviewCommentPayload Create(Expression expression)
         {
             return new DeletePullRequestReviewCommentPayload(expression);

@@ -16,6 +16,16 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The number of check runs in this rollup.
+        /// </summary>
+        public int CheckRunCount { get; }
+
+        /// <summary>
+        /// Counts of check runs by state.
+        /// </summary>
+        public IQueryableList<CheckRunStateCount> CheckRunCountsByState => this.CreateProperty(x => x.CheckRunCountsByState);
+
+        /// <summary>
         /// A list of edges.
         /// </summary>
         public IQueryableList<StatusCheckRollupContextEdge> Edges => this.CreateProperty(x => x.Edges);
@@ -29,6 +39,16 @@ namespace Octokit.GraphQL.Model
         /// Information to aid in pagination.
         /// </summary>
         public PageInfo PageInfo => this.CreateProperty(x => x.PageInfo, Octokit.GraphQL.Model.PageInfo.Create);
+
+        /// <summary>
+        /// The number of status contexts in this rollup.
+        /// </summary>
+        public int StatusContextCount { get; }
+
+        /// <summary>
+        /// Counts of status contexts by state.
+        /// </summary>
+        public IQueryableList<StatusContextStateCount> StatusContextCountsByState => this.CreateProperty(x => x.StatusContextCountsByState);
 
         /// <summary>
         /// Identifies the total count of items in the connection.

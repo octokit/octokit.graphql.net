@@ -31,9 +31,19 @@ namespace Octokit.GraphQL.Model
         public string Name { get; }
 
         /// <summary>
+        /// The name of the submodule in .gitmodules (Base64-encoded)
+        /// </summary>
+        public string NameRaw { get; }
+
+        /// <summary>
         /// The path in the superproject that this submodule is located in
         /// </summary>
         public string Path { get; }
+
+        /// <summary>
+        /// The path in the superproject that this submodule is located in (Base64-encoded)
+        /// </summary>
+        public string PathRaw { get; }
 
         /// <summary>
         /// The commit revision of the subproject repository being tracked by the submodule

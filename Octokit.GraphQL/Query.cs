@@ -132,7 +132,7 @@ namespace Octokit.GraphQL
         public RateLimit RateLimit(Arg<bool>? dryRun = null) => this.CreateMethodCall(x => x.RateLimit(dryRun), Octokit.GraphQL.Model.RateLimit.Create);
 
         /// <summary>
-        /// Hack to workaround https://github.com/facebook/relay/issues/112 re-exposing the root query object
+        /// Workaround for re-exposing the root query object. (Refer to https://github.com/facebook/relay/issues/112 for more information.)
         /// </summary>
         public Query Relay => this.CreateProperty(x => x.Relay, Octokit.GraphQL.Query.Create);
 
@@ -157,7 +157,7 @@ namespace Octokit.GraphQL
         public IUniformResourceLocatable Resource(Arg<string> url) => this.CreateMethodCall(x => x.Resource(url), Octokit.GraphQL.Model.Internal.StubIUniformResourceLocatable.Create);
 
         /// <summary>
-        /// Perform a search across resources.
+        /// Perform a search across resources, returning a maximum of 1,000 results.
         /// </summary>
         /// <param name="query">The search string to look for.</param>
         /// <param name="type">The types of search items to search within.</param>

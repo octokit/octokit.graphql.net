@@ -9,12 +9,12 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents an Octoshift migration.
+    /// Represents a GitHub Enterprise Importer (GEI) migration.
     /// </summary>
     public interface IMigration : IQueryableValue<IMigration>, IQueryableInterface
     {
         /// <summary>
-        /// The Octoshift migration flag to continue on error.
+        /// The migration flag to continue on error.
         /// </summary>
         bool ContinueOnError { get; }
 
@@ -22,6 +22,11 @@ namespace Octokit.GraphQL.Model
         /// Identifies the date and time when the object was created.
         /// </summary>
         DateTimeOffset CreatedAt { get; }
+
+        /// <summary>
+        /// Identifies the primary key from the database.
+        /// </summary>
+        string DatabaseId { get; }
 
         /// <summary>
         /// The reason the migration failed.
@@ -36,7 +41,7 @@ namespace Octokit.GraphQL.Model
         string MigrationLogUrl { get; }
 
         /// <summary>
-        /// The Octoshift migration source.
+        /// The migration source.
         /// </summary>
         MigrationSource MigrationSource { get; }
 
@@ -46,14 +51,19 @@ namespace Octokit.GraphQL.Model
         string RepositoryName { get; }
 
         /// <summary>
-        /// The Octoshift migration source URL.
+        /// The migration source URL, for example `https://github.com` or `https://monalisa.ghe.com`.
         /// </summary>
         string SourceUrl { get; }
 
         /// <summary>
-        /// The Octoshift migration state.
+        /// The migration state.
         /// </summary>
         MigrationState State { get; }
+
+        /// <summary>
+        /// The number of warnings encountered for this migration. To review the warnings, check the [Migration Log](https://docs.github.com/en/migrations/using-github-enterprise-importer/completing-your-migration-with-github-enterprise-importer/accessing-your-migration-logs-for-github-enterprise-importer).
+        /// </summary>
+        int WarningsCount { get; }
     }
 }
 
@@ -75,6 +85,8 @@ namespace Octokit.GraphQL.Model.Internal
 
         public DateTimeOffset CreatedAt { get; }
 
+        public string DatabaseId { get; }
+
         public string FailureReason { get; }
 
         public ID Id { get; }
@@ -88,6 +100,8 @@ namespace Octokit.GraphQL.Model.Internal
         public string SourceUrl { get; }
 
         public MigrationState State { get; }
+
+        public int WarningsCount { get; }
 
         internal static StubIMigration Create(Expression expression)
         {

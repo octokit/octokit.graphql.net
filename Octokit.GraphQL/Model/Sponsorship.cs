@@ -23,12 +23,17 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Whether the sponsorship is active. False implies the sponsor is a past sponsor of the maintainer, while true implies they are a current sponsor.
+        /// </summary>
+        public bool IsActive { get; }
+
+        /// <summary>
         /// Whether this sponsorship represents a one-time payment versus a recurring sponsorship.
         /// </summary>
         public bool IsOneTimePayment { get; }
 
         /// <summary>
-        /// Check if the sponsor has chosen to receive sponsorship update emails sent from the sponsorable. Only returns a non-null value when the viewer has permission to know this.
+        /// Whether the sponsor has chosen to receive sponsorship update emails sent from the sponsorable. Only returns a non-null value when the viewer has permission to know this.
         /// </summary>
         public bool? IsSponsorOptedIntoEmail { get; }
 

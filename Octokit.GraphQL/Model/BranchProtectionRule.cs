@@ -80,6 +80,16 @@ namespace Octokit.GraphQL.Model
         public bool IsAdminEnforced { get; }
 
         /// <summary>
+        /// Whether users can pull changes from upstream when the branch is locked. Set to `true` to allow fork syncing. Set to `false` to prevent fork syncing.
+        /// </summary>
+        public bool LockAllowsFetchAndMerge { get; }
+
+        /// <summary>
+        /// Whether to set the branch as read-only. If this is true, users will not be able to push to the branch.
+        /// </summary>
+        public bool LockBranch { get; }
+
+        /// <summary>
         /// Repository refs that are protected by this rule
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -109,9 +119,19 @@ namespace Octokit.GraphQL.Model
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
+        /// Whether the most recent push must be approved by someone other than the person who pushed it
+        /// </summary>
+        public bool RequireLastPushApproval { get; }
+
+        /// <summary>
         /// Number of approving reviews required to update matching branches.
         /// </summary>
         public int? RequiredApprovingReviewCount { get; }
+
+        /// <summary>
+        /// List of required deployment environments that must be deployed successfully to update matching branches
+        /// </summary>
+        public IEnumerable<string> RequiredDeploymentEnvironments { get; }
 
         /// <summary>
         /// List of required status check contexts that must pass for commits to be accepted to matching branches.
@@ -142,6 +162,11 @@ namespace Octokit.GraphQL.Model
         /// Are conversations required to be resolved before merging.
         /// </summary>
         public bool RequiresConversationResolution { get; }
+
+        /// <summary>
+        /// Does this branch require deployment to specific environments before merging
+        /// </summary>
+        public bool RequiresDeployments { get; }
 
         /// <summary>
         /// Are merge commits prohibited from being pushed to this branch.

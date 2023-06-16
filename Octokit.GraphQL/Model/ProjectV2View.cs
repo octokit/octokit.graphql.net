@@ -26,6 +26,16 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
+        /// The view's visible fields.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for the project v2 fields returned from the connection.</param>
+        public ProjectV2FieldConfigurationConnection Fields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.Fields(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConfigurationConnection.Create);
+
+        /// <summary>
         /// The project view's filter.
         /// </summary>
         public string Filter { get; }
@@ -37,18 +47,20 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ProjectV2FieldConnection GroupBy(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.GroupBy(first, after, last, before), Octokit.GraphQL.Model.ProjectV2FieldConnection.Create);
-
-        public ID Id { get; }
+        /// <param name="orderBy">Ordering options for the project v2 fields returned from the connection.</param>
+        public ProjectV2FieldConnection GroupBy(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.GroupBy(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConnection.Create);
 
         /// <summary>
-        /// The view's filtered items.
+        /// The view's group-by field.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ProjectV2ItemConnection Items(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Items(first, after, last, before), Octokit.GraphQL.Model.ProjectV2ItemConnection.Create);
+        /// <param name="orderBy">Ordering options for the project v2 fields returned from the connection.</param>
+        public ProjectV2FieldConfigurationConnection GroupByFields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.GroupByFields(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConfigurationConnection.Create);
+
+        public ID Id { get; }
 
         /// <summary>
         /// The project view's layout.
@@ -80,6 +92,15 @@ namespace Octokit.GraphQL.Model
         public ProjectV2SortByConnection SortBy(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.SortBy(first, after, last, before), Octokit.GraphQL.Model.ProjectV2SortByConnection.Create);
 
         /// <summary>
+        /// The view's sort-by config.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public ProjectV2SortByFieldConnection SortByFields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.SortByFields(first, after, last, before), Octokit.GraphQL.Model.ProjectV2SortByFieldConnection.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
@@ -91,7 +112,18 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ProjectV2FieldConnection VerticalGroupBy(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.VerticalGroupBy(first, after, last, before), Octokit.GraphQL.Model.ProjectV2FieldConnection.Create);
+        /// <param name="orderBy">Ordering options for the project v2 fields returned from the connection.</param>
+        public ProjectV2FieldConnection VerticalGroupBy(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.VerticalGroupBy(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConnection.Create);
+
+        /// <summary>
+        /// The view's vertical-group-by field.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for the project v2 fields returned from the connection.</param>
+        public ProjectV2FieldConfigurationConnection VerticalGroupByFields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.VerticalGroupByFields(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConfigurationConnection.Create);
 
         /// <summary>
         /// The view's visible fields.
@@ -100,7 +132,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        public ProjectV2FieldConnection VisibleFields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.VisibleFields(first, after, last, before), Octokit.GraphQL.Model.ProjectV2FieldConnection.Create);
+        /// <param name="orderBy">Ordering options for the project v2 fields returned from the connection.</param>
+        public ProjectV2FieldConnection VisibleFields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.VisibleFields(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConnection.Create);
 
         internal static ProjectV2View Create(Expression expression)
         {

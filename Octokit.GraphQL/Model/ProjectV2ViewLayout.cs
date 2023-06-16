@@ -22,5 +22,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "TABLE_LAYOUT")]
         TableLayout,
+
+        /// <summary>
+        /// Roadmap layout
+        /// </summary>
+        [EnumMember(Value = "ROADMAP_LAYOUT")]
+        RoadmapLayout,
     }
 }

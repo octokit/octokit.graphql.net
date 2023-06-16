@@ -64,5 +64,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "RUST")]
         Rust,
+
+        /// <summary>
+        /// Dart packages hosted at pub.dev
+        /// </summary>
+        [EnumMember(Value = "PUB")]
+        Pub,
     }
 }

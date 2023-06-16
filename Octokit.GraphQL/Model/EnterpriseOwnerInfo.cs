@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Enterprise information only visible to enterprise owners.
+    /// Enterprise information visible to enterprise owners or enterprise owners' personal access tokens (classic) with read:enterprise or admin:enterprise scope.
     /// </summary>
     public class EnterpriseOwnerInfo : QueryableValue<EnterpriseOwnerInfo>
     {
@@ -22,11 +22,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="hasTwoFactorEnabled">Only return administrators with this two-factor authentication status.</param>
         /// <param name="orderBy">Ordering options for administrators returned from the connection.</param>
         /// <param name="organizationLogins">Only return members within the organizations with these logins</param>
         /// <param name="query">The search string to look for.</param>
         /// <param name="role">The role to filter by.</param>
-        public EnterpriseAdministratorConnection Admins(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<EnterpriseMemberOrder>? orderBy = null, Arg<IEnumerable<string>>? organizationLogins = null, Arg<string>? query = null, Arg<EnterpriseAdministratorRole>? role = null) => this.CreateMethodCall(x => x.Admins(first, after, last, before, orderBy, organizationLogins, query, role), Octokit.GraphQL.Model.EnterpriseAdministratorConnection.Create);
+        public EnterpriseAdministratorConnection Admins(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? hasTwoFactorEnabled = null, Arg<EnterpriseMemberOrder>? orderBy = null, Arg<IEnumerable<string>>? organizationLogins = null, Arg<string>? query = null, Arg<EnterpriseAdministratorRole>? role = null) => this.CreateMethodCall(x => x.Admins(first, after, last, before, hasTwoFactorEnabled, orderBy, organizationLogins, query, role), Octokit.GraphQL.Model.EnterpriseAdministratorConnection.Create);
 
         /// <summary>
         /// A list of users in the enterprise who currently have two-factor authentication disabled.
@@ -59,6 +60,11 @@ namespace Octokit.GraphQL.Model
         public OrganizationConnection AllowPrivateRepositoryForkingSettingOrganizations(Arg<bool> value, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null) => this.CreateMethodCall(x => x.AllowPrivateRepositoryForkingSettingOrganizations(value, first, after, last, before, orderBy), Octokit.GraphQL.Model.OrganizationConnection.Create);
 
         /// <summary>
+        /// The value for the allow private repository forking policy on the enterprise.
+        /// </summary>
+        public EnterpriseAllowPrivateRepositoryForkingPolicyValue? AllowPrivateRepositoryForkingSettingPolicyValue { get; }
+
+        /// <summary>
         /// The setting value for base repository permissions for organizations in this enterprise.
         /// </summary>
         public EnterpriseDefaultRepositoryPermissionSettingValue DefaultRepositoryPermissionSetting { get; }
@@ -75,7 +81,7 @@ namespace Octokit.GraphQL.Model
         public OrganizationConnection DefaultRepositoryPermissionSettingOrganizations(Arg<DefaultRepositoryPermissionField> value, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null) => this.CreateMethodCall(x => x.DefaultRepositoryPermissionSettingOrganizations(value, first, after, last, before, orderBy), Octokit.GraphQL.Model.OrganizationConnection.Create);
 
         /// <summary>
-        /// A list of domains owned by the enterprise.
+        /// A list of domains owned by the enterprise. Visible to enterprise owners or enterprise owners' personal access tokens (classic) with admin:enterprise scope.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
@@ -98,12 +104,22 @@ namespace Octokit.GraphQL.Model
         public EnterpriseServerInstallationConnection EnterpriseServerInstallations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? connectedOnly = null, Arg<EnterpriseServerInstallationOrder>? orderBy = null) => this.CreateMethodCall(x => x.EnterpriseServerInstallations(first, after, last, before, connectedOnly, orderBy), Octokit.GraphQL.Model.EnterpriseServerInstallationConnection.Create);
 
         /// <summary>
+        /// A list of failed invitations in the enterprise.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="query">The search string to look for.</param>
+        public EnterpriseFailedInvitationConnection FailedInvitations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.FailedInvitations(first, after, last, before, query), Octokit.GraphQL.Model.EnterpriseFailedInvitationConnection.Create);
+
+        /// <summary>
         /// The setting value for whether the enterprise has an IP allow list enabled.
         /// </summary>
         public IpAllowListEnabledSettingValue IpAllowListEnabledSetting { get; }
 
         /// <summary>
-        /// The IP addresses that are allowed to access resources owned by the enterprise.
+        /// The IP addresses that are allowed to access resources owned by the enterprise. Visible to enterprise owners or enterprise owners' personal access tokens (classic) with admin:enterprise scope.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
@@ -330,9 +346,10 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="invitationSource">Only return invitations matching this invitation source</param>
         /// <param name="organizationLogins">Only return invitations within the organizations with these logins</param>
         /// <param name="query">The search string to look for.</param>
-        public EnterprisePendingMemberInvitationConnection PendingMemberInvitations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? organizationLogins = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.PendingMemberInvitations(first, after, last, before, organizationLogins, query), Octokit.GraphQL.Model.EnterprisePendingMemberInvitationConnection.Create);
+        public EnterprisePendingMemberInvitationConnection PendingMemberInvitations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationInvitationSource>? invitationSource = null, Arg<IEnumerable<string>>? organizationLogins = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.PendingMemberInvitations(first, after, last, before, invitationSource, organizationLogins, query), Octokit.GraphQL.Model.EnterprisePendingMemberInvitationConnection.Create);
 
         /// <summary>
         /// The setting value for whether repository projects are enabled in this enterprise.
@@ -351,7 +368,7 @@ namespace Octokit.GraphQL.Model
         public OrganizationConnection RepositoryProjectsSettingOrganizations(Arg<bool> value, Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationOrder>? orderBy = null) => this.CreateMethodCall(x => x.RepositoryProjectsSettingOrganizations(value, first, after, last, before, orderBy), Octokit.GraphQL.Model.OrganizationConnection.Create);
 
         /// <summary>
-        /// The SAML Identity Provider for the enterprise. When used by a GitHub App, requires an installation token with read and write access to members.
+        /// The SAML Identity Provider for the enterprise.
         /// </summary>
         public EnterpriseIdentityProvider SamlIdentityProvider => this.CreateProperty(x => x.SamlIdentityProvider, Octokit.GraphQL.Model.EnterpriseIdentityProvider.Create);
 

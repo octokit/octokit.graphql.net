@@ -60,6 +60,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
+        /// <summary>
+        /// Identifies the primary key from the database as a BigInt.
+        /// </summary>
+        public string FullDatabaseId { get; }
+
         public ID Id { get; }
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset? LastEditedAt { get; }
 
         /// <summary>
-        /// Returns why the comment was minimized.
+        /// Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation.
         /// </summary>
         public string MinimizedReason { get; }
 

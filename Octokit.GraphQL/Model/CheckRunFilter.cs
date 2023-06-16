@@ -24,8 +24,18 @@ namespace Octokit.GraphQL.Model
         public string CheckName { get; set; }
 
         /// <summary>
-        /// Filters the check runs by this status.
+        /// Filters the check runs by this status. Superceded by statuses.
         /// </summary>
         public CheckStatusState? Status { get; set; }
+
+        /// <summary>
+        /// Filters the check runs by this status. Overrides status.
+        /// </summary>
+        public IEnumerable<CheckStatusState> Statuses { get; set; }
+
+        /// <summary>
+        /// Filters the check runs by these conclusions.
+        /// </summary>
+        public IEnumerable<CheckConclusionState> Conclusions { get; set; }
     }
 }

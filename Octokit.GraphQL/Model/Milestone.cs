@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
-        /// `true` if the object is closed (definition of closed may depend on type)
+        /// Indicates if the object is closed (definition of closed may depend on type)
         /// </summary>
         public bool Closed { get; }
 
@@ -113,6 +113,16 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL for this milestone
         /// </summary>
         public string Url { get; }
+
+        /// <summary>
+        /// Indicates if the object can be closed by the viewer.
+        /// </summary>
+        public bool ViewerCanClose { get; }
+
+        /// <summary>
+        /// Indicates if the object can be reopened by the viewer.
+        /// </summary>
+        public bool ViewerCanReopen { get; }
 
         internal static Milestone Create(Expression expression)
         {

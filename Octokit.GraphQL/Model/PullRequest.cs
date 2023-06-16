@@ -276,6 +276,11 @@ namespace Octokit.GraphQL.Model
         public Commit MergeCommit => this.CreateProperty(x => x.MergeCommit, Octokit.GraphQL.Model.Commit.Create);
 
         /// <summary>
+        /// The merge queue entry of the pull request in the base branch's merge queue
+        /// </summary>
+        public MergeQueueEntry MergeQueueEntry => this.CreateProperty(x => x.MergeQueueEntry, Octokit.GraphQL.Model.MergeQueueEntry.Create);
+
+        /// <summary>
         /// Whether or not the pull request can be merged based on the existence of merge conflicts.
         /// </summary>
         public MergeableState Mergeable { get; }
@@ -345,37 +350,10 @@ namespace Octokit.GraphQL.Model
         public ProjectV2ItemConnection ProjectItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includeArchived = null) => this.CreateMethodCall(x => x.ProjectItems(first, after, last, before, includeArchived), Octokit.GraphQL.Model.ProjectV2ItemConnection.Create);
 
         /// <summary>
-        /// Find a project by project (beta) number.
-        /// </summary>
-        /// <param name="number">The project (beta) number.</param>
-        public ProjectNext ProjectNext(Arg<int> number) => this.CreateMethodCall(x => x.ProjectNext(number), Octokit.GraphQL.Model.ProjectNext.Create);
-
-        /// <summary>
-        /// List of project (beta) items associated with this pull request.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="includeArchived">Include archived items.</param>
-        public ProjectNextItemConnection ProjectNextItems(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includeArchived = null) => this.CreateMethodCall(x => x.ProjectNextItems(first, after, last, before, includeArchived), Octokit.GraphQL.Model.ProjectNextItemConnection.Create);
-
-        /// <summary>
         /// Find a project by number.
         /// </summary>
         /// <param name="number">The project number.</param>
         public ProjectV2 ProjectV2(Arg<int> number) => this.CreateMethodCall(x => x.ProjectV2(number), Octokit.GraphQL.Model.ProjectV2.Create);
-
-        /// <summary>
-        /// A list of projects (beta) under the owner.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="query">A project (beta) to search for under the the owner.</param>
-        /// <param name="sortBy">How to order the returned projects (beta).</param>
-        public ProjectNextConnection ProjectsNext(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? query = null, Arg<ProjectNextOrderField>? sortBy = null) => this.CreateMethodCall(x => x.ProjectsNext(first, after, last, before, query, sortBy), Octokit.GraphQL.Model.ProjectNextConnection.Create);
 
         /// <summary>
         /// A list of projects under the owner.
@@ -506,6 +484,11 @@ namespace Octokit.GraphQL.Model
         public string TitleHTML { get; }
 
         /// <summary>
+        /// Returns a count of how many comments this pull request has received.
+        /// </summary>
+        public int? TotalCommentsCount { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }
@@ -528,6 +511,11 @@ namespace Octokit.GraphQL.Model
         /// Whether or not the viewer can apply suggestion.
         /// </summary>
         public bool ViewerCanApplySuggestion { get; }
+
+        /// <summary>
+        /// Indicates if the object can be closed by the viewer.
+        /// </summary>
+        public bool ViewerCanClose { get; }
 
         /// <summary>
         /// Check if the viewer can restore the deleted head ref.
@@ -560,6 +548,11 @@ namespace Octokit.GraphQL.Model
         public bool ViewerCanReact { get; }
 
         /// <summary>
+        /// Indicates if the object can be reopened by the viewer.
+        /// </summary>
+        public bool ViewerCanReopen { get; }
+
+        /// <summary>
         /// Check if the viewer is able to change their subscription status for the repository.
         /// </summary>
         public bool ViewerCanSubscribe { get; }
@@ -568,6 +561,12 @@ namespace Octokit.GraphQL.Model
         /// Check if the current viewer can update this object.
         /// </summary>
         public bool ViewerCanUpdate { get; }
+
+        /// <summary>
+        /// Whether or not the viewer can update the head ref of this PR, by merging or rebasing the base ref.
+        /// If the head ref is up to date or unable to be updated by this user, this will return false.
+        /// </summary>
+        public bool ViewerCanUpdateBranch { get; }
 
         /// <summary>
         /// Reasons why the current viewer can not update this comment.

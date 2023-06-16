@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         bool IsMinimized { get; }
 
         /// <summary>
-        /// Returns why the comment was minimized.
+        /// Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation.
         /// </summary>
         string MinimizedReason { get; }
 

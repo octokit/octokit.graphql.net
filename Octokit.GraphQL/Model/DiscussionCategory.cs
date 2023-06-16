@@ -53,6 +53,11 @@ namespace Octokit.GraphQL.Model
         public Repository Repository => this.CreateProperty(x => x.Repository, Octokit.GraphQL.Model.Repository.Create);
 
         /// <summary>
+        /// The slug of this category.
+        /// </summary>
+        public string Slug { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was last updated.
         /// </summary>
         public DateTimeOffset UpdatedAt { get; }

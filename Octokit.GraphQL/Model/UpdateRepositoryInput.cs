@@ -49,6 +49,11 @@ namespace Octokit.GraphQL.Model
         public bool? HasProjectsEnabled { get; set; }
 
         /// <summary>
+        /// Indicates if the repository should have the discussions feature enabled.
+        /// </summary>
+        public bool? HasDiscussionsEnabled { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

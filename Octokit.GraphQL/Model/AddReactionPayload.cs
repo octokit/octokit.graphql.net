@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public Reaction Reaction => this.CreateProperty(x => x.Reaction, Octokit.GraphQL.Model.Reaction.Create);
 
         /// <summary>
+        /// The reaction groups for the subject.
+        /// </summary>
+        public IQueryableList<ReactionGroup> ReactionGroups => this.CreateProperty(x => x.ReactionGroups);
+
+        /// <summary>
         /// The reactable subject.
         /// </summary>
         public IReactable Subject => this.CreateProperty(x => x.Subject, Octokit.GraphQL.Model.Internal.StubIReactable.Create);

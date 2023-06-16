@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
 
         /// <summary>
         /// The review line comments.
+        /// **Upcoming Change on 2023-10-01 UTC**
+        /// **Description:** `comments` will be removed. use the `threads` argument instead
+        /// **Reason:** We are deprecating comment fields that use diff-relative positioning
         /// </summary>
         public IEnumerable<DraftPullRequestReviewComment> Comments { get; set; }
 
