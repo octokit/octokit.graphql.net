@@ -99,18 +99,50 @@ namespace Octokit.GraphQL.Core
             /// <inheritdoc />
             public virtual async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
-                if (subqueryRunners == null)
+                if (subqueryRunners == null || hasMore)
                 {
-                    subqueryRunners = new Stack<IQueryRunner>();
-                    subqueryResultSinks = new Dictionary<ISubquery, List<Action<object>>>();
+                    if (subqueryRunners == null)
+                    {
+                        subqueryRunners = new Stack<IQueryRunner>();
+                    }
 
-                    // This is the first run, so run the master page.
-                    await FetchAndProcessPage(cancellationToken);
-                }
-                else if (hasMore)
-                {
-                    // We have more of the master query to fetch
-                    await FetchAndProcessPage(cancellationToken);
+                    subqueryResultSinks = new Dictionary<ISubquery, List<Action<object>>>();
+                    var master = owner.MasterQuery;
+                    var data = await connection.Run(master.GetPayload(Variables), cancellationToken).ConfigureAwait(false);
+                    var json = deserializer.Deserialize(data);
+
+                    json.AddAnnotation(this);
+                    Result = deserializer.Deserialize(master.ResultBuilder, json);
+
+                    // Look through each subquery for any results that have a next page.
+                    foreach (var subquery in owner.Subqueries)
+                    {
+                        var pageInfos = subquery.ParentPageInfo(json).ToList();
+                        var parentIds = subquery.ParentIds(json).ToList();
+
+                        if (subqueryResultSinks.TryGetValue(subquery, out var sinks))
+                        {
+                            for (var i = 0; i < pageInfos.Count; ++i)
+                            {
+                                var pageInfo = pageInfos[i];
+
+                                if ((bool)pageInfo["hasNextPage"] == true)
+                                {
+                                    var id = parentIds[i].ToString();
+                                    var after = (string)pageInfo["endCursor"];
+                                    var runner = subquery.Start(connection, id, after, Variables, sinks[i]);
+                                    subqueryRunners.Push(runner);
+                                }
+                            }
+                        }
+                    }
+
+                    if (owner is ISubquery ownerAsSubquery)
+                    {
+                        var pageInfo = ownerAsSubquery.PageInfo(json);
+                        hasMore = (bool)pageInfo["hasNextPage"];
+                        Variables["__after"] = (string)pageInfo["endCursor"];
+                    }
                 }
                 else if (subqueryRunners.Any())
                 {
@@ -125,46 +157,6 @@ namespace Octokit.GraphQL.Core
                 }
 
                 return subqueryRunners.Count > 0 || hasMore;
-            }
-
-            private async Task FetchAndProcessPage(CancellationToken cancellationToken)
-            {
-                var master = owner.MasterQuery;
-                var data = await connection.Run(master.GetPayload(Variables), cancellationToken).ConfigureAwait(false);
-                var json = deserializer.Deserialize(data);
-
-                json.AddAnnotation(this);
-                Result = deserializer.Deserialize(master.ResultBuilder, json);
-
-                // Look through each subquery for any results that have a next page.
-                foreach (var subquery in owner.Subqueries)
-                {
-                    var pageInfos = subquery.ParentPageInfo(json).ToList();
-                    var parentIds = subquery.ParentIds(json).ToList();
-
-                    if (subqueryResultSinks.TryGetValue(subquery, out var sinks))
-                    {
-                        for (var i = 0; i < pageInfos.Count; ++i)
-                        {
-                            var pageInfo = pageInfos[i];
-
-                            if ((bool)pageInfo["hasNextPage"] == true)
-                            {
-                                var id = parentIds[i].ToString();
-                                var after = (string)pageInfo["endCursor"];
-                                var runner = subquery.Start(connection, id, after, Variables, sinks[i]);
-                                subqueryRunners.Push(runner);
-                            }
-                        }
-                    }
-                }
-
-                if (owner is ISubquery ownerAsSubquery)
-                {
-                    var pageInfo = ownerAsSubquery.PageInfo(json);
-                    hasMore = (bool)pageInfo["hasNextPage"];
-                    Variables["__after"] = (string)pageInfo["endCursor"];
-                }
             }
 
             /// <inheritdoc />
