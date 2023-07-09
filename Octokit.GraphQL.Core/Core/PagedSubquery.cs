@@ -115,7 +115,8 @@ namespace Octokit.GraphQL.Core
                 string after,
                 IDictionary<string, object> variables,
                 Action<object> addResult)
-                : base(owner, connection, variables ?? new Dictionary<string, object>())
+                : base(owner, connection, variables?.ToDictionary(x => x.Key, x => x.Value) ?? 
+                                          new Dictionary<string, object>())
             {
                 Variables["__id"] = id;
                 Variables["__after"] = after;
