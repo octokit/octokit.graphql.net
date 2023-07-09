@@ -128,13 +128,14 @@ namespace Octokit.GraphQL.Core
             {
                 var more = await base.RunPage(cancellationToken).ConfigureAwait(false);
 
-                if (!more)
+                if (Result == null) return more;
+                
+                foreach (var i in (IList)Result)
                 {
-                    foreach (var i in (IList)Result)
-                    {
-                        addResult(i);
-                    }
+                    addResult(i);
                 }
+
+                Result = default;
 
                 return more;
             }
