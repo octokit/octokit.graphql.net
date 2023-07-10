@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents any entity on GitHub that has a profile page.
     /// </summary>
+    [GraphQLIdentifier("ProfileOwner")]
     public interface IProfileOwner : IQueryableValue<IProfileOwner>, IQueryableInterface
     {
         /// <summary>
@@ -91,6 +92,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("ProfileOwner")]
     internal class StubIProfileOwner : QueryableValue<StubIProfileOwner>, IProfileOwner
     {
         internal StubIProfileOwner(Expression expression) : base(expression)

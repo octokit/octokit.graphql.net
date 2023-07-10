@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can sponsor or be sponsored through GitHub Sponsors.
     /// </summary>
+    [GraphQLIdentifier("Sponsorable")]
     public interface ISponsorable : IQueryableValue<ISponsorable>, IQueryableInterface
     {
         /// <summary>
@@ -154,6 +155,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Sponsorable")]
     internal class StubISponsorable : QueryableValue<StubISponsorable>, ISponsorable
     {
         internal StubISponsorable(Expression expression) : base(expression)

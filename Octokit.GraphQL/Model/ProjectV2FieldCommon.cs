@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Common fields across different project field types
     /// </summary>
+    [GraphQLIdentifier("ProjectV2FieldCommon")]
     public interface IProjectV2FieldCommon : IQueryableValue<IProjectV2FieldCommon>, IQueryableInterface
     {
         /// <summary>
@@ -55,6 +56,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("ProjectV2FieldCommon")]
     internal class StubIProjectV2FieldCommon : QueryableValue<StubIProjectV2FieldCommon>, IProjectV2FieldCommon
     {
         internal StubIProjectV2FieldCommon(Expression expression) : base(expression)

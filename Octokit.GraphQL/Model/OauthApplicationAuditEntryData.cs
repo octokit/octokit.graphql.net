@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Metadata for an audit entry with action oauth_application.*
     /// </summary>
+    [GraphQLIdentifier("OauthApplicationAuditEntryData")]
     public interface IOauthApplicationAuditEntryData : IQueryableValue<IOauthApplicationAuditEntryData>, IQueryableInterface
     {
         /// <summary>
@@ -38,6 +39,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("OauthApplicationAuditEntryData")]
     internal class StubIOauthApplicationAuditEntryData : QueryableValue<StubIOauthApplicationAuditEntryData>, IOauthApplicationAuditEntryData
     {
         internal StubIOauthApplicationAuditEntryData(Expression expression) : base(expression)

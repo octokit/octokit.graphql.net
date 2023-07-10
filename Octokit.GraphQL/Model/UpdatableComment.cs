@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Comments that can be updated.
     /// </summary>
+    [GraphQLIdentifier("UpdatableComment")]
     public interface IUpdatableComment : IQueryableValue<IUpdatableComment>, IQueryableInterface
     {
         /// <summary>
@@ -28,6 +29,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("UpdatableComment")]
     internal class StubIUpdatableComment : QueryableValue<StubIUpdatableComment>, IUpdatableComment
     {
         internal StubIUpdatableComment(Expression expression) : base(expression)

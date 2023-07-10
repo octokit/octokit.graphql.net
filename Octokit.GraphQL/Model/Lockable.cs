@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be locked.
     /// </summary>
+    [GraphQLIdentifier("Lockable")]
     public interface ILockable : IQueryableValue<ILockable>, IQueryableInterface
     {
         /// <summary>
@@ -33,6 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Lockable")]
     internal class StubILockable : QueryableValue<StubILockable>, ILockable
     {
         internal StubILockable(Expression expression) : base(expression)

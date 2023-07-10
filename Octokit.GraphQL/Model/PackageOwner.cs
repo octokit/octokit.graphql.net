@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an owner of a package.
     /// </summary>
+    [GraphQLIdentifier("PackageOwner")]
     public interface IPackageOwner : IQueryableValue<IPackageOwner>, IQueryableInterface
     {
         ID Id { get; }
@@ -38,6 +39,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("PackageOwner")]
     internal class StubIPackageOwner : QueryableValue<StubIPackageOwner>, IPackageOwner
     {
         internal StubIPackageOwner(Expression expression) : base(expression)

@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object with an ID.
     /// </summary>
+    [GraphQLIdentifier("Node")]
     public interface INode : IQueryableValue<INode>, IQueryableInterface
     {
         /// <summary>
@@ -28,6 +29,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Node")]
     internal class StubINode : QueryableValue<StubINode>, INode
     {
         internal StubINode(Expression expression) : base(expression)

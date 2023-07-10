@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an owner of a Project.
     /// </summary>
+    [GraphQLIdentifier("ProjectOwner")]
     public interface IProjectOwner : IQueryableValue<IProjectOwner>, IQueryableInterface
     {
         ID Id { get; }
@@ -58,6 +59,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("ProjectOwner")]
     internal class StubIProjectOwner : QueryableValue<StubIProjectOwner>, IProjectOwner
     {
         internal StubIProjectOwner(Expression expression) : base(expression)

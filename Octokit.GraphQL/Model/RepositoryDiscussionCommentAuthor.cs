@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an author of discussion comments in repositories.
     /// </summary>
+    [GraphQLIdentifier("RepositoryDiscussionCommentAuthor")]
     public interface IRepositoryDiscussionCommentAuthor : IQueryableValue<IRepositoryDiscussionCommentAuthor>, IQueryableInterface
     {
         /// <summary>
@@ -34,6 +35,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("RepositoryDiscussionCommentAuthor")]
     internal class StubIRepositoryDiscussionCommentAuthor : QueryableValue<StubIRepositoryDiscussionCommentAuthor>, IRepositoryDiscussionCommentAuthor
     {
         internal StubIRepositoryDiscussionCommentAuthor(Expression expression) : base(expression)

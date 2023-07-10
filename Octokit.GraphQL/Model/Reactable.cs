@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a subject that can be reacted on.
     /// </summary>
+    [GraphQLIdentifier("Reactable")]
     public interface IReactable : IQueryableValue<IReactable>, IQueryableInterface
     {
         /// <summary>
@@ -51,6 +52,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Reactable")]
     internal class StubIReactable : QueryableValue<StubIReactable>, IReactable
     {
         internal StubIReactable(Expression expression) : base(expression)

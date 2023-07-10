@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an owner of a Repository.
     /// </summary>
+    [GraphQLIdentifier("RepositoryOwner")]
     public interface IRepositoryOwner : IQueryableValue<IRepositoryOwner>, IQueryableInterface
     {
         /// <summary>
@@ -69,6 +70,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("RepositoryOwner")]
     internal class StubIRepositoryOwner : QueryableValue<StubIRepositoryOwner>, IRepositoryOwner
     {
         internal StubIRepositoryOwner(Expression expression) : base(expression)

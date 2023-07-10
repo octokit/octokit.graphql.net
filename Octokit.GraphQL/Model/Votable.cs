@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A subject that may be upvoted.
     /// </summary>
+    [GraphQLIdentifier("Votable")]
     public interface IVotable : IQueryableValue<IVotable>, IQueryableInterface
     {
         /// <summary>
@@ -38,6 +39,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Votable")]
     internal class StubIVotable : QueryableValue<StubIVotable>, IVotable
     {
         internal StubIVotable(Expression expression) : base(expression)

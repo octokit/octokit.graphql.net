@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that have members who can set status messages.
     /// </summary>
+    [GraphQLIdentifier("MemberStatusable")]
     public interface IMemberStatusable : IQueryableValue<IMemberStatusable>, IQueryableInterface
     {
         /// <summary>
@@ -33,6 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("MemberStatusable")]
     internal class StubIMemberStatusable : QueryableValue<StubIMemberStatusable>, IMemberStatusable
     {
         internal StubIMemberStatusable(Expression expression) : base(expression)

@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a Git object.
     /// </summary>
+    [GraphQLIdentifier("GitObject")]
     public interface IGitObject : IQueryableValue<IGitObject>, IQueryableInterface
     {
         /// <summary>
@@ -50,6 +51,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("GitObject")]
     internal class StubIGitObject : QueryableValue<StubIGitObject>, IGitObject
     {
         internal StubIGitObject(Expression expression) : base(expression)

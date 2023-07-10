@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a comment.
     /// </summary>
+    [GraphQLIdentifier("Comment")]
     public interface IComment : IQueryableValue<IComment>, IQueryableInterface
     {
         /// <summary>
@@ -99,6 +100,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Comment")]
     internal class StubIComment : QueryableValue<StubIComment>, IComment
     {
         internal StubIComment(Expression expression) : base(expression)
