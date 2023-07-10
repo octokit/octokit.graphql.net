@@ -652,7 +652,8 @@ namespace Octokit.GraphQL.Model
         /// Returns a single ruleset from the current repository by ID.
         /// </summary>
         /// <param name="databaseId">The ID of the ruleset to be returned.</param>
-        public RepositoryRuleset Ruleset(Arg<int> databaseId) => this.CreateMethodCall(x => x.Ruleset(databaseId), Octokit.GraphQL.Model.RepositoryRuleset.Create);
+        /// <param name="includeParents">Include rulesets configured at higher levels that apply to this repository</param>
+        public RepositoryRuleset Ruleset(Arg<int> databaseId, Arg<bool>? includeParents = null) => this.CreateMethodCall(x => x.Ruleset(databaseId, includeParents), Octokit.GraphQL.Model.RepositoryRuleset.Create);
 
         /// <summary>
         /// A list of rulesets for this repository.

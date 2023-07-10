@@ -9,22 +9,34 @@ namespace Octokit.GraphQL.Model
     public class CreateTeamDiscussionInput
     {
         /// <summary>
-        /// The ID of the team to which the discussion belongs.
+        /// The ID of the team to which the discussion belongs. This field is required.
+        /// **Upcoming Change on 2024-07-01 UTC**
+        /// **Description:** `teamId` will be removed. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement.
+        /// **Reason:** The Team Discussions feature is deprecated in favor of Organization Discussions.
         /// </summary>
-        public ID TeamId { get; set; }
+        public ID? TeamId { get; set; }
 
         /// <summary>
-        /// The title of the discussion.
+        /// The title of the discussion. This field is required.
+        /// **Upcoming Change on 2024-07-01 UTC**
+        /// **Description:** `title` will be removed. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement.
+        /// **Reason:** The Team Discussions feature is deprecated in favor of Organization Discussions.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// The content of the discussion.
+        /// The content of the discussion. This field is required.
+        /// **Upcoming Change on 2024-07-01 UTC**
+        /// **Description:** `body` will be removed. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement.
+        /// **Reason:** The Team Discussions feature is deprecated in favor of Organization Discussions.
         /// </summary>
         public string Body { get; set; }
 
         /// <summary>
         /// If true, restricts the visibility of this discussion to team members and organization admins. If false or not specified, allows any organization member to view this discussion.
+        /// **Upcoming Change on 2024-07-01 UTC**
+        /// **Description:** `private` will be removed. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement.
+        /// **Reason:** The Team Discussions feature is deprecated in favor of Organization Discussions.
         /// </summary>
         public bool? Private { get; set; }
 

@@ -70,5 +70,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "PUB")]
         Pub,
+
+        /// <summary>
+        /// Swift packages
+        /// </summary>
+        [EnumMember(Value = "SWIFT")]
+        Swift,
     }
 }

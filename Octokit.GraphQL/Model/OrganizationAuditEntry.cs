@@ -115,6 +115,11 @@ namespace Octokit.GraphQL.Model
             public Selector<T> OrgOauthAppAccessApprovedAuditEntry(Func<OrgOauthAppAccessApprovedAuditEntry, T> selector) => default;
 
             /// <summary>
+            /// Audit log entry for a org.oauth_app_access_blocked event.
+            /// </summary>
+            public Selector<T> OrgOauthAppAccessBlockedAuditEntry(Func<OrgOauthAppAccessBlockedAuditEntry, T> selector) => default;
+
+            /// <summary>
             /// Audit log entry for a org.oauth_app_access_denied event.
             /// </summary>
             public Selector<T> OrgOauthAppAccessDeniedAuditEntry(Func<OrgOauthAppAccessDeniedAuditEntry, T> selector) => default;
@@ -123,6 +128,11 @@ namespace Octokit.GraphQL.Model
             /// Audit log entry for a org.oauth_app_access_requested event.
             /// </summary>
             public Selector<T> OrgOauthAppAccessRequestedAuditEntry(Func<OrgOauthAppAccessRequestedAuditEntry, T> selector) => default;
+
+            /// <summary>
+            /// Audit log entry for a org.oauth_app_access_unblocked event.
+            /// </summary>
+            public Selector<T> OrgOauthAppAccessUnblockedAuditEntry(Func<OrgOauthAppAccessUnblockedAuditEntry, T> selector) => default;
 
             /// <summary>
             /// Audit log entry for a org.remove_billing_manager event.

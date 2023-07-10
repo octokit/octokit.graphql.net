@@ -673,6 +673,12 @@ namespace Octokit.GraphQL
         public MarkFileAsViewedPayload MarkFileAsViewed(Arg<MarkFileAsViewedInput> input) => this.CreateMethodCall(x => x.MarkFileAsViewed(input), Octokit.GraphQL.Model.MarkFileAsViewedPayload.Create);
 
         /// <summary>
+        /// Mark a project as a template. Note that only projects which are owned by an Organization can be marked as a template.
+        /// </summary>
+        /// <param name="input">Parameters for MarkProjectV2AsTemplate</param>
+        public MarkProjectV2AsTemplatePayload MarkProjectV2AsTemplate(Arg<MarkProjectV2AsTemplateInput> input) => this.CreateMethodCall(x => x.MarkProjectV2AsTemplate(input), Octokit.GraphQL.Model.MarkProjectV2AsTemplatePayload.Create);
+
+        /// <summary>
         /// Marks a pull request ready for review.
         /// </summary>
         /// <param name="input">Parameters for MarkPullRequestReadyForReview</param>
@@ -985,6 +991,12 @@ namespace Octokit.GraphQL
         public UnmarkIssueAsDuplicatePayload UnmarkIssueAsDuplicate(Arg<UnmarkIssueAsDuplicateInput> input) => this.CreateMethodCall(x => x.UnmarkIssueAsDuplicate(input), Octokit.GraphQL.Model.UnmarkIssueAsDuplicatePayload.Create);
 
         /// <summary>
+        /// Unmark a project as a template.
+        /// </summary>
+        /// <param name="input">Parameters for UnmarkProjectV2AsTemplate</param>
+        public UnmarkProjectV2AsTemplatePayload UnmarkProjectV2AsTemplate(Arg<UnmarkProjectV2AsTemplateInput> input) => this.CreateMethodCall(x => x.UnmarkProjectV2AsTemplate(input), Octokit.GraphQL.Model.UnmarkProjectV2AsTemplatePayload.Create);
+
+        /// <summary>
         /// Unminimizes a comment on an Issue, Commit, Pull Request, or Gist
         /// </summary>
         /// <param name="input">Parameters for UnminimizeComment</param>
@@ -1211,6 +1223,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for UpdateProjectV2</param>
         public UpdateProjectV2Payload UpdateProjectV2(Arg<UpdateProjectV2Input> input) => this.CreateMethodCall(x => x.UpdateProjectV2(input), Octokit.GraphQL.Model.UpdateProjectV2Payload.Create);
+
+        /// <summary>
+        /// Update the collaborators on a team or a project
+        /// </summary>
+        /// <param name="input">Parameters for UpdateProjectV2Collaborators</param>
+        public UpdateProjectV2CollaboratorsPayload UpdateProjectV2Collaborators(Arg<UpdateProjectV2CollaboratorsInput> input) => this.CreateMethodCall(x => x.UpdateProjectV2Collaborators(input), Octokit.GraphQL.Model.UpdateProjectV2CollaboratorsPayload.Create);
 
         /// <summary>
         /// Updates a draft issue within a Project.

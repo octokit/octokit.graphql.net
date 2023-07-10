@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public RefNameConditionTarget RefName => this.CreateProperty(x => x.RefName, Octokit.GraphQL.Model.RefNameConditionTarget.Create);
 
         /// <summary>
+        /// Configuration for the repository_id condition
+        /// </summary>
+        public RepositoryIdConditionTarget RepositoryId => this.CreateProperty(x => x.RepositoryId, Octokit.GraphQL.Model.RepositoryIdConditionTarget.Create);
+
+        /// <summary>
         /// Configuration for the repository_name condition
         /// </summary>
         public RepositoryNameConditionTarget RepositoryName => this.CreateProperty(x => x.RepositoryName, Octokit.GraphQL.Model.RepositoryNameConditionTarget.Create);

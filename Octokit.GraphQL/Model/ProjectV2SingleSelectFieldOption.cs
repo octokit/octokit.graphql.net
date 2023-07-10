@@ -16,6 +16,21 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The option's display color.
+        /// </summary>
+        public ProjectV2SingleSelectFieldOptionColor Color { get; }
+
+        /// <summary>
+        /// The option's plain-text description.
+        /// </summary>
+        public string Description { get; }
+
+        /// <summary>
+        /// The option's description, possibly containing HTML.
+        /// </summary>
+        public string DescriptionHTML { get; }
+
+        /// <summary>
         /// The option's ID.
         /// </summary>
         public string Id { get; }

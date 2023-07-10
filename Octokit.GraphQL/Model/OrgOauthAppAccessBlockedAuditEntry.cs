@@ -7,11 +7,11 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Audit log entry for a oauth_application.create event.
+    /// Audit log entry for a org.oauth_app_access_blocked event.
     /// </summary>
-    public class OauthApplicationCreateAuditEntry : QueryableValue<OauthApplicationCreateAuditEntry>
+    public class OrgOauthAppAccessBlockedAuditEntry : QueryableValue<OrgOauthAppAccessBlockedAuditEntry>
     {
-        internal OauthApplicationCreateAuditEntry(Expression expression) : base(expression)
+        internal OrgOauthAppAccessBlockedAuditEntry(Expression expression) : base(expression)
         {
         }
 
@@ -49,16 +49,6 @@ namespace Octokit.GraphQL.Model
         /// The HTTP URL for the actor.
         /// </summary>
         public string ActorUrl { get; }
-
-        /// <summary>
-        /// The application URL of the OAuth application.
-        /// </summary>
-        public string ApplicationUrl { get; }
-
-        /// <summary>
-        /// The callback URL of the OAuth application.
-        /// </summary>
-        public string CallbackUrl { get; }
 
         /// <summary>
         /// The time the action was initiated
@@ -108,16 +98,6 @@ namespace Octokit.GraphQL.Model
         public string OrganizationUrl { get; }
 
         /// <summary>
-        /// The rate limit of the OAuth application.
-        /// </summary>
-        public int? RateLimit { get; }
-
-        /// <summary>
-        /// The state of the OAuth application.
-        /// </summary>
-        public OauthApplicationCreateAuditEntryState? State { get; }
-
-        /// <summary>
         /// The user affected by the action
         /// </summary>
         public User User => this.CreateProperty(x => x.User, Octokit.GraphQL.Model.User.Create);
@@ -137,9 +117,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string UserUrl { get; }
 
-        internal static OauthApplicationCreateAuditEntry Create(Expression expression)
+        internal static OrgOauthAppAccessBlockedAuditEntry Create(Expression expression)
         {
-            return new OauthApplicationCreateAuditEntry(expression);
+            return new OrgOauthAppAccessBlockedAuditEntry(expression);
         }
     }
 }

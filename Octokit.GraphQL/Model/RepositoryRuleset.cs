@@ -25,11 +25,6 @@ namespace Octokit.GraphQL.Model
         public RepositoryRulesetBypassActorConnection BypassActors(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.BypassActors(first, after, last, before), Octokit.GraphQL.Model.RepositoryRulesetBypassActorConnection.Create);
 
         /// <summary>
-        /// The bypass mode of this ruleset
-        /// </summary>
-        public RuleBypassMode BypassMode { get; }
-
-        /// <summary>
         /// The set of conditions that must evaluate to true for this ruleset to apply
         /// </summary>
         public RepositoryRuleConditions Conditions => this.CreateProperty(x => x.Conditions, Octokit.GraphQL.Model.RepositoryRuleConditions.Create);

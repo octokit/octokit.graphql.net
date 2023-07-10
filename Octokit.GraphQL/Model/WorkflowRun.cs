@@ -44,6 +44,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Event { get; }
 
+        /// <summary>
+        /// The workflow file
+        /// </summary>
+        public WorkflowRunFile File => this.CreateProperty(x => x.File, Octokit.GraphQL.Model.WorkflowRunFile.Create);
+
         public ID Id { get; }
 
         /// <summary>
