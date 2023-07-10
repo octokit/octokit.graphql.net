@@ -113,6 +113,16 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
 
             return type;
         }
+        
+        public static string GetGraphQlIdentifierAttribute(string graphQlModelType)
+        {
+            if (graphQlModelType == null)
+            {
+                return "";
+            }
+
+            return $"[GraphQLIdentifier(\"{graphQlModelType}\")]\n    ";
+        }
 
         private static string GetCSharpType(TypeModel type, bool nullableType, bool returnType)
         {

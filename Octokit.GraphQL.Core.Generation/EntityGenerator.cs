@@ -16,10 +16,12 @@ namespace Octokit.GraphQL.Core.Generation
             string queryType,
             string modifiers = "public ",
             bool generateDocComments = true,
-            string entityNamespace = null)
+            string entityNamespace = null,
+            string graphQlModelType = null)
         {
             var className = TypeUtilities.GetClassName(type);
             var pagingConnectionNodeType = GetPagingConnectionNodeType(type);
+            var annotations = TypeUtilities.GetGraphQlIdentifierAttribute(graphQlModelType);
 
             return $@"namespace {rootNamespace}
 {{
@@ -29,7 +31,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type, generateDocComments)}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type, pagingConnectionNodeType)}
+    {GenerateDocComments(type, generateDocComments)}{annotations}{modifiers}class {className} : QueryableValue<{className}>{GenerateImplementedInterfaces(type, pagingConnectionNodeType)}
     {{
         internal {className}(Expression expression) : base(expression)
         {{

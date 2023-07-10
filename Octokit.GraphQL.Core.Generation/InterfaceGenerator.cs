@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Core.Generation
         public static string Generate(TypeModel type, string entityNamespace, string queryType)
         {
             var className = TypeUtilities.GetInterfaceName(type);
+            var annotations = TypeUtilities.GetGraphQlIdentifierAttribute(type.Name);
 
             return $@"namespace {entityNamespace}
 {{
@@ -22,7 +23,7 @@ namespace Octokit.GraphQL.Core.Generation
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
-    {GenerateDocComments(type)}public interface {className} : IQueryableValue<{className}>, IQueryableInterface
+    {GenerateDocComments(type)}{annotations}public interface {className} : IQueryableValue<{className}>, IQueryableInterface
     {{{GenerateFields(type)}
     }}
 }}
@@ -215,7 +216,7 @@ namespace Octokit.GraphQL.Core.Generation
             stubType.Name = "Stub" + TypeUtilities.GetInterfaceName(type);
             stubType.Kind = TypeKind.Object;
             stubType.Interfaces = new[] { type };
-            return EntityGenerator.Generate(stubType, entityNamespace + ".Internal", queryType, entityNamespace: entityNamespace, modifiers: "internal ", generateDocComments: false);
+            return EntityGenerator.Generate(stubType, entityNamespace + ".Internal", queryType, entityNamespace: entityNamespace, modifiers: "internal ", generateDocComments: false, graphQlModelType:type.Name);
         }
     }
 }
