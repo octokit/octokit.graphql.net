@@ -76,6 +76,7 @@ namespace Octokit.GraphQL.Core
             readonly ResponseDeserializer deserializer = new ResponseDeserializer();
             Stack<IQueryRunner> subqueryRunners;
             Dictionary<ISubquery, List<Action<object>>> subqueryResultSinks;
+            private bool hasMore;
 
             public Runner(
                 PagedQuery<TResult> owner,
@@ -88,7 +89,7 @@ namespace Octokit.GraphQL.Core
             }
 
             /// <inheritdoc />
-            public TResult Result { get; private set; }
+            public TResult Result { get; protected set; }
 
             /// <inheritdoc />
             object IQueryRunner.Result => Result;
@@ -98,12 +99,14 @@ namespace Octokit.GraphQL.Core
             /// <inheritdoc />
             public virtual async Task<bool> RunPage(CancellationToken cancellationToken = default)
             {
-                if (subqueryRunners == null)
+                if (subqueryRunners == null || hasMore)
                 {
-                    subqueryRunners = new Stack<IQueryRunner>();
-                    subqueryResultSinks = new Dictionary<ISubquery, List<Action<object>>>();
+                    if (subqueryRunners == null)
+                    {
+                        subqueryRunners = new Stack<IQueryRunner>();
+                    }
 
-                    // This is the first run, so run the master page.
+                    subqueryResultSinks = new Dictionary<ISubquery, List<Action<object>>>();
                     var master = owner.MasterQuery;
                     var data = await connection.Run(master.GetPayload(Variables), cancellationToken).ConfigureAwait(false);
                     var json = deserializer.Deserialize(data);
@@ -133,8 +136,15 @@ namespace Octokit.GraphQL.Core
                             }
                         }
                     }
+
+                    if (owner is ISubquery ownerAsSubquery)
+                    {
+                        var pageInfo = ownerAsSubquery.PageInfo(json);
+                        hasMore = (bool)pageInfo["hasNextPage"];
+                        Variables["__after"] = (string)pageInfo["endCursor"];
+                    }
                 }
-                else
+                else if (subqueryRunners.Any())
                 {
                     // Get the next subquery runner.
                     var runner = subqueryRunners.Peek();
@@ -146,7 +156,7 @@ namespace Octokit.GraphQL.Core
                     }
                 }
 
-                return subqueryRunners.Count > 0;
+                return subqueryRunners.Count > 0 || hasMore;
             }
 
             /// <inheritdoc />

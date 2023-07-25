@@ -175,7 +175,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var repositoryName = (await Connection.Run(query)).OrderByDescending(s => s).First();
 
-            Assert.Equal("webhooks-methods.js", repositoryName);
+            Assert.Equal("webhooks.net", repositoryName);
         }
 
         [IntegrationTest]
@@ -260,7 +260,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 
             var testModelObject = (await Connection.Run(query)).OrderByDescending(s => s.StringField1).First();
 
-            Assert.Equal("webhooks-methods.js", testModelObject.StringField1);
+            Assert.Equal("webhooks.net", testModelObject.StringField1);
         }
 
         [IntegrationTest]
