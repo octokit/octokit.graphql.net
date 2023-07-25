@@ -55,7 +55,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.NotNull(graphqlUser);
 
             Assert.Equal(apiUser.AvatarUrl.Split("?").First(), graphqlUser.AvatarUrl.Split("?").First());
-            Assert.Equal(apiUser.Bio, graphqlUser.Bio);
+            Assert.Equal(apiUser.Bio ?? string.Empty, graphqlUser.Bio);
             Assert.Equal(apiUser.Company, graphqlUser.Company);
 
             Assert.Equal(apiUser.CreatedAt.ToUniversalTime(), graphqlUser.CreatedAt.ToUniversalTime());
