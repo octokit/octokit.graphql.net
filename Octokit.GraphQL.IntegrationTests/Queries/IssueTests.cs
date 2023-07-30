@@ -201,7 +201,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
-                .Issues().AllPages(50)
+                .Issues().AllPages(100)
                 .Select(issue => new
                 {
                     issue.Id,
@@ -222,7 +222,7 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
-                .Issues().AllPages(50)
+                .Issues().AllPages(100)
                 .Select(issue => new
                 {
                     issue.Id,
