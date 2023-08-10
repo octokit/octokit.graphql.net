@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An individual line of a hovercard
     /// </summary>
+    [GraphQLIdentifier("HovercardContext")]
     public interface IHovercardContext : IQueryableValue<IHovercardContext>, IQueryableInterface
     {
         /// <summary>
@@ -33,6 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("HovercardContext")]
     internal class StubIHovercardContext : QueryableValue<StubIHovercardContext>, IHovercardContext
     {
         internal StubIHovercardContext(Expression expression) : base(expression)

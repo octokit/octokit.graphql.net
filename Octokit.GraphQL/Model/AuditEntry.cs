@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An entry in the audit log.
     /// </summary>
+    [GraphQLIdentifier("AuditEntry")]
     public interface IAuditEntry : IQueryableValue<IAuditEntry>, IQueryableInterface
     {
         /// <summary>
@@ -88,6 +89,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("AuditEntry")]
     internal class StubIAuditEntry : QueryableValue<StubIAuditEntry>, IAuditEntry
     {
         internal StubIAuditEntry(Expression expression) : base(expression)

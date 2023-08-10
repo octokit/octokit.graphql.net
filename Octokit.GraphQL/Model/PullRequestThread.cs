@@ -53,6 +53,11 @@ namespace Octokit.GraphQL.Model
         public int? Line { get; }
 
         /// <summary>
+        /// Identifies the file path of this thread.
+        /// </summary>
+        public string Path { get; }
+
+        /// <summary>
         /// Identifies the pull request associated with this thread.
         /// </summary>
         public PullRequest PullRequest => this.CreateProperty(x => x.PullRequest, Octokit.GraphQL.Model.PullRequest.Create);
@@ -76,6 +81,11 @@ namespace Octokit.GraphQL.Model
         /// The line of the first file diff in the thread.
         /// </summary>
         public int? StartLine { get; }
+
+        /// <summary>
+        /// The level at which the comments in the corresponding thread are targeted, can be a diff line or a file
+        /// </summary>
+        public PullRequestReviewThreadSubjectType SubjectType { get; }
 
         /// <summary>
         /// Indicates whether the current viewer can reply to this thread.

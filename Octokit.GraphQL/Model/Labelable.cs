@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can have labels assigned to it.
     /// </summary>
+    [GraphQLIdentifier("Labelable")]
     public interface ILabelable : IQueryableValue<ILabelable>, IQueryableInterface
     {
         /// <summary>
@@ -33,6 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Labelable")]
     internal class StubILabelable : QueryableValue<StubILabelable>, ILabelable
     {
         internal StubILabelable(Expression expression) : base(expression)

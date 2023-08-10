@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Information about a signature (GPG or S/MIME) on a Commit or Tag.
     /// </summary>
+    [GraphQLIdentifier("GitSignature")]
     public interface IGitSignature : IQueryableValue<IGitSignature>, IQueryableInterface
     {
         /// <summary>
@@ -58,6 +59,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("GitSignature")]
     internal class StubIGitSignature : QueryableValue<StubIGitSignature>, IGitSignature
     {
         internal StubIGitSignature(Expression expression) : base(expression)

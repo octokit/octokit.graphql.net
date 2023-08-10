@@ -40,7 +40,8 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Options for the single select field
         /// </summary>
-        public IQueryableList<ProjectV2SingleSelectFieldOption> Options => this.CreateProperty(x => x.Options);
+        /// <param name="names">Filter returned options to only those matching these names, case insensitive.</param>
+        public IQueryableList<ProjectV2SingleSelectFieldOption> Options(Arg<IEnumerable<string>>? names = null) => this.CreateMethodCall(x => x.Options(names));
 
         /// <summary>
         /// The project that contains this field.

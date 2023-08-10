@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Metadata for an audit entry with action repo.*
     /// </summary>
+    [GraphQLIdentifier("RepositoryAuditEntryData")]
     public interface IRepositoryAuditEntryData : IQueryableValue<IRepositoryAuditEntryData>, IQueryableInterface
     {
         /// <summary>
@@ -43,6 +44,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("RepositoryAuditEntryData")]
     internal class StubIRepositoryAuditEntryData : QueryableValue<StubIRepositoryAuditEntryData>, IRepositoryAuditEntryData
     {
         internal StubIRepositoryAuditEntryData(Expression expression) : base(expression)

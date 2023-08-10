@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a object that belongs to a repository.
     /// </summary>
+    [GraphQLIdentifier("RepositoryNode")]
     public interface IRepositoryNode : IQueryableValue<IRepositoryNode>, IQueryableInterface
     {
         /// <summary>
@@ -28,6 +29,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("RepositoryNode")]
     internal class StubIRepositoryNode : QueryableValue<StubIRepositoryNode>, IRepositoryNode
     {
         internal StubIRepositoryNode(Expression expression) : base(expression)

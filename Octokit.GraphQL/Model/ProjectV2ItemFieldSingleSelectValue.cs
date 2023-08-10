@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The color applied to the selected single-select option.
+        /// </summary>
+        public ProjectV2SingleSelectFieldOptionColor Color { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
@@ -29,6 +34,16 @@ namespace Octokit.GraphQL.Model
         /// Identifies the primary key from the database.
         /// </summary>
         public int? DatabaseId { get; }
+
+        /// <summary>
+        /// A plain-text description of the selected single-select option, such as what the option means.
+        /// </summary>
+        public string Description { get; }
+
+        /// <summary>
+        /// The description of the selected single-select option, including HTML tags.
+        /// </summary>
+        public string DescriptionHTML { get; }
 
         /// <summary>
         /// The project field that contains this value.

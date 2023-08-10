@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a type that can be retrieved by a URL.
     /// </summary>
+    [GraphQLIdentifier("UniformResourceLocatable")]
     public interface IUniformResourceLocatable : IQueryableValue<IUniformResourceLocatable>, IQueryableInterface
     {
         /// <summary>
@@ -33,6 +34,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("UniformResourceLocatable")]
     internal class StubIUniformResourceLocatable : QueryableValue<StubIUniformResourceLocatable>, IUniformResourceLocatable
     {
         internal StubIUniformResourceLocatable(Expression expression) : base(expression)

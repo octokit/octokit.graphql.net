@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// An object that can be closed
     /// </summary>
+    [GraphQLIdentifier("Closable")]
     public interface IClosable : IQueryableValue<IClosable>, IQueryableInterface
     {
         /// <summary>
@@ -43,6 +44,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Closable")]
     internal class StubIClosable : QueryableValue<StubIClosable>, IClosable
     {
         internal StubIClosable(Expression expression) : base(expression)

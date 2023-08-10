@@ -39,14 +39,9 @@ namespace Octokit.GraphQL.Model
         public RuleEnforcement? Enforcement { get; set; }
 
         /// <summary>
-        /// The bypass mode for this ruleset
+        /// A list of actors that are allowed to bypass rules in this ruleset.
         /// </summary>
-        public RuleBypassMode? BypassMode { get; set; }
-
-        /// <summary>
-        /// A list of Team or App IDs allowed to bypass rules in this ruleset.
-        /// </summary>
-        public IEnumerable<ID> BypassActorIds { get; set; }
+        public IEnumerable<RepositoryRulesetBypassActorInput> BypassActors { get; set; }
 
         /// <summary>
         /// A unique identifier for the client performing the mutation.

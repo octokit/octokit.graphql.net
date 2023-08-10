@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Author's association with the discussion's team.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public CommentAuthorAssociation AuthorAssociation { get; }
 
         /// <summary>
@@ -43,6 +44,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the discussion body hash.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public string BodyVersion { get; }
 
         /// <summary>
@@ -59,11 +61,13 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The HTTP path for discussion comments
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public string CommentsResourcePath { get; }
 
         /// <summary>
         /// The HTTP URL for discussion comments
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public string CommentsUrl { get; }
 
         /// <summary>
@@ -96,11 +100,13 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Whether or not the discussion is pinned.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public bool IsPinned { get; }
 
         /// <summary>
         /// Whether or not the discussion is only visible to team members and org admins.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public bool IsPrivate { get; }
 
         /// <summary>
@@ -111,6 +117,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the discussion within its team.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public int Number { get; }
 
         /// <summary>
@@ -137,16 +144,19 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The HTTP path for this discussion
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public string ResourcePath { get; }
 
         /// <summary>
         /// The team that defines the context of this discussion.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public Team Team => this.CreateProperty(x => x.Team, Octokit.GraphQL.Model.Team.Create);
 
         /// <summary>
         /// The title of the discussion
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public string Title { get; }
 
         /// <summary>
@@ -157,6 +167,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The HTTP URL for this discussion
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public string Url { get; }
 
         /// <summary>
@@ -176,6 +187,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Whether or not the current viewer can pin this discussion.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public bool ViewerCanPin { get; }
 
         /// <summary>

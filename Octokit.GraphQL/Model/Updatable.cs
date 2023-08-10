@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can be updated.
     /// </summary>
+    [GraphQLIdentifier("Updatable")]
     public interface IUpdatable : IQueryableValue<IUpdatable>, IQueryableInterface
     {
         /// <summary>
@@ -28,6 +29,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Updatable")]
     internal class StubIUpdatable : QueryableValue<StubIUpdatable>, IUpdatable
     {
         internal StubIUpdatable(Expression expression) : base(expression)

@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a GitHub Enterprise Importer (GEI) migration.
     /// </summary>
+    [GraphQLIdentifier("Migration")]
     public interface IMigration : IQueryableValue<IMigration>, IQueryableInterface
     {
         /// <summary>
@@ -75,6 +76,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Migration")]
     internal class StubIMigration : QueryableValue<StubIMigration>, IMigration
     {
         internal StubIMigration(Expression expression) : base(expression)

@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Recent projects for the owner.
     /// </summary>
+    [GraphQLIdentifier("ProjectV2Recent")]
     public interface IProjectV2Recent : IQueryableValue<IProjectV2Recent>, IQueryableInterface
     {
         /// <summary>
@@ -32,6 +33,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("ProjectV2Recent")]
     internal class StubIProjectV2Recent : QueryableValue<StubIProjectV2Recent>, IProjectV2Recent
     {
         internal StubIProjectV2Recent(Expression expression) : base(expression)

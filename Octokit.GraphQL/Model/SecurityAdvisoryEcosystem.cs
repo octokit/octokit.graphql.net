@@ -76,5 +76,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "RUST")]
         Rust,
+
+        /// <summary>
+        /// Swift packages
+        /// </summary>
+        [EnumMember(Value = "SWIFT")]
+        Swift,
     }
 }

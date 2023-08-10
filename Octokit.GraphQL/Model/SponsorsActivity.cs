@@ -20,6 +20,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public SponsorsActivityAction Action { get; }
 
+        /// <summary>
+        /// The sponsor's current privacy level.
+        /// </summary>
+        public SponsorshipPrivacy? CurrentPrivacyLevel { get; }
+
         public ID Id { get; }
 
         /// <summary>

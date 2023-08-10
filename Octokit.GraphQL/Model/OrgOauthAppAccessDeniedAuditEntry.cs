@@ -58,17 +58,17 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
-        /// The name of the OAuth Application.
+        /// The name of the OAuth application.
         /// </summary>
         public string OauthApplicationName { get; }
 
         /// <summary>
-        /// The HTTP path for the OAuth Application
+        /// The HTTP path for the OAuth application
         /// </summary>
         public string OauthApplicationResourcePath { get; }
 
         /// <summary>
-        /// The HTTP URL for the OAuth Application
+        /// The HTTP URL for the OAuth application
         /// </summary>
         public string OauthApplicationUrl { get; }
 

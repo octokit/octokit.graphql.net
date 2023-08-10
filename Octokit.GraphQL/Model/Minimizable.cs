@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Entities that can be minimized.
     /// </summary>
+    [GraphQLIdentifier("Minimizable")]
     public interface IMinimizable : IQueryableValue<IMinimizable>, IQueryableInterface
     {
         /// <summary>
@@ -38,6 +39,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Minimizable")]
     internal class StubIMinimizable : QueryableValue<StubIMinimizable>, IMinimizable
     {
         internal StubIMinimizable(Expression expression) : base(expression)

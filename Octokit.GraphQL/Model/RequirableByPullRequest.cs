@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a type that can be required by a pull request for merging.
     /// </summary>
+    [GraphQLIdentifier("RequirableByPullRequest")]
     public interface IRequirableByPullRequest : IQueryableValue<IRequirableByPullRequest>, IQueryableInterface
     {
         /// <summary>
@@ -30,6 +31,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("RequirableByPullRequest")]
     internal class StubIRequirableByPullRequest : QueryableValue<StubIRequirableByPullRequest>, IRequirableByPullRequest
     {
         internal StubIRequirableByPullRequest(Expression expression) : base(expression)

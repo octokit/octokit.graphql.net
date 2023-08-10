@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents a contribution a user made on GitHub, such as opening an issue.
     /// </summary>
+    [GraphQLIdentifier("Contribution")]
     public interface IContribution : IQueryableValue<IContribution>, IQueryableInterface
     {
         /// <summary>
@@ -50,6 +51,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("Contribution")]
     internal class StubIContribution : QueryableValue<StubIContribution>, IContribution
     {
         internal StubIContribution(Expression expression) : base(expression)

@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The new discussion.
         /// </summary>
+        [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public TeamDiscussion TeamDiscussion => this.CreateProperty(x => x.TeamDiscussion, Octokit.GraphQL.Model.TeamDiscussion.Create);
 
         internal static CreateTeamDiscussionPayload Create(Expression expression)

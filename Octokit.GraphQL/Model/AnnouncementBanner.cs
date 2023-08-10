@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// Represents an announcement banner.
     /// </summary>
+    [GraphQLIdentifier("AnnouncementBanner")]
     public interface IAnnouncementBanner : IQueryableValue<IAnnouncementBanner>, IQueryableInterface
     {
         /// <summary>
@@ -38,6 +39,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("AnnouncementBanner")]
     internal class StubIAnnouncementBanner : QueryableValue<StubIAnnouncementBanner>, IAnnouncementBanner
     {
         internal StubIAnnouncementBanner(Expression expression) : base(expression)

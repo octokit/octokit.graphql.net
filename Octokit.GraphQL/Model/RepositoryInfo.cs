@@ -11,6 +11,7 @@ namespace Octokit.GraphQL.Model
     /// <summary>
     /// A subset of repository info.
     /// </summary>
+    [GraphQLIdentifier("RepositoryInfo")]
     public interface IRepositoryInfo : IQueryableValue<IRepositoryInfo>, IQueryableInterface
     {
         /// <summary>
@@ -179,6 +180,7 @@ namespace Octokit.GraphQL.Model.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier("RepositoryInfo")]
     internal class StubIRepositoryInfo : QueryableValue<StubIRepositoryInfo>, IRepositoryInfo
     {
         internal StubIRepositoryInfo(Expression expression) : base(expression)

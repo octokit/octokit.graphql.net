@@ -18,6 +18,7 @@ namespace Octokit.GraphQL.Core.Generation.UnitTests
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier(""Entity"")]
     public interface IEntity : IQueryableValue<IEntity>, IQueryableInterface
     {{
         {0}
@@ -32,6 +33,7 @@ namespace Test.Internal
     using Octokit.GraphQL.Core;
     using Octokit.GraphQL.Core.Builders;
 
+    [GraphQLIdentifier(""Entity"")]
     internal class StubIEntity : QueryableValue<StubIEntity>, IEntity
     {{
         internal StubIEntity(Expression expression) : base(expression)

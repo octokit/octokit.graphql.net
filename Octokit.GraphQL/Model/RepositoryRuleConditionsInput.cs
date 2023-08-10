@@ -17,5 +17,10 @@ namespace Octokit.GraphQL.Model
         /// Configuration for the repository_name condition
         /// </summary>
         public RepositoryNameConditionTargetInput RepositoryName { get; set; }
+
+        /// <summary>
+        /// Configuration for the repository_id condition
+        /// </summary>
+        public RepositoryIdConditionTargetInput RepositoryId { get; set; }
     }
 }
