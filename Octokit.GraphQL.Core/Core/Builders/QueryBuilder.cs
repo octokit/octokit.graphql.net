@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -204,7 +204,7 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else if (!falseNull)
             {
-                ifTrue = Expression.Constant(null, ifFalse.Type);
+                ifTrue = Expression.Constant(null, node.Type);
             }
 
             if (!falseNull)
@@ -213,14 +213,14 @@ namespace Octokit.GraphQL.Core.Builders
             }
             else if (!trueNull)
             {
-                ifFalse = Expression.Constant(null, ifTrue.Type);
+                ifFalse = Expression.Constant(null, node.Type);
             }
 
             return Expression.Condition(
                 test,
                 ifTrue,
                 ifFalse,
-                !IsNullConstant(ifTrue) ? ifTrue.Type : ifFalse.Type);
+                node.Type);
         }
 
         protected override Expression VisitExtension(Expression node)
