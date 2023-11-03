@@ -24,6 +24,11 @@ namespace Octokit.GraphQL.Model
         public IEnumerable<ID> Reviewers { get; set; }
 
         /// <summary>
+        /// Whether deployments to this environment can be approved by the user who created the deployment.
+        /// </summary>
+        public bool? PreventSelfReview { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

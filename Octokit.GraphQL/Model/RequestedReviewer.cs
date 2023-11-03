@@ -20,6 +20,11 @@ namespace Octokit.GraphQL.Model
         public class Selector<T>
         {
             /// <summary>
+            /// A special type of user which takes actions on behalf of GitHub Apps.
+            /// </summary>
+            public Selector<T> Bot(Func<Bot, T> selector) => default;
+
+            /// <summary>
             /// A placeholder user for attribution of imported data on GitHub.
             /// </summary>
             public Selector<T> Mannequin(Func<Mannequin, T> selector) => default;

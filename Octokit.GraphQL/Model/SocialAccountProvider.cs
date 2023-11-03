@@ -70,5 +70,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "YOUTUBE")]
         Youtube,
+
+        /// <summary>
+        /// JavaScript package registry.
+        /// </summary>
+        [EnumMember(Value = "NPM")]
+        Npm,
     }
 }

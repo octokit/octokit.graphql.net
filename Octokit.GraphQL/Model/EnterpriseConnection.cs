@@ -7,23 +7,23 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A list of repositories owned by the subject.
+    /// The connection type for Enterprise.
     /// </summary>
-    public class RepositoryConnection : QueryableValue<RepositoryConnection>, IPagingConnection<Repository>
+    public class EnterpriseConnection : QueryableValue<EnterpriseConnection>, IPagingConnection<Enterprise>
     {
-        internal RepositoryConnection(Expression expression) : base(expression)
+        internal EnterpriseConnection(Expression expression) : base(expression)
         {
         }
 
         /// <summary>
         /// A list of edges.
         /// </summary>
-        public IQueryableList<RepositoryEdge> Edges => this.CreateProperty(x => x.Edges);
+        public IQueryableList<EnterpriseEdge> Edges => this.CreateProperty(x => x.Edges);
 
         /// <summary>
         /// A list of nodes.
         /// </summary>
-        public IQueryableList<Repository> Nodes => this.CreateProperty(x => x.Nodes);
+        public IQueryableList<Enterprise> Nodes => this.CreateProperty(x => x.Nodes);
 
         /// <summary>
         /// Information to aid in pagination.
@@ -35,16 +35,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int TotalCount { get; }
 
-        /// <summary>
-        /// The total size in kilobytes of all repositories in the connection. Value will never be larger than max 32-bit signed integer.
-        /// </summary>
-        public int TotalDiskUsage { get; }
-
         IPageInfo IPagingConnection.PageInfo => PageInfo;
 
-        internal static RepositoryConnection Create(Expression expression)
+        internal static EnterpriseConnection Create(Expression expression)
         {
-            return new RepositoryConnection(expression);
+            return new EnterpriseConnection(expression);
         }
     }
 }

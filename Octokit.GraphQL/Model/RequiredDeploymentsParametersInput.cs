@@ -4,7 +4,7 @@ namespace Octokit.GraphQL.Model
     using System.Collections.Generic;
 
     /// <summary>
-    /// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
+    /// Choose which environments must be successfully deployed to before refs can be pushed into a ref that matches this rule.
     /// </summary>
     public class RequiredDeploymentsParametersInput
     {

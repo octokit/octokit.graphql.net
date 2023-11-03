@@ -52,5 +52,10 @@ namespace Octokit.GraphQL.Model
         /// Parameters used for the `tag_name_pattern` rule type
         /// </summary>
         public TagNamePatternParametersInput TagNamePattern { get; set; }
+
+        /// <summary>
+        /// Parameters used for the `workflows` rule type
+        /// </summary>
+        public WorkflowsParametersInput Workflows { get; set; }
     }
 }

@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public IEnumerable<string> GitIpAddresses { get; }
 
         /// <summary>
+        /// IP addresses that GitHub Enterprise Importer uses for outbound connections
+        /// </summary>
+        public IEnumerable<string> GithubEnterpriseImporterIpAddresses { get; }
+
+        /// <summary>
         /// IP addresses that service hooks are sent from
         /// </summary>
         public IEnumerable<string> HookIpAddresses { get; }

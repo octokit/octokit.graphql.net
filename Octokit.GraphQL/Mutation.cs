@@ -27,6 +27,12 @@ namespace Octokit.GraphQL
         public AbortQueuedMigrationsPayload AbortQueuedMigrations(Arg<AbortQueuedMigrationsInput> input) => this.CreateMethodCall(x => x.AbortQueuedMigrations(input), Octokit.GraphQL.Model.AbortQueuedMigrationsPayload.Create);
 
         /// <summary>
+        /// Abort a repository migration queued or in progress.
+        /// </summary>
+        /// <param name="input">Parameters for AbortRepositoryMigration</param>
+        public AbortRepositoryMigrationPayload AbortRepositoryMigration(Arg<AbortRepositoryMigrationInput> input) => this.CreateMethodCall(x => x.AbortRepositoryMigration(input), Octokit.GraphQL.Model.AbortRepositoryMigrationPayload.Create);
+
+        /// <summary>
         /// Accepts a pending invitation for a user to become an administrator of an enterprise.
         /// </summary>
         /// <param name="input">Parameters for AcceptEnterpriseAdministratorInvitation</param>
@@ -121,6 +127,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for AddPullRequestReviewThread</param>
         public AddPullRequestReviewThreadPayload AddPullRequestReviewThread(Arg<AddPullRequestReviewThreadInput> input) => this.CreateMethodCall(x => x.AddPullRequestReviewThread(input), Octokit.GraphQL.Model.AddPullRequestReviewThreadPayload.Create);
+
+        /// <summary>
+        /// Adds a reply to an existing Pull Request Review Thread.
+        /// </summary>
+        /// <param name="input">Parameters for AddPullRequestReviewThreadReply</param>
+        public AddPullRequestReviewThreadReplyPayload AddPullRequestReviewThreadReply(Arg<AddPullRequestReviewThreadReplyInput> input) => this.CreateMethodCall(x => x.AddPullRequestReviewThreadReply(input), Octokit.GraphQL.Model.AddPullRequestReviewThreadReplyPayload.Create);
 
         /// <summary>
         /// Adds a reaction to a subject.

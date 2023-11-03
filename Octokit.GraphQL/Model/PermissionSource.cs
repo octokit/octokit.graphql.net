@@ -26,6 +26,11 @@ namespace Octokit.GraphQL.Model
         public DefaultRepositoryPermissionField Permission { get; }
 
         /// <summary>
+        /// The name of the role this source has granted to the user.
+        /// </summary>
+        public string RoleName { get; }
+
+        /// <summary>
         /// The source of this permission.
         /// </summary>
         public PermissionGranter Source => this.CreateProperty(x => x.Source, Octokit.GraphQL.Model.PermissionGranter.Create);

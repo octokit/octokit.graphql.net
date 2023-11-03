@@ -29,7 +29,7 @@ namespace Octokit.GraphQL.Model
         public string RepositoryName { get; set; }
 
         /// <summary>
-        /// Whether to continue the migration on error. Defaults to `false`.
+        /// Whether to continue the migration on error. Defaults to `true`.
         /// </summary>
         public bool? ContinueOnError { get; set; }
 

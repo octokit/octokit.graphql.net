@@ -30,19 +30,31 @@ namespace Octokit.GraphQL.Model
         Deletion,
 
         /// <summary>
-        /// Prevent merge commits from being pushed to matching branches.
+        /// Prevent merge commits from being pushed to matching refs.
         /// </summary>
         [EnumMember(Value = "REQUIRED_LINEAR_HISTORY")]
         RequiredLinearHistory,
 
         /// <summary>
-        /// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
+        /// Merges must be performed via a merge queue.
+        /// </summary>
+        [EnumMember(Value = "MERGE_QUEUE")]
+        MergeQueue,
+
+        /// <summary>
+        /// When enabled, all conversations on code must be resolved before a pull request can be merged into a branch that matches this rule.
+        /// </summary>
+        [EnumMember(Value = "REQUIRED_REVIEW_THREAD_RESOLUTION")]
+        RequiredReviewThreadResolution,
+
+        /// <summary>
+        /// Choose which environments must be successfully deployed to before refs can be pushed into a ref that matches this rule.
         /// </summary>
         [EnumMember(Value = "REQUIRED_DEPLOYMENTS")]
         RequiredDeployments,
 
         /// <summary>
-        /// Commits pushed to matching branches must have verified signatures.
+        /// Commits pushed to matching refs must have verified signatures.
         /// </summary>
         [EnumMember(Value = "REQUIRED_SIGNATURES")]
         RequiredSignatures,
@@ -54,16 +66,52 @@ namespace Octokit.GraphQL.Model
         PullRequest,
 
         /// <summary>
-        /// Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
+        /// Choose which status checks must pass before the ref is updated. When enabled, commits must first be pushed to another ref where the checks pass.
         /// </summary>
         [EnumMember(Value = "REQUIRED_STATUS_CHECKS")]
         RequiredStatusChecks,
 
         /// <summary>
-        /// Prevent users with push access from force pushing to branches.
+        /// Require all commits be made to a non-target branch and submitted via a pull request and required workflow checks to pass before they can be merged.
+        /// </summary>
+        [EnumMember(Value = "REQUIRED_WORKFLOW_STATUS_CHECKS")]
+        RequiredWorkflowStatusChecks,
+
+        /// <summary>
+        /// Prevent users with push access from force pushing to refs.
         /// </summary>
         [EnumMember(Value = "NON_FAST_FORWARD")]
         NonFastForward,
+
+        /// <summary>
+        /// Authorization
+        /// </summary>
+        [EnumMember(Value = "AUTHORIZATION")]
+        Authorization,
+
+        /// <summary>
+        /// Tag
+        /// </summary>
+        [EnumMember(Value = "TAG")]
+        Tag,
+
+        /// <summary>
+        /// Merge queue locked ref
+        /// </summary>
+        [EnumMember(Value = "MERGE_QUEUE_LOCKED_REF")]
+        MergeQueueLockedRef,
+
+        /// <summary>
+        /// Branch is read-only. Users cannot push to the branch.
+        /// </summary>
+        [EnumMember(Value = "LOCK_BRANCH")]
+        LockBranch,
+
+        /// <summary>
+        /// Max ref updates
+        /// </summary>
+        [EnumMember(Value = "MAX_REF_UPDATES")]
+        MaxRefUpdates,
 
         /// <summary>
         /// Commit message pattern
@@ -94,5 +142,29 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "TAG_NAME_PATTERN")]
         TagNamePattern,
+
+        /// <summary>
+        /// Require all changes made to a targeted branch to pass the specified workflows before they can be merged.
+        /// </summary>
+        [EnumMember(Value = "WORKFLOWS")]
+        Workflows,
+
+        /// <summary>
+        /// Commits pushed to matching refs must have verified signatures.
+        /// </summary>
+        [EnumMember(Value = "RULESET_REQUIRED_SIGNATURES")]
+        RulesetRequiredSignatures,
+
+        /// <summary>
+        /// Secret scanning
+        /// </summary>
+        [EnumMember(Value = "SECRET_SCANNING")]
+        SecretScanning,
+
+        /// <summary>
+        /// Workflow files cannot be modified.
+        /// </summary>
+        [EnumMember(Value = "WORKFLOW_UPDATES")]
+        WorkflowUpdates,
     }
 }

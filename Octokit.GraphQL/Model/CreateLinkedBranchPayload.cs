@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public string ClientMutationId { get; }
 
         /// <summary>
+        /// The issue that was linked to.
+        /// </summary>
+        public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Model.Issue.Create);
+
+        /// <summary>
         /// The new branch issue reference.
         /// </summary>
         public LinkedBranch LinkedBranch => this.CreateProperty(x => x.LinkedBranch, Octokit.GraphQL.Model.LinkedBranch.Create);
