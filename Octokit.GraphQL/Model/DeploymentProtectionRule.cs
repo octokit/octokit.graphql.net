@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
+        /// Whether deployments to this environment can be approved by the user who created the deployment.
+        /// </summary>
+        public bool? PreventSelfReview { get; }
+
+        /// <summary>
         /// The teams or users that can review the deployment
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

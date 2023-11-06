@@ -112,6 +112,11 @@ namespace Octokit.GraphQL.Model
         public bool IncludesCreatedEdit { get; }
 
         /// <summary>
+        /// Only return answered/unanswered discussions
+        /// </summary>
+        public bool? IsAnswered { get; }
+
+        /// <summary>
         /// A list of labels associated with the object.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>

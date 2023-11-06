@@ -86,6 +86,17 @@ namespace Octokit.GraphQL.Model
         public string Email { get; }
 
         /// <summary>
+        /// A list of enterprises that the user belongs to.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="membershipType">Filter enterprises returned based on the user's membership type.</param>
+        /// <param name="orderBy">Ordering options for the User's enterprises.</param>
+        public EnterpriseConnection Enterprises(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<EnterpriseMembershipType>? membershipType = null, Arg<EnterpriseOrder>? orderBy = null) => this.CreateMethodCall(x => x.Enterprises(first, after, last, before, membershipType, orderBy), Octokit.GraphQL.Model.EnterpriseConnection.Create);
+
+        /// <summary>
         /// The estimated next GitHub Sponsors payout for this user/organization in cents (USD).
         /// </summary>
         public int EstimatedNextSponsorsPayoutInCents { get; }
@@ -406,13 +417,14 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="affiliations">Array of viewer's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the current viewer owns.</param>
+        /// <param name="hasIssuesEnabled">If non-null, filters repositories according to whether they have issues enabled</param>
         /// <param name="isArchived">If non-null, filters repositories according to whether they are archived and not maintained</param>
         /// <param name="isFork">If non-null, filters repositories according to whether they are forks of another repository</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="ownerAffiliations">Array of owner's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the organization or user being viewed owns.</param>
         /// <param name="privacy">If non-null, filters repositories according to privacy</param>
-        public RepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isArchived = null, Arg<bool>? isFork = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, affiliations, isArchived, isFork, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
+        public RepositoryConnection Repositories(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? hasIssuesEnabled = null, Arg<bool>? isArchived = null, Arg<bool>? isFork = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Repositories(first, after, last, before, affiliations, hasIssuesEnabled, isArchived, isFork, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// A list of repositories that the user recently contributed to.
@@ -422,11 +434,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="contributionTypes">If non-null, include only the specified types of contributions. The GitHub.com UI uses [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]</param>
+        /// <param name="hasIssues">If non-null, filters repositories according to whether they have issues enabled</param>
         /// <param name="includeUserRepositories">If true, include user repositories</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="privacy">If non-null, filters repositories according to privacy</param>
-        public RepositoryConnection RepositoriesContributedTo(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryContributionType?>>? contributionTypes = null, Arg<bool>? includeUserRepositories = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.RepositoriesContributedTo(first, after, last, before, contributionTypes, includeUserRepositories, isLocked, orderBy, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
+        public RepositoryConnection RepositoriesContributedTo(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryContributionType?>>? contributionTypes = null, Arg<bool>? hasIssues = null, Arg<bool>? includeUserRepositories = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.RepositoriesContributedTo(first, after, last, before, contributionTypes, hasIssues, includeUserRepositories, isLocked, orderBy, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// Find Repository.
@@ -513,11 +526,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="actions">Filter activities to only the specified actions.</param>
         /// <param name="includeAsSponsor">Whether to include those events where this sponsorable acted as the sponsor. Defaults to only including events where this sponsorable was the recipient of a sponsorship.</param>
+        /// <param name="includePrivate">Whether or not to include private activities in the result set. Defaults to including public and private activities.</param>
         /// <param name="orderBy">Ordering options for activity returned from the connection.</param>
         /// <param name="period">Filter activities returned to only those that occurred in the most recent specified time period. Set to ALL to avoid filtering by when the activity occurred. Will be ignored if `since` or `until` is given.</param>
         /// <param name="since">Filter activities to those that occurred on or after this time.</param>
         /// <param name="until">Filter activities to those that occurred before this time.</param>
-        public SponsorsActivityConnection SponsorsActivities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SponsorsActivityAction>>? actions = null, Arg<bool>? includeAsSponsor = null, Arg<SponsorsActivityOrder>? orderBy = null, Arg<SponsorsActivityPeriod>? period = null, Arg<DateTimeOffset>? since = null, Arg<DateTimeOffset>? until = null) => this.CreateMethodCall(x => x.SponsorsActivities(first, after, last, before, actions, includeAsSponsor, orderBy, period, since, until), Octokit.GraphQL.Model.SponsorsActivityConnection.Create);
+        public SponsorsActivityConnection SponsorsActivities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<SponsorsActivityAction>>? actions = null, Arg<bool>? includeAsSponsor = null, Arg<bool>? includePrivate = null, Arg<SponsorsActivityOrder>? orderBy = null, Arg<SponsorsActivityPeriod>? period = null, Arg<DateTimeOffset>? since = null, Arg<DateTimeOffset>? until = null) => this.CreateMethodCall(x => x.SponsorsActivities(first, after, last, before, actions, includeAsSponsor, includePrivate, orderBy, period, since, until), Octokit.GraphQL.Model.SponsorsActivityConnection.Create);
 
         /// <summary>
         /// The GitHub Sponsors listing for this user or organization.
@@ -658,11 +672,12 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="affiliations">Affiliation options for repositories returned from the connection. If none specified, the results will include repositories for which the current viewer is an owner or collaborator, or member.</param>
+        /// <param name="hasIssuesEnabled">If non-null, filters repositories according to whether they have issues enabled</param>
         /// <param name="isLocked">If non-null, filters repositories according to whether they have been locked</param>
         /// <param name="orderBy">Ordering options for repositories returned from the connection</param>
         /// <param name="ownerAffiliations">Array of owner's affiliation options for repositories returned from the connection. For example, OWNER will include only repositories that the organization or user being viewed owns.</param>
         /// <param name="privacy">If non-null, filters repositories according to privacy</param>
-        public RepositoryConnection Watching(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Watching(first, after, last, before, affiliations, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
+        public RepositoryConnection Watching(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<RepositoryAffiliation?>>? affiliations = null, Arg<bool>? hasIssuesEnabled = null, Arg<bool>? isLocked = null, Arg<RepositoryOrder>? orderBy = null, Arg<IEnumerable<RepositoryAffiliation?>>? ownerAffiliations = null, Arg<RepositoryPrivacy>? privacy = null) => this.CreateMethodCall(x => x.Watching(first, after, last, before, affiliations, hasIssuesEnabled, isLocked, orderBy, ownerAffiliations, privacy), Octokit.GraphQL.Model.RepositoryConnection.Create);
 
         /// <summary>
         /// A URL pointing to the user's public website/blog.
