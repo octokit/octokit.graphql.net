@@ -25,7 +25,15 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public SponsorshipPrivacy? CurrentPrivacyLevel { get; }
 
+        /// <summary>
+        /// The Node ID of the SponsorsActivity object
+        /// </summary>
         public ID Id { get; }
+
+        /// <summary>
+        /// The platform that was used to pay for the sponsorship.
+        /// </summary>
+        public SponsorshipPaymentSource? PaymentSource { get; }
 
         /// <summary>
         /// The tier that the sponsorship used to use, for tier change events.

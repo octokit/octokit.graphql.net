@@ -29,6 +29,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public MergeQueueEntryConnection Entries(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Entries(first, after, last, before), Octokit.GraphQL.Model.MergeQueueEntryConnection.Create);
 
+        /// <summary>
+        /// The Node ID of the MergeQueue object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

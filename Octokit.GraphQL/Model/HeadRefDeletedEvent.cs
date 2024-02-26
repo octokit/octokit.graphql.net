@@ -35,6 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HeadRefName { get; }
 
+        /// <summary>
+        /// The Node ID of the HeadRefDeletedEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

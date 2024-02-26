@@ -85,6 +85,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HowItWorksHTML { get; }
 
+        /// <summary>
+        /// The Node ID of the MarketplaceListing object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

@@ -26,19 +26,22 @@ namespace Octokit.GraphQL.Model
         public int? DatabaseId { get; }
 
         /// <summary>
-        /// The workflows' enabled state.
+        /// Whether the workflow is enabled.
         /// </summary>
         public bool Enabled { get; }
 
+        /// <summary>
+        /// The Node ID of the ProjectV2Workflow object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
-        /// The workflows' name.
+        /// The name of the workflow.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// The workflows' number.
+        /// The number of the workflow.
         /// </summary>
         public int Number { get; }
 

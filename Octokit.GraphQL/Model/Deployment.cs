@@ -50,6 +50,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Environment { get; }
 
+        /// <summary>
+        /// The Node ID of the Deployment object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

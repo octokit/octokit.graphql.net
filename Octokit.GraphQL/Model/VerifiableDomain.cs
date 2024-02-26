@@ -45,6 +45,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool HasFoundVerificationToken { get; }
 
+        /// <summary>
+        /// The Node ID of the VerifiableDomain object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

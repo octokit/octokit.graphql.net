@@ -14,6 +14,9 @@ namespace Octokit.GraphQL.Model
     [GraphQLIdentifier("SubscribableThread")]
     public interface ISubscribableThread : IQueryableValue<ISubscribableThread>, IQueryableInterface
     {
+        /// <summary>
+        /// The Node ID of the SubscribableThread object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

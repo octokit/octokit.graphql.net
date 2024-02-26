@@ -25,6 +25,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering of the returned package files.</param>
         public PackageFileConnection Files(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<PackageFileOrder>? orderBy = null) => this.CreateMethodCall(x => x.Files(first, after, last, before, orderBy), Octokit.GraphQL.Model.PackageFileConnection.Create);
 
+        /// <summary>
+        /// The Node ID of the PackageVersion object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

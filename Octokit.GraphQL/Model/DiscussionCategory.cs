@@ -35,6 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EmojiHTML { get; }
 
+        /// <summary>
+        /// The Node ID of the DiscussionCategory object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

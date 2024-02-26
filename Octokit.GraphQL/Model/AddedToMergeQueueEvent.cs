@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public User Enqueuer => this.CreateProperty(x => x.Enqueuer, Octokit.GraphQL.Model.User.Create);
 
+        /// <summary>
+        /// The Node ID of the AddedToMergeQueueEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

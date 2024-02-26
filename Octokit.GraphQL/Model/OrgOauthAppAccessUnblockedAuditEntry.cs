@@ -55,6 +55,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string CreatedAt { get; }
 
+        /// <summary>
+        /// The Node ID of the OrgOauthAppAccessUnblockedAuditEntry object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

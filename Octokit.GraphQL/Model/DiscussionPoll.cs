@@ -20,6 +20,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Discussion Discussion => this.CreateProperty(x => x.Discussion, Octokit.GraphQL.Model.Discussion.Create);
 
+        /// <summary>
+        /// The Node ID of the DiscussionPoll object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

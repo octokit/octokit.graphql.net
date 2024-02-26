@@ -34,6 +34,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         ProjectV2FieldConfiguration Field { get; }
 
+        /// <summary>
+        /// The Node ID of the ProjectV2ItemFieldValueCommon object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

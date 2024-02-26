@@ -40,6 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DescriptionHTML { get; }
 
+        /// <summary>
+        /// The Node ID of the SponsorsTier object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

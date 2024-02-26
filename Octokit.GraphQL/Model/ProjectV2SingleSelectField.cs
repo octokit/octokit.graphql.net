@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// The Node ID of the ProjectV2SingleSelectField object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

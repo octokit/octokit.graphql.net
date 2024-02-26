@@ -65,6 +65,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Gist Gist => this.CreateProperty(x => x.Gist, Octokit.GraphQL.Model.Gist.Create);
 
+        /// <summary>
+        /// The Node ID of the GistComment object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

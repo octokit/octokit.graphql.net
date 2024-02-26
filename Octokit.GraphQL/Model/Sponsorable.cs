@@ -36,6 +36,16 @@ namespace Octokit.GraphQL.Model
         bool IsSponsoringViewer { get; }
 
         /// <summary>
+        /// Calculate how much each sponsor has ever paid total to this maintainer via GitHub Sponsors. Does not include sponsorships paid via Patreon.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for results returned from the connection.</param>
+        SponsorAndLifetimeValueConnection LifetimeReceivedSponsorshipValues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorAndLifetimeValueOrder>? orderBy = null);
+
+        /// <summary>
         /// The estimated monthly GitHub Sponsors income for this user/organization in cents (USD).
         /// </summary>
         int MonthlyEstimatedSponsorsIncomeInCents { get; }
@@ -170,6 +180,8 @@ namespace Octokit.GraphQL.Model.Internal
         public bool IsSponsoredBy(Arg<string> accountLogin) => default;
 
         public bool IsSponsoringViewer { get; }
+
+        public SponsorAndLifetimeValueConnection LifetimeReceivedSponsorshipValues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<SponsorAndLifetimeValueOrder>? orderBy = null) => this.CreateMethodCall(x => x.LifetimeReceivedSponsorshipValues(first, after, last, before, orderBy), Octokit.GraphQL.Model.SponsorAndLifetimeValueConnection.Create);
 
         public int MonthlyEstimatedSponsorsIncomeInCents { get; }
 

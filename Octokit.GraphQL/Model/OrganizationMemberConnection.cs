@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for User.
+    /// A list of users who belong to the organization.
     /// </summary>
     public class OrganizationMemberConnection : QueryableValue<OrganizationMemberConnection>, IPagingConnection<User>
     {
