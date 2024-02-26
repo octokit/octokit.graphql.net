@@ -6,6 +6,7 @@ name: Build, test and publish
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 env:
   config: Release
   PackageOutputPath: nupkg
