@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for Mannequin.
+    /// A list of mannequins.
     /// </summary>
     public class MannequinConnection : QueryableValue<MannequinConnection>, IPagingConnection<Mannequin>
     {

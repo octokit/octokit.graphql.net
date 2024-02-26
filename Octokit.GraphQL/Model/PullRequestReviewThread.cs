@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DiffSide DiffSide { get; }
 
+        /// <summary>
+        /// The Node ID of the PullRequestReviewThread object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

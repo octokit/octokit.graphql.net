@@ -71,6 +71,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string FullDescriptionHTML { get; }
 
+        /// <summary>
+        /// The Node ID of the SponsorsListing object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

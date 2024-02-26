@@ -152,6 +152,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
+        [Obsolete(@"`databaseId` will be removed because it does not support 64-bit signed integer identifiers. Use `fullDatabaseId` instead. Removal on 2024-07-01 UTC.")]
         public int? DatabaseId { get; }
 
         /// <summary>
@@ -172,6 +173,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public PullRequestChangedFileConnection Files(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Files(first, after, last, before), Octokit.GraphQL.Model.PullRequestChangedFileConnection.Create);
+
+        /// <summary>
+        /// Identifies the primary key from the database as a BigInt.
+        /// </summary>
+        public string FullDatabaseId { get; }
 
         /// <summary>
         /// Identifies the head Ref associated with the pull request.
@@ -204,6 +210,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="includeNotificationContexts">Whether or not to include notification contexts</param>
         public Hovercard Hovercard(Arg<bool>? includeNotificationContexts = null) => this.CreateMethodCall(x => x.Hovercard(includeNotificationContexts), Octokit.GraphQL.Model.Hovercard.Create);
 
+        /// <summary>
+        /// The Node ID of the PullRequest object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
@@ -220,6 +229,16 @@ namespace Octokit.GraphQL.Model
         /// Identifies if the pull request is a draft.
         /// </summary>
         public bool IsDraft { get; }
+
+        /// <summary>
+        /// Indicates whether the pull request is in a merge queue
+        /// </summary>
+        public bool IsInMergeQueue { get; }
+
+        /// <summary>
+        /// Indicates whether the pull request's base ref has a merge queue enabled.
+        /// </summary>
+        public bool IsMergeQueueEnabled { get; }
 
         /// <summary>
         /// Is this pull request read by the viewer
@@ -274,6 +293,11 @@ namespace Octokit.GraphQL.Model
         /// The commit that was created when this pull request was merged.
         /// </summary>
         public Commit MergeCommit => this.CreateProperty(x => x.MergeCommit, Octokit.GraphQL.Model.Commit.Create);
+
+        /// <summary>
+        /// The merge queue for the pull request's base branch
+        /// </summary>
+        public MergeQueue MergeQueue => this.CreateProperty(x => x.MergeQueue, Octokit.GraphQL.Model.MergeQueue.Create);
 
         /// <summary>
         /// The merge queue entry of the pull request in the base branch's merge queue

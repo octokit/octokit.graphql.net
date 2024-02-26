@@ -40,6 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DescriptionHTML { get; }
 
+        /// <summary>
+        /// The Node ID of the Release object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="name">A list of names to filter the assets by.</param>
+        /// <param name="name">A name to filter the assets by.</param>
         public ReleaseAssetConnection ReleaseAssets(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? name = null) => this.CreateMethodCall(x => x.ReleaseAssets(first, after, last, before, name), Octokit.GraphQL.Model.ReleaseAssetConnection.Create);
 
         /// <summary>

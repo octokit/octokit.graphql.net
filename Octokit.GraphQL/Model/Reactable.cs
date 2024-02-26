@@ -19,6 +19,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         int? DatabaseId { get; }
 
+        /// <summary>
+        /// The Node ID of the Reactable object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

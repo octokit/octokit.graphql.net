@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Discussion Discussion => this.CreateProperty(x => x.Discussion, Octokit.GraphQL.Model.Discussion.Create);
 
+        /// <summary>
+        /// The Node ID of the ConvertedToDiscussionEvent object
+        /// </summary>
         public ID Id { get; }
 
         internal static ConvertedToDiscussionEvent Create(Expression expression)

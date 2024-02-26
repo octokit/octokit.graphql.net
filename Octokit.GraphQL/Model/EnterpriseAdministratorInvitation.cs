@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Enterprise Enterprise => this.CreateProperty(x => x.Enterprise, Octokit.GraphQL.Model.Enterprise.Create);
 
+        /// <summary>
+        /// The Node ID of the EnterpriseAdministratorInvitation object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

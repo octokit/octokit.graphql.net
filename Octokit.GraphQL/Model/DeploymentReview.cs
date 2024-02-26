@@ -34,6 +34,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public EnvironmentConnection Environments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.Environments(first, after, last, before), Octokit.GraphQL.Model.EnvironmentConnection.Create);
 
+        /// <summary>
+        /// The Node ID of the DeploymentReview object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

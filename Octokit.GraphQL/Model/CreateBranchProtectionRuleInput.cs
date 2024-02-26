@@ -54,7 +54,7 @@ namespace Octokit.GraphQL.Model
         public bool? AllowsDeletions { get; set; }
 
         /// <summary>
-        /// Can admins overwrite branch protection.
+        /// Can admins override branch protection.
         /// </summary>
         public bool? IsAdminEnforced { get; set; }
 

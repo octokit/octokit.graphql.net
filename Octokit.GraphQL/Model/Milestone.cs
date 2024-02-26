@@ -45,6 +45,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset? DueOn { get; }
 
+        /// <summary>
+        /// The Node ID of the Milestone object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

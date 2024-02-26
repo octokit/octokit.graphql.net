@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for RepositoryMigration.
+    /// A list of migrations.
     /// </summary>
     public class RepositoryMigrationConnection : QueryableValue<RepositoryMigrationConnection>, IPagingConnection<RepositoryMigration>
     {

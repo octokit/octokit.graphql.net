@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string FailureReason { get; }
 
+        /// <summary>
+        /// The Node ID of the OrganizationMigration object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

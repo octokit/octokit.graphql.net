@@ -55,6 +55,11 @@ namespace Octokit.GraphQL.Model
         bool HasProjectsEnabled { get; }
 
         /// <summary>
+        /// Indicates if the repository displays a Sponsor button for financial contributions.
+        /// </summary>
+        bool HasSponsorshipsEnabled { get; }
+
+        /// <summary>
         /// Indicates if the repository has wiki feature enabled.
         /// </summary>
         bool HasWikiEnabled { get; }
@@ -202,6 +207,8 @@ namespace Octokit.GraphQL.Model.Internal
         public bool HasIssuesEnabled { get; }
 
         public bool HasProjectsEnabled { get; }
+
+        public bool HasSponsorshipsEnabled { get; }
 
         public bool HasWikiEnabled { get; }
 

@@ -19,7 +19,7 @@ namespace Octokit.GraphQL.Model
         public int? RepositoryRoleDatabaseId { get; set; }
 
         /// <summary>
-        /// For org admin bupasses, true
+        /// For organization owner bypasses, true
         /// </summary>
         public bool? OrganizationAdmin { get; set; }
 

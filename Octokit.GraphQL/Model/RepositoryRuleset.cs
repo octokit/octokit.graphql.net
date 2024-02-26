@@ -44,6 +44,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RuleEnforcement Enforcement { get; }
 
+        /// <summary>
+        /// The Node ID of the RepositoryRuleset object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

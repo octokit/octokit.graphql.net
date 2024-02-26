@@ -72,6 +72,12 @@ namespace Octokit.GraphQL.Model
         LfxCrowdfunding,
 
         /// <summary>
+        /// Polar funding platform.
+        /// </summary>
+        [EnumMember(Value = "POLAR")]
+        Polar,
+
+        /// <summary>
         /// Custom funding platform.
         /// </summary>
         [EnumMember(Value = "CUSTOM")]

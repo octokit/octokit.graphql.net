@@ -9,11 +9,14 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// Represents an owner of a project (beta).
+    /// Represents an owner of a project.
     /// </summary>
     [GraphQLIdentifier("ProjectV2Owner")]
     public interface IProjectV2Owner : IQueryableValue<IProjectV2Owner>, IQueryableInterface
     {
+        /// <summary>
+        /// The Node ID of the ProjectV2Owner object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>
