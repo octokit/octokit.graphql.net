@@ -41,7 +41,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         public static void AssertCompiledQueryExpressionEqual<T>(string expectedString, ICompiledQuery<T> actualCompiledQuery, params string[] subqueryPlaceholderReplacements)
         {
             var actualResultExpression = actualCompiledQuery.GetResultBuilderExpression();
-            var actualString = actualResultExpression.ToReadableString(settings => settings.NameAnonymousTypesUsing(_ => "object"));
+            var actualString = actualResultExpression.ToReadableString(/*settings => settings.NameAnonymousTypesUsing(_ => "object")*/);
 
             expectedString = ReplaceSubqueryPlaceholders(expectedString, subqueryPlaceholderReplacements);
 

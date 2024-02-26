@@ -11,9 +11,9 @@ using Xunit;
 
 namespace Octokit.GraphQL.UnitTests
 {
-    public class ExpressionRewiterTests
+    public class ExpressionRewriterTests
     {
-        public ExpressionRewiterTests()
+        public ExpressionRewriterTests()
         {
             ExpressionCompiler.IsUnitTesting = true;
         }
