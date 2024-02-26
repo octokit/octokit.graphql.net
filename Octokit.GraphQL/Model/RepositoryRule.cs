@@ -23,6 +23,11 @@ namespace Octokit.GraphQL.Model
         public RuleParameters Parameters => this.CreateProperty(x => x.Parameters, Octokit.GraphQL.Model.RuleParameters.Create);
 
         /// <summary>
+        /// The repository ruleset associated with this rule configuration
+        /// </summary>
+        public RepositoryRuleset RepositoryRuleset => this.CreateProperty(x => x.RepositoryRuleset, Octokit.GraphQL.Model.RepositoryRuleset.Create);
+
+        /// <summary>
         /// The type of rule.
         /// </summary>
         public RepositoryRuleType Type { get; }

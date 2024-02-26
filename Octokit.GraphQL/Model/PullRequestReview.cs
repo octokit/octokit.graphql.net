@@ -87,9 +87,19 @@ namespace Octokit.GraphQL.Model
         public bool IncludesCreatedEdit { get; }
 
         /// <summary>
+        /// Returns whether or not a comment has been minimized.
+        /// </summary>
+        public bool IsMinimized { get; }
+
+        /// <summary>
         /// The moment the editor made the last edit
         /// </summary>
         public DateTimeOffset? LastEditedAt { get; }
+
+        /// <summary>
+        /// Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation.
+        /// </summary>
+        public string MinimizedReason { get; }
 
         /// <summary>
         /// A list of teams that this review was made on behalf of.
@@ -169,6 +179,11 @@ namespace Octokit.GraphQL.Model
         /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
+
+        /// <summary>
+        /// Check if the current viewer can minimize this object.
+        /// </summary>
+        public bool ViewerCanMinimize { get; }
 
         /// <summary>
         /// Can user react to this subject

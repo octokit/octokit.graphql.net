@@ -19,6 +19,11 @@ namespace Octokit.GraphQL.Model
         public string ExpectedHeadOid { get; set; }
 
         /// <summary>
+        /// The update branch method to use. If omitted, defaults to 'MERGE'
+        /// </summary>
+        public PullRequestBranchUpdateMethod? UpdateMethod { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

@@ -378,6 +378,16 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public SubscriptionState? ViewerSubscription { get; }
 
+        /// <summary>
+        /// Identifies the viewer's thread subscription form action.
+        /// </summary>
+        public ThreadSubscriptionFormAction? ViewerThreadSubscriptionFormAction { get; }
+
+        /// <summary>
+        /// Identifies the viewer's thread subscription status.
+        /// </summary>
+        public ThreadSubscriptionState? ViewerThreadSubscriptionStatus { get; }
+
         internal static Issue Create(Expression expression)
         {
             return new Issue(expression);

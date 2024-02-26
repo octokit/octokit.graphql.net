@@ -40,5 +40,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "TRADE_RESTRICTION")]
         TradeRestriction,
+
+        /// <summary>
+        /// The repository is locked due to an ownership transfer.
+        /// </summary>
+        [EnumMember(Value = "TRANSFERRING_OWNERSHIP")]
+        TransferringOwnership,
     }
 }

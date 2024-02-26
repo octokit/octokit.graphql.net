@@ -1350,7 +1350,7 @@ namespace Octokit.GraphQL.Model
         Tn,
 
         /// <summary>
-        /// Turkey
+        /// Türkiye
         /// </summary>
         [EnumMember(Value = "TR")]
         Tr,
