@@ -40,6 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IQueryableList<StatusContext> Contexts => this.CreateProperty(x => x.Contexts);
 
+        /// <summary>
+        /// The Node ID of the Status object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

@@ -40,6 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Commit HeadCommit => this.CreateProperty(x => x.HeadCommit, Octokit.GraphQL.Model.Commit.Create);
 
+        /// <summary>
+        /// The Node ID of the MergeQueueEntry object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

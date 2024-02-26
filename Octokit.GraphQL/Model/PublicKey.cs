@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Fingerprint { get; }
 
+        /// <summary>
+        /// The Node ID of the PublicKey object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

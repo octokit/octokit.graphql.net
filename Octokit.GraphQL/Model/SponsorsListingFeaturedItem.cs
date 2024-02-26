@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public SponsorsListingFeatureableItem Featureable => this.CreateProperty(x => x.Featureable, Octokit.GraphQL.Model.SponsorsListingFeatureableItem.Create);
 
+        /// <summary>
+        /// The Node ID of the SponsorsListingFeaturedItem object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

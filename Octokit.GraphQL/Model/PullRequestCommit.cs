@@ -20,6 +20,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Commit Commit => this.CreateProperty(x => x.Commit, Octokit.GraphQL.Model.Commit.Create);
 
+        /// <summary>
+        /// The Node ID of the PullRequestCommit object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

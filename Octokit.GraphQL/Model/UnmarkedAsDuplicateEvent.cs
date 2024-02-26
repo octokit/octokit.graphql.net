@@ -35,6 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IssueOrPullRequest Duplicate => this.CreateProperty(x => x.Duplicate, Octokit.GraphQL.Model.IssueOrPullRequest.Create);
 
+        /// <summary>
+        /// The Node ID of the UnmarkedAsDuplicateEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

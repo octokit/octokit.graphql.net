@@ -54,6 +54,11 @@ namespace Octokit.GraphQL.Model
         public bool? HasDiscussionsEnabled { get; set; }
 
         /// <summary>
+        /// Indicates if the repository displays a Sponsor button for financial contributions.
+        /// </summary>
+        public bool? HasSponsorshipsEnabled { get; set; }
+
+        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }

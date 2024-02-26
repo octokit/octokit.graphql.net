@@ -25,10 +25,13 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RepositoryRulesetBypassActorBypassMode? BypassMode { get; }
 
+        /// <summary>
+        /// The Node ID of the RepositoryRulesetBypassActor object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
-        /// This actor represents the ability for an organization admin to bypass
+        /// This actor represents the ability for an organization owner to bypass
         /// </summary>
         public bool OrganizationAdmin { get; }
 

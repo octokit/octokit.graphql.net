@@ -14,6 +14,9 @@ namespace Octokit.GraphQL.Model
     [GraphQLIdentifier("PackageOwner")]
     public interface IPackageOwner : IQueryableValue<IPackageOwner>, IQueryableInterface
     {
+        /// <summary>
+        /// The Node ID of the PackageOwner object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

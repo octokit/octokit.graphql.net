@@ -20,6 +20,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
 
+        /// <summary>
+        /// The Node ID of the Sponsorship object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
@@ -42,6 +45,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [Obsolete(@"`Sponsorship.maintainer` will be removed. Use `Sponsorship.sponsorable` instead. Removal on 2020-04-01 UTC.")]
         public User Maintainer => this.CreateProperty(x => x.Maintainer, Octokit.GraphQL.Model.User.Create);
+
+        /// <summary>
+        /// The platform that was most recently used to pay for the sponsorship.
+        /// </summary>
+        public SponsorshipPaymentSource? PaymentSource { get; }
 
         /// <summary>
         /// The privacy level for this sponsorship.

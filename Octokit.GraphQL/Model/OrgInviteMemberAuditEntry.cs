@@ -60,6 +60,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Email { get; }
 
+        /// <summary>
+        /// The Node ID of the OrgInviteMemberAuditEntry object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

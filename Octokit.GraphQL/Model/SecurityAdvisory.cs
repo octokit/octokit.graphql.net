@@ -49,6 +49,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string GhsaId { get; }
 
+        /// <summary>
+        /// The Node ID of the SecurityAdvisory object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

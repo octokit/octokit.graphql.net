@@ -54,6 +54,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         IActor Editor { get; }
 
+        /// <summary>
+        /// The Node ID of the Comment object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public User Enabler => this.CreateProperty(x => x.Enabler, Octokit.GraphQL.Model.User.Create);
 
+        /// <summary>
+        /// The Node ID of the AutoRebaseEnabledEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

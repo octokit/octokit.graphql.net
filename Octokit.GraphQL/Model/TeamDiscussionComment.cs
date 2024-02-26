@@ -73,6 +73,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
+        /// <summary>
+        /// The Node ID of the TeamDiscussionComment object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

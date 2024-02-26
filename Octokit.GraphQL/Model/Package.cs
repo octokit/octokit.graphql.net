@@ -15,6 +15,9 @@ namespace Octokit.GraphQL.Model
         {
         }
 
+        /// <summary>
+        /// The Node ID of the Package object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

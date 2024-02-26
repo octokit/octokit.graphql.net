@@ -99,6 +99,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EditTeamUrl { get; }
 
+        /// <summary>
+        /// The Node ID of the Team object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

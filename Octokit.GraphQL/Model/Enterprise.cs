@@ -37,6 +37,11 @@ namespace Octokit.GraphQL.Model
         public string AvatarUrl(Arg<int>? size = null) => default;
 
         /// <summary>
+        /// The enterprise's billing email.
+        /// </summary>
+        public string BillingEmail { get; }
+
+        /// <summary>
         /// Enterprise billing information visible to enterprise billing managers.
         /// </summary>
         public EnterpriseBillingInfo BillingInfo => this.CreateProperty(x => x.BillingInfo, Octokit.GraphQL.Model.EnterpriseBillingInfo.Create);
@@ -61,6 +66,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DescriptionHTML { get; }
 
+        /// <summary>
+        /// The Node ID of the Enterprise object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

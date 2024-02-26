@@ -35,6 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public EnterpriseServerInstallation EnterpriseServerInstallation => this.CreateProperty(x => x.EnterpriseServerInstallation, Octokit.GraphQL.Model.EnterpriseServerInstallation.Create);
 
+        /// <summary>
+        /// The Node ID of the EnterpriseServerUserAccount object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

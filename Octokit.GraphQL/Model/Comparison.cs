@@ -44,6 +44,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IGitObject HeadTarget => this.CreateProperty(x => x.HeadTarget, Octokit.GraphQL.Model.Internal.StubIGitObject.Create);
 
+        /// <summary>
+        /// The Node ID of the Comparison object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
