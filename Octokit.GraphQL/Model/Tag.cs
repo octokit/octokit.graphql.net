@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string CommitUrl { get; }
 
+        /// <summary>
+        /// The Node ID of the Tag object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

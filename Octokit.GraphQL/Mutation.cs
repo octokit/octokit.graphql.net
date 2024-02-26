@@ -325,7 +325,7 @@ namespace Octokit.GraphQL
         public CreateDiscussionPayload CreateDiscussion(Arg<CreateDiscussionInput> input) => this.CreateMethodCall(x => x.CreateDiscussion(input), Octokit.GraphQL.Model.CreateDiscussionPayload.Create);
 
         /// <summary>
-        /// Creates an organization as part of an enterprise account.
+        /// Creates an organization as part of an enterprise account. A personal access token used to create an organization is implicitly permitted to update the organization it created, if the organization is part of an enterprise that has SAML enabled or uses Enterprise Managed Users. If the organization is not part of such an enterprise, and instead has SAML enabled for it individually, the token will then require SAML authorization to continue working against that organization.
         /// </summary>
         /// <param name="input">Parameters for CreateEnterpriseOrganization</param>
         public CreateEnterpriseOrganizationPayload CreateEnterpriseOrganization(Arg<CreateEnterpriseOrganizationInput> input) => this.CreateMethodCall(x => x.CreateEnterpriseOrganization(input), Octokit.GraphQL.Model.CreateEnterpriseOrganizationPayload.Create);
@@ -437,6 +437,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for CreateTeamDiscussionComment</param>
         public CreateTeamDiscussionCommentPayload CreateTeamDiscussionComment(Arg<CreateTeamDiscussionCommentInput> input) => this.CreateMethodCall(x => x.CreateTeamDiscussionComment(input), Octokit.GraphQL.Model.CreateTeamDiscussionCommentPayload.Create);
+
+        /// <summary>
+        /// Creates a new user list.
+        /// </summary>
+        /// <param name="input">Parameters for CreateUserList</param>
+        public CreateUserListPayload CreateUserList(Arg<CreateUserListInput> input) => this.CreateMethodCall(x => x.CreateUserList(input), Octokit.GraphQL.Model.CreateUserListPayload.Create);
 
         /// <summary>
         /// Rejects a suggested topic for the repository.
@@ -577,6 +583,12 @@ namespace Octokit.GraphQL
         public DeleteTeamDiscussionCommentPayload DeleteTeamDiscussionComment(Arg<DeleteTeamDiscussionCommentInput> input) => this.CreateMethodCall(x => x.DeleteTeamDiscussionComment(input), Octokit.GraphQL.Model.DeleteTeamDiscussionCommentPayload.Create);
 
         /// <summary>
+        /// Deletes a user list.
+        /// </summary>
+        /// <param name="input">Parameters for DeleteUserList</param>
+        public DeleteUserListPayload DeleteUserList(Arg<DeleteUserListInput> input) => this.CreateMethodCall(x => x.DeleteUserList(input), Octokit.GraphQL.Model.DeleteUserListPayload.Create);
+
+        /// <summary>
         /// Deletes a verifiable domain.
         /// </summary>
         /// <param name="input">Parameters for DeleteVerifiableDomain</param>
@@ -683,6 +695,12 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for MarkFileAsViewed</param>
         public MarkFileAsViewedPayload MarkFileAsViewed(Arg<MarkFileAsViewedInput> input) => this.CreateMethodCall(x => x.MarkFileAsViewed(input), Octokit.GraphQL.Model.MarkFileAsViewedPayload.Create);
+
+        /// <summary>
+        /// Marks a notification as done
+        /// </summary>
+        /// <param name="input">Parameters for MarkNotificationAsDone</param>
+        public MarkNotificationAsDonePayload MarkNotificationAsDone(Arg<MarkNotificationAsDoneInput> input) => this.CreateMethodCall(x => x.MarkNotificationAsDone(input), Octokit.GraphQL.Model.MarkNotificationAsDonePayload.Create);
 
         /// <summary>
         /// Mark a project as a template. Note that only projects which are owned by an Organization can be marked as a template.
@@ -1027,6 +1045,12 @@ namespace Octokit.GraphQL
         public UnresolveReviewThreadPayload UnresolveReviewThread(Arg<UnresolveReviewThreadInput> input) => this.CreateMethodCall(x => x.UnresolveReviewThread(input), Octokit.GraphQL.Model.UnresolveReviewThreadPayload.Create);
 
         /// <summary>
+        /// Unsubscribes from notifications
+        /// </summary>
+        /// <param name="input">Parameters for UnsubscribeFromNotifications</param>
+        public UnsubscribeFromNotificationsPayload UnsubscribeFromNotifications(Arg<UnsubscribeFromNotificationsInput> input) => this.CreateMethodCall(x => x.UnsubscribeFromNotifications(input), Octokit.GraphQL.Model.UnsubscribeFromNotificationsPayload.Create);
+
+        /// <summary>
         /// Update a branch protection rule
         /// </summary>
         /// <param name="input">Parameters for UpdateBranchProtectionRule</param>
@@ -1105,7 +1129,7 @@ namespace Octokit.GraphQL
         public UpdateEnterpriseMembersCanInviteCollaboratorsSettingPayload UpdateEnterpriseMembersCanInviteCollaboratorsSetting(Arg<UpdateEnterpriseMembersCanInviteCollaboratorsSettingInput> input) => this.CreateMethodCall(x => x.UpdateEnterpriseMembersCanInviteCollaboratorsSetting(input), Octokit.GraphQL.Model.UpdateEnterpriseMembersCanInviteCollaboratorsSettingPayload.Create);
 
         /// <summary>
-        /// Sets whether or not an organization admin can make purchases.
+        /// Sets whether or not an organization owner can make purchases.
         /// </summary>
         /// <param name="input">Parameters for UpdateEnterpriseMembersCanMakePurchasesSetting</param>
         public UpdateEnterpriseMembersCanMakePurchasesSettingPayload UpdateEnterpriseMembersCanMakePurchasesSetting(Arg<UpdateEnterpriseMembersCanMakePurchasesSettingInput> input) => this.CreateMethodCall(x => x.UpdateEnterpriseMembersCanMakePurchasesSetting(input), Octokit.GraphQL.Model.UpdateEnterpriseMembersCanMakePurchasesSettingPayload.Create);
@@ -1213,6 +1237,12 @@ namespace Octokit.GraphQL
         public UpdateOrganizationWebCommitSignoffSettingPayload UpdateOrganizationWebCommitSignoffSetting(Arg<UpdateOrganizationWebCommitSignoffSettingInput> input) => this.CreateMethodCall(x => x.UpdateOrganizationWebCommitSignoffSetting(input), Octokit.GraphQL.Model.UpdateOrganizationWebCommitSignoffSettingPayload.Create);
 
         /// <summary>
+        /// Toggle the setting for your GitHub Sponsors profile that allows other GitHub accounts to sponsor you on GitHub while paying for the sponsorship on Patreon. Only applicable when you have a GitHub Sponsors profile and have connected your GitHub account with Patreon.
+        /// </summary>
+        /// <param name="input">Parameters for UpdatePatreonSponsorability</param>
+        public UpdatePatreonSponsorabilityPayload UpdatePatreonSponsorability(Arg<UpdatePatreonSponsorabilityInput> input) => this.CreateMethodCall(x => x.UpdatePatreonSponsorability(input), Octokit.GraphQL.Model.UpdatePatreonSponsorabilityPayload.Create);
+
+        /// <summary>
         /// Updates an existing project.
         /// </summary>
         /// <param name="input">Parameters for UpdateProject</param>
@@ -1231,7 +1261,7 @@ namespace Octokit.GraphQL
         public UpdateProjectColumnPayload UpdateProjectColumn(Arg<UpdateProjectColumnInput> input) => this.CreateMethodCall(x => x.UpdateProjectColumn(input), Octokit.GraphQL.Model.UpdateProjectColumnPayload.Create);
 
         /// <summary>
-        /// Updates an existing project (beta).
+        /// Updates an existing project.
         /// </summary>
         /// <param name="input">Parameters for UpdateProjectV2</param>
         public UpdateProjectV2Payload UpdateProjectV2(Arg<UpdateProjectV2Input> input) => this.CreateMethodCall(x => x.UpdateProjectV2(input), Octokit.GraphQL.Model.UpdateProjectV2Payload.Create);
@@ -1343,6 +1373,18 @@ namespace Octokit.GraphQL
         /// </summary>
         /// <param name="input">Parameters for UpdateTopics</param>
         public UpdateTopicsPayload UpdateTopics(Arg<UpdateTopicsInput> input) => this.CreateMethodCall(x => x.UpdateTopics(input), Octokit.GraphQL.Model.UpdateTopicsPayload.Create);
+
+        /// <summary>
+        /// Updates an existing user list.
+        /// </summary>
+        /// <param name="input">Parameters for UpdateUserList</param>
+        public UpdateUserListPayload UpdateUserList(Arg<UpdateUserListInput> input) => this.CreateMethodCall(x => x.UpdateUserList(input), Octokit.GraphQL.Model.UpdateUserListPayload.Create);
+
+        /// <summary>
+        /// Updates which of the viewer's lists an item belongs to
+        /// </summary>
+        /// <param name="input">Parameters for UpdateUserListsForItem</param>
+        public UpdateUserListsForItemPayload UpdateUserListsForItem(Arg<UpdateUserListsForItemInput> input) => this.CreateMethodCall(x => x.UpdateUserListsForItem(input), Octokit.GraphQL.Model.UpdateUserListsForItemPayload.Create);
 
         /// <summary>
         /// Verify that a verifiable domain has the expected DNS record.

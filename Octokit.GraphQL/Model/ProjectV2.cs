@@ -56,6 +56,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="orderBy">Ordering options for project v2 fields returned from the connection</param>
         public ProjectV2FieldConfigurationConnection Fields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.Fields(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConfigurationConnection.Create);
 
+        /// <summary>
+        /// The Node ID of the ProjectV2 object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string HostName { get; }
 
+        /// <summary>
+        /// The Node ID of the EnterpriseServerInstallation object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

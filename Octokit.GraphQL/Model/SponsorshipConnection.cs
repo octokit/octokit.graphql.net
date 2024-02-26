@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for Sponsorship.
+    /// A list of sponsorships either from the subject or received by the subject.
     /// </summary>
     public class SponsorshipConnection : QueryableValue<SponsorshipConnection>, IPagingConnection<Sponsorship>
     {

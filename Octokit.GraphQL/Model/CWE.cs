@@ -25,6 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Description { get; }
 
+        /// <summary>
+        /// The Node ID of the CWE object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

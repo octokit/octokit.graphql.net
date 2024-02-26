@@ -20,6 +20,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Color { get; }
 
+        /// <summary>
+        /// The Node ID of the Language object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

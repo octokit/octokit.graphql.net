@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// A ref update rules for a viewer.
+    /// Branch protection rules that are enforced on the viewer.
     /// </summary>
     public class RefUpdateRule : QueryableValue<RefUpdateRule>
     {

@@ -35,6 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Deployment Deployment => this.CreateProperty(x => x.Deployment, Octokit.GraphQL.Model.Deployment.Create);
 
+        /// <summary>
+        /// The Node ID of the DeployedEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

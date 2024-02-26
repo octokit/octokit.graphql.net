@@ -43,6 +43,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="role">The role of the user in the installation.</param>
         public EnterpriseServerInstallationMembershipConnection EnterpriseInstallations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<EnterpriseServerInstallationOrder>? orderBy = null, Arg<string>? query = null, Arg<EnterpriseUserAccountMembershipRole>? role = null) => this.CreateMethodCall(x => x.EnterpriseInstallations(first, after, last, before, orderBy, query, role), Octokit.GraphQL.Model.EnterpriseServerInstallationMembershipConnection.Create);
 
+        /// <summary>
+        /// The Node ID of the EnterpriseUserAccount object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

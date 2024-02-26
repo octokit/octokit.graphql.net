@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public User Disabler => this.CreateProperty(x => x.Disabler, Octokit.GraphQL.Model.User.Create);
 
+        /// <summary>
+        /// The Node ID of the AutoMergeDisabledEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

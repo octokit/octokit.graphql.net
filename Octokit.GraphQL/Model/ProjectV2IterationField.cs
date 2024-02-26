@@ -35,6 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// The Node ID of the ProjectV2IterationField object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

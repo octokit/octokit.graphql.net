@@ -159,7 +159,7 @@ namespace Octokit.GraphQL
         /// <summary>
         /// Perform a search across resources, returning a maximum of 1,000 results.
         /// </summary>
-        /// <param name="query">The search string to look for.</param>
+        /// <param name="query">The search string to look for. GitHub search syntax is supported. For more information, see "[Searching on GitHub](https://docs.github.com/search-github/searching-on-github)," "[Understanding the search syntax](https://docs.github.com/search-github/getting-started-with-searching-on-github/understanding-the-search-syntax)," and "[Sorting search results](https://docs.github.com/search-github/getting-started-with-searching-on-github/sorting-search-results)."</param>
         /// <param name="type">The types of search items to search within.</param>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>

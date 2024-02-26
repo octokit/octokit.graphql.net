@@ -49,6 +49,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
+        /// <summary>
+        /// The Node ID of the DraftIssue object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

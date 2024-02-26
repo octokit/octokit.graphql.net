@@ -40,6 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ProjectV2FieldConfiguration Field => this.CreateProperty(x => x.Field, Octokit.GraphQL.Model.ProjectV2FieldConfiguration.Create);
 
+        /// <summary>
+        /// The Node ID of the ProjectV2ItemFieldDateValue object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

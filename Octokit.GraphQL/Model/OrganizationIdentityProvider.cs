@@ -32,6 +32,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="userName">Filter to external identities with the users userName/NameID attribute</param>
         public ExternalIdentityConnection ExternalIdentities(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? login = null, Arg<bool>? membersOnly = null, Arg<string>? userName = null) => this.CreateMethodCall(x => x.ExternalIdentities(first, after, last, before, login, membersOnly, userName), Octokit.GraphQL.Model.ExternalIdentityConnection.Create);
 
+        /// <summary>
+        /// The Node ID of the OrganizationIdentityProvider object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

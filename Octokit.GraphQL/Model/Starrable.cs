@@ -14,6 +14,9 @@ namespace Octokit.GraphQL.Model
     [GraphQLIdentifier("Starrable")]
     public interface IStarrable : IQueryableValue<IStarrable>, IQueryableInterface
     {
+        /// <summary>
+        /// The Node ID of the Starrable object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace Octokit.GraphQL.Model
     using Octokit.GraphQL.Core.Builders;
 
     /// <summary>
-    /// The connection type for Sponsor.
+    /// A list of users and organizations sponsoring someone via GitHub Sponsors.
     /// </summary>
     public class SponsorConnection : QueryableValue<SponsorConnection>, IPagingConnection<Sponsor>
     {
