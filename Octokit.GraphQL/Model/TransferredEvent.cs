@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public Repository FromRepository => this.CreateProperty(x => x.FromRepository, Octokit.GraphQL.Model.Repository.Create);
 
+        /// <summary>
+        /// The Node ID of the TransferredEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

@@ -90,6 +90,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IActor Editor => this.CreateProperty(x => x.Editor, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
+        /// <summary>
+        /// The Node ID of the TeamDiscussion object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
@@ -104,7 +107,7 @@ namespace Octokit.GraphQL.Model
         public bool IsPinned { get; }
 
         /// <summary>
-        /// Whether or not the discussion is only visible to team members and org admins.
+        /// Whether or not the discussion is only visible to team members and organization owners.
         /// </summary>
         [Obsolete(@"The Team Discussions feature is deprecated in favor of Organization Discussions. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement. Removal on 2024-07-01 UTC.")]
         public bool IsPrivate { get; }

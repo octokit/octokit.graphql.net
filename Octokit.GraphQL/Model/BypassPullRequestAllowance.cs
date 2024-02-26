@@ -25,6 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public BranchProtectionRule BranchProtectionRule => this.CreateProperty(x => x.BranchProtectionRule, Octokit.GraphQL.Model.BranchProtectionRule.Create);
 
+        /// <summary>
+        /// The Node ID of the BypassPullRequestAllowance object
+        /// </summary>
         public ID Id { get; }
 
         internal static BypassPullRequestAllowance Create(Expression expression)

@@ -25,6 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string FullDatabaseId { get; }
 
+        /// <summary>
+        /// The Node ID of the PinnedIssue object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

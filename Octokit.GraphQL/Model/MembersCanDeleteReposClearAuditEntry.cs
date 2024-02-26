@@ -70,6 +70,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string EnterpriseUrl { get; }
 
+        /// <summary>
+        /// The Node ID of the MembersCanDeleteReposClearAuditEntry object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

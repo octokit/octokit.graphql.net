@@ -30,6 +30,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// The Node ID of the AddedToProjectEvent object
+        /// </summary>
         public ID Id { get; }
 
         internal static AddedToProjectEvent Create(Expression expression)

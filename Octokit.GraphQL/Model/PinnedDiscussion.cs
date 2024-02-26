@@ -35,6 +35,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IEnumerable<string> GradientStopColors { get; }
 
+        /// <summary>
+        /// The Node ID of the PinnedDiscussion object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

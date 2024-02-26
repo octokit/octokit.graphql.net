@@ -20,6 +20,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Guid { get; }
 
+        /// <summary>
+        /// The Node ID of the ExternalIdentity object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

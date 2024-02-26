@@ -10,11 +10,17 @@ namespace Octokit.GraphQL.Model
     {
         /// <summary>
         /// The Node ID of the repository.
+        /// **Upcoming Change on 2024-04-01 UTC**
+        /// **Description:** `repositoryId` will be removed.
+        /// **Reason:** Suggested topics are no longer supported
         /// </summary>
-        public ID RepositoryId { get; set; }
+        public ID? RepositoryId { get; set; }
 
         /// <summary>
         /// The name of the suggested topic.
+        /// **Upcoming Change on 2024-04-01 UTC**
+        /// **Description:** `name` will be removed.
+        /// **Reason:** Suggested topics are no longer supported
         /// </summary>
         public string Name { get; set; }
 

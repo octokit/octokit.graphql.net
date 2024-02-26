@@ -59,6 +59,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string ExternalId { get; }
 
+        /// <summary>
+        /// The Node ID of the CheckRun object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

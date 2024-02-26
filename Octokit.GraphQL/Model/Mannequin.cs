@@ -41,6 +41,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string Email { get; }
 
+        /// <summary>
+        /// The Node ID of the Mannequin object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

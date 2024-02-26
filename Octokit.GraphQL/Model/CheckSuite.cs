@@ -60,6 +60,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public int? DatabaseId { get; }
 
+        /// <summary>
+        /// The Node ID of the CheckSuite object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

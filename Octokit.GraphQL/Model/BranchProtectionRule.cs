@@ -72,10 +72,13 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public bool DismissesStaleReviews { get; }
 
+        /// <summary>
+        /// The Node ID of the BranchProtectionRule object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
-        /// Can admins overwrite branch protection.
+        /// Can admins override branch protection.
         /// </summary>
         public bool IsAdminEnforced { get; }
 

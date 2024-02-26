@@ -30,6 +30,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public RepositoryNameConditionTarget RepositoryName => this.CreateProperty(x => x.RepositoryName, Octokit.GraphQL.Model.RepositoryNameConditionTarget.Create);
 
+        /// <summary>
+        /// Configuration for the repository_property condition
+        /// </summary>
+        public RepositoryPropertyConditionTarget RepositoryProperty => this.CreateProperty(x => x.RepositoryProperty, Octokit.GraphQL.Model.RepositoryPropertyConditionTarget.Create);
+
         internal static RepositoryRuleConditions Create(Expression expression)
         {
             return new RepositoryRuleConditions(expression);

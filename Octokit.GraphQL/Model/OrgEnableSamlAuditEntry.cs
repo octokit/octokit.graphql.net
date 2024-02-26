@@ -60,6 +60,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DigestMethodUrl { get; }
 
+        /// <summary>
+        /// The Node ID of the OrgEnableSamlAuditEntry object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>

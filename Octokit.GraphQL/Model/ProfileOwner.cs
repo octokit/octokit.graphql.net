@@ -25,6 +25,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         string Email { get; }
 
+        /// <summary>
+        /// The Node ID of the ProfileOwner object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The declined topic.
         /// </summary>
+        [Obsolete(@"Suggested topics are no longer supported Removal on 2024-04-01 UTC.")]
         public Topic Topic => this.CreateProperty(x => x.Topic, Octokit.GraphQL.Model.Topic.Create);
 
         internal static DeclineTopicSuggestionPayload Create(Expression expression)

@@ -29,6 +29,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         string CommitUrl { get; }
 
+        /// <summary>
+        /// The Node ID of the GitObject object
+        /// </summary>
         ID Id { get; }
 
         /// <summary>

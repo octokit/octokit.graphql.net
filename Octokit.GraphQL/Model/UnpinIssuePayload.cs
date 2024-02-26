@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Model
         public string ClientMutationId { get; }
 
         /// <summary>
+        /// The id of the pinned issue that was unpinned
+        /// </summary>
+        public ID? Id { get; }
+
+        /// <summary>
         /// The issue that was unpinned
         /// </summary>
         public Issue Issue => this.CreateProperty(x => x.Issue, Octokit.GraphQL.Model.Issue.Create);

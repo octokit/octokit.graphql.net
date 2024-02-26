@@ -40,6 +40,9 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public string DismissalMessageHTML { get; }
 
+        /// <summary>
+        /// The Node ID of the ReviewDismissedEvent object
+        /// </summary>
         public ID Id { get; }
 
         /// <summary>
