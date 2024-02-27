@@ -23,10 +23,6 @@ namespace Octokit.GraphQL.Core.Syntax
             {
                 name = "Int";
             }
-            else if (type == typeof(long))
-            {
-                name = "Long";
-            }
             else if (type == typeof(double))
             {
                 name = "Float";

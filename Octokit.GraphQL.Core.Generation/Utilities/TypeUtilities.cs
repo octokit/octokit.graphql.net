@@ -133,7 +133,6 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
                     switch (type.Name)
                     {
                         case "Int": return "int" + question;
-                        case "Long": return "long" + question;
                         case "Float": return "double" + question;
                         case "String": return "string";
                         case "Boolean": return "bool" + question;
@@ -165,7 +164,6 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
             return type.Kind == TypeKind.Enum ||
                 (type.Kind == TypeKind.Scalar &&
                    (type.Name == "Int" ||
-                    type.Name == "Long" ||
                     type.Name == "Float" ||
                     type.Name == "Boolean" ||
                     type.Name == "DateTime" ||

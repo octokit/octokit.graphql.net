@@ -17,7 +17,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        int? DatabaseId { get; }
+        long? DatabaseId { get; }
 
         /// <summary>
         /// The Node ID of the Reactable object
