@@ -66,7 +66,7 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
 
         public static bool IsCSharpPrimitive(TypeModel type)
         {
-            return type.Kind == TypeKind.Scalar || 
+            return type.Kind == TypeKind.Scalar ||
                 type.Kind == TypeKind.Enum ||
                 (type.Kind == TypeKind.NonNull && IsCSharpPrimitive(type.OfType));
         }
@@ -113,7 +113,7 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
 
             return type;
         }
-        
+
         public static string GetGraphQlIdentifierAttribute(string graphQlModelType)
         {
             if (graphQlModelType == null)
@@ -162,10 +162,10 @@ namespace Octokit.GraphQL.Core.Generation.Utilities
         private static bool IsValueType(TypeModel type)
         {
             return type.Kind == TypeKind.Enum ||
-                (type.Kind == TypeKind.Scalar && 
+                (type.Kind == TypeKind.Scalar &&
                    (type.Name == "Int" ||
-                    type.Name == "Float" || 
-                    type.Name == "Boolean" || 
+                    type.Name == "Float" ||
+                    type.Name == "Boolean" ||
                     type.Name == "DateTime" ||
                     type.Name == "ID"));
         }

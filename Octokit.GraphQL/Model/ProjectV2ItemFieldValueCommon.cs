@@ -27,7 +27,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        int? DatabaseId { get; }
+        long? DatabaseId { get; }
 
         /// <summary>
         /// The project field that contains this value.
@@ -70,7 +70,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public IActor Creator => this.CreateProperty(x => x.Creator, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         public ProjectV2FieldConfiguration Field => this.CreateProperty(x => x.Field, Octokit.GraphQL.Model.ProjectV2FieldConfiguration.Create);
 

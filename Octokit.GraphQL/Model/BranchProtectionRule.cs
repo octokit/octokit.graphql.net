@@ -65,7 +65,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         /// <summary>
         /// Will new commits pushed to matching branches dismiss pull request review approvals.

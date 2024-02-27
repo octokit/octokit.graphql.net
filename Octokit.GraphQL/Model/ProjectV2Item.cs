@@ -33,7 +33,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         /// <summary>
         /// The field value of the first project field which matches the 'name' argument that is set on the item.
@@ -50,6 +50,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for project v2 item field values returned from the connection</param>
         public ProjectV2ItemFieldValueConnection FieldValues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2ItemFieldValueOrder>? orderBy = null) => this.CreateMethodCall(x => x.FieldValues(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2ItemFieldValueConnection.Create);
+
+        /// <summary>
+        /// Identifies the primary key from the database as a BigInt.
+        /// </summary>
+        public string FullDatabaseId { get; }
 
         /// <summary>
         /// The Node ID of the ProjectV2Item object
