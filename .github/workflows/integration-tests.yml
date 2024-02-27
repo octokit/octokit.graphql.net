@@ -3,6 +3,7 @@ name: Integration tests
   push: null
   schedule:
     - cron: 0 */24 * * *
+  workflow_dispatch:
   watch:
     types:
       - started
