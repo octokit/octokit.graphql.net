@@ -68,6 +68,15 @@ namespace Octokit.GraphQL.Core.Generation.Models
             };
         }
 
+        public static TypeModel Long()
+        {
+            return new TypeModel
+            {
+                Kind = TypeKind.Scalar,
+                Name = "Long",
+            };
+        }
+
         public static TypeModel ID()
         {
             return new TypeModel
