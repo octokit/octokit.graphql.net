@@ -51,9 +51,9 @@ namespace Generate
             foreach (var file in CodeGenerator.Generate(schema, "Octokit.GraphQL", "Octokit.GraphQL.Model"))
             {
                 // fix for int32 overflow, see https://github.com/octokit/octokit.graphql.net/issues/311
-                if (file.Content.Contains("public int? DatabaseId { get; }"))
+                if (file.Content.Contains("int? DatabaseId { get; }"))
                 {
-                    file.Content = file.Content.Replace("public int? DatabaseId { get; }", "public long? DatabaseId { get; }");
+                    file.Content = file.Content.Replace("int? DatabaseId { get; }", "long? DatabaseId { get; }");
                 }
                 Console.WriteLine("Writing " + file.Path);
                 File.WriteAllText(Path.Combine(path, file.Path), file.Content);
