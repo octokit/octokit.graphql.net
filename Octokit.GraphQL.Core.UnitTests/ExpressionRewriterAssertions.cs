@@ -45,7 +45,11 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             expectedString = ReplaceSubqueryPlaceholders(expectedString, subqueryPlaceholderReplacements);
 
-            Assert.Equal(StripWhitespace(expectedString), StripWhitespace(actualString));
+            // hacky fix for anonymous types: actual strings give "new" and expected strings give "new object"
+            expectedString = StripWhitespace(expectedString);
+            expectedString = expectedString.Replace("new{", "newobject{");
+
+            Assert.Equal(expectedString, StripWhitespace(actualString));
         }
 
         public static string ReplaceSubqueryPlaceholders(string expectedString, params string[] subqueryPlaceholderReplacements)
