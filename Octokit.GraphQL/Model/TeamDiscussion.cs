@@ -83,7 +83,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         /// <summary>
         /// The actor who edited the comment.

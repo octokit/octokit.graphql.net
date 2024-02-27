@@ -62,7 +62,7 @@ namespace Octokit.GraphQL.Model.Internal
         {
         }
 
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         public ID Id { get; }
 

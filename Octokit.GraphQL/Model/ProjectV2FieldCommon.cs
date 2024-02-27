@@ -70,7 +70,7 @@ namespace Octokit.GraphQL.Model.Internal
 
         public ProjectV2FieldType DataType { get; }
 
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         public ID Id { get; }
 

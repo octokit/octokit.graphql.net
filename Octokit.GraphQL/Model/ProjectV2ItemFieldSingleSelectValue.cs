@@ -33,7 +33,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         /// <summary>
         /// A plain-text description of the selected single-select option, such as what the option means.

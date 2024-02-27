@@ -59,7 +59,7 @@ namespace Octokit.GraphQL.Model
         /// Identifies the primary key from the database.
         /// </summary>
         [Obsolete(@"`databaseId` will be removed because it does not support 64-bit signed integer identifiers. Use `fullDatabaseId` instead. Removal on 2024-07-01 UTC.")]
-        public int? DatabaseId { get; }
+        public long? DatabaseId { get; }
 
         /// <summary>
         /// The diff hunk to which the comment applies.
