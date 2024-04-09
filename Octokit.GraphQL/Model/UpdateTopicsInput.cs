@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateTopicsInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the repository.
         /// </summary>
         public ID RepositoryId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// An array of topic names.
         /// </summary>
         public IEnumerable<string> TopicNames { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

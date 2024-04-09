@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class AddPullRequestReviewThreadReplyInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the pending review to which the reply will belong.
         /// </summary>
         public ID? PullRequestReviewId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// The text of the reply.
         /// </summary>
         public string Body { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CreateProjectV2Input
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The owner ID to create the project under.
         /// </summary>
         public ID OwnerId { get; set; }
@@ -27,10 +32,5 @@ namespace Octokit.GraphQL.Model
         /// The team to link the project to. The team will be granted read permissions.
         /// </summary>
         public ID? TeamId { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

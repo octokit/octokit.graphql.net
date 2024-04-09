@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class AddStarInput
     {
         /// <summary>
-        /// The Starrable ID to star.
-        /// </summary>
-        public ID StarrableId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The Starrable ID to star.
+        /// </summary>
+        public ID StarrableId { get; set; }
     }
 }

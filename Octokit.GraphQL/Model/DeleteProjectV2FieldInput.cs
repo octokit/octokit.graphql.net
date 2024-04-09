@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class DeleteProjectV2FieldInput
     {
         /// <summary>
-        /// The ID of the field to delete.
-        /// </summary>
-        public ID FieldId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The ID of the field to delete.
+        /// </summary>
+        public ID FieldId { get; set; }
     }
 }

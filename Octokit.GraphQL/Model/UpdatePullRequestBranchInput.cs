@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdatePullRequestBranchInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the pull request.
         /// </summary>
         public ID PullRequestId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// The update branch method to use. If omitted, defaults to 'MERGE'
         /// </summary>
         public PullRequestBranchUpdateMethod? UpdateMethod { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

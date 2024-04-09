@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateRefInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the Ref to be updated.
         /// </summary>
         public ID RefId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// Permit updates of branch Refs that are not fast-forwards?
         /// </summary>
         public bool? Force { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

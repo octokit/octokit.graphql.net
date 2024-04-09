@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CreateIssueInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the repository.
         /// </summary>
         public ID RepositoryId { get; set; }
@@ -47,10 +52,5 @@ namespace Octokit.GraphQL.Model
         /// The name of an issue template in the repository, assigns labels and assignees from the template to the issue
         /// </summary>
         public string IssueTemplate { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

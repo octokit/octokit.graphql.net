@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CreateTeamDiscussionInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the team to which the discussion belongs. This field is required.
         /// **Upcoming Change on 2024-07-01 UTC**
         /// **Description:** `teamId` will be removed. Follow the guide at https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/ to find a suitable replacement.
@@ -39,10 +44,5 @@ namespace Octokit.GraphQL.Model
         /// **Reason:** The Team Discussions feature is deprecated in favor of Organization Discussions.
         /// </summary>
         public bool? Private { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

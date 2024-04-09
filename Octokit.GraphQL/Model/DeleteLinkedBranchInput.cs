@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class DeleteLinkedBranchInput
     {
         /// <summary>
-        /// The ID of the linked branch
-        /// </summary>
-        public ID LinkedBranchId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The ID of the linked branch
+        /// </summary>
+        public ID LinkedBranchId { get; set; }
     }
 }

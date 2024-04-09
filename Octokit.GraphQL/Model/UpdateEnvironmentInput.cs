@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateEnvironmentInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The node ID of the environment.
         /// </summary>
         public ID EnvironmentId { get; set; }
@@ -27,10 +32,5 @@ namespace Octokit.GraphQL.Model
         /// Whether deployments to this environment can be approved by the user who created the deployment.
         /// </summary>
         public bool? PreventSelfReview { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

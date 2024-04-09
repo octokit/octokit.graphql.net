@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CloseDiscussionInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// ID of the discussion to be closed.
         /// </summary>
         public ID DiscussionId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The reason why the discussion is being closed.
         /// </summary>
         public DiscussionCloseReason? Reason { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

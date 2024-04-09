@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class SetOrganizationInteractionLimitInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the organization to set a limit for.
         /// </summary>
         public ID OrganizationId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// When this limit should expire.
         /// </summary>
         public RepositoryInteractionLimitExpiry? Expiry { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

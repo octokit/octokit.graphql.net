@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class DeletePullRequestReviewInput
     {
         /// <summary>
-        /// The Node ID of the pull request review to delete.
-        /// </summary>
-        public ID PullRequestReviewId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The Node ID of the pull request review to delete.
+        /// </summary>
+        public ID PullRequestReviewId { get; set; }
     }
 }

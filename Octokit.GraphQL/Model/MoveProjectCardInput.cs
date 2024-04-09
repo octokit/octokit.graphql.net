@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class MoveProjectCardInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The id of the card to move.
         /// </summary>
         public ID CardId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// Place the new card after the card with this id. Pass null to place it at the top.
         /// </summary>
         public ID? AfterCardId { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

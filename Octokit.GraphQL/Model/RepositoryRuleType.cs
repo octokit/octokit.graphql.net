@@ -150,12 +150,6 @@ namespace Octokit.GraphQL.Model
         Workflows,
 
         /// <summary>
-        /// Commits pushed to matching refs must have verified signatures.
-        /// </summary>
-        [EnumMember(Value = "RULESET_REQUIRED_SIGNATURES")]
-        RulesetRequiredSignatures,
-
-        /// <summary>
         /// Secret scanning
         /// </summary>
         [EnumMember(Value = "SECRET_SCANNING")]

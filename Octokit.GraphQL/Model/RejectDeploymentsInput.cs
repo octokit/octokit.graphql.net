@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class RejectDeploymentsInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The node ID of the workflow run containing the pending deployments.
         /// </summary>
         public ID WorkflowRunId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// Optional comment for rejecting deployments
         /// </summary>
         public string Comment { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class AcceptTopicSuggestionInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the repository.
         /// **Upcoming Change on 2024-04-01 UTC**
         /// **Description:** `repositoryId` will be removed.
@@ -23,10 +28,5 @@ namespace Octokit.GraphQL.Model
         /// **Reason:** Suggested topics are no longer supported
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }
