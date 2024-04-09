@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateTeamDiscussionInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the discussion to modify.
         /// </summary>
         public ID Id { get; set; }
@@ -32,10 +37,5 @@ namespace Octokit.GraphQL.Model
         /// If provided, sets the pinned state of the updated discussion.
         /// </summary>
         public bool? Pinned { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

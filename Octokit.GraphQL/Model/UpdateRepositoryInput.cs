@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateRepositoryInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the repository to update.
         /// </summary>
         public ID RepositoryId { get; set; }
@@ -57,10 +62,5 @@ namespace Octokit.GraphQL.Model
         /// Indicates if the repository displays a Sponsor button for financial contributions.
         /// </summary>
         public bool? HasSponsorshipsEnabled { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

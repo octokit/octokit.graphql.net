@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class RemoveEnterpriseSupportEntitlementInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the Enterprise which the admin belongs to.
         /// </summary>
         public ID EnterpriseId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The login of a member who will lose the support entitlement.
         /// </summary>
         public string Login { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

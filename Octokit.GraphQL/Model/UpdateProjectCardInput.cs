@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateProjectCardInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ProjectCard ID to update.
         /// </summary>
         public ID ProjectCardId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// The note of ProjectCard.
         /// </summary>
         public string Note { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

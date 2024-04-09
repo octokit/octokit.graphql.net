@@ -194,8 +194,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="names">The names of the environments to be returned.</param>
         /// <param name="orderBy">Ordering options for the environments</param>
-        public EnvironmentConnection Environments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<Environments>? orderBy = null) => this.CreateMethodCall(x => x.Environments(first, after, last, before, orderBy), Octokit.GraphQL.Model.EnvironmentConnection.Create);
+        public EnvironmentConnection Environments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? names = null, Arg<Environments>? orderBy = null) => this.CreateMethodCall(x => x.Environments(first, after, last, before, names, orderBy), Octokit.GraphQL.Model.EnvironmentConnection.Create);
 
         /// <summary>
         /// Returns how many forks there are of this repository in the whole network.
@@ -521,6 +522,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         public PinnedIssueConnection PinnedIssues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PinnedIssues(first, after, last, before), Octokit.GraphQL.Model.PinnedIssueConnection.Create);
+
+        /// <summary>
+        /// Returns information about the availability of certain features and limits based on the repository's billing plan.
+        /// </summary>
+        public RepositoryPlanFeatures PlanFeatures => this.CreateProperty(x => x.PlanFeatures, Octokit.GraphQL.Model.RepositoryPlanFeatures.Create);
 
         /// <summary>
         /// The primary language of the repository's code.

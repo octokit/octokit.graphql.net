@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class AddDiscussionCommentInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the discussion to comment on.
         /// </summary>
         public ID DiscussionId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// The contents of the comment.
         /// </summary>
         public string Body { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

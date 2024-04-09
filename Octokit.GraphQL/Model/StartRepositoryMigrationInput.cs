@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class StartRepositoryMigrationInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the migration source.
         /// </summary>
         public ID SourceId { get; set; }
@@ -67,10 +72,5 @@ namespace Octokit.GraphQL.Model
         /// Whether to lock the source repository.
         /// </summary>
         public bool? LockSource { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

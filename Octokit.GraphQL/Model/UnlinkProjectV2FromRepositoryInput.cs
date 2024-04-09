@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UnlinkProjectV2FromRepositoryInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the project to unlink from the repository.
         /// </summary>
         public ID ProjectId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The ID of the repository to unlink from the project.
         /// </summary>
         public ID RepositoryId { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

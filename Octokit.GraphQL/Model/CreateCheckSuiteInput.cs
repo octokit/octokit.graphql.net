@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CreateCheckSuiteInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the repository.
         /// </summary>
         public ID RepositoryId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The SHA of the head commit.
         /// </summary>
         public string HeadSha { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

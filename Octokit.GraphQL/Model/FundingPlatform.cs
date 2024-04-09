@@ -60,12 +60,6 @@ namespace Octokit.GraphQL.Model
         Issuehunt,
 
         /// <summary>
-        /// Otechie funding platform.
-        /// </summary>
-        [EnumMember(Value = "OTECHIE")]
-        Otechie,
-
-        /// <summary>
         /// LFX Crowdfunding funding platform.
         /// </summary>
         [EnumMember(Value = "LFX_CROWDFUNDING")]
@@ -76,6 +70,12 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "POLAR")]
         Polar,
+
+        /// <summary>
+        /// Buy Me a Coffee funding platform.
+        /// </summary>
+        [EnumMember(Value = "BUY_ME_A_COFFEE")]
+        BuyMeACoffee,
 
         /// <summary>
         /// Custom funding platform.

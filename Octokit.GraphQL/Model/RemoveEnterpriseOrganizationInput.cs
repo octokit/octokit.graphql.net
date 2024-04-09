@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class RemoveEnterpriseOrganizationInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the enterprise from which the organization should be removed.
         /// </summary>
         public ID EnterpriseId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The ID of the organization to remove from the enterprise.
         /// </summary>
         public ID OrganizationId { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

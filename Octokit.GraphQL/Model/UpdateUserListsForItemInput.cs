@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateUserListsForItemInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The item to add to the list
         /// </summary>
         public ID ItemId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// The suggested lists to create and add this item to
         /// </summary>
         public IEnumerable<ID> SuggestedListIds { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

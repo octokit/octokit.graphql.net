@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CreateDiscussionInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The id of the repository on which to create the discussion.
         /// </summary>
         public ID RepositoryId { get; set; }
@@ -27,10 +32,5 @@ namespace Octokit.GraphQL.Model
         /// The id of the discussion category to associate with this discussion.
         /// </summary>
         public ID CategoryId { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

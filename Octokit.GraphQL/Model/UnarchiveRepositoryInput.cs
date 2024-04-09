@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class UnarchiveRepositoryInput
     {
         /// <summary>
-        /// The ID of the repository to unarchive.
-        /// </summary>
-        public ID RepositoryId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The ID of the repository to unarchive.
+        /// </summary>
+        public ID RepositoryId { get; set; }
     }
 }

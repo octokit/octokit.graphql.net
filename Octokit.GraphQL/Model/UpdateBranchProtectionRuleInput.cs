@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateBranchProtectionRuleInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The global relay id of the branch protection rule to be updated.
         /// </summary>
         public ID BranchProtectionRuleId { get; set; }
@@ -147,10 +152,5 @@ namespace Octokit.GraphQL.Model
         /// Whether users can pull changes from upstream when the branch is locked. Set to `true` to allow fork syncing. Set to `false` to prevent fork syncing.
         /// </summary>
         public bool? LockAllowsFetchAndMerge { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

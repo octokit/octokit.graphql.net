@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateProjectColumnInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ProjectColumn ID to update.
         /// </summary>
         public ID ProjectColumnId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The name of project column.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class RemoveLabelsFromLabelableInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The id of the Labelable to remove labels from.
         /// </summary>
         public ID LabelableId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The ids of labels to remove.
         /// </summary>
         public IEnumerable<ID> LabelIds { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

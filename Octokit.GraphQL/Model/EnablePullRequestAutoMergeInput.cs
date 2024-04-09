@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class EnablePullRequestAutoMergeInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// ID of the pull request to enable auto-merge on.
         /// </summary>
         public ID PullRequestId { get; set; }
@@ -37,10 +42,5 @@ namespace Octokit.GraphQL.Model
         /// The expected head OID of the pull request.
         /// </summary>
         public string ExpectedHeadOid { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

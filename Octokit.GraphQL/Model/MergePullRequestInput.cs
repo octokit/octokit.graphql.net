@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class MergePullRequestInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// ID of the pull request to be merged.
         /// </summary>
         public ID PullRequestId { get; set; }
@@ -37,10 +42,5 @@ namespace Octokit.GraphQL.Model
         /// The email address to associate with this merge.
         /// </summary>
         public string AuthorEmail { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

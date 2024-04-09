@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class InviteEnterpriseAdminInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the enterprise to which you want to invite an administrator.
         /// </summary>
         public ID EnterpriseId { get; set; }
@@ -27,10 +32,5 @@ namespace Octokit.GraphQL.Model
         /// The role of the administrator.
         /// </summary>
         public EnterpriseAdministratorRole? Role { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class DeleteUserListInput
     {
         /// <summary>
-        /// The ID of the list to delete.
-        /// </summary>
-        public ID ListId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The ID of the list to delete.
+        /// </summary>
+        public ID ListId { get; set; }
     }
 }

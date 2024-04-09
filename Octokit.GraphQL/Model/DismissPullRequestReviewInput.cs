@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class DismissPullRequestReviewInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the pull request review to modify.
         /// </summary>
         public ID PullRequestReviewId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The contents of the pull request review dismissal message.
         /// </summary>
         public string Message { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

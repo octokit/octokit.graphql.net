@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateUserListInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the list to update.
         /// </summary>
         public ID ListId { get; set; }
@@ -27,10 +32,5 @@ namespace Octokit.GraphQL.Model
         /// Whether or not the list is private
         /// </summary>
         public bool? IsPrivate { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

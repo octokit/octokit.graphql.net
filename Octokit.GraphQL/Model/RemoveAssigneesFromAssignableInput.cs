@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class RemoveAssigneesFromAssignableInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The id of the assignable object to remove assignees from.
         /// </summary>
         public ID AssignableId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The id of users to remove as assignees.
         /// </summary>
         public IEnumerable<ID> AssigneeIds { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

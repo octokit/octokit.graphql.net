@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class MarkNotificationAsDoneInput
     {
         /// <summary>
-        /// The NotificationThread id.
-        /// </summary>
-        public ID Id { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The NotificationThread id.
+        /// </summary>
+        public ID Id { get; set; }
     }
 }

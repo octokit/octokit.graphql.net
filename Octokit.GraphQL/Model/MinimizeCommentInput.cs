@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class MinimizeCommentInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The Node ID of the subject to modify.
         /// </summary>
         public ID SubjectId { get; set; }
@@ -17,10 +22,5 @@ namespace Octokit.GraphQL.Model
         /// The classification of comment
         /// </summary>
         public ReportedContentClassifiers Classifier { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

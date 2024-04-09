@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CloneProjectInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The owner ID to create the project under.
         /// </summary>
         public ID TargetOwnerId { get; set; }
@@ -37,10 +42,5 @@ namespace Octokit.GraphQL.Model
         /// The visibility of the project, defaults to false (private).
         /// </summary>
         public bool? Public { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

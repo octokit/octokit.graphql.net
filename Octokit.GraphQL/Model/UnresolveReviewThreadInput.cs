@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class UnresolveReviewThreadInput
     {
         /// <summary>
-        /// The ID of the thread to unresolve
-        /// </summary>
-        public ID ThreadId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The ID of the thread to unresolve
+        /// </summary>
+        public ID ThreadId { get; set; }
     }
 }

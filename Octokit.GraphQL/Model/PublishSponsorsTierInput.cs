@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class PublishSponsorsTierInput
     {
         /// <summary>
-        /// The ID of the draft tier to publish.
-        /// </summary>
-        public ID TierId { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The ID of the draft tier to publish.
+        /// </summary>
+        public ID TierId { get; set; }
     }
 }

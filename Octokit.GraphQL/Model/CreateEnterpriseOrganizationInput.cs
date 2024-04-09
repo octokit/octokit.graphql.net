@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class CreateEnterpriseOrganizationInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the enterprise owning the new organization.
         /// </summary>
         public ID EnterpriseId { get; set; }
@@ -32,10 +37,5 @@ namespace Octokit.GraphQL.Model
         /// The logins for the administrators of the new organization.
         /// </summary>
         public IEnumerable<string> AdminLogins { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }

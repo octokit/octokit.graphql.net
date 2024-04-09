@@ -9,13 +9,13 @@ namespace Octokit.GraphQL.Model
     public class DeleteTeamDiscussionInput
     {
         /// <summary>
-        /// The discussion ID to delete.
-        /// </summary>
-        public ID Id { get; set; }
-
-        /// <summary>
         /// A unique identifier for the client performing the mutation.
         /// </summary>
         public string ClientMutationId { get; set; }
+
+        /// <summary>
+        /// The discussion ID to delete.
+        /// </summary>
+        public ID Id { get; set; }
     }
 }

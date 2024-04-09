@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class UpdateEnterpriseOwnerOrganizationRoleInput
     {
         /// <summary>
+        /// A unique identifier for the client performing the mutation.
+        /// </summary>
+        public string ClientMutationId { get; set; }
+
+        /// <summary>
         /// The ID of the Enterprise which the owner belongs to.
         /// </summary>
         public ID EnterpriseId { get; set; }
@@ -22,10 +27,5 @@ namespace Octokit.GraphQL.Model
         /// The role to assume in the organization.
         /// </summary>
         public RoleInOrganization OrganizationRole { get; set; }
-
-        /// <summary>
-        /// A unique identifier for the client performing the mutation.
-        /// </summary>
-        public string ClientMutationId { get; set; }
     }
 }
