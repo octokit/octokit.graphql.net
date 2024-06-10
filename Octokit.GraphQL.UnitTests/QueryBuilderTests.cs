@@ -394,5 +394,36 @@ namespace Octokit.GraphQL.UnitTests
 
 
         }
+
+        [Fact]
+        public void UpdateProjectV2ItemFieldValue_OnlyIncludesProvidedValue()
+        {
+            var expected = @"mutation {
+  updateProjectV2ItemFieldValue(input:  {
+    projectId: ""ProjectId"",itemId: ""ItemId"",fieldId: ""FieldId"",value:  {
+      singleSelectOptionId: ""OptionId""
+    }
+  }) {
+    clientMutationId
+  }
+}";
+
+            var mutation = new Mutation()
+                .UpdateProjectV2ItemFieldValue(
+                    new UpdateProjectV2ItemFieldValueInput
+                    {
+                        FieldId = new ID("FieldId"),
+                        ProjectId = new ID("ProjectId"),
+                        ItemId = new ID("ItemId"),
+                        Value = new ProjectV2FieldValue
+                        {
+                            SingleSelectOptionId = "OptionId"
+                        }
+                    }
+                ).Select(x => x.ClientMutationId)
+                .Compile();
+
+            Assert.Equal(expected, mutation.ToString(), ignoreLineEndingDifferences: true);
+        }
     }
 }

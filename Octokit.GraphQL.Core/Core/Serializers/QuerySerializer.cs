@@ -247,26 +247,34 @@ namespace Octokit.GraphQL.Core.Serializers
                     //Cache Hit
                 }
 
+                var openedBrace = false;
+
                 for (var index = 0; index < properties.Length; index++)
                 {
                     var property = properties[index];
 
-                    if (index == 0)
-                    {
-                        OpenBrace(builder);
-                    }
-                    else
-                    {
-                        builder.Append(",");
-                    }
+                    var propertyValue = property.Item2.Invoke(value, null);
 
-                    builder.Append(property.Item1.LowerFirstCharacter()).Append(colon);
-                    SerializeValue(builder, property.Item2.Invoke(value, null));
-
-                    if (index + 1 == properties.Length)
+                    if (propertyValue != null)
                     {
-                        CloseBrace(builder);
+                        if(openedBrace)
+                        {
+                            builder.Append(',');
+                        }
+                        else
+                        {
+                            OpenBrace(builder);
+                            openedBrace = true;
+                        }
+
+                        builder.Append(property.Item1.LowerFirstCharacter()).Append(colon);
+                        SerializeValue(builder, propertyValue);
                     }
+                }
+
+                if(openedBrace)
+                {
+                    CloseBrace(builder);
                 }
             }
         }
