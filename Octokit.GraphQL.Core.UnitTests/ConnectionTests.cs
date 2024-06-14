@@ -70,7 +70,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var connection = new Connection(ProductInformation, CredentialStore, httpClient);
 
-            await connection.Run(query, cancellationToken);
+            await Assert.ThrowsAsync<TaskCanceledException>(() => connection.Run(query, cancellationToken));
         }
 
         [Theory]
