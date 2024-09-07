@@ -95,6 +95,15 @@ if(activeSponsor != null)
 }
 ```
 
+## Contributing & Feedback
+
+There are multiple ways to participate in the community:
+
+- Upvote popular feature requests
+- [Submit a new feature](https://github.com/octokit/octokit.graphql.net/pulls)
+- [File bugs and feature requests](https://github.com/octokit/octokit.graphql.net/issues/new/choose).
+- Review source [code changes](https://github.com/octokit/octokit.graphql.net/commits)
+
 ## Running tests
 
 ### 1️. Prerequisites
