@@ -5,6 +5,6 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Octokit.GraphQL.Core.Generation\Octokit.GraphQL.Core.Generation.csproj" />
+    <ProjectReference Include="..\..\src\Octokit.GraphQL.Core.Generation\Octokit.GraphQL.Core.Generation.csproj" />
   </ItemGroup>
 </Project>
