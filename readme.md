@@ -21,7 +21,7 @@ To learn more about GitHub GraphQL API, visit [GitHub Docs](https://docs.github.
 ## Usage
 
 1. Install the NuGet package
-```
+```ps1
 Install-Package Octokit.GraphQL -IncludePrerelease
 ```
 2. Feed the package
