@@ -95,7 +95,34 @@ if(activeSponsor != null)
 }
 ```
 
-### Codebase Structure
+## Contributing & Feedback
+
+There are multiple ways to participate in the community:
+
+- Upvote popular feature requests
+- [Submit a new feature](https://github.com/octokit/octokit.graphql.net/pulls)
+- [File bugs and feature requests](https://github.com/octokit/octokit.graphql.net/issues/new/choose).
+- Review source [code changes](https://github.com/octokit/octokit.graphql.net/commits)
+
+## Building from source
+
+### Prerequisites
+
+1. Ensure you have following components:
+    - [Git](https://git-scm.com/)
+    - [Visual Studio and the .NET SDK](https://visualstudio.microsoft.com/vs/)
+2. Clone the repository:
+    ```git
+    git clone https://github.com/octokit/octokit.graphql.net
+    ```
+
+### Building the project
+
+- Open `Octokit.GraphQL.sln`.
+- Set the Startup Project to  `Octokit.GraphQL` or a test project as appropriate
+- Build with `DEBUG|x64` (or `DEBUG|Any CPU`)
+
+### Codebase structure
 
 ```
 .
@@ -111,41 +138,3 @@ if(activeSponsor != null)
 ├──Octokit.GraphQL.IntegrationTests           // Octokit integration tests
 └──Octokit.GraphQL.UnitTests                  // Octokit unit tests
 ```
-
-## Contributing & Feedback
-
-There are multiple ways to participate in the community:
-
-- Upvote popular feature requests
-- [Submit a new feature](https://github.com/octokit/octokit.graphql.net/pulls)
-- [File bugs and feature requests](https://github.com/octokit/octokit.graphql.net/issues/new/choose).
-- Review source [code changes](https://github.com/octokit/octokit.graphql.net/commits)
-
-## Running tests
-
-### 1️. Prerequisites
-
-Ensure you have following components:
-
-- [Git](https://git-scm.com/)
-- [Visual Studio and the .NET SDK](https://visualstudio.microsoft.com/vs/)
-
-### 2️. Git
-
-Clone the repository:
-
-```git
-git clone https://github.com/octokit/octokit.graphql.net
-```
-
-### 3️. Test the project
-
-- Open `Octokit.GraphQL.sln`.
-- Set the Startup Project to  `Octokit.GraphQL.UnitTests` or another test project as appropriate
-- Build with `DEBUG|x64` (or `DEBUG|Any CPU`)
-
-## License
-
-Copyright (c) 2018 - present GitHub Inc.
-
-Licensed under the MIT license as stated in the [LICENSE](LICENSE.md).
