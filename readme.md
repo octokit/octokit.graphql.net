@@ -95,16 +95,16 @@ if(activeSponsor != null)
 }
 ```
 
-## 🧪 Running tests
+## Running tests
 
-### 1️⃣ Prerequisites
+### 1️. Prerequisites
 
 Ensure you have following components:
 
 - [Git](https://git-scm.com/)
 - [Visual Studio and the .NET SDK](https://visualstudio.microsoft.com/vs/)
 
-### 2️⃣ Git
+### 2️. Git
 
 Clone the repository:
 
@@ -112,7 +112,7 @@ Clone the repository:
 git clone https://github.com/octokit/octokit.graphql.net
 ```
 
-### 3️⃣ Test the project
+### 3️. Test the project
 
 - Open `Octokit.GraphQL.sln`.
 - Set the Startup Project to  `Octokit.GraphQL.UnitTests` or another test project as appropriate
