@@ -9,7 +9,7 @@
     <img src="http://img.shields.io/nuget/v/Octokit.GraphQL.svg" alt="NuGet" /></a>
 </p>
 
-Octokit.GraphQL.NET gives you access to the GitHub GraphQL API from .NET. It exposes the GitHub GraphQL API as a strongly-typed LINQ-like API, aiming to follow the GraphQL query syntax as closely as possible, which giving the benefits of strong typing in your favorite .NET language.
+Octokit.GraphQL.NET gives you access to the GitHub GraphQL API from within the .NET Framework. It exposes the GitHub GraphQL API as a strongly-typed LINQ-like API, aiming to follow the GraphQL query syntax as closely as possible, giving the benefits of strong typing across the world's leading programming framework, .NET.
 
 > [!NOTE]
 > This software is currently in beta. There are few things left, and there might be bugs - be warned!
