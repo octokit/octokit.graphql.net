@@ -6,6 +6,10 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+	<PublishAot>true</PublishAot>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Octokit.GraphQL.Core\Octokit.GraphQL.Core.csproj" />
   </ItemGroup>
