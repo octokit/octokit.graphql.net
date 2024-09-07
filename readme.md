@@ -117,3 +117,9 @@ git clone https://github.com/octokit/octokit.graphql.net
 - Open `Octokit.GraphQL.sln`.
 - Set the Startup Project to  `Octokit.GraphQL.UnitTests` or another test project as appropriate
 - Build with `DEBUG|x64` (or `DEBUG|Any CPU`)
+
+## License
+
+Copyright (c) 2018 - present GitHub Inc.
+
+Licensed under the MIT license as stated in the [LICENSE](LICENSE.md).
