@@ -20,7 +20,7 @@ The full documentation of GraphQL API can be found on [GitHub Docs](https://docs
 
 - [GraphQL public schema](https://docs.github.com/graphql/overview/public-schema)
 - [GraphQL explorer](https://docs.github.com/graphql/overview/explorer)
-- [API specs of Octokit.GraphQL.NET](https://github.com/octokit/octokit.graphql.net/tree/main/docs)
+- [Octokit.GraphQL.NET API spec](https://github.com/octokit/octokit.graphql.net/tree/main/docs)
 
 To install the package from the command line, run the following command:
 
