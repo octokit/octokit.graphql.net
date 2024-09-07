@@ -14,18 +14,19 @@ Octokit.GraphQL.NET gives you access to the GitHub GraphQL API from .NET. It exp
 > [!NOTE]
 > This software is currently in beta. There are few things left, and there might be bugs - be warned!
 
-## Getting started with GitHub GraphQL API
+## Getting started
 
 To learn more about GitHub GraphQL API, visit [GitHub Docs](https://docs.github.com/graphql/overview)
 
-## Usage
+To install the package from the command line, run the following command:
 
-1. Install the NuGet package
 ```ps1
 Install-Package Octokit.GraphQL -IncludePrerelease
 ```
-2. Feed the package
-```C#
+
+## Usage scenarios
+
+```cs
 using Octokit.GraphQL;
 using static Octokit.GraphQL.Variable;
 
@@ -55,7 +56,7 @@ var result =  await connection.Run(query, vars);
 Console.WriteLine(result.Login + " & " + result.Name + " Rocks!");
 ```
 
-```C#
+```cs
 using Octokit.GraphQL;
 using Octokit.GraphQL.Model;
 using System;
@@ -93,3 +94,26 @@ if(activeSponsor != null)
     Console.WriteLine("Thanks for sponsoring Warren");
 }
 ```
+
+## 🧪 Running tests
+
+### 1️⃣ Prerequisites
+
+Ensure you have following components:
+
+- [Git](https://git-scm.com/)
+- [Visual Studio and the .NET SDK](https://visualstudio.microsoft.com/vs/)
+
+### 2️⃣ Git
+
+Clone the repository:
+
+```git
+git clone https://github.com/octokit/octokit.graphql.net
+```
+
+### 3️⃣ Test the project
+
+- Open `Octokit.GraphQL.sln`.
+- Set the Startup Project to  `Octokit.GraphQL.UnitTests` or another test project as appropriate
+- Build with `DEBUG|x64` (or `DEBUG|Any CPU`)
