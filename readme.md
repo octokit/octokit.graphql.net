@@ -16,7 +16,11 @@ Octokit.GraphQL.NET gives you access to the GitHub GraphQL API from .NET. It exp
 
 ## Getting started
 
-To learn more about GitHub GraphQL API, visit [GitHub Docs](https://docs.github.com/graphql/overview)
+The full documentation of GraphQL API can be found on [GitHub Docs](https://docs.github.com/graphql/overview):
+
+- [GraphQL public schema](https://docs.github.com/graphql/overview/public-schema)
+- [GraphQL explorer](https://docs.github.com/graphql/overview/explorer)
+- [API specs of Octokit.GraphQL.NET](https://github.com/octokit/octokit.graphql.net/tree/main/docs)
 
 To install the package from the command line, run the following command:
 
@@ -127,9 +131,9 @@ There are multiple ways to participate in the community:
 ```
 .
 ├──Scripts                                    // Code quality scripts
-|  └──configure-integration-tests.ps1         // Integration tests configuration script
+│  └──configure-integration-tests.ps1         // Integration tests configuration script
 ├──Tools                                      // Code quality tools
-|  └──Generate                                // GraphQL .NET entity generator
+│  └──Generate                                // GraphQL .NET entity generator
 ├──Octokit.GraphQL                            // Main API data contracts library
 ├──Octokit.GraphQL.Core                       // Octokit core code
 ├──Octokit.GraphQL.Core.Generation            // Core entity generator tools
