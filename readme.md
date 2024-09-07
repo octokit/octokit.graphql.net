@@ -95,6 +95,23 @@ if(activeSponsor != null)
 }
 ```
 
+### Codebase Structure
+
+```
+.
+├──Scripts                                    // Code quality scripts
+|  └──configure-integration-tests.ps1         // Integration tests configuration script
+├──Tools                                      // Code quality tools
+|  └──Generate                                // GraphQL .NET entity generator
+├──Octokit.GraphQL                            // Main API data contracts library
+├──Octokit.GraphQL.Core                       // Octokit core code
+├──Octokit.GraphQL.Core.Generation            // Core entity generator tools
+├──Octokit.GraphQL.Core.Generation.UnitTests  // Core entity generator unit tests
+├──Octokit.GraphQL.Core.UnitTests             // Octokit core unit tests
+├──Octokit.GraphQL.IntegrationTests           // Octokit integration tests
+└──Octokit.GraphQL.UnitTests                  // Octokit unit tests
+```
+
 ## Contributing & Feedback
 
 There are multiple ways to participate in the community:
