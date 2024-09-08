@@ -250,16 +250,16 @@ namespace Octokit.GraphQL.Core.UnitTests
             //         data["data"]["repository"],
             //         x => x["name"].Type != JTokenType.Null ? x["name"].ToObject<string>() : null);
 
-            var readableString = 
+            var readableString =
                 "data => Rewritten.Value.Select(data[\"data\"][\"repository\"],x => (x[\"name\"].Type != JTokenType.Null) ? x[\"name\"].ToObject<string>() : null)";
-            
+
             // Expression put through ReadableExpression outputs the following, so I'm using a hard coded string instead
             //   data => Rewritten.Value.Select(data["data"]["repository"], x => (((int)x["name"].Type) != 10) ? x["name"].ToObject<string>() : null)
 
             ExpressionRewriterAssertions.AssertExpressionQueryEqual(readableString, query);
         }
 
-        
+
         [Fact]
         public void Union_IssueOrPullRequest()
         {
