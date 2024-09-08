@@ -9,9 +9,9 @@ using Xunit;
 
 namespace Octokit.GraphQL.Core.UnitTests
 {
-    public class ExpressionRewiterTests
+    public class ExpressionRewriterTests
     {
-        public ExpressionRewiterTests()
+        public ExpressionRewriterTests()
         {
             ExpressionCompiler.IsUnitTesting = true;
         }
