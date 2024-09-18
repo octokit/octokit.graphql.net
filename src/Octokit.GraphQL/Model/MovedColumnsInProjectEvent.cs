@@ -35,6 +35,26 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public ID Id { get; }
 
+        /// <summary>
+        /// Column name the issue or pull request was moved from.
+        /// </summary>
+        public string PreviousProjectColumnName { get; }
+
+        /// <summary>
+        /// Project referenced by event.
+        /// </summary>
+        public Project Project => this.CreateProperty(x => x.Project, Octokit.GraphQL.Model.Project.Create);
+
+        /// <summary>
+        /// Project card referenced by this project event.
+        /// </summary>
+        public ProjectCard ProjectCard => this.CreateProperty(x => x.ProjectCard, Octokit.GraphQL.Model.ProjectCard.Create);
+
+        /// <summary>
+        /// Column name the issue or pull request was moved to.
+        /// </summary>
+        public string ProjectColumnName { get; }
+
         internal static MovedColumnsInProjectEvent Create(Expression expression)
         {
             return new MovedColumnsInProjectEvent(expression);

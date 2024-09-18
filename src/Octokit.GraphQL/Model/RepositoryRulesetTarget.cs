@@ -6,7 +6,7 @@ using Newtonsoft.Json.Converters;
 namespace Octokit.GraphQL.Model
 {
     /// <summary>
-    /// The targets supported for rulesets
+    /// The targets supported for rulesets.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RepositoryRulesetTarget
@@ -22,5 +22,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "TAG")]
         Tag,
+
+        /// <summary>
+        /// Push
+        /// </summary>
+        [EnumMember(Value = "PUSH")]
+        Push,
     }
 }

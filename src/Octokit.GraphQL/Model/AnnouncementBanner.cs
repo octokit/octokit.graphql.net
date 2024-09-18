@@ -20,6 +20,11 @@ namespace Octokit.GraphQL.Model
         string Announcement { get; }
 
         /// <summary>
+        /// The date the announcement was created
+        /// </summary>
+        DateTimeOffset? AnnouncementCreatedAt { get; }
+
+        /// <summary>
         /// The expiration date of the announcement, if any
         /// </summary>
         DateTimeOffset? AnnouncementExpiresAt { get; }
@@ -47,6 +52,8 @@ namespace Octokit.GraphQL.Model.Internal
         }
 
         public string Announcement { get; }
+
+        public DateTimeOffset? AnnouncementCreatedAt { get; }
 
         public DateTimeOffset? AnnouncementExpiresAt { get; }
 

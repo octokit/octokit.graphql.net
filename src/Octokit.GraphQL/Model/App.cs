@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// The client ID of the app.
+        /// </summary>
+        public string ClientId { get; }
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }

@@ -53,6 +53,19 @@ namespace Octokit.GraphQL
         public EnterpriseAdministratorInvitation EnterpriseAdministratorInvitationByToken(Arg<string> invitationToken) => this.CreateMethodCall(x => x.EnterpriseAdministratorInvitationByToken(invitationToken), Octokit.GraphQL.Model.EnterpriseAdministratorInvitation.Create);
 
         /// <summary>
+        /// Look up a pending enterprise unaffiliated member invitation by invitee and enterprise.
+        /// </summary>
+        /// <param name="enterpriseSlug">The slug of the enterprise the user was invited to join.</param>
+        /// <param name="userLogin">The login of the user invited to join the business.</param>
+        public EnterpriseMemberInvitation EnterpriseMemberInvitation(Arg<string> enterpriseSlug, Arg<string> userLogin) => this.CreateMethodCall(x => x.EnterpriseMemberInvitation(enterpriseSlug, userLogin), Octokit.GraphQL.Model.EnterpriseMemberInvitation.Create);
+
+        /// <summary>
+        /// Look up a pending enterprise unaffiliated member invitation by invitation token.
+        /// </summary>
+        /// <param name="invitationToken">The invitation token sent with the invitation email.</param>
+        public EnterpriseMemberInvitation EnterpriseMemberInvitationByToken(Arg<string> invitationToken) => this.CreateMethodCall(x => x.EnterpriseMemberInvitationByToken(invitationToken), Octokit.GraphQL.Model.EnterpriseMemberInvitation.Create);
+
+        /// <summary>
         /// Look up an open source license by its key
         /// </summary>
         /// <param name="key">The license's downcased SPDX ID</param>

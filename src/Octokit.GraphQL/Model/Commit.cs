@@ -152,8 +152,8 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="author">If non-null, filters history to only show commits with matching authorship.</param>
         /// <param name="path">If non-null, filters history to only show commits touching files under this path.</param>
-        /// <param name="since">Allows specifying a beginning time or date for fetching commits.</param>
-        /// <param name="until">Allows specifying an ending time or date for fetching commits.</param>
+        /// <param name="since">Allows specifying a beginning time or date for fetching commits. Unexpected results may be returned for dates not between 1970-01-01 and 2099-12-13 (inclusive).</param>
+        /// <param name="until">Allows specifying an ending time or date for fetching commits. Unexpected results may be returned for dates not between 1970-01-01 and 2099-12-13 (inclusive).</param>
         public CommitHistoryConnection History(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<CommitAuthor>? author = null, Arg<string>? path = null, Arg<string>? since = null, Arg<string>? until = null) => this.CreateMethodCall(x => x.History(first, after, last, before, author, path, since, until), Octokit.GraphQL.Model.CommitHistoryConnection.Create);
 
         /// <summary>

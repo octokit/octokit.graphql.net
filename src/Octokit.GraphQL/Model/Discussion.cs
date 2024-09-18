@@ -225,6 +225,11 @@ namespace Octokit.GraphQL.Model
         public bool ViewerCanDelete { get; }
 
         /// <summary>
+        /// Indicates if the viewer can edit labels for this object.
+        /// </summary>
+        public bool ViewerCanLabel { get; }
+
+        /// <summary>
         /// Can user react to this subject
         /// </summary>
         public bool ViewerCanReact { get; }

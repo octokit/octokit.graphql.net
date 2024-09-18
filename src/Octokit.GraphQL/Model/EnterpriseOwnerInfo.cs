@@ -352,6 +352,17 @@ namespace Octokit.GraphQL.Model
         public EnterprisePendingMemberInvitationConnection PendingMemberInvitations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<OrganizationInvitationSource>? invitationSource = null, Arg<IEnumerable<string>>? organizationLogins = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.PendingMemberInvitations(first, after, last, before, invitationSource, organizationLogins, query), Octokit.GraphQL.Model.EnterprisePendingMemberInvitationConnection.Create);
 
         /// <summary>
+        /// A list of pending unaffiliated member invitations for the enterprise.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="orderBy">Ordering options for pending enterprise member invitations returned from the connection.</param>
+        /// <param name="query">The search string to look for.</param>
+        public EnterpriseMemberInvitationConnection PendingUnaffiliatedMemberInvitations(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<EnterpriseMemberInvitationOrder>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.PendingUnaffiliatedMemberInvitations(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.EnterpriseMemberInvitationConnection.Create);
+
+        /// <summary>
         /// The setting value for whether repository projects are enabled in this enterprise.
         /// </summary>
         public EnterpriseEnabledDisabledSettingValue RepositoryProjectsSetting { get; }

@@ -71,6 +71,11 @@ namespace Octokit.GraphQL.Model
         public ContributionsCollection ContributionsCollection(Arg<DateTimeOffset>? from = null, Arg<ID>? organizationID = null, Arg<DateTimeOffset>? to = null) => this.CreateMethodCall(x => x.ContributionsCollection(from, organizationID, to), Octokit.GraphQL.Model.ContributionsCollection.Create);
 
         /// <summary>
+        /// The user's Copilot endpoint information
+        /// </summary>
+        public CopilotEndpoints CopilotEndpoints => this.CreateProperty(x => x.CopilotEndpoints, Octokit.GraphQL.Model.CopilotEndpoints.Create);
+
+        /// <summary>
         /// Identifies the date and time when the object was created.
         /// </summary>
         public DateTimeOffset CreatedAt { get; }
@@ -390,9 +395,10 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        /// <param name="minPermissionLevel">Filter projects based on user role.</param>
         /// <param name="orderBy">How to order the returned projects.</param>
         /// <param name="query">A project to search for under the the owner.</param>
-        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2PermissionLevel>? minPermissionLevel = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, minPermissionLevel, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// The user's profile pronouns

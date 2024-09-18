@@ -195,9 +195,10 @@ namespace Octokit.GraphQL.Model
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="filterBy">Filtering options for projects returned from this connection</param>
+        /// <param name="minPermissionLevel">Filter projects based on user role.</param>
         /// <param name="orderBy">How to order the returned projects.</param>
         /// <param name="query">The query to search projects by.</param>
-        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Filters>? filterBy = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, filterBy, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Filters>? filterBy = null, Arg<ProjectV2PermissionLevel>? minPermissionLevel = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, filterBy, minPermissionLevel, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// A list of repositories this team has access to.
@@ -224,6 +225,26 @@ namespace Octokit.GraphQL.Model
         /// The HTTP path for this team
         /// </summary>
         public string ResourcePath { get; }
+
+        /// <summary>
+        /// What algorithm is used for review assignment for this team
+        /// </summary>
+        public TeamReviewAssignmentAlgorithm? ReviewRequestDelegationAlgorithm { get; }
+
+        /// <summary>
+        /// True if review assignment is enabled for this team
+        /// </summary>
+        public bool ReviewRequestDelegationEnabled { get; }
+
+        /// <summary>
+        /// How many team members are required for review assignment for this team
+        /// </summary>
+        public int? ReviewRequestDelegationMemberCount { get; }
+
+        /// <summary>
+        /// When assigning team members via delegation, whether the entire team should be notified as well.
+        /// </summary>
+        public bool ReviewRequestDelegationNotifyTeam { get; }
 
         /// <summary>
         /// The slug corresponding to the team.

@@ -144,6 +144,30 @@ namespace Octokit.GraphQL.Model
         TagNamePattern,
 
         /// <summary>
+        /// Prevent commits that include changes in specified file paths from being pushed to the commit graph.
+        /// </summary>
+        [EnumMember(Value = "FILE_PATH_RESTRICTION")]
+        FilePathRestriction,
+
+        /// <summary>
+        /// Prevent commits that include file paths that exceed a specified character limit from being pushed to the commit graph.
+        /// </summary>
+        [EnumMember(Value = "MAX_FILE_PATH_LENGTH")]
+        MaxFilePathLength,
+
+        /// <summary>
+        /// Prevent commits that include files with specified file extensions from being pushed to the commit graph.
+        /// </summary>
+        [EnumMember(Value = "FILE_EXTENSION_RESTRICTION")]
+        FileExtensionRestriction,
+
+        /// <summary>
+        /// Prevent commits that exceed a specified file size limit from being pushed to the commit.
+        /// </summary>
+        [EnumMember(Value = "MAX_FILE_SIZE")]
+        MaxFileSize,
+
+        /// <summary>
         /// Require all changes made to a targeted branch to pass the specified workflows before they can be merged.
         /// </summary>
         [EnumMember(Value = "WORKFLOWS")]
@@ -160,5 +184,11 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "WORKFLOW_UPDATES")]
         WorkflowUpdates,
+
+        /// <summary>
+        /// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+        /// </summary>
+        [EnumMember(Value = "CODE_SCANNING")]
+        CodeScanning,
     }
 }

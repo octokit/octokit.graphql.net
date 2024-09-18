@@ -16,7 +16,7 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
-        /// Represents member feature request body containing organization name and the number of feature requests
+        /// Represents member feature request body containing entity name and the number of feature requests
         /// </summary>
         public string Body { get; }
 

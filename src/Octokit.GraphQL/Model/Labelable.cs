@@ -23,6 +23,11 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for labels returned from the connection.</param>
         LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<LabelOrder>? orderBy = null);
+
+        /// <summary>
+        /// Indicates if the viewer can edit labels for this object.
+        /// </summary>
+        bool ViewerCanLabel { get; }
     }
 }
 
@@ -42,6 +47,8 @@ namespace Octokit.GraphQL.Model.Internal
         }
 
         public LabelConnection Labels(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<LabelOrder>? orderBy = null) => this.CreateMethodCall(x => x.Labels(first, after, last, before, orderBy), Octokit.GraphQL.Model.LabelConnection.Create);
+
+        public bool ViewerCanLabel { get; }
 
         internal static StubILabelable Create(Expression expression)
         {

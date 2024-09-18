@@ -26,9 +26,24 @@ namespace Octokit.GraphQL.Model
         public ID Id { get; }
 
         /// <summary>
+        /// Indicates whether or not this environment is currently pinned to the repository
+        /// </summary>
+        public bool? IsPinned { get; }
+
+        /// <summary>
+        /// The latest completed deployment with status success, failure, or error if it exists
+        /// </summary>
+        public Deployment LatestCompletedDeployment => this.CreateProperty(x => x.LatestCompletedDeployment, Octokit.GraphQL.Model.Deployment.Create);
+
+        /// <summary>
         /// The name of the environment
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// The position of the environment if it is pinned, null if it is not pinned
+        /// </summary>
+        public int? PinnedPosition { get; }
 
         /// <summary>
         /// The protection rules defined for this environment

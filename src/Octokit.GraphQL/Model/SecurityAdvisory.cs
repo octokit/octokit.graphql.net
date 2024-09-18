@@ -23,6 +23,7 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// The CVSS associated with this advisory
         /// </summary>
+        [Obsolete(@"`cvss` will be removed. New `cvss_severities` field will now contain both `cvss_v3` and `cvss_v4` properties. Removal on 2025-10-01 UTC.")]
         public CVSS Cvss => this.CreateProperty(x => x.Cvss, Octokit.GraphQL.Model.CVSS.Create);
 
         /// <summary>

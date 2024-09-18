@@ -9,6 +9,11 @@ namespace Octokit.GraphQL.Model
     public class WorkflowsParametersInput
     {
         /// <summary>
+        /// Allow repositories and branches to be created if a check would otherwise prohibit it.
+        /// </summary>
+        public bool? DoNotEnforceOnCreate { get; set; }
+
+        /// <summary>
         /// Workflows that must pass for this rule to pass.
         /// </summary>
         public IEnumerable<WorkflowFileReferenceInput> Workflows { get; set; }

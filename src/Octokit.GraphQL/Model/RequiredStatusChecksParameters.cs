@@ -16,6 +16,11 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
+        /// Allow repositories and branches to be created if a check would otherwise prohibit it.
+        /// </summary>
+        public bool DoNotEnforceOnCreate { get; }
+
+        /// <summary>
         /// Status checks that are required.
         /// </summary>
         public IQueryableList<StatusCheckConfiguration> RequiredStatusChecks => this.CreateProperty(x => x.RequiredStatusChecks);

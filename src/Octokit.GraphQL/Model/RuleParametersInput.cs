@@ -14,6 +14,11 @@ namespace Octokit.GraphQL.Model
         public UpdateParametersInput Update { get; set; }
 
         /// <summary>
+        /// Parameters used for the `merge_queue` rule type
+        /// </summary>
+        public MergeQueueParametersInput MergeQueue { get; set; }
+
+        /// <summary>
         /// Parameters used for the `required_deployments` rule type
         /// </summary>
         public RequiredDeploymentsParametersInput RequiredDeployments { get; set; }
@@ -54,8 +59,33 @@ namespace Octokit.GraphQL.Model
         public TagNamePatternParametersInput TagNamePattern { get; set; }
 
         /// <summary>
+        /// Parameters used for the `file_path_restriction` rule type
+        /// </summary>
+        public FilePathRestrictionParametersInput FilePathRestriction { get; set; }
+
+        /// <summary>
+        /// Parameters used for the `max_file_path_length` rule type
+        /// </summary>
+        public MaxFilePathLengthParametersInput MaxFilePathLength { get; set; }
+
+        /// <summary>
+        /// Parameters used for the `file_extension_restriction` rule type
+        /// </summary>
+        public FileExtensionRestrictionParametersInput FileExtensionRestriction { get; set; }
+
+        /// <summary>
+        /// Parameters used for the `max_file_size` rule type
+        /// </summary>
+        public MaxFileSizeParametersInput MaxFileSize { get; set; }
+
+        /// <summary>
         /// Parameters used for the `workflows` rule type
         /// </summary>
         public WorkflowsParametersInput Workflows { get; set; }
+
+        /// <summary>
+        /// Parameters used for the `code_scanning` rule type
+        /// </summary>
+        public CodeScanningParametersInput CodeScanning { get; set; }
     }
 }
