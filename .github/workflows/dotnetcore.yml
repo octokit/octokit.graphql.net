@@ -52,7 +52,7 @@ jobs:
         run: dotnet test -c ${{ env.CONFIGURATION }} --no-build ${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}
 
       - name: Create the new package
-        run: dotnet pack ${{ env.OG_PACK_PROJ_PATH }} -o ${{ env.ARTIFACTS_STAGING_PATH }}
+        run: dotnet pack ${{ env.OG_PACK_PROJ_PATH }} -o ${{ env.ARTIFACTS_STAGING_DIR_PATH }}
 
       - name: Publish to GitHub Actions
         uses: actions/upload-artifact@v4
