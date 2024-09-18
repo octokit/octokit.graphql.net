@@ -25,11 +25,6 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         public IEnumerable<string> PropertyValues { get; }
 
-        /// <summary>
-        /// The source of the property. Choose 'custom' or 'system'. Defaults to 'custom' if not specified
-        /// </summary>
-        public string Source { get; }
-
         internal static PropertyTargetDefinition Create(Expression expression)
         {
             return new PropertyTargetDefinition(expression);

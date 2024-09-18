@@ -85,11 +85,6 @@ namespace Octokit.GraphQL.Model
         public string BodyText { get; }
 
         /// <summary>
-        /// Whether or not the pull request is rebaseable.
-        /// </summary>
-        public bool CanBeRebased { get; }
-
-        /// <summary>
         /// The number of changed files in this pull request.
         /// </summary>
         public int ChangedFiles { get; }
@@ -115,7 +110,7 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset? ClosedAt { get; }
 
         /// <summary>
-        /// List of issues that may be closed by this pull request
+        /// List of issues that were may be closed by this pull request
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
@@ -310,11 +305,6 @@ namespace Octokit.GraphQL.Model
         public MergeQueueEntry MergeQueueEntry => this.CreateProperty(x => x.MergeQueueEntry, Octokit.GraphQL.Model.MergeQueueEntry.Create);
 
         /// <summary>
-        /// Detailed information about the current pull request merge state status.
-        /// </summary>
-        public MergeStateStatus MergeStateStatus { get; }
-
-        /// <summary>
         /// Whether or not the pull request can be merged based on the existence of merge conflicts.
         /// </summary>
         public MergeableState Mergeable { get; }
@@ -396,10 +386,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="minPermissionLevel">Filter projects based on user role.</param>
         /// <param name="orderBy">How to order the returned projects.</param>
         /// <param name="query">A project to search for under the the owner.</param>
-        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2PermissionLevel>? minPermissionLevel = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, minPermissionLevel, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// Identifies when the comment was published at.
@@ -480,11 +469,6 @@ namespace Octokit.GraphQL.Model
         /// Identifies the state of the pull request.
         /// </summary>
         public PullRequestState State { get; }
-
-        /// <summary>
-        /// Check and Status rollup information for the PR's head ref.
-        /// </summary>
-        public StatusCheckRollup StatusCheckRollup => this.CreateProperty(x => x.StatusCheckRollup, Octokit.GraphQL.Model.StatusCheckRollup.Create);
 
         /// <summary>
         /// A list of reviewer suggestions based on commit history and past review comments.
@@ -576,11 +560,6 @@ namespace Octokit.GraphQL.Model
         /// Whether or not the viewer can enable auto-merge
         /// </summary>
         public bool ViewerCanEnableAutoMerge { get; }
-
-        /// <summary>
-        /// Indicates if the viewer can edit labels for this object.
-        /// </summary>
-        public bool ViewerCanLabel { get; }
 
         /// <summary>
         /// Indicates whether the viewer can bypass branch protections and merge the pull request immediately

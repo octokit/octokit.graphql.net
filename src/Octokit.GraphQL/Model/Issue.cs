@@ -75,18 +75,6 @@ namespace Octokit.GraphQL.Model
         public DateTimeOffset? ClosedAt { get; }
 
         /// <summary>
-        /// List of open pull requests referenced from this issue
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="includeClosedPrs">Include closed PRs in results</param>
-        /// <param name="orderByState">Return results ordered by state</param>
-        /// <param name="userLinkedOnly">Return only manually linked PRs</param>
-        public PullRequestConnection ClosedByPullRequestsReferences(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<bool>? includeClosedPrs = null, Arg<bool>? orderByState = null, Arg<bool>? userLinkedOnly = null) => this.CreateMethodCall(x => x.ClosedByPullRequestsReferences(first, after, last, before, includeClosedPrs, orderByState, userLinkedOnly), Octokit.GraphQL.Model.PullRequestConnection.Create);
-
-        /// <summary>
         /// A list of comments associated with the Issue.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -228,10 +216,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="minPermissionLevel">Filter projects based on user role.</param>
         /// <param name="orderBy">How to order the returned projects.</param>
         /// <param name="query">A project to search for under the the owner.</param>
-        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2PermissionLevel>? minPermissionLevel = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, minPermissionLevel, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// Identifies when the comment was published at.
@@ -358,11 +345,6 @@ namespace Octokit.GraphQL.Model
         /// Check if the current viewer can delete this object.
         /// </summary>
         public bool ViewerCanDelete { get; }
-
-        /// <summary>
-        /// Indicates if the viewer can edit labels for this object.
-        /// </summary>
-        public bool ViewerCanLabel { get; }
 
         /// <summary>
         /// Can user react to this subject

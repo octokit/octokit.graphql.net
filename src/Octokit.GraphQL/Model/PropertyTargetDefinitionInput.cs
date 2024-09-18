@@ -17,10 +17,5 @@ namespace Octokit.GraphQL.Model
         /// The values to match for
         /// </summary>
         public IEnumerable<string> PropertyValues { get; set; }
-
-        /// <summary>
-        /// The source of the property. Choose 'custom' or 'system'. Defaults to 'custom' if not specified
-        /// </summary>
-        public string Source { get; set; }
     }
 }

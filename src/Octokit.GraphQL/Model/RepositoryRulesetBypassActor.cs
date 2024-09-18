@@ -26,11 +26,6 @@ namespace Octokit.GraphQL.Model
         public RepositoryRulesetBypassActorBypassMode? BypassMode { get; }
 
         /// <summary>
-        /// This actor represents the ability for a deploy key to bypass
-        /// </summary>
-        public bool DeployKey { get; }
-
-        /// <summary>
         /// The Node ID of the RepositoryRulesetBypassActor object
         /// </summary>
         public ID Id { get; }

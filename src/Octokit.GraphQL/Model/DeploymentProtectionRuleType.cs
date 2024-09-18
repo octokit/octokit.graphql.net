@@ -22,11 +22,5 @@ namespace Octokit.GraphQL.Model
         /// </summary>
         [EnumMember(Value = "WAIT_TIMER")]
         WaitTimer,
-
-        /// <summary>
-        /// Branch policy
-        /// </summary>
-        [EnumMember(Value = "BRANCH_POLICY")]
-        BranchPolicy,
     }
 }

@@ -38,7 +38,6 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"`databaseId` will be removed because it does not support 64-bit signed integer identifiers. Use `fullDatabaseId` instead. Removal on 2025-04-01 UTC.")]
         public long? DatabaseId { get; }
 
         /// <summary>
@@ -56,11 +55,6 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="orderBy">Ordering options for project v2 fields returned from the connection</param>
         public ProjectV2FieldConfigurationConnection Fields(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2FieldOrder>? orderBy = null) => this.CreateMethodCall(x => x.Fields(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2FieldConfigurationConnection.Create);
-
-        /// <summary>
-        /// Identifies the primary key from the database as a BigInt.
-        /// </summary>
-        public string FullDatabaseId { get; }
 
         /// <summary>
         /// The Node ID of the ProjectV2 object
@@ -116,16 +110,6 @@ namespace Octokit.GraphQL.Model
         /// The project's short description.
         /// </summary>
         public string ShortDescription { get; }
-
-        /// <summary>
-        /// List of the status updates in the project.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="orderBy">Order for connection</param>
-        public ProjectV2StatusUpdateConnection StatusUpdates(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2StatusOrder>? orderBy = null) => this.CreateMethodCall(x => x.StatusUpdates(first, after, last, before, orderBy), Octokit.GraphQL.Model.ProjectV2StatusUpdateConnection.Create);
 
         /// <summary>
         /// The teams the project is linked to.

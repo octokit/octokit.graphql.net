@@ -21,11 +21,6 @@ namespace Octokit.GraphQL.Model
         public string Announcement { get; }
 
         /// <summary>
-        /// The date the announcement was created
-        /// </summary>
-        public DateTimeOffset? AnnouncementCreatedAt { get; }
-
-        /// <summary>
         /// The expiration date of the announcement, if any
         /// </summary>
         public DateTimeOffset? AnnouncementExpiresAt { get; }
@@ -117,16 +112,6 @@ namespace Octokit.GraphQL.Model
         /// Enterprise information visible to enterprise owners or enterprise owners' personal access tokens (classic) with read:enterprise or admin:enterprise scope.
         /// </summary>
         public EnterpriseOwnerInfo OwnerInfo => this.CreateProperty(x => x.OwnerInfo, Octokit.GraphQL.Model.EnterpriseOwnerInfo.Create);
-
-        /// <summary>
-        /// The raw content of the enterprise README.
-        /// </summary>
-        public string Readme { get; }
-
-        /// <summary>
-        /// The content of the enterprise README as HTML.
-        /// </summary>
-        public string ReadmeHTML { get; }
 
         /// <summary>
         /// The HTTP path for this enterprise.

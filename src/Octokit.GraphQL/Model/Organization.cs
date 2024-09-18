@@ -21,11 +21,6 @@ namespace Octokit.GraphQL.Model
         public string Announcement { get; }
 
         /// <summary>
-        /// The date the announcement was created
-        /// </summary>
-        public DateTimeOffset? AnnouncementCreatedAt { get; }
-
-        /// <summary>
         /// The expiration date of the announcement, if any
         /// </summary>
         public DateTimeOffset? AnnouncementExpiresAt { get; }
@@ -346,10 +341,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="minPermissionLevel">Filter projects based on user role.</param>
         /// <param name="orderBy">How to order the returned projects.</param>
         /// <param name="query">A project to search for under the the owner.</param>
-        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2PermissionLevel>? minPermissionLevel = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, minPermissionLevel, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// Recent projects that this user has modified in the context of the owner.

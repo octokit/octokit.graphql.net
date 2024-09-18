@@ -23,18 +23,12 @@ namespace Octokit.GraphQL.Model
         /// <summary>
         /// Identifies the primary key from the database.
         /// </summary>
-        [Obsolete(@"`databaseId` will be removed because it does not support 64-bit signed integer identifiers. Use `fullDatabaseId` instead. Removal on 2025-04-01 UTC.")]
         public long? DatabaseId { get; }
 
         /// <summary>
         /// Whether the workflow is enabled.
         /// </summary>
         public bool Enabled { get; }
-
-        /// <summary>
-        /// Identifies the primary key from the database as a BigInt.
-        /// </summary>
-        public string FullDatabaseId { get; }
 
         /// <summary>
         /// The Node ID of the ProjectV2Workflow object

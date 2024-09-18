@@ -112,18 +112,6 @@ namespace Octokit.GraphQL.Model
         public bool DeleteBranchOnMerge { get; }
 
         /// <summary>
-        /// A list of dependency manifests contained in the repository
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="dependenciesAfter">Cursor to paginate dependencies</param>
-        /// <param name="dependenciesFirst">Number of dependencies to fetch</param>
-        /// <param name="withDependencies">Flag to scope to only manifests with dependencies</param>
-        public DependencyGraphManifestConnection DependencyGraphManifests(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<string>? dependenciesAfter = null, Arg<int>? dependenciesFirst = null, Arg<bool>? withDependencies = null) => this.CreateMethodCall(x => x.DependencyGraphManifests(first, after, last, before, dependenciesAfter, dependenciesFirst, withDependencies), Octokit.GraphQL.Model.DependencyGraphManifestConnection.Create);
-
-        /// <summary>
         /// A list of deploy keys that are on this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -208,8 +196,7 @@ namespace Octokit.GraphQL.Model
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
         /// <param name="names">The names of the environments to be returned.</param>
         /// <param name="orderBy">Ordering options for the environments</param>
-        /// <param name="pinnedEnvironmentFilter">Filter to control pinned environments return</param>
-        public EnvironmentConnection Environments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? names = null, Arg<Environments>? orderBy = null, Arg<EnvironmentPinnedFilterField>? pinnedEnvironmentFilter = null) => this.CreateMethodCall(x => x.Environments(first, after, last, before, names, orderBy, pinnedEnvironmentFilter), Octokit.GraphQL.Model.EnvironmentConnection.Create);
+        public EnvironmentConnection Environments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<IEnumerable<string>>? names = null, Arg<Environments>? orderBy = null) => this.CreateMethodCall(x => x.Environments(first, after, last, before, names, orderBy), Octokit.GraphQL.Model.EnvironmentConnection.Create);
 
         /// <summary>
         /// Returns how many forks there are of this repository in the whole network.
@@ -528,16 +515,6 @@ namespace Octokit.GraphQL.Model
         public PinnedDiscussionConnection PinnedDiscussions(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.PinnedDiscussions(first, after, last, before), Octokit.GraphQL.Model.PinnedDiscussionConnection.Create);
 
         /// <summary>
-        /// A list of pinned environments for this repository.
-        /// </summary>
-        /// <param name="first">Returns the first _n_ elements from the list.</param>
-        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
-        /// <param name="last">Returns the last _n_ elements from the list.</param>
-        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="orderBy">Ordering options for the environments</param>
-        public PinnedEnvironmentConnection PinnedEnvironments(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<PinnedEnvironmentOrder>? orderBy = null) => this.CreateMethodCall(x => x.PinnedEnvironments(first, after, last, before, orderBy), Octokit.GraphQL.Model.PinnedEnvironmentConnection.Create);
-
-        /// <summary>
         /// A list of pinned issues for this repository.
         /// </summary>
         /// <param name="first">Returns the first _n_ elements from the list.</param>
@@ -597,10 +574,9 @@ namespace Octokit.GraphQL.Model
         /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
         /// <param name="last">Returns the last _n_ elements from the list.</param>
         /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
-        /// <param name="minPermissionLevel">Filter projects based on user role.</param>
         /// <param name="orderBy">How to order the returned projects.</param>
         /// <param name="query">A project to search for linked to the repo.</param>
-        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2PermissionLevel>? minPermissionLevel = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, minPermissionLevel, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
+        public ProjectV2Connection ProjectsV2(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null, Arg<ProjectV2Order>? orderBy = null, Arg<string>? query = null) => this.CreateMethodCall(x => x.ProjectsV2(first, after, last, before, orderBy, query), Octokit.GraphQL.Model.ProjectV2Connection.Create);
 
         /// <summary>
         /// Returns a single pull request from the current repository by number.

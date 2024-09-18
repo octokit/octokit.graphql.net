@@ -36,11 +36,6 @@ namespace Octokit.GraphQL.Model
         public string Description { get; }
 
         /// <summary>
-        /// Identifies the environment of the deployment at the time of this deployment status
-        /// </summary>
-        public string Environment { get; }
-
-        /// <summary>
         /// Identifies the environment URL of the deployment.
         /// </summary>
         public string EnvironmentUrl { get; }

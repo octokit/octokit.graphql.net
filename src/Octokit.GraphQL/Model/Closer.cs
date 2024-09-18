@@ -25,11 +25,6 @@ namespace Octokit.GraphQL.Model
             public Selector<T> Commit(Func<Commit, T> selector) => default;
 
             /// <summary>
-            /// New projects that manage issues, pull requests and drafts using tables and boards.
-            /// </summary>
-            public Selector<T> ProjectV2(Func<ProjectV2, T> selector) => default;
-
-            /// <summary>
             /// A repository pull request.
             /// </summary>
             public Selector<T> PullRequest(Func<PullRequest, T> selector) => default;

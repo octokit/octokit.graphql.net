@@ -25,11 +25,6 @@ namespace Octokit.GraphQL.Model
             public Selector<T> BranchNamePatternParameters(Func<BranchNamePatternParameters, T> selector) => default;
 
             /// <summary>
-            /// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
-            /// </summary>
-            public Selector<T> CodeScanningParameters(Func<CodeScanningParameters, T> selector) => default;
-
-            /// <summary>
             /// Parameters to be used for the commit_author_email_pattern rule
             /// </summary>
             public Selector<T> CommitAuthorEmailPatternParameters(Func<CommitAuthorEmailPatternParameters, T> selector) => default;
@@ -43,31 +38,6 @@ namespace Octokit.GraphQL.Model
             /// Parameters to be used for the committer_email_pattern rule
             /// </summary>
             public Selector<T> CommitterEmailPatternParameters(Func<CommitterEmailPatternParameters, T> selector) => default;
-
-            /// <summary>
-            /// Prevent commits that include files with specified file extensions from being pushed to the commit graph.
-            /// </summary>
-            public Selector<T> FileExtensionRestrictionParameters(Func<FileExtensionRestrictionParameters, T> selector) => default;
-
-            /// <summary>
-            /// Prevent commits that include changes in specified file paths from being pushed to the commit graph.
-            /// </summary>
-            public Selector<T> FilePathRestrictionParameters(Func<FilePathRestrictionParameters, T> selector) => default;
-
-            /// <summary>
-            /// Prevent commits that include file paths that exceed a specified character limit from being pushed to the commit graph.
-            /// </summary>
-            public Selector<T> MaxFilePathLengthParameters(Func<MaxFilePathLengthParameters, T> selector) => default;
-
-            /// <summary>
-            /// Prevent commits that exceed a specified file size limit from being pushed to the commit.
-            /// </summary>
-            public Selector<T> MaxFileSizeParameters(Func<MaxFileSizeParameters, T> selector) => default;
-
-            /// <summary>
-            /// Merges must be performed via a merge queue.
-            /// </summary>
-            public Selector<T> MergeQueueParameters(Func<MergeQueueParameters, T> selector) => default;
 
             /// <summary>
             /// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.

@@ -16,11 +16,6 @@ namespace Octokit.GraphQL.Model
         }
 
         /// <summary>
-        /// Allow repositories and branches to be created if a check would otherwise prohibit it.
-        /// </summary>
-        public bool DoNotEnforceOnCreate { get; }
-
-        /// <summary>
         /// Workflows that must pass for this rule to pass.
         /// </summary>
         public IQueryableList<WorkflowFileReference> Workflows => this.CreateProperty(x => x.Workflows);
