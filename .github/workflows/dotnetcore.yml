@@ -15,7 +15,7 @@ on:
 
 env:
   CONFIGURATION:                          "Release"
-  ARTIFACTS_STAGING_PATH:                 "nupkg"
+  ARTIFACTS_STAGING_DIR_PATH:             "nupkg"
   OG_SOLUTION_PATH:                       "Octokit.GraphQL.sln"
   OG_UNIT_TESTS_PROJ_PATH:                ".\\src\\Octokit.GraphQL.UnitTests\\Octokit.GraphQL.UnitTests.csproj"
   OG_CORE_UNIT_TESTS_PROJ_PATH:           ".\\src\\Octokit.GraphQL.Core.UnitTests\\Octokit.GraphQL.Core.UnitTests.csproj"
@@ -52,22 +52,18 @@ jobs:
         run: dotnet test -c ${{ env.CONFIGURATION }} --no-build ${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}
 
       - name: Create the new package
-        run: dotnet pack ${{ OG_PACK_PROJ_PATH }} --output ${{ env.ARTIFACTS_STAGING_PATH }}
+        run: dotnet pack ${{ env.OG_PACK_PROJ_PATH }} -o ${{ env.ARTIFACTS_STAGING_PATH }}
 
       - name: Publish to GitHub Actions
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
-          path: ${{ env.ARTIFACTS_STAGING_PATH }}/*.nupkg
+          path: ${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg
 
       - name: Publish to GitHub Packages
         if: github.ref == 'refs/heads/main'
-        shell: bash
-        run: dotnet nuget push ${{ env.ARTIFACTS_STAGING_PATH }}/*.nupkg
+        run: dotnet nuget push ${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg
 
       - name: Publish to nuget.org
         if: github.ref == 'refs/heads/main'
-        shell: bash
-        run: |
-          dotnet nuget push ${{ env.ARTIFACTS_STAGING_PATH }}/*.nupkg --source
-          nuget.org -k ${{ secrets.NUGET_TOKEN }}
+        run: dotnet nuget push ${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }}
