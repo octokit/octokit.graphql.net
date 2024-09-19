@@ -14,17 +14,62 @@ on:
   workflow_dispatch:
 
 env:
-  CONFIGURATION:                          "Release"
-  ARTIFACTS_STAGING_DIR_PATH:             "nupkg"
-  OG_SOLUTION_PATH:                       "Octokit.GraphQL.sln"
-  OG_UNIT_TESTS_PROJ_PATH:                ".\\src\\Octokit.GraphQL.UnitTests\\Octokit.GraphQL.UnitTests.csproj"
-  OG_CORE_UNIT_TESTS_PROJ_PATH:           ".\\src\\Octokit.GraphQL.Core.UnitTests\\Octokit.GraphQL.Core.UnitTests.csproj"
-  OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH: ".\\src\\Octokit.GraphQL.Core.Generation.UnitTests\\Octokit.GraphQL.Core.Generation.UnitTests.csproj"
-  OG_PACK_PROJ_PATH:                      ".\\src\\Octokit.GraphQL.Pack\\Octokit.GraphQL.Pack.csproj"
+  CONFIGURATION:                          'Release'
+  ARTIFACTS_STAGING_DIR_PATH:             '${{ github.workspace }}/nupkg'
+  OG_SOLUTION_PATH:                       '${{ github.workspace }}/Octokit.GraphQL.sln'
+  OG_UNIT_TESTS_PROJ_PATH:                '${{ github.workspace }}/src/Octokit.GraphQL.UnitTests/Octokit.GraphQL.UnitTests.csproj'
+  OG_CORE_UNIT_TESTS_PROJ_PATH:           '${{ github.workspace }}/src/Octokit.GraphQL.Core.UnitTests/Octokit.GraphQL.Core.UnitTests.csproj'
+  OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH: '${{ github.workspace }}/src/Octokit.GraphQL.Core.Generation.UnitTests/Octokit.GraphQL.Core.Generation.UnitTests.csproj'
+  OG_INTEGRATION_TESTS_PROJ_PATH:         '${{ github.workspace }}/src/Octokit.GraphQL.IntegrationTests/Octokit.GraphQL.IntegrationTests.csproj'
+  OG_PACK_PROJ_PATH:                      '${{ github.workspace }}/src/Octokit.GraphQL.Pack/Octokit.GraphQL.Pack.csproj'
 
 jobs:
-  build-test-publish:
-    runs-on: windows-latest
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 3.1.101
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Build the solution
+        run: dotnet build ${{ env.OG_SOLUTION_PATH }} -c ${{ env.CONFIGURATION }}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 3.1.101
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Run Octokit.GraphQL.UnitTests
+        run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_UNIT_TESTS_PROJ_PATH }}"'
+
+      - name: Run Octokit.GraphQL.Core.UnitTests
+        run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_UNIT_TESTS_PROJ_PATH }}"'
+
+      - name: Run Octokit.GraphQL.Core.Generation.UnitTests
+        run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}"'
+
+      - name: Run Octokit.GraphQL.IntegrationTests
+        run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" "${{ env.OG_INTEGRATION_TESTS_PROJ_PATH }}"'
+        env:
+          OCTOKIT_GQL_OAUTHTOKEN: ${{ secrets.OCTOKIT_GQL_OAUTHTOKEN }}
+          OCTOKIT_GQL_GITHUBUSERNAME: ${{ secrets.OCTOKIT_GQL_GITHUBUSERNAME }}
+
+  pack:
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout the repository
@@ -36,34 +81,23 @@ jobs:
           source-url: https://nuget.pkg.github.com/octokit/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup NuGet
-        uses: nuget/setup-nuget@v2
 
       - name: Build the solution
-        run: dotnet build ${{ env.OG_SOLUTION_PATH }} -c ${{ env.CONFIGURATION }}
-
-      - name: Run Octokit.GraphQL.UnitTests
-        run: dotnet test -c ${{ env.CONFIGURATION }} --no-build ${{ env.OG_UNIT_TESTS_PROJ_PATH }}
-
-      - name: Run Octokit.GraphQL.Core.UnitTests
-        run: dotnet test -c ${{ env.CONFIGURATION }} --no-build ${{ env.OG_CORE_UNIT_TESTS_PROJ_PATH }}
-
-      - name: Run Octokit.GraphQL.Core.Generation.UnitTests
-        run: dotnet test -c ${{ env.CONFIGURATION }} --no-build ${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}
+        run: 'dotnet build ${{ env.OG_SOLUTION_PATH }} -c "${{ env.CONFIGURATION }}"'
 
       - name: Create the new package
-        run: dotnet pack ${{ env.OG_PACK_PROJ_PATH }} -o ${{ env.ARTIFACTS_STAGING_DIR_PATH }}
+        run: 'dotnet pack ${{ env.OG_PACK_PROJ_PATH }} -o "${{ env.ARTIFACTS_STAGING_DIR_PATH }}"'
 
       - name: Publish to GitHub Actions
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
-          path: ${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg
+          path: '${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg'
 
       - name: Publish to GitHub Packages
         if: github.ref == 'refs/heads/main'
-        run: dotnet nuget push ${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg
+        run: 'dotnet nuget push "${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg"'
 
       - name: Publish to nuget.org
         if: github.ref == 'refs/heads/main'
-        run: dotnet nuget push ${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }}
+        run: 'dotnet nuget push "${{ env.ARTIFACTS_STAGING_DIR_PATH }}/*.nupkg" -s nuget.org -k ${{ secrets.NUGET_TOKEN }}'
