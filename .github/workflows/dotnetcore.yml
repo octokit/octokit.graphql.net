@@ -45,7 +45,7 @@ jobs:
           dotnet pack Octokit.GraphQL.Pack/Octokit.GraphQL.Pack.csproj --output
           ${{ env.PackageOutputPath }}
       - name: Upload nupkg artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: nupkg
           path: ${{ env.PackageOutputPath }}/*.nupkg
