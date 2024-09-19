@@ -22,7 +22,7 @@ jobs:
         run: dotnet restore
       - name: Generate
         run: >-
-          dotnet run --project ./Tools/Generate/Generate.csproj -- ${{
-          github.token }} ./Octokit.GraphQL/
+          dotnet run --project ./tools/Generate/Generate.csproj -- ${{
+          github.token }} ./src/Octokit.GraphQL/
       - name: Build
         run: dotnet build
