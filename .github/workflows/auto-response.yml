@@ -1,3 +1,6 @@
+# This comes from https://github.com/octokit/.github/tree/main/.github/templates
+# Please edit the workflow in there too when you make changes to this workflow.
+
 name: Issue/PR response
 
 permissions:
@@ -6,14 +9,14 @@ permissions:
 
 on:
   issues:
-    types: [reopened, opened]
+    types: [opened]
   pull_request_target:
-    types: [reopened, opened]
+    types: [opened]
 
 jobs:
 
-  respond-to-issue:
-    if: ${{ github.event.action == 'opened' && github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]' && github.actor != 'githubactions[bot]' && github.actor != 'octokitbot' }}
+  respond:
+    if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]' && github.actor != 'githubactions[bot]' && github.actor != 'octokitbot' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +24,7 @@ jobs:
         id: extract
         run: echo "NUMBER=${{ github.event.issue.number || github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
 
-      - name: Respond to issue or PR
+      - name: Respond to the issue or PR
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ steps.extract.outputs.NUMBER }}
@@ -31,11 +34,8 @@ jobs:
             Because you are a part of this community please feel free to comment, add to, or pick up any issues/PRs that are labeled with `Status: Up for grabs`.
             You & others like you are the reason all of this works! So thank you & happy coding! 🚀
 
-  add-to-project:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/add-to-project@v0.5.0
+      - name: Add issue to project
+        uses: actions/add-to-project@v1
         with:
           project-url: https://github.com/orgs/octokit/projects/10
           github-token: ${{ secrets.OCTOKITBOT_PROJECT_ACTION_TOKEN }}
