@@ -1,4 +1,4 @@
-name: Build, test and publish
+name: Octokit.GraphQL CI
 
 on:
   push:
