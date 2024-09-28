@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generate", "Tools\Generate\Generate.csproj", "{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generate", "tools\Generate\Generate.csproj", "{ECCD7CFD-C72B-4D49-81D3-76B666D81DD3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{516AB6AE-153D-4776-B861-DF653A0E54BF}"
 EndProject
