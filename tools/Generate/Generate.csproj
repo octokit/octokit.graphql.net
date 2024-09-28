@@ -4,6 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Octokit.GraphQL.Core.Generation\Octokit.GraphQL.Core.Generation.csproj" />
+    <ProjectReference Include="..\..\src\Octokit.GraphQL.Core.Generation\Octokit.GraphQL.Core.Generation.csproj" />
   </ItemGroup>
 </Project>
