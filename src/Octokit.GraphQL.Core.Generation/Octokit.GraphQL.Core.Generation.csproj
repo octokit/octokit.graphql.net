@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+
   <PropertyGroup>
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
-	  <PublishAot>true</PublishAot>
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Octokit.GraphQL.Core\Octokit.GraphQL.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+
 </Project>
