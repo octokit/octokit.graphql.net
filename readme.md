@@ -2,7 +2,7 @@
 
 <p align="center">
   <a style="text-decoration:none" href="https://github.com/octokit/octokit.graphql.net/actions/workflows/dotnetcore.yml">
-    <img src="https://github.com/octokit/octokit.graphql.net/actions/workflows/dotnetcore.yml/badge.svg" alt="CI Status" /></a>
+    <img src="https://github.com/octokit/octokit.graphql.net/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
   <a style="text-decoration:none" href="https://codecov.io/gh/octokit/octokit.graphql.net">
     <img src="https://codecov.io/gh/octokit/octokit.graphql.net/branch/main/graph/badge.svg" alt="CodeCov Status" /></a>
   <a style="text-decoration:none" href="https://www.nuget.org/packages/Octokit.GraphQL">
