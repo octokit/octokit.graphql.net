@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <NoBuild>true</NoBuild>
@@ -6,4 +7,5 @@
     <NuspecFile>../../Octokit.GraphQL.nuspec</NuspecFile>
     <NuspecBasePath>../..</NuspecBasePath>
   </PropertyGroup>
+
 </Project>
