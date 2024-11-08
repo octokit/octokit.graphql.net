@@ -7,4 +7,8 @@
     <NuspecBasePath>../..</NuspecBasePath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Octokit.GraphQL\Octokit.GraphQL.csproj" />
+  </ItemGroup>
+
 </Project>
