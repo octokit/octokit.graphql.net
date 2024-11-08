@@ -34,7 +34,7 @@ Install-Package Octokit.GraphQL -IncludePrerelease
 using Octokit.GraphQL;
 using static Octokit.GraphQL.Variable;
 
-// Authenticate with a PAT with a scope 'read:user'
+// Authenticate with a PAT with a scope 'read:repo'
 var connection = new Connection(new("Octokit.GraphQL.Net.SampleApp", "1.0"), "LOGGED_IN_GITHUB_USER_TOKEN");
 
 var query = new Query()
@@ -93,10 +93,8 @@ var result = await connection.Run(query);
 
 // Check if sponsoring 'warrenbuckley'
 var activeSponsor = result.SingleOrDefault(x => x.User.Login.ToLowerInvariant() == "warrenbuckley");
-if(activeSponsor != null)
-{
+if (activeSponsor != null)
     Console.WriteLine("Thanks for sponsoring Warren");
-}
 ```
 
 ## Contributing & Feedback
@@ -130,15 +128,14 @@ There are multiple ways to participate in the community:
 
 ```
 .
-├──Scripts                                    // Code quality scripts
-│  └──configure-integration-tests.ps1         // Integration tests configuration script
-├──Tools                                      // Code quality tools
-│  └──Generate                                // GraphQL .NET entity generator
-├──Octokit.GraphQL                            // Main API data contracts library
-├──Octokit.GraphQL.Core                       // Octokit core code
-├──Octokit.GraphQL.Core.Generation            // Core entity generator tools
-├──Octokit.GraphQL.Core.Generation.UnitTests  // Core entity generator unit tests
-├──Octokit.GraphQL.Core.UnitTests             // Octokit core unit tests
-├──Octokit.GraphQL.IntegrationTests           // Octokit integration tests
-└──Octokit.GraphQL.UnitTests                  // Octokit unit tests
+├──src
+│  ├──Octokit.GraphQL                            // Main API data contracts library
+│  ├──Octokit.GraphQL.Core                       // Octokit core code
+│  ├──Octokit.GraphQL.Core.Generation            // Core entity generator tools
+│  ├──Octokit.GraphQL.Core.Generation.UnitTests  // Core entity generator unit tests
+│  ├──Octokit.GraphQL.Core.UnitTests             // Octokit core unit tests
+│  ├──Octokit.GraphQL.IntegrationTests           // Octokit integration tests
+│  └──Octokit.GraphQL.UnitTests                  // Octokit unit tests
+└──tools                                         // Code quality tools
+   └──Generate                                   // GraphQL .NET entity generator
 ```
