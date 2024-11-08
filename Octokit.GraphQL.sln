@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{516AB6AE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{369BC54B-D0C7-4F5B-BBAA-D84732192187}"
 	ProjectSection(SolutionItems) = preProject
-		Scripts\configure-integration-tests.ps1 = Scripts\configure-integration-tests.ps1
+		Scripts\configure-integration-tests.ps1 = scripts\configure-integration-tests.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F50E915E-5C1C-4170-95B7-EA4E67D42423}"
