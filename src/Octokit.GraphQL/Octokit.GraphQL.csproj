@@ -5,7 +5,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\key.snk</AssemblyOriginatorKeyFile>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Octokit.GraphQL.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Octokit.GraphQL.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
