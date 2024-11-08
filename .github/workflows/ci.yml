@@ -32,8 +32,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 3.1.101
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
@@ -48,8 +46,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 3.1.101
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
@@ -77,16 +73,12 @@ jobs:
       - name: Setup .NET & GitHub Packages
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 3.1.101
           source-url: https://nuget.pkg.github.com/octokit/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build the solution
-        run: 'dotnet build ${{ env.OG_SOLUTION_PATH }} -c "${{ env.CONFIGURATION }}"'
-
       - name: Create the new package
-        run: 'dotnet pack ${{ env.OG_PACK_PROJ_PATH }} -o "${{ env.ARTIFACTS_STAGING_DIR_PATH }}"'
+        run: 'dotnet pack ${{ env.OG_PACK_PROJ_PATH }} -c "${{ env.CONFIGURATION }}" -o "${{ env.ARTIFACTS_STAGING_DIR_PATH }}"'
 
       - name: Publish to GitHub Actions
         uses: actions/upload-artifact@v4
