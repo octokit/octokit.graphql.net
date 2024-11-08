@@ -1,9 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <NoBuild>true</NoBuild>
+    <TargetFramework>net8.0</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <NuspecFile>../../Octokit.GraphQL.nuspec</NuspecFile>
     <NuspecBasePath>../..</NuspecBasePath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Octokit.GraphQL\Octokit.GraphQL.csproj" />
+  </ItemGroup>
+
 </Project>
