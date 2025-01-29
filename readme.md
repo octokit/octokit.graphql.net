@@ -35,7 +35,11 @@ using Octokit.GraphQL;
 using static Octokit.GraphQL.Variable;
 
 // Authenticate with a PAT with a scope 'read:user'
-var connection = new Connection(new("Octokit.GraphQL.Net.SampleApp", "1.0"), "LOGGED_IN_GITHUB_USER_TOKEN");
+var credentials = new Credentials("LOGGED_IN_GITHUB_USER_TOKEN")
+var connection = new Connection(new("Octokit.GraphQL.Net.SampleApp", "1.0"))
+{
+            Credentials = credentials
+};
 
 var query = new Query()
     .RepositoryOwner(Var("owner"))
@@ -68,7 +72,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 // Authenticate with a PAT with a scope 'read:user'
-var connection = new Connection(new("Octokit.GraphQL.Net.SampleApp", "1.0"), "LOGGED_IN_GITHUB_USER_TOKEN");
+var credentials = new Credentials("LOGGED_IN_GITHUB_USER_TOKEN")
+var connection = new Connection(new("Octokit.GraphQL.Net.SampleApp", "1.0"))
+{
+            Credentials = credentials
+};
 
 // A query to list out who you are actively sponsoring
 // That auto pages through all sponsors
