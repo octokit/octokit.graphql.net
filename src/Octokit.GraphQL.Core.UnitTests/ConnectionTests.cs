@@ -74,7 +74,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Theory]
-        [InlineData("Accept", "application/vnd.github.antiope-preview+json")]
+        [InlineData("Accept", "application/vnd.github+json")]
         [InlineData("Authorization", "bearer my-token")]
         [InlineData("User-Agent", "Octokit.GraphQL.Core.Tests/1.0.0")]
         public static async Task Run_Specifies_Http_Headers(string name, string expected)

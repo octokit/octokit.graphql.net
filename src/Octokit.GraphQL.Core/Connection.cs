@@ -13,7 +13,7 @@ namespace Octokit.GraphQL
     /// </summary>
     public class Connection : IConnection
     {
-        private const string DefaultMediaType = "application/vnd.github.antiope-preview+json";
+        private const string DefaultMediaType = "application/vnd.github+json";
 
         /// <summary>
         /// Gets the address of the GitHub GraphQL API.
