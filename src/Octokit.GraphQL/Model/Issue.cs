@@ -35,6 +35,24 @@ namespace Octokit.GraphQL.Model
         public IActor Author => this.CreateProperty(x => x.Author, Octokit.GraphQL.Model.Internal.StubIActor.Create);
 
         /// <summary>
+        /// The parent entity of the issue.
+        /// </summary>
+        public Issue Parent => this.CreateProperty(x => x.Parent, Octokit.GraphQL.Model.Issue.Create);
+
+        /// <summary>
+        /// A list of sub-issues associated with the Issue.
+        /// </summary>
+        /// <param name="first">Returns the first _n_ elements from the list.</param>
+        /// <param name="after">Returns the elements in the list that come after the specified cursor.</param>
+        /// <param name="last">Returns the last _n_ elements from the list.</param>
+        /// <param name="before">Returns the elements in the list that come before the specified cursor.</param>
+        public IssueConnection SubIssues(Arg<int>? first = null, Arg<string>? after = null, Arg<int>? last = null, Arg<string>? before = null) => this.CreateMethodCall(x => x.SubIssues(first, after, last, before), Octokit.GraphQL.Model.IssueConnection.Create);
+        
+        /// <summary>
+        /// Summary of the state of an issue's sub-issues
+        /// </summary>
+        public SubIssuesSummary SubIssuesSummary => this.CreateProperty(x => x.SubIssuesSummary, Octokit.GraphQL.Model.SubIssuesSummary.Create);
+        /// <summary>
         /// Author's association with the subject of the comment.
         /// </summary>
         public CommentAuthorAssociation AuthorAssociation { get; }
