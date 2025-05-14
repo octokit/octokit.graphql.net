@@ -70,7 +70,7 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             var connection = new Connection(ProductInformation, CredentialStore, httpClient);
 
-            await connection.Run(query, cancellationToken);
+            await Assert.ThrowsAsync<TaskCanceledException>(() => connection.Run(query, cancellationToken));
         }
 
         [Theory]
@@ -93,10 +93,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public static void Run_Throws_If_Query_Is_Null()
+        public static async Task Run_Throws_If_Query_Is_Null()
         {
             var connection = new Connection(ProductInformation, CredentialStore);
-            Assert.ThrowsAsync<ArgumentNullException>("query", () => connection.Run(null));
+            await Assert.ThrowsAsync<ArgumentNullException>("query", () => connection.Run(null));
         }
 
         [Fact]
