@@ -590,6 +590,60 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal("Hello World?", ((IssueCommentModel)result[3]).Body);
         }
 
+        [Fact]
+        public void Union_PullRequest_Timeline_With_Null_Items()
+        {
+            var expression = new Query()
+                .Repository("foo", "bar")
+                .PullRequest(1)
+                .Timeline(first: 100)
+                .Nodes
+                .Select(node => node.Switch<TimelineItemModel>(when =>
+                    when.Commit(commit => new CommitModel
+                    {
+                        Oid = commit.AbbreviatedOid,
+                    }).IssueComment(comment => new IssueCommentModel
+                    {
+                        Body = comment.Body,
+                    })));
+
+            var data = @"{
+    ""data"": {
+        ""repository"": {
+            ""pullRequest"": {
+                ""timeline"": {
+                    ""nodes"": [
+                        {
+                            ""__typename"": ""Commit"",
+                            ""oid"": ""2a1d6c7""
+                        },
+                        null,
+                        {
+                            ""__typename"": ""IssueComment"",
+                            ""body"": ""Hello World?""
+                        },
+                        null
+                    ]
+                }
+            }
+        }
+    }
+}";
+
+            var query = new QueryBuilder().Build(expression);
+            var result = query.Deserialize(data).ToList();
+
+            // Null timeline items should be handled gracefully and return null
+            Assert.Equal(4, result.Count);
+            Assert.IsType<CommitModel>(result[0]);
+            Assert.Null(result[1]);
+            Assert.IsType<IssueCommentModel>(result[2]);
+            Assert.Null(result[3]);
+
+            Assert.Equal("2a1d6c7", ((CommitModel)result[0]).Oid);
+            Assert.Equal("Hello World?", ((IssueCommentModel)result[2]).Body);
+        }
+
         private class NamedClass
         {
             public NamedClass()
