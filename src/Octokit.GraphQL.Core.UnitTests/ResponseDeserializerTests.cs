@@ -630,8 +630,6 @@ namespace Octokit.GraphQL.Core.UnitTests
     }
 }";
 
-            var foo = JObject.Parse(data);
-
             var query = new QueryBuilder().Build(expression);
             var result = query.Deserialize(data).ToList();
 
