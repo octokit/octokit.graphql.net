@@ -21,6 +21,11 @@ namespace Octokit.GraphQL.Core.Builders
 
             public static JToken OfType(JToken source, string typeName)
             {
+                if (source == null || source.Type == JTokenType.Null)
+                {
+                    return null;
+                }
+                
                 return (string)source["__typename"] == typeName ? source : null;
             }
 
@@ -58,6 +63,11 @@ namespace Octokit.GraphQL.Core.Builders
 
             public static TResult Switch<TResult>(JToken source, IDictionary<string, Func<JToken, TResult>> selectors)
             {
+                if (source == null || source.Type == JTokenType.Null)
+                {
+                    return default;
+                }
+
                 var typename = (string)source["__typename"];
 
                 if (selectors.TryGetValue(typename, out var selector))
@@ -80,7 +90,7 @@ namespace Octokit.GraphQL.Core.Builders
 
             public static IEnumerable<JToken> OfType(IEnumerable<JToken> source, string typeName)
             {
-                return source.Where(x => (string)x["__typename"] == typeName);
+                return source.Where(x => x != null && x.Type != JTokenType.Null && (string)x["__typename"] == typeName);
             }
 
             public static IEnumerable<TResult> Select<TResult>(
