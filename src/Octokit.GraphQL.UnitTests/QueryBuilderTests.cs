@@ -394,5 +394,108 @@ namespace Octokit.GraphQL.UnitTests
 
 
         }
+
+        [Fact]
+        public void CreateRepositoryRuleset_Mutation_Should_Not_Include_Null_Fields_In_Parameters()
+        {
+            // This test demonstrates issue #320: When creating a repository ruleset with
+            // RuleParametersInput that has only one field set, the mutation should NOT
+            // serialize all the other null fields because GitHub API spec says
+            // "Only one rule parameter type can be specified."
+            //
+            // Expected: Only the non-null parameter field (requiredStatusChecks) should appear
+            // Actual (current bug): All parameter fields appear with most being null
+
+            var expected = @"mutation {
+  createRepositoryRuleset(input: {
+    sourceId: ""test-id""
+    name: ""main""
+    target: BRANCH
+    rules: [{
+      type: REQUIRED_STATUS_CHECKS
+      parameters: {
+        requiredStatusChecks: {
+          requiredStatusChecks: [{context: ""ng test""}, {context: ""ng lint""}]
+          strictRequiredStatusChecksPolicy: true
+        }
+      }
+    }]
+    conditions: {
+      refName: {
+        exclude: []
+        include: [""~DEFAULT_BRANCH""]
+      }
+    }
+    enforcement: ACTIVE
+  }) {
+    repositoryRuleset {
+      id
+    }
+  }
+}";
+
+            var mutation = new Mutation()
+                .CreateRepositoryRuleset(new CreateRepositoryRulesetInput
+                {
+                    SourceId = new ID("test-id"),
+                    Name = "main",
+                    Target = RepositoryRulesetTarget.Branch,
+                    Rules = new[]
+                    {
+                        new RepositoryRuleInput
+                        {
+                            Type = RepositoryRuleType.RequiredStatusChecks,
+                            Parameters = new RuleParametersInput
+                            {
+                                // Only one field is set - all others should NOT be serialized
+                                RequiredStatusChecks = new RequiredStatusChecksParametersInput
+                                {
+                                    RequiredStatusChecks = new[]
+                                    {
+                                        new StatusCheckConfigurationInput { Context = "ng test" },
+                                        new StatusCheckConfigurationInput { Context = "ng lint" }
+                                    },
+                                    StrictRequiredStatusChecksPolicy = true
+                                }
+                                // These fields are null and should NOT appear in the output:
+                                // Update, RequiredDeployments, PullRequest, CommitMessagePattern,
+                                // CommitAuthorEmailPattern, CommitterEmailPattern, BranchNamePattern,
+                                // TagNamePattern, Workflows
+                            }
+                        }
+                    },
+                    Conditions = new RepositoryRuleConditionsInput
+                    {
+                        RefName = new RefNameConditionTargetInput
+                        {
+                            Include = new[] { "~DEFAULT_BRANCH" },
+                            Exclude = new string[] { }
+                        }
+                    },
+                    Enforcement = RuleEnforcement.Active
+                })
+                .Select(x => new
+                {
+                    RepositoryRuleset = x.RepositoryRuleset.Select(r => new
+                    {
+                        r.Id
+                    }).Single()
+                });
+
+            var query = mutation.Compile();
+            var actual = query.ToString();
+
+            // This assertion will FAIL with the current implementation because
+            // the actual output includes all the null fields in parameters, like:
+            // parameters: {
+            //   update: null
+            //   requiredDeployments: null
+            //   pullRequest: null
+            //   requiredStatusChecks: { ... }
+            //   commitMessagePattern: null
+            //   ...
+            // }
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: true);
+        }
     }
 }
