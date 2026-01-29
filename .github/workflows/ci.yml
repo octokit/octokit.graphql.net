@@ -41,7 +41,7 @@ jobs:
         run: dotnet build ${{ env.OG_SOLUTION_PATH }} -c ${{ env.CONFIGURATION }}
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout the repository
