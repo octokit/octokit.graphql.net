@@ -66,19 +66,19 @@ jobs:
           sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb      
 
       - name: Run Octokit.GraphQL.UnitTests
-        continue-on-error: true
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_UNIT_TESTS_PROJ_PATH }}"'
 
       - name: Run Octokit.GraphQL.Core.UnitTests
-        continue-on-error: true
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_UNIT_TESTS_PROJ_PATH }}"'
 
       - name: Run Octokit.GraphQL.Core.Generation.UnitTests
-        continue-on-error: true
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}"'
 
       - name: Run Octokit.GraphQL.IntegrationTests
-        continue-on-error: true
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" "${{ env.OG_INTEGRATION_TESTS_PROJ_PATH }}"'
         env:
           OCTOKIT_GQL_OAUTHTOKEN: ${{ secrets.OCTOKIT_GQL_OAUTHTOKEN }}
