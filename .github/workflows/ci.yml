@@ -53,6 +53,9 @@ jobs:
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
+      - name: Build the solution
+        run: dotnet build ${{ env.OG_SOLUTION_PATH }} -c ${{ env.CONFIGURATION }}
+
       - name: Run Octokit.GraphQL.UnitTests
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_UNIT_TESTS_PROJ_PATH }}"'
 
