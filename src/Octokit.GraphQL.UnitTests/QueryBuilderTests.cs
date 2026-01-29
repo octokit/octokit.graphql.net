@@ -428,7 +428,7 @@ namespace Octokit.GraphQL.UnitTests
     }
     enforcement: ACTIVE
   }) {
-    repositoryRuleset {
+    ruleset {
       id
     }
   }
@@ -476,7 +476,7 @@ namespace Octokit.GraphQL.UnitTests
                 })
                 .Select(x => new
                 {
-                    RepositoryRuleset = x.RepositoryRuleset.Select(r => new
+                    Ruleset = x.Ruleset.Select(r => new
                     {
                         r.Id
                     }).Single()
