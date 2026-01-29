@@ -49,7 +49,11 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          # Install 3.1 for the project dependencies
+          # AND a modern version (like 6.0 or 8.0) to provide the runtime host
+          dotnet-version: |
+            3.1.101
+            8.0.x
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
