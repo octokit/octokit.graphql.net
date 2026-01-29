@@ -46,19 +46,24 @@ jobs:
 
       - name: Checkout the repository
         uses: actions/checkout@v4
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          # Install 3.1 for the project dependencies
-          # AND a modern version (like 6.0 or 8.0) to provide the runtime host
-          dotnet-version: |
-            3.1.101
-            8.0.x
+          dotnet-version: 3.1.101
+          
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
       - name: Build the solution
         run: dotnet build ${{ env.OG_SOLUTION_PATH }} -c ${{ env.CONFIGURATION }}
+
+      - name: Install Legacy OpenSSL (required by dotnet 3.1.101)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb      
 
       - name: Run Octokit.GraphQL.UnitTests
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_UNIT_TESTS_PROJ_PATH }}"'
