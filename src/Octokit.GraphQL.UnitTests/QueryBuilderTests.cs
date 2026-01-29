@@ -483,7 +483,6 @@ namespace Octokit.GraphQL.UnitTests
                 });
 
             var query = mutation.Compile();
-            var actual = query.ToString();
 
             // This assertion will FAIL with the current implementation because
             // the actual output includes all the null fields in parameters, like:
@@ -495,7 +494,7 @@ namespace Octokit.GraphQL.UnitTests
             //   commitMessagePattern: null
             //   ...
             // }
-            Assert.Equal(expected, actual, ignoreLineEndingDifferences: true);
+            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
         }
     }
 }
