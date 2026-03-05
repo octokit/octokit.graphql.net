@@ -1,0 +1,14 @@
+name: Print Integration Test Username
+
+on:
+  workflow_dispatch:
+
+jobs:
+  print-username:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Print username in uppercase
+        env:
+          USERNAME: ${{ secrets.OCTOKIT_GQL_GITHUBUSERNAME }}
+        run: echo "$USERNAME" | tr '[:lower:]' '[:upper:]'
