@@ -202,9 +202,12 @@ namespace Octokit.GraphQL
         /// Gets or sets the maximum number of times to retry a request when rate-limited (HTTP 429, or HTTP 403 with rate-limit indicators).
         /// </summary>
         /// <remarks>
-        /// Set to 0 to disable retries. Defaults to 3.
+        /// <para>Defaults to <c>0</c> (retries disabled). Set to a positive value to enable automatic retries.</para>
+        /// <para><strong>Warning:</strong> GraphQL uses HTTP POST for both queries and mutations. Enabling retries means
+        /// rate-limited mutations may be replayed, which can cause duplicate side effects. Only enable retries when you
+        /// are confident the requests being made are idempotent (e.g. read-only queries).</para>
         /// </remarks>
-        public int MaxRetryCount { get; set; } = 3;
+        public int MaxRetryCount { get; set; } = 0;
 
         /// <inheritdoc />
         public virtual async Task<string> Run(string query, CancellationToken cancellationToken = default)
@@ -244,6 +247,7 @@ namespace Octokit.GraphQL
         /// <returns>The <see cref="TimeSpan"/> to wait before the next retry.</returns>
         protected virtual TimeSpan GetRetryDelay(HttpResponseMessage response, int retryAttempt)
         {
+            // Retry-After takes highest priority (used for secondary rate limits).
             var retryAfter = response.Headers.RetryAfter;
             if (retryAfter != null)
             {
@@ -255,12 +259,22 @@ namespace Octokit.GraphQL
                 if (retryAfter.Date.HasValue)
                 {
                     var remaining = retryAfter.Date.Value - DateTimeOffset.UtcNow;
-                    if (remaining > TimeSpan.Zero)
-                    {
-                        return remaining;
-                    }
+                    return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
+                }
+            }
 
-                    return TimeSpan.Zero;
+            // X-RateLimit-Reset contains the Unix timestamp (seconds since epoch) when the primary
+            // rate-limit window resets. Use it so retries wait until the window actually opens again.
+            if (response.Headers.TryGetValues("X-RateLimit-Reset", out var resetValues))
+            {
+                foreach (var value in resetValues)
+                {
+                    if (long.TryParse(value, out var resetUnixSeconds))
+                    {
+                        var resetAt = DateTimeOffset.FromUnixTimeSeconds(resetUnixSeconds);
+                        var remaining = resetAt - DateTimeOffset.UtcNow;
+                        return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
+                    }
                 }
             }
 

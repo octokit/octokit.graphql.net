@@ -139,7 +139,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
             });
             var httpClient = new HttpClient(handler);
-            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
             var query = "{}";
 
             await connection.Run(query);
@@ -162,7 +162,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
             });
             var httpClient = new HttpClient(handler);
-            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
             var query = "{}";
 
             await connection.Run(query);
@@ -185,7 +185,7 @@ namespace Octokit.GraphQL.Core.UnitTests
                 new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
             });
             var httpClient = new HttpClient(handler);
-            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
             var query = "{}";
 
             await connection.Run(query);
@@ -209,6 +209,23 @@ namespace Octokit.GraphQL.Core.UnitTests
 
             await Assert.ThrowsAsync<HttpRequestException>(() => connection.Run(query));
             Assert.Equal(1, handler.CallCount); // no retry for a plain 403
+        }
+
+        [Fact]
+        public static async Task Run_Does_Not_Retry_By_Default()
+        {
+            // MaxRetryCount defaults to 0 because GraphQL POST requests may be mutations with side effects.
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient);
+            var query = "{}";
+
+            await Assert.ThrowsAsync<HttpRequestException>(() => connection.Run(query));
+            Assert.Equal(1, handler.CallCount); // default MaxRetryCount=0, no retry
         }
 
         [Fact]
@@ -263,13 +280,46 @@ namespace Octokit.GraphQL.Core.UnitTests
             });
             var httpClient = new HttpClient(handler);
             var observedDelays = new List<TimeSpan>();
-            var connection = new ObservableDelayConnection(ProductInformation, CredentialStore, httpClient, observedDelays);
+            var connection = new ObservableDelayConnection(ProductInformation, CredentialStore, httpClient, observedDelays) { MaxRetryCount = 3 };
             var query = "{}";
 
             await connection.Run(query);
 
             Assert.Single(observedDelays);
             Assert.Equal(retryAfterDelay, observedDelays[0]);
+        }
+
+        [Fact]
+        public static async Task Run_Respects_X_RateLimit_Reset_Header()
+        {
+            // X-RateLimit-Reset is a Unix timestamp; the client should wait until that time, not fall back
+            // to short exponential backoff, to avoid exhausting retries before the window resets.
+            var resetAt = DateTimeOffset.UtcNow.AddSeconds(30);
+            var resetUnix = resetAt.ToUnixTimeSeconds().ToString();
+
+            var rateLimitResponse = new HttpResponseMessage(HttpStatusCode.Forbidden)
+            {
+                Content = new StringContent(string.Empty),
+            };
+            rateLimitResponse.Headers.Add("X-RateLimit-Remaining", "0");
+            rateLimitResponse.Headers.Add("X-RateLimit-Reset", resetUnix);
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                rateLimitResponse,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var observedDelays = new List<TimeSpan>();
+            var connection = new ObservableDelayConnection(ProductInformation, CredentialStore, httpClient, observedDelays) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            await connection.Run(query);
+
+            Assert.Single(observedDelays);
+            // The delay should be close to 30 seconds (allow a few seconds of test execution time).
+            Assert.True(observedDelays[0] >= TimeSpan.FromSeconds(25), $"Expected delay ≥ 25s, got {observedDelays[0]}");
+            Assert.True(observedDelays[0] <= TimeSpan.FromSeconds(35), $"Expected delay ≤ 35s, got {observedDelays[0]}");
         }
 
         [Fact]
