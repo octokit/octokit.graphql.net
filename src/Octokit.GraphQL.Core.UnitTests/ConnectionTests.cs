@@ -269,7 +269,7 @@ namespace Octokit.GraphQL.Core.UnitTests
             }
         }
 
-        /// <summary>Returns pre-configured HTTP responses in sequence.</summary>
+        /// <summary>Returns pre-configured HTTP responses in sequence, repeating the last response once the list is exhausted.</summary>
         private sealed class SequentialMockHttpMessageHandler : HttpMessageHandler
         {
             private readonly IList<HttpResponseMessage> _responses;
@@ -285,7 +285,9 @@ namespace Octokit.GraphQL.Core.UnitTests
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 var index = _callCount++;
-                return Task.FromResult(index < _responses.Count ? _responses[index] : _responses[_responses.Count - 1]);
+                // Once the pre-configured responses are exhausted, repeat the last one.
+                var responseIndex = index < _responses.Count ? index : _responses.Count - 1;
+                return Task.FromResult(_responses[responseIndex]);
             }
         }
 

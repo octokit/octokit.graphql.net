@@ -269,6 +269,7 @@ namespace Octokit.GraphQL
 
         private static bool IsRateLimitStatusCode(HttpStatusCode statusCode)
         {
+            // 429 (TooManyRequests) is not defined in HttpStatusCode for netstandard2.0, so cast directly.
             return statusCode == HttpStatusCode.Forbidden || (int)statusCode == 429;
         }
 
