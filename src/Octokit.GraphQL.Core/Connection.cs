@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -295,15 +296,10 @@ namespace Octokit.GraphQL
                 }
 
                 // X-RateLimit-Remaining: 0 is set by GitHub for primary rate limits.
-                if (response.Headers.TryGetValues("X-RateLimit-Remaining", out var values))
+                if (response.Headers.TryGetValues("X-RateLimit-Remaining", out var values) &&
+                    values.Any(v => int.TryParse(v, out var remaining) && remaining == 0))
                 {
-                    foreach (var value in values)
-                    {
-                        if (int.TryParse(value, out var remaining) && remaining == 0)
-                        {
-                            return true;
-                        }
-                    }
+                    return true;
                 }
             }
 
