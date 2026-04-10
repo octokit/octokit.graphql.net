@@ -294,7 +294,8 @@ namespace Octokit.GraphQL.Core.UnitTests
         {
             // X-RateLimit-Reset is a Unix timestamp; the client should wait until that time, not fall back
             // to short exponential backoff, to avoid exhausting retries before the window resets.
-            var resetAt = DateTimeOffset.UtcNow.AddSeconds(30);
+            var testStartTime = DateTimeOffset.UtcNow;
+            var resetAt = testStartTime.AddSeconds(30);
             var resetUnix = resetAt.ToUnixTimeSeconds().ToString();
 
             var rateLimitResponse = new HttpResponseMessage(HttpStatusCode.Forbidden)
@@ -315,11 +316,18 @@ namespace Octokit.GraphQL.Core.UnitTests
             var query = "{}";
 
             await connection.Run(query);
+            var testEndTime = DateTimeOffset.UtcNow;
 
             Assert.Single(observedDelays);
-            // The delay should be close to 30 seconds (allow a few seconds of test execution time).
-            Assert.True(observedDelays[0] >= TimeSpan.FromSeconds(25), $"Expected delay ≥ 25s, got {observedDelays[0]}");
-            Assert.True(observedDelays[0] <= TimeSpan.FromSeconds(35), $"Expected delay ≤ 35s, got {observedDelays[0]}");
+            // The delay should be the time remaining until the reset timestamp. Bracket with the
+            // actual elapsed test time so the assertion is deterministic regardless of how fast or
+            // slow the test runs.
+            var minExpected = resetAt - testEndTime;
+            var maxExpected = resetAt - testStartTime;
+            Assert.True(observedDelays[0] >= (minExpected > TimeSpan.Zero ? minExpected : TimeSpan.Zero),
+                $"Expected delay ≥ {minExpected}, got {observedDelays[0]}");
+            Assert.True(observedDelays[0] <= maxExpected,
+                $"Expected delay ≤ {maxExpected}, got {observedDelays[0]}");
         }
 
         [Fact]
