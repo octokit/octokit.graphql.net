@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -196,6 +197,14 @@ namespace Octokit.GraphQL
         /// </summary>
         private ProductInfoHeaderValue UserAgent { get; }
 
+        /// <summary>
+        /// Gets or sets the maximum number of times to retry a request when rate-limited (HTTP 403 or 429).
+        /// </summary>
+        /// <remarks>
+        /// Set to 0 to disable retries. Defaults to 3.
+        /// </remarks>
+        public int MaxRetryCount { get; set; } = 3;
+
         /// <inheritdoc />
         public virtual async Task<string> Run(string query, CancellationToken cancellationToken = default)
         {
@@ -206,14 +215,61 @@ namespace Octokit.GraphQL
 
             var token = await CredentialStore.GetCredentials(cancellationToken).ConfigureAwait(false);
 
-            using (var request = CreateRequest(token, query))
+            var retryAttempt = 0;
+            while (true)
             {
+                using (var request = CreateRequest(token, query))
                 using (var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
                 {
+                    if (retryAttempt < MaxRetryCount && IsRateLimitStatusCode(response.StatusCode))
+                    {
+                        var delay = GetRetryDelay(response, retryAttempt);
+                        retryAttempt++;
+                        await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
+
                     response.EnsureSuccessStatusCode();
                     return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the delay to wait before retrying a rate-limited request.
+        /// </summary>
+        /// <param name="response">The rate-limited HTTP response.</param>
+        /// <param name="retryAttempt">The zero-based retry attempt index.</param>
+        /// <returns>The <see cref="TimeSpan"/> to wait before the next retry.</returns>
+        protected virtual TimeSpan GetRetryDelay(HttpResponseMessage response, int retryAttempt)
+        {
+            var retryAfter = response.Headers.RetryAfter;
+            if (retryAfter != null)
+            {
+                if (retryAfter.Delta.HasValue)
+                {
+                    return retryAfter.Delta.Value;
+                }
+
+                if (retryAfter.Date.HasValue)
+                {
+                    var remaining = retryAfter.Date.Value - DateTimeOffset.UtcNow;
+                    if (remaining > TimeSpan.Zero)
+                    {
+                        return remaining;
+                    }
+
+                    return TimeSpan.Zero;
+                }
+            }
+
+            // Exponential backoff: 1s, 2s, 4s, …
+            return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
+        }
+
+        private static bool IsRateLimitStatusCode(HttpStatusCode statusCode)
+        {
+            return statusCode == HttpStatusCode.Forbidden || (int)statusCode == 429;
         }
 
         private HttpRequestMessage CreateRequest(string token, string query)

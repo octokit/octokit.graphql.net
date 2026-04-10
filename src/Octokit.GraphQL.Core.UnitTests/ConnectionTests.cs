@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -128,10 +130,163 @@ namespace Octokit.GraphQL.Core.UnitTests
             await connection.Run(query);
         }
 
+        [Theory]
+        [InlineData(HttpStatusCode.Forbidden)]
+        [InlineData((HttpStatusCode)429)]
+        public static async Task Run_Retries_On_Rate_Limit_Status_Code(HttpStatusCode rateLimitStatusCode)
+        {
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient);
+            var query = "{}";
+
+            await connection.Run(query);
+
+            Assert.Equal(2, handler.CallCount);
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Forbidden)]
+        [InlineData((HttpStatusCode)429)]
+        public static async Task Run_Throws_After_Max_Retries_On_Rate_Limit_Status_Code(HttpStatusCode rateLimitStatusCode)
+        {
+            var responses = new[]
+            {
+                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
+            };
+            var handler = new SequentialMockHttpMessageHandler(responses);
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            await Assert.ThrowsAsync<HttpRequestException>(() => connection.Run(query));
+            Assert.Equal(4, handler.CallCount); // 1 initial + 3 retries
+        }
+
+        [Fact]
+        public static async Task Run_Does_Not_Retry_Non_Rate_Limit_Errors_When_Retry_Is_Enabled()
+        {
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            await Assert.ThrowsAsync<HttpRequestException>(() => connection.Run(query));
+            Assert.Equal(1, handler.CallCount); // no retry for 400
+        }
+
+        [Fact]
+        public static async Task Run_Respects_Retry_After_Delta_Header()
+        {
+            var retryAfterDelay = TimeSpan.FromSeconds(5);
+            var rateLimitResponse = new HttpResponseMessage(HttpStatusCode.Forbidden)
+            {
+                Content = new StringContent(string.Empty),
+            };
+            rateLimitResponse.Headers.RetryAfter = new RetryConditionHeaderValue(retryAfterDelay);
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                rateLimitResponse,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var observedDelays = new List<TimeSpan>();
+            var connection = new ObservableDelayConnection(ProductInformation, CredentialStore, httpClient, observedDelays);
+            var query = "{}";
+
+            await connection.Run(query);
+
+            Assert.Single(observedDelays);
+            Assert.Equal(retryAfterDelay, observedDelays[0]);
+        }
+
+        [Fact]
+        public static async Task Run_Uses_Exponential_Backoff_When_No_Retry_After_Header()
+        {
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                new HttpResponseMessage(HttpStatusCode.Forbidden) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(HttpStatusCode.Forbidden) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var observedDelays = new List<TimeSpan>();
+            var connection = new ObservableDelayConnection(ProductInformation, CredentialStore, httpClient, observedDelays) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            await connection.Run(query);
+
+            Assert.Equal(2, observedDelays.Count);
+            Assert.Equal(TimeSpan.FromSeconds(1), observedDelays[0]); // attempt 0: 2^0 = 1s
+            Assert.Equal(TimeSpan.FromSeconds(2), observedDelays[1]); // attempt 1: 2^1 = 2s
+        }
+
         private static HttpClient CreateFakeHttpClient(Action<HttpRequestMessage, CancellationToken> inspector = null, HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             var handler = new MockHttpMessageHandler(inspector, statusCode);
             return new HttpClient(handler);
+        }
+
+        /// <summary>A <see cref="Connection"/> subclass that returns zero-duration delays to keep tests fast.</summary>
+        private sealed class ZeroDelayConnection : Connection
+        {
+            public ZeroDelayConnection(ProductHeaderValue productInformation, ICredentialStore credentialStore, HttpClient httpClient)
+                : base(productInformation, credentialStore, httpClient)
+            {
+            }
+
+            protected override TimeSpan GetRetryDelay(HttpResponseMessage response, int retryAttempt) => TimeSpan.Zero;
+        }
+
+        /// <summary>A <see cref="Connection"/> subclass that records computed delays instead of actually sleeping.</summary>
+        private sealed class ObservableDelayConnection : Connection
+        {
+            private readonly List<TimeSpan> _observedDelays;
+
+            public ObservableDelayConnection(ProductHeaderValue productInformation, ICredentialStore credentialStore, HttpClient httpClient, List<TimeSpan> observedDelays)
+                : base(productInformation, credentialStore, httpClient)
+            {
+                _observedDelays = observedDelays;
+            }
+
+            protected override TimeSpan GetRetryDelay(HttpResponseMessage response, int retryAttempt)
+            {
+                var delay = base.GetRetryDelay(response, retryAttempt);
+                _observedDelays.Add(delay);
+                return TimeSpan.Zero; // don't actually sleep
+            }
+        }
+
+        /// <summary>Returns pre-configured HTTP responses in sequence.</summary>
+        private sealed class SequentialMockHttpMessageHandler : HttpMessageHandler
+        {
+            private readonly IList<HttpResponseMessage> _responses;
+            private int _callCount;
+
+            public SequentialMockHttpMessageHandler(IList<HttpResponseMessage> responses)
+            {
+                _responses = responses;
+            }
+
+            public int CallCount => _callCount;
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                var index = _callCount++;
+                return Task.FromResult(index < _responses.Count ? _responses[index] : _responses[_responses.Count - 1]);
+            }
         }
 
         private sealed class MockHttpMessageHandler : HttpMessageHandler
