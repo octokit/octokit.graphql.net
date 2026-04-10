@@ -46,23 +46,39 @@ jobs:
 
       - name: Checkout the repository
         uses: actions/checkout@v4
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 3.1.101
+          
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
+      - name: Build the solution
+        run: dotnet build ${{ env.OG_SOLUTION_PATH }} -c ${{ env.CONFIGURATION }}
+
+      - name: Install Legacy OpenSSL (required by dotnet 3.1.101)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb      
+
       - name: Run Octokit.GraphQL.UnitTests
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_UNIT_TESTS_PROJ_PATH }}"'
 
       - name: Run Octokit.GraphQL.Core.UnitTests
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_UNIT_TESTS_PROJ_PATH }}"'
 
       - name: Run Octokit.GraphQL.Core.Generation.UnitTests
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}"'
 
       - name: Run Octokit.GraphQL.IntegrationTests
+        if: always()
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" "${{ env.OG_INTEGRATION_TESTS_PROJ_PATH }}"'
         env:
           OCTOKIT_GQL_OAUTHTOKEN: ${{ secrets.OCTOKIT_GQL_OAUTHTOKEN }}

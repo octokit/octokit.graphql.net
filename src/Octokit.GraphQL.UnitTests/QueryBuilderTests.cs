@@ -394,5 +394,63 @@ namespace Octokit.GraphQL.UnitTests
 
 
         }
+
+        [Fact]
+        public void CreateRepositoryRuleset_Mutation_Should_Not_Include_Null_Fields_In_Parameters()
+        {
+            var expected = "mutation{createRepositoryRuleset(input:{sourceId:\"test-id\",name:\"main\",target:BRANCH,rules:[{type:REQUIRED_STATUS_CHECKS,parameters:{requiredStatusChecks:{requiredStatusChecks:[{context:\"ng test\"},{context:\"ng lint\"}],strictRequiredStatusChecksPolicy:true}}}],conditions:{refName:{exclude:[],include:[\"~DEFAULT_BRANCH\"]}},enforcement:ACTIVE}){ruleset{id}}}";
+
+            var mutation = new Mutation()
+                .CreateRepositoryRuleset(new CreateRepositoryRulesetInput
+                {
+                    SourceId = new ID("test-id"),
+                    Name = "main",
+                    Target = RepositoryRulesetTarget.Branch,
+                    Rules = new[]
+                    {
+                        new RepositoryRuleInput
+                        {
+                            Type = RepositoryRuleType.RequiredStatusChecks,
+                            Parameters = new RuleParametersInput
+                            {
+                                // Only one field is set - all others should NOT be serialized
+                                RequiredStatusChecks = new RequiredStatusChecksParametersInput
+                                {
+                                    RequiredStatusChecks = new[]
+                                    {
+                                        new StatusCheckConfigurationInput { Context = "ng test" },
+                                        new StatusCheckConfigurationInput { Context = "ng lint" }
+                                    },
+                                    StrictRequiredStatusChecksPolicy = true
+                                }
+                                // These fields are null and should NOT appear in the output:
+                                // Update, RequiredDeployments, PullRequest, CommitMessagePattern,
+                                // CommitAuthorEmailPattern, CommitterEmailPattern, BranchNamePattern,
+                                // TagNamePattern, Workflows
+                            }
+                        }
+                    },
+                    Conditions = new RepositoryRuleConditionsInput
+                    {
+                        RefName = new RefNameConditionTargetInput
+                        {
+                            Include = new[] { "~DEFAULT_BRANCH" },
+                            Exclude = new string[] { }
+                        }
+                    },
+                    Enforcement = RuleEnforcement.Active
+                })
+                .Select(x => new
+                {
+                    Ruleset = x.Ruleset.Select(r => new
+                    {
+                        r.Id
+                    }).Single()
+                });
+
+            var query = mutation.Compile();
+
+            Assert.Equal(expected, query.ToString(0));
+        }
     }
 }
