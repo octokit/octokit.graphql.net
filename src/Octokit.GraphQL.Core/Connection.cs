@@ -198,7 +198,7 @@ namespace Octokit.GraphQL
         private ProductInfoHeaderValue UserAgent { get; }
 
         /// <summary>
-        /// Gets or sets the maximum number of times to retry a request when rate-limited (HTTP 403 or 429).
+        /// Gets or sets the maximum number of times to retry a request when rate-limited (HTTP 429, or HTTP 403 with rate-limit indicators).
         /// </summary>
         /// <remarks>
         /// Set to 0 to disable retries. Defaults to 3.
@@ -221,7 +221,7 @@ namespace Octokit.GraphQL
                 using (var request = CreateRequest(token, query))
                 using (var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
                 {
-                    if (retryAttempt < MaxRetryCount && IsRateLimitStatusCode(response.StatusCode))
+                    if (retryAttempt < MaxRetryCount && IsRateLimitResponse(response))
                     {
                         var delay = GetRetryDelay(response, retryAttempt);
                         retryAttempt++;
@@ -267,10 +267,47 @@ namespace Octokit.GraphQL
             return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
         }
 
-        private static bool IsRateLimitStatusCode(HttpStatusCode statusCode)
+        /// <summary>
+        /// Determines whether the response represents a rate-limit that should trigger a retry.
+        /// </summary>
+        /// <remarks>
+        /// HTTP 429 (Too Many Requests) is always treated as a rate-limit response. HTTP 403 is
+        /// used by GitHub for both rate-limiting and for other policy failures (missing scopes,
+        /// SAML enforcement, repository permissions, etc.), so it is only treated as a retryable
+        /// rate-limit when the response includes a clear rate-limit indicator: a <c>Retry-After</c>
+        /// header (GitHub secondary rate limit) or an <c>X-RateLimit-Remaining: 0</c> header
+        /// (GitHub primary rate limit).
+        /// </remarks>
+        private static bool IsRateLimitResponse(HttpResponseMessage response)
         {
             // 429 (TooManyRequests) is not defined in HttpStatusCode for netstandard2.0, so cast directly.
-            return statusCode == HttpStatusCode.Forbidden || (int)statusCode == 429;
+            if ((int)response.StatusCode == 429)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                // Retry-After header is set by GitHub for secondary rate limits.
+                if (response.Headers.RetryAfter != null)
+                {
+                    return true;
+                }
+
+                // X-RateLimit-Remaining: 0 is set by GitHub for primary rate limits.
+                if (response.Headers.TryGetValues("X-RateLimit-Remaining", out var values))
+                {
+                    foreach (var value in values)
+                    {
+                        if (int.TryParse(value, out var remaining) && remaining == 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private HttpRequestMessage CreateRequest(string token, string query)

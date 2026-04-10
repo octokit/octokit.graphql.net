@@ -130,14 +130,12 @@ namespace Octokit.GraphQL.Core.UnitTests
             await connection.Run(query);
         }
 
-        [Theory]
-        [InlineData(HttpStatusCode.Forbidden)]
-        [InlineData((HttpStatusCode)429)]
-        public static async Task Run_Retries_On_Rate_Limit_Status_Code(HttpStatusCode rateLimitStatusCode)
+        [Fact]
+        public static async Task Run_Retries_On_429()
         {
             var handler = new SequentialMockHttpMessageHandler(new[]
             {
-                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
                 new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
             });
             var httpClient = new HttpClient(handler);
@@ -149,17 +147,79 @@ namespace Octokit.GraphQL.Core.UnitTests
             Assert.Equal(2, handler.CallCount);
         }
 
-        [Theory]
-        [InlineData(HttpStatusCode.Forbidden)]
-        [InlineData((HttpStatusCode)429)]
-        public static async Task Run_Throws_After_Max_Retries_On_Rate_Limit_Status_Code(HttpStatusCode rateLimitStatusCode)
+        [Fact]
+        public static async Task Run_Retries_On_403_With_Retry_After_Header()
+        {
+            var rateLimitResponse = new HttpResponseMessage(HttpStatusCode.Forbidden)
+            {
+                Content = new StringContent(string.Empty),
+            };
+            rateLimitResponse.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(1));
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                rateLimitResponse,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient);
+            var query = "{}";
+
+            await connection.Run(query);
+
+            Assert.Equal(2, handler.CallCount);
+        }
+
+        [Fact]
+        public static async Task Run_Retries_On_403_With_X_RateLimit_Remaining_Zero()
+        {
+            var rateLimitResponse = new HttpResponseMessage(HttpStatusCode.Forbidden)
+            {
+                Content = new StringContent(string.Empty),
+            };
+            rateLimitResponse.Headers.Add("X-RateLimit-Remaining", "0");
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                rateLimitResponse,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient);
+            var query = "{}";
+
+            await connection.Run(query);
+
+            Assert.Equal(2, handler.CallCount);
+        }
+
+        [Fact]
+        public static async Task Run_Does_Not_Retry_403_Without_Rate_Limit_Headers()
+        {
+            // GitHub uses 403 for scope/SAML/permission errors in addition to rate limits.
+            // A bare 403 with no rate-limit indicators must NOT be retried.
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                new HttpResponseMessage(HttpStatusCode.Forbidden) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            await Assert.ThrowsAsync<HttpRequestException>(() => connection.Run(query));
+            Assert.Equal(1, handler.CallCount); // no retry for a plain 403
+        }
+
+        [Fact]
+        public static async Task Run_Throws_After_Max_Retries_On_Rate_Limit_Status_Code()
         {
             var responses = new[]
             {
-                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
-                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
-                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
-                new HttpResponseMessage(rateLimitStatusCode) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
             };
             var handler = new SequentialMockHttpMessageHandler(responses);
             var httpClient = new HttpClient(handler);
@@ -215,10 +275,11 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public static async Task Run_Uses_Exponential_Backoff_When_No_Retry_After_Header()
         {
+            // Use 429 (unconditional rate limit) so that no Retry-After header is needed.
             var handler = new SequentialMockHttpMessageHandler(new[]
             {
-                new HttpResponseMessage(HttpStatusCode.Forbidden) { Content = new StringContent(string.Empty) },
-                new HttpResponseMessage(HttpStatusCode.Forbidden) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
+                new HttpResponseMessage((HttpStatusCode)429) { Content = new StringContent(string.Empty) },
                 new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
             });
             var httpClient = new HttpClient(handler);
