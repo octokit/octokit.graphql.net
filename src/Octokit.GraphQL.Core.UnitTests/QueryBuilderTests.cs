@@ -388,7 +388,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void InputObject_Parameter_With_Null_Field()
         {
-            var expected = "query{addComment(input:{subjectId:\"x\",body:null,clientMutationId:\"1\"}){body}}";
+            var expected = "query{addComment(input:{subjectId:\"x\",clientMutationId:\"1\"}){body}}";
 
             var input = new AddCommentInput
             {
@@ -578,7 +578,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Double_Quotes_In_InputObject_Arg_Are_Escaped()
         {
-            var expected = "query{addComment(input:{subjectId:\"\",body:null,clientMutationId:\"string with \\\"quotes\\\" in it\"}){body}}";
+            var expected = "query{addComment(input:{subjectId:\"\",clientMutationId:\"string with \\\"quotes\\\" in it\"}){body}}";
 
             var expression = new Query()
                 .AddComment(new AddCommentInput { ClientMutationId = "string with \"quotes\" in it" })
@@ -592,7 +592,7 @@ namespace Octokit.GraphQL.Core.UnitTests
         [Fact]
         public void Backslash_In_InputObject_Arg_Is_Escaped()
         {
-            var expected = "query{addComment(input:{subjectId:\"\",body:null,clientMutationId:\"string with \\\\ in it\"}){body}}";
+            var expected = "query{addComment(input:{subjectId:\"\",clientMutationId:\"string with \\\\ in it\"}){body}}";
 
             var expression = new Query()
                 .AddComment(new AddCommentInput { ClientMutationId = "string with \\ in it" })

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -247,9 +248,22 @@ namespace Octokit.GraphQL.Core.Serializers
                     //Cache Hit
                 }
 
+                var serializedProperties = new List<Tuple<string, object>>();
+
                 for (var index = 0; index < properties.Length; index++)
                 {
                     var property = properties[index];
+                    var propertyValue = property.Item2.Invoke(value, null);
+
+                    if (propertyValue != null)
+                    {
+                        serializedProperties.Add(new Tuple<string, object>(property.Item1, propertyValue));
+                    }
+                }
+
+                for (var index = 0; index < serializedProperties.Count; index++)
+                {
+                    var property = serializedProperties[index];
 
                     if (index == 0)
                     {
@@ -261,12 +275,18 @@ namespace Octokit.GraphQL.Core.Serializers
                     }
 
                     builder.Append(property.Item1.LowerFirstCharacter()).Append(colon);
-                    SerializeValue(builder, property.Item2.Invoke(value, null));
+                    SerializeValue(builder, property.Item2);
 
-                    if (index + 1 == properties.Length)
+                    if (index + 1 == serializedProperties.Count)
                     {
                         CloseBrace(builder);
                     }
+                }
+
+                if (serializedProperties.Count == 0)
+                {
+                    OpenBrace(builder);
+                    CloseBrace(builder);
                 }
             }
         }

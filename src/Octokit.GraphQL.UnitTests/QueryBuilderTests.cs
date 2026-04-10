@@ -398,41 +398,7 @@ namespace Octokit.GraphQL.UnitTests
         [Fact]
         public void CreateRepositoryRuleset_Mutation_Should_Not_Include_Null_Fields_In_Parameters()
         {
-            // This test demonstrates issue #320: When creating a repository ruleset with
-            // RuleParametersInput that has only one field set, the mutation should NOT
-            // serialize all the other null fields because GitHub API spec says
-            // "Only one rule parameter type can be specified."
-            //
-            // Expected: Only the non-null parameter field (requiredStatusChecks) should appear
-            // Actual (current bug): All parameter fields appear with most being null
-
-            var expected = @"mutation {
-  createRepositoryRuleset(input: {
-    sourceId: ""test-id""
-    name: ""main""
-    target: BRANCH
-    rules: [{
-      type: REQUIRED_STATUS_CHECKS
-      parameters: {
-        requiredStatusChecks: {
-          requiredStatusChecks: [{context: ""ng test""}, {context: ""ng lint""}]
-          strictRequiredStatusChecksPolicy: true
-        }
-      }
-    }]
-    conditions: {
-      refName: {
-        exclude: []
-        include: [""~DEFAULT_BRANCH""]
-      }
-    }
-    enforcement: ACTIVE
-  }) {
-    ruleset {
-      id
-    }
-  }
-}";
+            var expected = "mutation{createRepositoryRuleset(input:{sourceId:\"test-id\",name:\"main\",target:BRANCH,rules:[{type:REQUIRED_STATUS_CHECKS,parameters:{requiredStatusChecks:{requiredStatusChecks:[{context:\"ng test\"},{context:\"ng lint\"}],strictRequiredStatusChecksPolicy:true}}}],conditions:{refName:{exclude:[],include:[\"~DEFAULT_BRANCH\"]}},enforcement:ACTIVE}){ruleset{id}}}";
 
             var mutation = new Mutation()
                 .CreateRepositoryRuleset(new CreateRepositoryRulesetInput
@@ -484,17 +450,7 @@ namespace Octokit.GraphQL.UnitTests
 
             var query = mutation.Compile();
 
-            // This assertion will FAIL with the current implementation because
-            // the actual output includes all the null fields in parameters, like:
-            // parameters: {
-            //   update: null
-            //   requiredDeployments: null
-            //   pullRequest: null
-            //   requiredStatusChecks: { ... }
-            //   commitMessagePattern: null
-            //   ...
-            // }
-            Assert.Equal(expected, query.ToString(), ignoreLineEndingDifferences: true);
+            Assert.Equal(expected, query.ToString(0));
         }
     }
 }
