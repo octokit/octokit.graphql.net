@@ -51,9 +51,9 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
 }";
             var deserializer = new ResponseDeserializer();
 
-            // Should throw ResponseDeserializerException once the bug is fixed.
-            // Currently throws NullReferenceException because DeserializeException does:
-            //   (int)error["locations"][0]["line"]   <-- NullReferenceException when locations is absent
+            // The test asserts the CORRECT (post-fix) behaviour: a ResponseDeserializerException.
+            // Until the bug is fixed, NullReferenceException is thrown instead, making this test
+            // fail – which is intentional: the failure is the proof that the bug exists.
             var ex = Assert.Throws<ResponseDeserializerException>(
                 () => deserializer.Deserialize(rateLimitedResponseBody));
 
@@ -81,10 +81,10 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments(null, null, null, null, null).AllPages(10).Select(comment => new
+                    Comments = issue.Comments().AllPages(10).Select(comment => new
                     {
                         comment.Body,
-                        Reactions = comment.Reactions(null, null, null, null, null, null)
+                        Reactions = comment.Reactions()
                             .AllPages()
                             .Select(r => r.Id)
                             .ToList(),
