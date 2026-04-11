@@ -225,6 +225,7 @@ namespace Octokit.GraphQL
                 using (var request = CreateRequest(token, query))
                 using (var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
                 {
+                    // Handle non-2xx rate-limit responses (HTTP 429, or HTTP 403 with rate-limit headers).
                     if (retryAttempt < MaxRetryCount && IsRateLimitResponse(response))
                     {
                         var delay = GetRetryDelay(response, retryAttempt);
@@ -234,7 +235,20 @@ namespace Octokit.GraphQL
                     }
 
                     response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                    // GitHub's GraphQL API can return HTTP 200 with x-ratelimit-remaining: 0 and a
+                    // RATE_LIMITED error in the response body when the primary rate-limit window is
+                    // exhausted. The status-code-based check above cannot detect this case.
+                    if (retryAttempt < MaxRetryCount && IsGraphQLRateLimitBody(response, body))
+                    {
+                        var delay = GetRetryDelay(response, retryAttempt);
+                        retryAttempt++;
+                        await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
+
+                    return body;
                 }
             }
         }
@@ -280,6 +294,28 @@ namespace Octokit.GraphQL
 
             // Exponential backoff: 1s, 2s, 4s, …
             return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
+        }
+
+        /// <summary>
+        /// Determines whether a successful (HTTP 200) response body contains a GraphQL rate-limit error.
+        /// </summary>
+        /// <remarks>
+        /// GitHub's GraphQL API returns HTTP 200 with <c>x-ratelimit-remaining: 0</c> and a
+        /// <c>RATE_LIMITED</c> error type in the body when the primary rate-limit window is exhausted.
+        /// This is distinct from the non-2xx rate-limit responses detected by <see cref="IsRateLimitResponse"/>.
+        /// </remarks>
+        private static bool IsGraphQLRateLimitBody(HttpResponseMessage response, string body)
+        {
+            // x-ratelimit-remaining: 0 must be present; without it the 200 body is not a rate-limit response.
+            if (!response.Headers.TryGetValues("X-RateLimit-Remaining", out var values) ||
+                !values.Any(v => int.TryParse(v, out var remaining) && remaining == 0))
+            {
+                return false;
+            }
+
+            // The body must contain the RATE_LIMITED error type that GitHub sets for primary rate-limit
+            // exhaustion. Match the JSON string value form to avoid false positives on body text.
+            return body.IndexOf("\"RATE_LIMITED\"", StringComparison.Ordinal) >= 0;
         }
 
         /// <summary>

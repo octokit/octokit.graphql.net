@@ -131,6 +131,125 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
+        public static async Task Run_Retries_On_200_With_GraphQL_Rate_Limit_Error()
+        {
+            // GitHub GraphQL returns HTTP 200 with x-ratelimit-remaining: 0 and a RATE_LIMITED error
+            // in the body when the primary rate-limit window is exhausted.  The status-code path alone
+            // would miss this; the body-inspection path must catch it.
+            const string rateLimitBody = "{\"errors\":[{\"message\":\"API rate limit exceeded\",\"type\":\"RATE_LIMITED\"}]}";
+            var rateLimitResponse = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(rateLimitBody),
+            };
+            rateLimitResponse.Headers.Add("X-RateLimit-Remaining", "0");
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                rateLimitResponse,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            await connection.Run(query);
+
+            Assert.Equal(2, handler.CallCount);
+        }
+
+        [Fact]
+        public static async Task Run_Does_Not_Retry_200_Without_Rate_Limit_Header()
+        {
+            // A 200 body that mentions "RATE_LIMITED" but has no x-ratelimit-remaining: 0 header
+            // should NOT be retried — the header is required to distinguish a genuine rate limit.
+            const string body = "{\"errors\":[{\"message\":\"some error\",\"type\":\"RATE_LIMITED\"}]}";
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(body),
+            };
+            // No X-RateLimit-Remaining header added.
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                response,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            // Should return the first response's body immediately without retrying.
+            var result = await connection.Run(query);
+            Assert.Equal(body, result);
+            Assert.Equal(1, handler.CallCount);
+        }
+
+        [Fact]
+        public static async Task Run_Does_Not_Retry_200_With_Rate_Limit_Header_But_No_Rate_Limit_Error()
+        {
+            // A 200 with x-ratelimit-remaining: 0 but no RATE_LIMITED error type in the body
+            // (e.g. the last query succeeded but drained the quota) must NOT be retried.
+            const string successBody = "{\"data\":{\"viewer\":{\"login\":\"monalisa\"}}}";
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(successBody),
+            };
+            response.Headers.Add("X-RateLimit-Remaining", "0");
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                response,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var connection = new ZeroDelayConnection(ProductInformation, CredentialStore, httpClient) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            var result = await connection.Run(query);
+            Assert.Equal(successBody, result);
+            Assert.Equal(1, handler.CallCount);
+        }
+
+        [Fact]
+        public static async Task Run_Respects_X_RateLimit_Reset_On_200_Rate_Limit_Body()
+        {
+            // When a 200 + RATE_LIMITED body also carries X-RateLimit-Reset, the delay should be
+            // derived from that header (not fall back to short exponential backoff).
+            var testStartTime = DateTimeOffset.UtcNow;
+            var resetAt = testStartTime.AddSeconds(30);
+            var resetUnix = resetAt.ToUnixTimeSeconds().ToString();
+
+            const string rateLimitBody = "{\"errors\":[{\"message\":\"API rate limit exceeded\",\"type\":\"RATE_LIMITED\"}]}";
+            var rateLimitResponse = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(rateLimitBody),
+            };
+            rateLimitResponse.Headers.Add("X-RateLimit-Remaining", "0");
+            rateLimitResponse.Headers.Add("X-RateLimit-Reset", resetUnix);
+
+            var handler = new SequentialMockHttpMessageHandler(new[]
+            {
+                rateLimitResponse,
+                new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) },
+            });
+            var httpClient = new HttpClient(handler);
+            var observedDelays = new List<TimeSpan>();
+            var connection = new ObservableDelayConnection(ProductInformation, CredentialStore, httpClient, observedDelays) { MaxRetryCount = 3 };
+            var query = "{}";
+
+            await connection.Run(query);
+            var testEndTime = DateTimeOffset.UtcNow;
+
+            Assert.Single(observedDelays);
+            var minExpected = resetAt - testEndTime;
+            var maxExpected = resetAt - testStartTime;
+            Assert.True(observedDelays[0] >= (minExpected > TimeSpan.Zero ? minExpected : TimeSpan.Zero),
+                $"Expected delay ≥ {minExpected}, got {observedDelays[0]}");
+            Assert.True(observedDelays[0] <= maxExpected,
+                $"Expected delay ≤ {maxExpected}, got {observedDelays[0]}");
+        }
+
+        [Fact]
         public static async Task Run_Retries_On_429()
         {
             var handler = new SequentialMockHttpMessageHandler(new[]
