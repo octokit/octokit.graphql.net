@@ -81,10 +81,10 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments().AllPages(10).Select(comment => new
+                    Comments = issue.Comments(null, null, null, null, null).AllPages(10).Select(comment => new
                     {
                         comment.Body,
-                        Reactions = comment.Reactions()
+                        Reactions = comment.Reactions(null, null, null, null, null, null)
                             .AllPages()
                             .Select(r => r.Id)
                             .ToList(),
