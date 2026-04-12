@@ -63,7 +63,7 @@ jobs:
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}"'
 
       - name: Run Octokit.GraphQL.IntegrationTests
-        run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" "${{ env.OG_INTEGRATION_TESTS_PROJ_PATH }}"'
+        run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build --logger "console;verbosity=normal" -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" "${{ env.OG_INTEGRATION_TESTS_PROJ_PATH }}"'
         env:
           OCTOKIT_GQL_OAUTHTOKEN: ${{ secrets.OCTOKIT_GQL_OAUTHTOKEN }}
           OCTOKIT_GQL_GITHUBUSERNAME: ${{ secrets.OCTOKIT_GQL_GITHUBUSERNAME }}
