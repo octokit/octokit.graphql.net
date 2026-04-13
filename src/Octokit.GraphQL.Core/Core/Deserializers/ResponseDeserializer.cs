@@ -63,14 +63,30 @@ namespace Octokit.GraphQL.Core.Deserializers
 
         private Exception DeserializeException(JToken error)
         {
+            var message = (string)error["message"];
             var location = (error["locations"] as JArray)?.FirstOrDefault();
             var line = (int?)location?["line"] ?? 0;
             var column = (int?)location?["column"] ?? 0;
 
+            if (IsRateLimitError(message))
+            {
+                return new RateLimitExceededException(message, line, column);
+            }
+
             return new ResponseDeserializerException(
-                (string)error["message"],
+                message,
                 line,
                 column);
+        }
+
+        private static bool IsRateLimitError(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                return false;
+            }
+
+            return message.IndexOf("rate limit", StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

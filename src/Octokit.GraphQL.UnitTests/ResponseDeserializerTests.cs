@@ -244,6 +244,71 @@ namespace Octokit.GraphQL.UnitTests
         }
 
         [Fact]
+        public void Should_Throw_Rate_Limit_Exception()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""API rate limit already exceeded for user ID 12345.""
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (RateLimitExceededException e)
+            {
+                thrown = e.Message == "API rate limit already exceeded for user ID 12345." &&
+                         e.Line == 0 &&
+                         e.Column == 0 &&
+                         !e.IsSecondary;
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
+        public void Should_Throw_Secondary_Rate_Limit_Exception()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""You have exceeded a secondary rate limit. Please wait a few minutes before you try again."",
+      ""locations"":[
+        {
+          ""line"":2,
+          ""column"":3
+        }
+      ]
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (RateLimitExceededException e)
+            {
+                thrown = e.IsSecondary &&
+                         e.Line == 2 &&
+                         e.Column == 3;
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
         public void PullRequest_Review_State_ChangesRequested()
         {
             var expression = new Query()
