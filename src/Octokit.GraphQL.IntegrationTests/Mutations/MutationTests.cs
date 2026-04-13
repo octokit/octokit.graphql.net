@@ -13,6 +13,7 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
         private readonly GitHubClient _gitHubClient;
         private readonly Octokit.Repository _repository;
         private readonly string _ticks;
+        private readonly ID _ownerId;
         private readonly ID _repositoryId;
 
         public MutationTests()
@@ -25,57 +26,63 @@ namespace Octokit.GraphQL.IntegrationTests.Mutations
 
             var repositoryQuery = new Query()
                 .Repository(owner: Helper.Username, name: _repoName)
-                .Select(r => r.Id );
+                .Select(r => new
+                {
+                    RepositoryId = r.Id,
+                    OwnerId = r.Owner.Id,
+                });
 
-            _repositoryId = Connection.Run(repositoryQuery).Result;
+            var repositoryData = Connection.Run(repositoryQuery).Result;
+            _repositoryId = repositoryData.RepositoryId;
+            _ownerId = repositoryData.OwnerId;
         }
 
         [IntegrationTest]
-        public void Create_And_Delete_Project()
+        public void Create_And_Delete_ProjectV2()
         {
             var projectName = "ProjectName_" + _ticks;
-            var projectDesc = "ProjectDesc_" + _ticks;
             var clientMutationId = "abc123";
 
             var createProjectQuery = new Mutation() 
-                .CreateProject(new CreateProjectInput()
+                .CreateProjectV2(new CreateProjectV2Input()
                 {
-                    Name = projectName,
-                    OwnerId = _repositoryId,
-                    
-                    //TODO: This is not required but the code fails if we leave this empty
+                    Title = projectName,
+                    OwnerId = _ownerId,
+                    RepositoryId = _repositoryId,
                     ClientMutationId = clientMutationId,
-                    Body = projectDesc
                 })
-                .Select(payload => new {payload.ClientMutationId, ProjectId = payload.Project.Id, ProjectName = payload.Project.Name, ProjectOwnerId = payload.Project.Owner.Id});
+                .Select(payload => new
+                {
+                    payload.ClientMutationId,
+                    ProjectId = payload.ProjectV2.Id,
+                    ProjectName = payload.ProjectV2.Title,
+                    ProjectOwnerId = payload.ProjectV2.Owner.Id,
+                });
 
             var projectData = Connection.Run(createProjectQuery).Result;
 
             Assert.Equal(projectData.ClientMutationId, clientMutationId);
             Assert.Equal(projectData.ProjectName, projectName);
-            Assert.Equal(projectData.ProjectOwnerId, _repositoryId);
+            Assert.Equal(projectData.ProjectOwnerId, _ownerId);
 
             clientMutationId = "def456";
 
             var deleteProjectQuery = new Mutation()
-                .DeleteProject(new DeleteProjectInput()
+                .DeleteProjectV2(new DeleteProjectV2Input()
                 {
                     ProjectId = projectData.ProjectId,
-
-                    //TODO: This is not required but the code fails if we leave this empty
                     ClientMutationId = clientMutationId
-
                 })
                 .Select(payload => new
                 {
-                    ProjectOwnerId = payload.Owner.Id,
                     payload.ClientMutationId,
+                    ProjectId = payload.ProjectV2.Id,
                 });
 
             var deleteResult = Connection.Run(deleteProjectQuery).Result;
 
             Assert.Equal(deleteResult.ClientMutationId, clientMutationId);
-            Assert.Equal(deleteResult.ProjectOwnerId, _repositoryId);
+            Assert.Equal(deleteResult.ProjectId, projectData.ProjectId);
 
         }
 

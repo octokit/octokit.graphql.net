@@ -4,6 +4,7 @@ using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Model;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Octokit.GraphQL.UnitTests
@@ -198,6 +199,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
             var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
             var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
             var thrown = true;
 
             try
@@ -208,7 +210,139 @@ namespace Octokit.GraphQL.UnitTests
             {
                 thrown = e.Message == "Error message." &&
                          e.Line == 5 &&
-                         e.Column == 6;
+                   e.Column == 6 &&
+                   e.ErrorPayload == expectedPayload;
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
+        public void Should_Throw_Exception_Without_Location()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""Error message without location.""
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (ResponseDeserializerException e)
+            {
+                thrown = e.Message == "Error message without location." &&
+                         e.Line == 0 &&
+                   e.Column == 0 &&
+                   e.ErrorPayload == expectedPayload;
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
+        public void Should_Throw_Rate_Limit_Exception()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""API rate limit already exceeded for user ID 12345.""
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (RateLimitExceededException e)
+            {
+                thrown = e.Message == "API rate limit already exceeded for user ID 12345." &&
+                         e.Line == 0 &&
+                         e.Column == 0 &&
+                   !e.IsSecondary &&
+                   e.ErrorPayload == expectedPayload;
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
+        public void Should_Throw_Secondary_Rate_Limit_Exception()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""You have exceeded a secondary rate limit. Please wait a few minutes before you try again."",
+      ""locations"":[
+        {
+          ""line"":2,
+          ""column"":3
+        }
+      ]
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (RateLimitExceededException e)
+            {
+                thrown = e.IsSecondary &&
+                         e.Line == 2 &&
+                   e.Column == 3 &&
+                   e.ErrorPayload == expectedPayload;
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
+        public void Exception_ToString_Should_Include_Error_Payload()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""API rate limit already exceeded for user ID 12345.""
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (RateLimitExceededException e)
+            {
+                var exceptionText = e.ToString();
+
+                thrown = exceptionText.Contains("GraphQL error payload:") &&
+                         exceptionText.Contains(expectedPayload);
             }
 
             Assert.True(thrown);
