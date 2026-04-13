@@ -17,12 +17,7 @@ namespace Octokit.GraphQL.IntegrationTests.Utilities
 
         public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
         {
-            var requiredEnvironmentVariable = factAttribute.GetNamedArgument<string>(nameof(ManualIntegrationTestAttribute.RequiredEnvironmentVariable));
-            var isEnabled = string.IsNullOrWhiteSpace(requiredEnvironmentVariable) ||
-                !string.IsNullOrWhiteSpace(System.Environment.GetEnvironmentVariable(requiredEnvironmentVariable));
-
             return Helper.HasCredentials
-                && isEnabled
                 ? new[] { new XunitTestCase(_diagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), TestMethodDisplayOptions.None, testMethod) }
                 : Enumerable.Empty<IXunitTestCase>();
         }
@@ -30,11 +25,6 @@ namespace Octokit.GraphQL.IntegrationTests.Utilities
 
     [XunitTestCaseDiscoverer("Octokit.GraphQL.IntegrationTests.Utilities.IntegrationTestDiscoverer", "Octokit.GraphQL.IntegrationTests")]
     public class IntegrationTestAttribute : FactAttribute
-    {
-        public string RequiredEnvironmentVariable { get; set; }
-    }
-
-    public class ManualIntegrationTestAttribute : IntegrationTestAttribute
     {
     }
 }
