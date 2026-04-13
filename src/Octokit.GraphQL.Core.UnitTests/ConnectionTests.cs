@@ -60,17 +60,21 @@ namespace Octokit.GraphQL.Core.UnitTests
         public static async Task Run_Specifies_Cancellation_Token()
         {
             var query = "{}";
-            var cancellationToken = new CancellationToken(true);
 
-            var httpClient = CreateFakeHttpClient(
-                (request, token) =>
-                {
-                    Assert.True(token.IsCancellationRequested);
-                });
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                var handler = new CancellingHttpMessageHandler();
+                var httpClient = new HttpClient(handler);
+                var connection = new Connection(ProductInformation, CredentialStore, httpClient);
+                var runTask = connection.Run(query, cancellationTokenSource.Token);
+                var token = await handler.TokenReceived.Task;
 
-            var connection = new Connection(ProductInformation, CredentialStore, httpClient);
+                Assert.True(token.CanBeCanceled);
 
-            await connection.Run(query, cancellationToken);
+                cancellationTokenSource.Cancel();
+
+                await Assert.ThrowsAnyAsync<OperationCanceledException>(() => runTask);
+            }
         }
 
         [Theory]
@@ -93,10 +97,10 @@ namespace Octokit.GraphQL.Core.UnitTests
         }
 
         [Fact]
-        public static void Run_Throws_If_Query_Is_Null()
+        public static async Task Run_Throws_If_Query_Is_Null()
         {
             var connection = new Connection(ProductInformation, CredentialStore);
-            Assert.ThrowsAsync<ArgumentNullException>("query", () => connection.Run(null));
+            await Assert.ThrowsAsync<ArgumentNullException>("query", () => connection.Run(null));
         }
 
         [Fact]
@@ -155,6 +159,22 @@ namespace Octokit.GraphQL.Core.UnitTests
                 };
 
                 return Task.FromResult(response);
+            }
+        }
+
+        private sealed class CancellingHttpMessageHandler : HttpMessageHandler
+        {
+            public TaskCompletionSource<CancellationToken> TokenReceived { get; } = new TaskCompletionSource<CancellationToken>();
+
+            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                TokenReceived.TrySetResult(cancellationToken);
+                await Task.Delay(Timeout.Infinite, cancellationToken);
+
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(string.Empty)
+                };
             }
         }
 
