@@ -2,8 +2,8 @@ namespace Octokit.GraphQL.Core.Deserializers
 {
     public class RateLimitExceededException : ResponseDeserializerException
     {
-        public RateLimitExceededException(string message, int line, int column)
-            : base(message, line, column)
+        public RateLimitExceededException(string message, int line, int column, string errorPayload)
+            : base(message, line, column, errorPayload)
         {
         }
 

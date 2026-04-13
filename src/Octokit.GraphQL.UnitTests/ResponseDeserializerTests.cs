@@ -4,6 +4,7 @@ using Octokit.GraphQL.Core;
 using Octokit.GraphQL.Core.Builders;
 using Octokit.GraphQL.Core.Deserializers;
 using Octokit.GraphQL.Model;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Octokit.GraphQL.UnitTests
@@ -198,6 +199,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
             var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
             var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
             var thrown = true;
 
             try
@@ -208,7 +210,8 @@ namespace Octokit.GraphQL.UnitTests
             {
                 thrown = e.Message == "Error message." &&
                          e.Line == 5 &&
-                         e.Column == 6;
+                   e.Column == 6 &&
+                   e.ErrorPayload == expectedPayload;
             }
 
             Assert.True(thrown);
@@ -227,6 +230,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
             var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
             var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
             var thrown = true;
 
             try
@@ -237,7 +241,8 @@ namespace Octokit.GraphQL.UnitTests
             {
                 thrown = e.Message == "Error message without location." &&
                          e.Line == 0 &&
-                         e.Column == 0;
+                   e.Column == 0 &&
+                   e.ErrorPayload == expectedPayload;
             }
 
             Assert.True(thrown);
@@ -256,6 +261,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
             var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
             var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
             var thrown = true;
 
             try
@@ -267,7 +273,8 @@ namespace Octokit.GraphQL.UnitTests
                 thrown = e.Message == "API rate limit already exceeded for user ID 12345." &&
                          e.Line == 0 &&
                          e.Column == 0 &&
-                         !e.IsSecondary;
+                   !e.IsSecondary &&
+                   e.ErrorPayload == expectedPayload;
             }
 
             Assert.True(thrown);
@@ -292,6 +299,7 @@ namespace Octokit.GraphQL.UnitTests
 }";
             var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
             var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
             var thrown = true;
 
             try
@@ -302,7 +310,8 @@ namespace Octokit.GraphQL.UnitTests
             {
                 thrown = e.IsSecondary &&
                          e.Line == 2 &&
-                         e.Column == 3;
+                   e.Column == 3 &&
+                   e.ErrorPayload == expectedPayload;
             }
 
             Assert.True(thrown);

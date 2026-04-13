@@ -67,16 +67,18 @@ namespace Octokit.GraphQL.Core.Deserializers
             var location = (error["locations"] as JArray)?.FirstOrDefault();
             var line = (int?)location?["line"] ?? 0;
             var column = (int?)location?["column"] ?? 0;
+            var errorPayload = error.ToString(Newtonsoft.Json.Formatting.None);
 
             if (IsRateLimitError(message))
             {
-                return new RateLimitExceededException(message, line, column);
+                return new RateLimitExceededException(message, line, column, errorPayload);
             }
 
             return new ResponseDeserializerException(
                 message,
                 line,
-                column);
+                column,
+                errorPayload);
         }
 
         private static bool IsRateLimitError(string message)
