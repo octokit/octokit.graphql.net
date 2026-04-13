@@ -318,6 +318,37 @@ namespace Octokit.GraphQL.UnitTests
         }
 
         [Fact]
+        public void Exception_ToString_Should_Include_Error_Payload()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""API rate limit already exceeded for user ID 12345.""
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var expectedPayload = JToken.Parse(data)["errors"][0].ToString(Newtonsoft.Json.Formatting.None);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (RateLimitExceededException e)
+            {
+                var exceptionText = e.ToString();
+
+                thrown = exceptionText.Contains("GraphQL error payload:") &&
+                         exceptionText.Contains(expectedPayload);
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
         public void PullRequest_Review_State_ChangesRequested()
         {
             var expression = new Query()
