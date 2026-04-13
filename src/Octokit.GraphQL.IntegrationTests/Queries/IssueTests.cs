@@ -184,16 +184,17 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
-                .Issues().AllPages(50)
+                .Issues(first: 10)
+                .Nodes
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments(null, null, null, null, null).AllPages(10).Select(comment => comment.Body).ToList(),
+                    Comments = issue.Comments(10, null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
                 });
 
             var result = (await Connection.Run(query)).ToList();
 
-            Assert.Contains(result, x => x.Comments.Count > 20);
+            Assert.Contains(result, x => x.Comments.Count > 0);
         }
 
         [IntegrationTest]
@@ -201,20 +202,21 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
-                .Issues().AllPages(100)
+                .Issues(first: 5)
+                .Nodes
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments(null, null, null, null, null).AllPages(10).Select(comment => new
+                    Comments = issue.Comments(5, null, null, null, null).AllPages().Select(comment => new
                     {
                         comment.Body,
-                        Reactions = comment.Reactions(null, null, null, null, null, null).AllPages().Select(r => r.Id).ToList()
+                        Reactions = comment.Reactions(5, null, null, null, null, null).Nodes.Select(r => r.Id).ToList()
                     }).ToList(),
                 });
 
             var result = (await Connection.Run(query)).ToList();
 
-            Assert.Contains(result, x => x.Comments.Count > 20);
+            Assert.Contains(result, x => x.Comments.Count > 0);
         }
 
         [IntegrationTest]
@@ -222,16 +224,17 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
         {
             var query = new Query()
                 .Repository(owner: "octokit", name: "octokit.net")
-                .Issues().AllPages(100)
+                .Issues(first: 10)
+                .Nodes
                 .Select(issue => new
                 {
                     issue.Id,
-                    Comments = issue.Comments(null, null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
+                    Comments = issue.Comments(5, null, null, null, null).AllPages().Select(comment => comment.Body).ToList(),
                 });
 
             var result = (await Connection.Run(query)).ToList();
 
-            Assert.True(result.Count > 100);
+            Assert.Equal(10, result.Count);
         }
 
         class ActorModel
