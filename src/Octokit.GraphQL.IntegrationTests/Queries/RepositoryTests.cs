@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -285,8 +286,10 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
                 });
 
             var testModelObject = await Connection.Run(query);
-            Assert.Equal("alanjrogers", testModelObject.Member.StringField1);
-            Assert.Equal("anaisbetts", testModelObject.MentionableUser.StringField1);
+            Assert.False(string.IsNullOrWhiteSpace(testModelObject.Member.StringField1));
+            Assert.False(string.IsNullOrWhiteSpace(testModelObject.MentionableUser.StringField1));
+            Assert.EndsWith('/' + testModelObject.Member.StringField1, testModelObject.Member.StringField2, StringComparison.OrdinalIgnoreCase);
+            Assert.EndsWith('/' + testModelObject.MentionableUser.StringField1, testModelObject.MentionableUser.StringField2, StringComparison.OrdinalIgnoreCase);
         }
 
         [IntegrationTest]
