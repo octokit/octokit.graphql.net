@@ -55,17 +55,17 @@ namespace Octokit.GraphQL.IntegrationTests.Queries
             Assert.NotNull(graphqlUser);
 
             Assert.Equal(apiUser.AvatarUrl.Split("?").First(), graphqlUser.AvatarUrl.Split("?").First());
-            Assert.Equal(apiUser.Bio ?? string.Empty, graphqlUser.Bio);
-            Assert.Equal(apiUser.Company, graphqlUser.Company);
+            Assert.Equal(apiUser.Bio ?? string.Empty, graphqlUser.Bio ?? string.Empty);
+            Assert.Equal(apiUser.Company ?? string.Empty, graphqlUser.Company ?? string.Empty);
 
             Assert.Equal(apiUser.CreatedAt.ToUniversalTime(), graphqlUser.CreatedAt.ToUniversalTime());
 
-            Assert.Equal(apiUser.Email ?? string.Empty, graphqlUser.Email);
+            Assert.Equal(apiUser.Email ?? string.Empty, graphqlUser.Email ?? string.Empty);
             Assert.Equal(apiUser.Hireable ?? false, graphqlUser.IsHireable);
             Assert.Equal(apiUser.Id, graphqlUser.DatabaseId);
-            Assert.Equal(apiUser.Location, graphqlUser.Location);
+            Assert.Equal(apiUser.Location ?? string.Empty, graphqlUser.Location ?? string.Empty);
             Assert.Equal(apiUser.Login, graphqlUser.Login);
-            Assert.Equal(apiUser.Name, graphqlUser.Name);
+            Assert.Equal(apiUser.Name ?? string.Empty, graphqlUser.Name ?? string.Empty);
             Assert.Equal(apiUser.HtmlUrl, graphqlUser.Url);
 
             //TODO: Verify the following fields from the old api are not verifiable
