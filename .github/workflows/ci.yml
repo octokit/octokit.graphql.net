@@ -65,66 +65,11 @@ jobs:
       - name: Run Octokit.GraphQL.Core.Generation.UnitTests
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build "${{ env.OG_CORE_GENERATOR_UNIT_TESTS_PROJ_PATH }}"'
 
-      - name: Check GraphQL rate limit
-        id: graphql-rate-limit
-        shell: bash
-        env:
-          OCTOKIT_GQL_OAUTHTOKEN: ${{ secrets.OCTOKIT_GQL_OAUTHTOKEN }}
-        run: |
-          set -euo pipefail
-
-          response_headers=$(mktemp)
-          response_body=$(mktemp)
-
-          curl -sS \
-            -D "$response_headers" \
-            -o "$response_body" \
-            -X POST \
-            -H "Authorization: bearer $OCTOKIT_GQL_OAUTHTOKEN" \
-            -H "Content-Type: application/json" \
-            -H "User-Agent: Octokit.GraphQL.CI" \
-            https://api.github.com/graphql \
-            --data '{"query":"query { rateLimit { limit remaining used resetAt } }"}'
-
-          remaining=$(awk 'BEGIN { IGNORECASE = 1 } /^x-ratelimit-remaining:/ { print $2 }' "$response_headers" | tr -d '\r' | tail -n 1)
-          reset=$(awk 'BEGIN { IGNORECASE = 1 } /^x-ratelimit-reset:/ { print $2 }' "$response_headers" | tr -d '\r' | tail -n 1)
-          limit=$(awk 'BEGIN { IGNORECASE = 1 } /^x-ratelimit-limit:/ { print $2 }' "$response_headers" | tr -d '\r' | tail -n 1)
-          used=$(awk 'BEGIN { IGNORECASE = 1 } /^x-ratelimit-used:/ { print $2 }' "$response_headers" | tr -d '\r' | tail -n 1)
-
-          if [[ -z "$remaining" ]]; then
-            echo "Could not determine GraphQL rate limit from response headers."
-            cat "$response_body"
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          echo "GraphQL rate limit status: remaining=$remaining used=${used:-unknown} limit=${limit:-unknown} reset=${reset:-unknown}"
-
-          if [[ "$remaining" == "0" ]]; then
-            echo "GraphQL rate limit is exhausted; skipping integration tests."
-            echo "should_run=false" >> "$GITHUB_OUTPUT"
-            echo "remaining=$remaining" >> "$GITHUB_OUTPUT"
-            echo "reset=$reset" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          echo "should_run=true" >> "$GITHUB_OUTPUT"
-          echo "remaining=$remaining" >> "$GITHUB_OUTPUT"
-          echo "reset=$reset" >> "$GITHUB_OUTPUT"
-
       - name: Run Octokit.GraphQL.IntegrationTests
-        if: steps.graphql-rate-limit.outputs.should_run == 'true'
         run: 'dotnet test -c ${{ env.CONFIGURATION }} --no-build --results-directory "${{ github.workspace }}/TestResults" --logger "console;verbosity=normal" --logger "trx;LogFileName=Octokit.GraphQL.IntegrationTests.trx" -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[Octokit.GraphQL]Octokit.GraphQL.*" "${{ env.OG_INTEGRATION_TESTS_PROJ_PATH }}"'
         env:
           OCTOKIT_GQL_OAUTHTOKEN: ${{ secrets.OCTOKIT_GQL_OAUTHTOKEN }}
           OCTOKIT_GQL_GITHUBUSERNAME: ${{ secrets.OCTOKIT_GQL_GITHUBUSERNAME }}
-
-      - name: Skip Octokit.GraphQL.IntegrationTests
-        if: steps.graphql-rate-limit.outputs.should_run != 'true'
-        run: |
-          echo "Skipping integration tests because the GraphQL rate limit is exhausted."
-          echo "remaining=${{ steps.graphql-rate-limit.outputs.remaining }}"
-          echo "reset=${{ steps.graphql-rate-limit.outputs.reset }}"
 
       - name: Upload integration test results
         if: always()
