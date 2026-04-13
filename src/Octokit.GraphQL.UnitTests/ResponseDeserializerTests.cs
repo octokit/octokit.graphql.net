@@ -215,6 +215,35 @@ namespace Octokit.GraphQL.UnitTests
         }
 
         [Fact]
+        public void Should_Throw_Exception_Without_Location()
+        {
+            var data = @"{
+  ""data"":null,
+  ""errors"":[
+    {
+      ""message"":""Error message without location.""
+    }
+  ]
+}";
+            var expression = new Query().Viewer.Select(x => new { x.Login, x.Email });
+            var query = new QueryBuilder().Build(expression);
+            var thrown = true;
+
+            try
+            {
+                var result = query.Deserialize(data);
+            }
+            catch (ResponseDeserializerException e)
+            {
+                thrown = e.Message == "Error message without location." &&
+                         e.Line == 0 &&
+                         e.Column == 0;
+            }
+
+            Assert.True(thrown);
+        }
+
+        [Fact]
         public void PullRequest_Review_State_ChangesRequested()
         {
             var expression = new Query()
