@@ -33,7 +33,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 3.1.101
+          dotnet-version: 8.0.x
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
@@ -41,7 +41,7 @@ jobs:
         run: dotnet build ${{ env.OG_SOLUTION_PATH }} -c ${{ env.CONFIGURATION }}
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout the repository
@@ -49,7 +49,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 3.1.101
+          dotnet-version: 8.0.x
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
@@ -88,7 +88,7 @@ jobs:
       - name: Setup .NET & GitHub Packages
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 3.1.101
+          dotnet-version: 8.0.x
           source-url: https://nuget.pkg.github.com/octokit/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
